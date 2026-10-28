@@ -1,0 +1,17 @@
+{
+  "schema": "archflow-agents/1",
+  "diagram": "harness.archflow.json",
+  "files": {
+    ".claude/agents/agent.md": "edc06ae38cca8467",
+    ".claude/agents/nuxt-dev.md": "af1c721729b28d51",
+    ".claude/skills/nuxt-ui-components/SKILL.md": "3f0c7215fbc3a415",
+    ".claude/skills/nuxt-ui-tokens/SKILL.md": "4429979006a1728c",
+    ".cursor/agents/agent.md": "393dbb143f28a82b",
+    ".cursor/agents/nuxt-dev.md": "b1cd9381a8ae8cd8",
+    ".cursor/skills/design-system/SKILL.md": "14ddbdfa6fb24abe",
+    ".cursor/skills/impeccable/SKILL.md": "1194fbba46e78f8f",
+    ".cursor/skills/nuxt-ui-components/SKILL.md": "3f0c7215fbc3a415",
+    ".cursor/skills/nuxt-ui-tokens/SKILL.md": "4429979006a1728c",
+    ".cursor/skills/web-design-guidelines/SKILL.md": "b7ef32ccf50e00e1"
+  }
+}
