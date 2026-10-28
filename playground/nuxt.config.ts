@@ -28,7 +28,10 @@ export default defineNuxtConfig({
     ? { chokidar: { usePolling: true, interval: 1000 } }
     : undefined,
 
-  vite: usePolling
-    ? { server: { watch: { usePolling: true, interval: 1000 } } }
-    : undefined,
+  vite: {
+    server: {
+      allowedHosts: [".sslip.io"],
+      watch: usePolling ? { usePolling: true, interval: 1000 } : undefined,
+    },
+  },
 });
