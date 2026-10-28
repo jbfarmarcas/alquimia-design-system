@@ -2,6 +2,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const playgroundDir = dirname(fileURLToPath(import.meta.url));
+const usePolling = process.env.CHOKIDAR_USEPOLLING === "true";
 
 export default defineNuxtConfig({
   extends: [".."],
@@ -22,4 +23,12 @@ export default defineNuxtConfig({
   devtools: {
     enabled: true,
   },
+
+  watchers: usePolling
+    ? { chokidar: { usePolling: true, interval: 1000 } }
+    : undefined,
+
+  vite: usePolling
+    ? { server: { watch: { usePolling: true, interval: 1000 } } }
+    : undefined,
 });

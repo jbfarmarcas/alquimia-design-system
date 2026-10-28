@@ -1,0 +1,18 @@
+services:
+  playground:
+    build: .
+    ports:
+      - "3010:3010"
+    environment:
+      HOST: 0.0.0.0
+      PORT: "3010"
+      CHOKIDAR_USEPOLLING: "true"
+    volumes:
+      - ./app:/app/app
+      - ./nuxt.config.ts:/app/nuxt.config.ts
+      - ./playground:/app/playground
+      - playground-nuxt:/app/playground/.nuxt
+    init: true
+
+volumes:
+  playground-nuxt:
