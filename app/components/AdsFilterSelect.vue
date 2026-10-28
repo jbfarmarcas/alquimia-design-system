@@ -1,0 +1,196 @@
+<template>
+  <div class="flex w-full min-w-0 flex-col gap-0.5">
+    <p
+      v-if="label"
+      :id="labelId"
+      class="text-xs leading-[1.2] text-[var(--ads-text-secondary)]"
+    >
+      {{ label }}
+    </p>
+
+    <UPopover
+      v-model:open="isOpen"
+      :portal="true"
+      :content="{ align: 'start', side: 'bottom', sideOffset: 4 }"
+      :ui="popoverUi"
+    >
+      <button
+        type="button"
+        class="flex h-10 max-w-full items-center gap-0.5 rounded-[var(--ads-radius-sm)] px-3 text-sm leading-[1.3] focus-visible:border-(length:--ads-border-width-slim) focus-visible:border-[var(--ads-text-brand)] focus-visible:outline-none disabled:cursor-not-allowed"
+        :class="[fieldClass, block ? 'w-full justify-between' : 'w-fit']"
+        :disabled="disabled"
+        :data-state="fieldState"
+        :aria-haspopup="type === 'month' ? 'dialog' : 'listbox'"
+        :aria-expanded="isOpen"
+        :aria-invalid="error ? true : undefined"
+        :aria-labelledby="label ? labelId : undefined"
+        :aria-describedby="supportText ? supportId : undefined"
+      >
+        <InvertedTooltip
+          :text="triggerLabel"
+          :disabled="!triggerHasTooltip"
+          :content="{ side: 'top', align: 'start', sideOffset: 4 }"
+        >
+          <span class="min-w-0 truncate text-left">{{ triggerLabel }}</span>
+        </InvertedTooltip>
+        <UIcon name="i-lucide-chevron-down" class="size-4 shrink-0 text-base" />
+      </button>
+
+      <template #content>
+        <AdsMonthPicker
+          v-if="type === 'month'"
+          v-model="monthModel"
+          @pick="isOpen = false"
+        />
+        <AdsFilterDropdown
+          v-else
+          v-model="model"
+          v-model:query="query"
+          :type="listType"
+          :options="options"
+          :searchable="showSearch"
+          :select-all="showSelectAll"
+          :select-all-label="selectAllLabel"
+          :empty-label="emptyLabel"
+          :search-placeholder="searchPlaceholder"
+          :list-label="label || 'Opções'"
+          @pick="isOpen = false"
+        />
+      </template>
+    </UPopover>
+
+    <p
+      v-if="supportText"
+      :id="supportId"
+      class="text-xs leading-[1.2] text-[var(--ads-text-secondary)]"
+    >
+      {{ supportText }}
+    </p>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { computed, ref, useId, watch } from "vue";
+import AdsFilterDropdown from "./AdsFilterDropdown.vue";
+import AdsMonthPicker from "./AdsMonthPicker.vue";
+import InvertedTooltip from "./InvertedTooltip.vue";
+import {
+  filterLabelNeedsTooltip,
+  filterTriggerLabel,
+  type AdsFilterOption,
+  type AdsFilterType,
+} from "../utils/ads-filter-select";
+
+const props = withDefaults(
+  defineProps<{
+    type: AdsFilterType;
+    label?: string;
+    hint?: string;
+    error?: string;
+    placeholder?: string;
+    disabled?: boolean;
+    options?: AdsFilterOption[];
+    /** `null` = padrão do tipo (checkbox busca e seleciona todos). */
+    searchable?: boolean | null;
+    selectAll?: boolean | null;
+    selectAllLabel?: string;
+    allSelectedLabel?: string;
+    emptyLabel?: string;
+    searchPlaceholder?: string;
+    /** O gatilho ocupa a largura do campo, como um select de formulário. */
+    block?: boolean;
+  }>(),
+  {
+    placeholder: "Selecione",
+    disabled: false,
+    options: () => [],
+    searchable: null,
+    selectAll: null,
+    selectAllLabel: "Selecionar todos",
+    allSelectedLabel: "Todos selecionados",
+    emptyLabel: "Nenhum resultado",
+    searchPlaceholder: "Pesquisar",
+    block: false,
+  },
+);
+
+const model = defineModel<string | string[]>({ required: true });
+
+const isOpen = ref(false);
+const query = ref("");
+const labelId = useId();
+const supportId = useId();
+
+const showSearch = computed(() =>
+  props.searchable === null ? props.type === "checkbox" : props.searchable,
+);
+const showSelectAll = computed(() =>
+  props.selectAll === null ? props.type === "checkbox" : props.selectAll,
+);
+const listType = computed(() => (props.type === "radio" ? "radio" : "checkbox"));
+
+const supportText = computed(() => props.error || props.hint || "");
+
+const hasValue = computed(() => {
+  if (Array.isArray(model.value)) return model.value.length > 0;
+  return model.value.length > 0;
+});
+
+const fieldState = computed(() => {
+  if (props.disabled) return "disabled";
+  if (props.error) return "error";
+  if (isOpen.value) return "open";
+  if (hasValue.value) return "selected";
+  return "default";
+});
+
+const fieldClass = computed(() => {
+  if (fieldState.value === "disabled") {
+    return "border border-[var(--ads-neutral-mid-60)] bg-neutral-100 text-[var(--ads-text-tertiary)]";
+  }
+  if (fieldState.value === "error") {
+    return "border-(length:--ads-border-width-slim) border-[var(--color-error-300)] bg-[var(--ads-surface-card)] text-[var(--ads-text-secondary)]";
+  }
+  if (fieldState.value === "open") {
+    return "border-(length:--ads-border-width-slim) border-[var(--ads-text-brand)] bg-[var(--ads-surface-card)] text-[var(--ads-text-secondary)]";
+  }
+  if (fieldState.value === "selected") {
+    return "border border-[var(--ads-text-secondary)] bg-[var(--ads-surface-card)] text-[var(--ads-text-secondary)]";
+  }
+  return "border border-[var(--ads-text-secondary)] bg-[var(--ads-surface-card)] text-[var(--ads-text-secondary)]";
+});
+
+const triggerLabel = computed(() =>
+  filterTriggerLabel({
+    type: props.type,
+    value: model.value,
+    options: props.options,
+    placeholder: props.placeholder,
+    allSelectedLabel: props.allSelectedLabel,
+  }),
+);
+
+const triggerHasTooltip = computed(() => filterLabelNeedsTooltip(triggerLabel.value));
+
+const monthModel = computed({
+  get: () => (typeof model.value === "string" ? model.value : ""),
+  set: (value: string) => {
+    model.value = value;
+  },
+});
+
+watch(isOpen, (open) => {
+  if (!open) query.value = "";
+});
+
+watch(
+  () => props.disabled,
+  (disabled) => {
+    if (disabled) isOpen.value = false;
+  },
+);
+
+const popoverUi = {
+  content: "z-50 w-auto overflow-visible bg-transparent p-0 shadow-none ring-0",
+};
+</script>
