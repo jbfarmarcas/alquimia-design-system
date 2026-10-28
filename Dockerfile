@@ -17,4 +17,4 @@ ENV CHOKIDAR_USEPOLLING=true
 
 EXPOSE 3010
 
-CMD ["pnpm", "dev", "--", "--host", "0.0.0.0"]
+CMD ["pnpm", "exec", "nuxt", "dev", "playground", "--host", "0.0.0.0", "--port", "3010"]
