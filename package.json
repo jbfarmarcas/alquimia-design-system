@@ -1,0 +1,38 @@
+{
+  "name": "alquimia-design-system",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.4.1",
+  "main": "./nuxt.config.ts",
+  "files": [
+    "app",
+    "nuxt.config.ts"
+  ],
+  "scripts": {
+    "dev": "nuxt dev playground --port 3010",
+    "build": "nuxt build playground",
+    "preview": "nuxt preview playground --port 3010",
+    "postinstall": "nuxt prepare playground"
+  },
+  "dependencies": {
+    "@iconify-json/lucide": "^1.2.104",
+    "@internationalized/date": "^3.12.4",
+    "@nuxt/fonts": "^0.12.1",
+    "@nuxt/icon": "^2.2.0",
+    "@nuxt/ui": "^4.3.0",
+    "@vueuse/core": "^14.0.0",
+    "@vueuse/nuxt": "^14.0.0",
+    "tailwindcss": "^4.0.15",
+    "vue-router": "^4.5.0"
+  },
+  "peerDependencies": {
+    "nuxt": "^4.0.0",
+    "vue": "^3.5.18"
+  },
+  "devDependencies": {
+    "nuxt": "^4.0.0",
+    "typescript": "^5.6.3",
+    "vue": "^3.5.18"
+  }
+}
