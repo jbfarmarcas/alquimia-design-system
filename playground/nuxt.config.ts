@@ -30,7 +30,7 @@ export default defineNuxtConfig({
 
   vite: {
     server: {
-      allowedHosts: [".sslip.io"],
+      allowedHosts: true,
       watch: usePolling ? { usePolling: true, interval: 1000 } : undefined,
     },
   },
