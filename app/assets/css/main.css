@@ -1,0 +1,522 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+@theme default {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+
+  /* Primary RP-25 … RP-800. 300 = RP-200. 700+ repetem RP-800. */
+  --color-primary: #006ff7;
+  --color-primary-50: #e4f2ff;
+  --color-primary-100: #c7e4ff;
+  --color-primary-200: #89c9ff;
+  --color-primary-300: #50b3ff;
+  --color-primary-400: #0091ff;
+  --color-primary-500: #006ff7;
+  --color-primary-600: #074ac6;
+  --color-primary-700: #00389e;
+  --color-primary-800: #00389e;
+  --color-primary-900: #00389e;
+  --color-primary-950: #00389e;
+
+  /* Secondary segue a escala do Radar Pricing. */
+  --color-secondary: #006ff7;
+  --color-secondary-50: #e4f2ff;
+  --color-secondary-100: #c7e4ff;
+  --color-secondary-200: #89c9ff;
+  --color-secondary-300: #50b3ff;
+  --color-secondary-400: #0091ff;
+  --color-secondary-500: #006ff7;
+  --color-secondary-600: #074ac6;
+  --color-secondary-700: #00389e;
+  --color-secondary-800: #00389e;
+  --color-secondary-900: #00389e;
+  --color-secondary-950: #00389e;
+
+  /* Success SU. */
+  --color-success: #15c57e;
+  --color-success-50: #c3ffe6;
+  --color-success-100: #c3ffe6;
+  --color-success-200: #7fffcb;
+  --color-success-300: #32feaa;
+  --color-success-400: #06eb8f;
+  --color-success-500: #15c57e;
+  --color-success-600: #1c9f6a;
+  --color-success-700: #157850;
+  --color-success-800: #0e5a3b;
+  --color-success-900: #0e5a3b;
+  --color-success-950: #0e5a3b;
+
+  /* Info OP. */
+  --color-info: #05b4d8;
+  --color-info-50: #c4f5ff;
+  --color-info-100: #c4f5ff;
+  --color-info-200: #79e9ff;
+  --color-info-300: #49d8f4;
+  --color-info-400: #04c8ef;
+  --color-info-500: #05b4d8;
+  --color-info-600: #01a0bf;
+  --color-info-700: #007a93;
+  --color-info-800: #006478;
+  --color-info-900: #006478;
+  --color-info-950: #006478;
+
+  /* Warning AT (âmbar). O grupo WA do Figma é vermelho e alimenta error. */
+  --color-warning: #e9a700;
+  --color-warning-50: #ffe7b9;
+  --color-warning-100: #ffe7b9;
+  --color-warning-200: #ffdc82;
+  --color-warning-300: #ffca43;
+  --color-warning-400: #ffb905;
+  --color-warning-500: #e9a700;
+  --color-warning-600: #ce9300;
+  --color-warning-700: #ad7b00;
+  --color-warning-800: #8f6600;
+  --color-warning-900: #8f6600;
+  --color-warning-950: #8f6600;
+
+  /* Error WA. 500 = WA-300 #ff507a, borda de input. */
+  --color-error: #ff507a;
+  --color-error-50: #ffbdcd;
+  --color-error-100: #ffbdcd;
+  --color-error-200: #ff87a4;
+  --color-error-300: #ff507a;
+  --color-error-400: #ff507a;
+  --color-error-500: #ff507a;
+  --color-error-600: #ef164a;
+  --color-error-700: #dc0034;
+  --color-error-800: #c0012e;
+  --color-error-900: #9e062a;
+  --color-error-950: #840221;
+
+  /* Neutral LI / MI / DA. */
+  --color-neutral-50: #fafbfc;
+  --color-neutral-100: #f0f3f6;
+  --color-neutral-200: #e5e8eb;
+  --color-neutral-300: #c1c7d0;
+  --color-neutral-400: #a5adba;
+  --color-neutral-500: #8993a4;
+  --color-neutral-600: #6b778c;
+  --color-neutral-700: #505f79;
+  --color-neutral-800: #344563;
+  --color-neutral-900: #172b4d;
+  --color-neutral-950: #061938;
+}
+
+/* 🔗 Mapeamento para os componentes Nuxt UI */
+:root {
+  /* Spacing ADS ($spacing-quark … $spacing-xxl). Fora do @theme para não trocar o xs/sm/md do Nuxt UI. */
+  --ads-space-quark: 4px;
+  --ads-space-nano: 8px;
+  --ads-space-xxxs: 12px;
+  --ads-space-xxs: 16px;
+  --ads-space-xs: 24px;
+  --ads-space-sm: 32px;
+  --ads-space-rg: 40px;
+  --ads-space-md: 48px;
+  --ads-space-lg: 56px;
+  --ads-space-xl: 64px;
+  --ads-space-xxl: 80px;
+  --ads-space-xxxl: 120px;
+  --ads-space-huge: 160px;
+  --ads-space-giant: 200px;
+
+  --ads-font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --ads-font-size-minimal: 10px;
+  --ads-font-size-xxxs: 12px;
+  --ads-font-size-xxs: 14px;
+  --ads-font-size-xs: 16px;
+  --ads-font-size-sm: 18px;
+  --ads-font-size-rg: 20px;
+  --ads-font-size-md: 24px;
+  --ads-font-size-lg: 32px;
+  --ads-font-weight-light: 300;
+  --ads-font-weight-regular: 400;
+  --ads-font-weight-medium: 500;
+  --ads-font-weight-bold: 700;
+  --ads-font-weight-extrabold: 800;
+  --ads-line-height-default: 100%;
+  --ads-line-height-sm: 120%;
+  --ads-line-height-md: 140%;
+  --ads-line-height-lg: 160%;
+
+  --ads-radius-none: 0px;
+  --ads-radius-xsm: 4px;
+  --ads-radius-sm: 8px;
+  --ads-radius-md: 12px;
+  --ads-radius-lg: 16px;
+  --ads-radius-pill: 500px;
+  --ads-radius-xlg: 24px;
+  --ads-radius-circular: 50%;
+  --ads-border-width-none: 0px;
+  --ads-border-width-hairline: 1px;
+  --ads-border-width-slim: 1.5px;
+  --ads-border-width-thin: 2px;
+  --ads-border-width-thick: 4px;
+  --ads-border-width-heavy: 8px;
+
+  --ads-shadow-none: none;
+  --ads-shadow-level-1: 0 2px 8px rgb(0 0 0 / 16%);
+  --ads-shadow-level-2: 0 4px 24px rgb(0 0 0 / 16%);
+  --ads-shadow-level-3: 0 8px 32px rgb(0 0 0 / 16%);
+  --ads-shadow-level-4: 0 12px 48px rgb(0 0 0 / 24%);
+  --ads-opacity-intense: 75%;
+  --ads-opacity-medium: 50%;
+  --ads-opacity-light: 25%;
+  --ads-blur-default: 4px;
+
+  /* Semantic — Default.tokens.json */
+  --ads-surface-main: #fafbfc;
+  --ads-surface-card: #ffffff;
+  --ads-surface-brand: #006ff7;
+  --ads-text-primary: #061938;
+  --ads-text-secondary: #505f79;
+  --ads-text-tertiary: #a5adba;
+  --ads-text-brand: #006ff7;
+  --ads-text-disabled: #89c9ff;
+  --ads-text-contrast: #ffffff;
+  --ads-border-subtle: #e5e8eb;
+  --ads-border-focused: #6b778c;
+  --ads-border-icon: #42526e;
+  --ads-border-icon-support: #7a869a;
+  --ads-button-primary: #006ff7;
+  --ads-button-primary-hover: #074ac6;
+  --ads-button-primary-pressed: #00389e;
+  --ads-button-primary-disabled: #89c9ff;
+  --ads-button-secondary: #e4f2ff;
+  --ads-button-secondary-hover: #c7e4ff;
+  --ads-button-secondary-pressed: #89c9ff;
+  --ads-button-secondary-disabled: #d3d8dd;
+  --ads-status-success-800: #0e5a3b;
+  --ads-status-success-500: #15c57e;
+  --ads-status-success-100: #c3ffe6;
+  --ads-status-warning-800: #840221;
+  --ads-status-warning-500: #dc0034;
+  --ads-status-warning-100: #ffbdcd;
+  --ads-status-attention-800: #8f6600;
+  --ads-status-attention-500: #e9a700;
+  --ads-status-attention-100: #ffe7b9;
+  --ads-status-new-800: #006478;
+  --ads-status-new-500: #05b4d8;
+  --ads-status-new-100: #c4f5ff;
+  --ads-status-void-800: #0e1013;
+  --ads-status-void-500: #556171;
+  --ads-status-void-100: #cfdef3;
+  --ads-status-innovation-800: #3c287c;
+  --ads-status-innovation-500: #7349ff;
+  --ads-status-innovation-100: #cabaff;
+  /* Degraus intermediários de ads-tokens.ts. O AdsButton usa no hover, pressed e disabled. */
+  --ads-status-success-200: #7fffcb;
+  --ads-status-success-300: #32feaa;
+  --ads-status-success-400: #06eb8f;
+  --ads-status-success-600: #1c9f6a;
+  --ads-status-success-700: #157850;
+  --ads-status-warning-200: #ff87a4;
+  --ads-status-warning-300: #ff507a;
+  --ads-status-warning-400: #ef164a;
+  --ads-status-warning-600: #c0012e;
+  --ads-status-warning-700: #9e062a;
+  --ads-status-attention-200: #ffdc82;
+  --ads-status-attention-300: #ffca43;
+  --ads-status-attention-400: #ffb905;
+  --ads-status-attention-600: #ce9300;
+  --ads-status-attention-700: #ad7b00;
+  --ads-status-new-200: #79e9ff;
+  --ads-status-new-300: #49d8f4;
+  --ads-status-new-400: #04c8ef;
+  --ads-status-new-600: #01a0bf;
+  --ads-status-new-700: #007a93;
+  --ads-status-void-200: #b4c5df;
+  --ads-status-void-300: #91a2bb;
+  --ads-status-void-400: #738298;
+  --ads-status-void-600: #3c434e;
+  --ads-status-void-700: #282c34;
+  --ads-status-innovation-200: #b19aff;
+  --ads-status-innovation-300: #9e80ff;
+  --ads-status-innovation-400: #825cff;
+  --ads-status-innovation-600: #613dda;
+  --ads-status-innovation-700: #4c30a8;
+  --ads-chart-data-1-800: #76197e;
+  --ads-chart-data-1-400: #e837f9;
+  --ads-chart-data-1-100: #f8b4ff;
+  --ads-chart-data-2-800: #3c287c;
+  --ads-chart-data-2-500: #7349ff;
+  --ads-chart-data-2-100: #cabaff;
+  --ads-chart-data-3-800: #983a3a;
+  --ads-chart-data-3-400: #f76565;
+  --ads-chart-data-3-100: #ffb0b0;
+  --ads-chart-data-4-800: #115825;
+  --ads-chart-data-4-500: #24ab4a;
+  --ads-chart-data-4-100: #b6ffca;
+  --ads-chart-data-5-800: #252c41;
+  --ads-chart-data-5-400: #677bb6;
+  --ads-chart-data-5-100: #a2baff;
+  /* MI-60. Borda do select desabilitado; o arquivo semântico não nomeia esse passo. */
+  --ads-neutral-mid-60: #b3bac5;
+
+  /* Degraus que o compilador do tema descarta quando o hex se repete. */
+  --color-primary-950: #00389e;
+  --color-secondary-50: #e4f2ff;
+  --color-secondary-100: #c7e4ff;
+  --color-secondary-200: #89c9ff;
+  --color-secondary-300: #50b3ff;
+  --color-secondary-400: #0091ff;
+  --color-secondary-600: #074ac6;
+  --color-secondary-700: #00389e;
+  --color-secondary-800: #00389e;
+  --color-secondary-900: #00389e;
+  --color-secondary-950: #00389e;
+  --color-info-50: #c4f5ff;
+  --color-info-100: #c4f5ff;
+  --color-info-200: #79e9ff;
+  --color-info-300: #49d8f4;
+  --color-info-400: #04c8ef;
+  --color-info-600: #01a0bf;
+  --color-info-700: #007a93;
+  --color-info-800: #006478;
+  --color-info-900: #006478;
+  --color-info-950: #006478;
+  --color-warning-200: #ffdc82;
+  --color-warning-300: #ffca43;
+  --color-warning-900: #8f6600;
+  --color-warning-950: #8f6600;
+  --color-error-300: #ff507a;
+  --color-error-400: #ff507a;
+  --color-error-900: #9e062a;
+  --color-error-950: #840221;
+  --color-neutral-950: #061938;
+
+  --ui-radius: 0.5rem;
+  --ui-primary: var(--color-primary-500);
+  --ui-secondary: var(--color-secondary-500);
+  --ui-warning: var(--color-warning);
+  --ui-error: var(--color-error-500);
+  --ui-info: var(--color-info-500);
+  --ui-neutral: var(--color-neutral-500);
+  --ui-text: var(--color-neutral-700);
+
+  --ui-success: var(--color-success-500);
+  --ui-success-50: var(--color-success-50);
+  --ui-success-100: var(--color-success-100);
+  --ui-success-200: var(--color-success-200);
+  --ui-success-300: var(--color-success-300);
+  --ui-success-400: var(--color-success-400);
+  --ui-success-500: var(--color-success-500);
+  --ui-success-600: var(--color-success-600);
+  --ui-success-700: var(--color-success-700);
+  --ui-success-800: var(--color-success-800);
+  --ui-success-900: var(--color-success-900);
+  --ui-success-950: var(--color-success-950);
+}
+
+/**
+ * Scrollbars alinhados ao tema (primary + neutral).
+ * Firefox: scrollbar-width / scrollbar-color. WebKit: pseudo-elementos.
+ */
+@layer components {
+  .app-scrollbar-y {
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-primary-500) var(--color-neutral-100);
+  }
+
+  .app-scrollbar-y::-webkit-scrollbar {
+    width: 0.5rem;
+  }
+
+  .app-scrollbar-y::-webkit-scrollbar-track {
+    background: var(--color-neutral-100);
+    border-radius: 9999px;
+  }
+
+  .app-scrollbar-y::-webkit-scrollbar-thumb {
+    background: var(--color-primary-500);
+    border-radius: 9999px;
+    border: 2px solid var(--color-neutral-100);
+  }
+
+  .app-scrollbar-y::-webkit-scrollbar-thumb:hover {
+    background: var(--color-primary-600);
+  }
+
+  .app-scrollbar-x {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-primary-500) var(--color-neutral-100);
+  }
+
+  .app-scrollbar-x::-webkit-scrollbar {
+    height: 0.5rem;
+  }
+
+  .app-scrollbar-x::-webkit-scrollbar-track {
+    background: var(--color-neutral-100);
+    border-radius: 9999px;
+  }
+
+  .app-scrollbar-x::-webkit-scrollbar-thumb {
+    background: var(--color-primary-500);
+    border-radius: 9999px;
+    border: 2px solid var(--color-neutral-100);
+  }
+
+  .app-scrollbar-x::-webkit-scrollbar-thumb:hover {
+    background: var(--color-primary-600);
+  }
+
+  .app-scrollbar-y.app-scrollbar-x::-webkit-scrollbar-corner {
+    background: var(--color-neutral-100);
+  }
+}
+
+/* Estados do botão filled ADS. Especificidade acima de hover:bg-primary/75. */
+@layer utilities {
+  .bg-primary:hover:not(:disabled):not([aria-disabled="true"]) {
+    background-color: var(--color-primary-600);
+  }
+
+  .bg-primary:active:not(:disabled):not([aria-disabled="true"]) {
+    background-color: var(--color-primary-700);
+  }
+
+  .bg-primary:disabled,
+  .bg-primary[aria-disabled="true"] {
+    background-color: var(--color-primary-200);
+    opacity: 1;
+  }
+
+  /**
+   * Date picker ADS. Especificidade acima de data-[selected]:bg-primary
+   * e do ring do variant outline (data-[selected]:ring).
+   * Cap: primary-500 + branco. Meio: primary-100 + texto primary-500.
+   * Cada dia fica arredondado, sem faixa contínua e sem borda no selecionado.
+   */
+  .ads-date-range-panel .ads-date-picker > [data-slot="header"] {
+    display: none;
+  }
+
+  .ads-date-range-panel .ads-date-picker [data-slot="body"] {
+    padding-top: 0;
+  }
+
+  .ads-date-range-panel
+    .ads-date-picker
+    [data-slot="cellTrigger"][data-outside-view] {
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .ads-date-picker [data-slot="headCell"] {
+    color: var(--color-neutral-500);
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+
+  .ads-date-picker [data-slot="cellTrigger"][data-outside-view] {
+    color: var(--color-neutral-300);
+  }
+
+  .ads-date-picker
+    [data-slot="gridRow"]
+    > [data-slot="cell"]:first-child
+    [data-slot="cellTrigger"]:not([data-selected]):not([data-outside-view]),
+  .ads-date-picker
+    [data-slot="gridRow"]
+    > [data-slot="cell"]:last-child
+    [data-slot="cellTrigger"]:not([data-selected]):not([data-outside-view]) {
+    color: var(--color-primary-400);
+  }
+
+  .ads-date-picker [data-slot="cellTrigger"] {
+    border-radius: 0.375rem;
+  }
+
+  .ads-date-picker [data-slot="cellTrigger"][data-selected],
+  .ads-date-picker [data-slot="cellTrigger"][data-highlighted],
+  .ads-date-picker [data-slot="cellTrigger"][data-selection-start],
+  .ads-date-picker [data-slot="cellTrigger"][data-selection-end] {
+    box-shadow: none;
+  }
+
+  .ads-date-picker [data-slot="cellTrigger"][data-selection-start],
+  .ads-date-picker [data-slot="cellTrigger"][data-selection-end] {
+    background-color: var(--color-primary-500);
+    color: #fff;
+  }
+
+  .ads-date-picker
+    [data-slot="cellTrigger"][data-selected]:not([data-selection-start]):not(
+      [data-selection-end]
+    ),
+  .ads-date-picker
+    [data-slot="cellTrigger"][data-highlighted]:not([data-selection-start]):not(
+      [data-selection-end]
+    ) {
+    background-color: var(--color-primary-100);
+    color: var(--color-primary-500);
+  }
+}
+
+/*
+ * Hierarquia de peso do layout dashboard (adsDashboardFontWeight).
+ * Fora de @layer para vencer utilitários Tailwind nas páginas.
+ * Título de página e seção (h1, h2): bold.
+ * Card, rótulo e ênfase curta usam medium; font-semibold (600) não existe no ADS.
+ * Corpo herda regular. font-bold fora de h1/h2 permanece bold (títulos de etapa).
+ */
+.dashboard-layout {
+  font-weight: var(--ads-font-weight-regular);
+}
+
+.dashboard-layout :is(h1, h2) {
+  font-weight: var(--ads-font-weight-bold);
+}
+
+.dashboard-layout .font-semibold {
+  font-weight: var(--ads-font-weight-medium);
+}
+
+.dashboard-layout :is(h1, h2).font-semibold {
+  font-weight: var(--ads-font-weight-bold);
+}
+
+/* Faixa das tabs link: 1px #C1C7D0, esticada na largura do conteúdo. */
+.dashboard-layout [data-slot="list"][role="tablist"] {
+  align-self: stretch;
+  width: 100%;
+  border-bottom: 1px solid var(--color-neutral-300);
+}
+
+/* Brilho do AdsLoading shimmer. Fora de @layer para o gradiente não perder para utilitários. */
+.ads-loading-shimmer {
+  background-image: linear-gradient(
+    105deg,
+    transparent 0%,
+    transparent 35%,
+    rgba(255, 255, 255, 0.45) 45%,
+    rgba(255, 255, 255, 0.6) 50%,
+    rgba(255, 255, 255, 0.45) 55%,
+    transparent 65%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: ads-loading-shimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes ads-loading-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ads-loading-shimmer {
+    animation: none;
+    background-image: none;
+    background-color: rgba(255, 255, 255, 0.35);
+  }
+}
