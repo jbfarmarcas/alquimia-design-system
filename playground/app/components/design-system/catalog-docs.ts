@@ -83,7 +83,7 @@ export const docsApis = {
       name: "AdsButton",
       summary: "Ação de tela. Sem rótulo, o botão fica quadrado e mostra só o ícone.",
       props: [
-        prop("type", "filled | outline | unfilled | secondary | ia", "filled", "Visual do botão. Outline e unfilled não têm pressed. IA ignora a cor e pulsa o brilho."),
+        prop("type", "filled | outline | unfilled | secondary | ia", "filled", "Visual do botão. Outline e unfilled não têm pressed. IA ignora a cor: um brilho de gradiente gira em volta da borda."),
         prop("color", buttonColors, "primary", "Cor do status. Neutral é ação sem status."),
         prop("size", "md | sm", "md", "md no desktop, sm no mobile."),
         prop("label", "string", '""', "Rótulo. Vazio deixa o botão só com ícone."),

@@ -47,7 +47,7 @@
           Outline e unfilled não têm pressed.
         </p>
         <p v-else-if="buttonType === 'ia'" class="mt-2 text-xs leading-relaxed text-[var(--ads-text-secondary)]">
-          O brilho pulsa sozinho. Hover e pressed seguram o brilho mais forte. A cor de status não entra nesse tipo.
+          Um brilho de gradiente gira em volta da borda a cada 3s, do brilho à borda de IA, sobre um trilho com 20% da cor da borda. A sombra puxa para o lado do brilho e cresce de 2px a 16px durante a volta. Hover e pressed fecham a borda em 100% com brilho. A cor de status não entra nesse tipo.
         </p>
       </DocsParam>
 

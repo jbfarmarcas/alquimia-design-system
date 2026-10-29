@@ -1,14 +1,19 @@
 <template>
   <component
     :is="to ? NuxtLink : 'button'"
+    ref="root"
     v-bind="rootAttrs"
     class="inline-flex items-center justify-center [font-weight:var(--ads-button-weight)] whitespace-nowrap transition-colors duration-150 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed"
     :class="[
-      type === 'ia' ? 'rounded-[var(--ads-radius-xsm)]' : 'overflow-hidden rounded-[var(--ads-button-radius)]',
+      'rounded-[var(--ads-button-radius)]',
+      type !== 'ia' && 'overflow-hidden',
       sizeClass,
       faceClass,
       focusClass,
+      type === 'ia' && 'ads-button-ia-face',
+      type === 'ia' && visualState() === 'disabled' && 'is-ia-muted',
       iaMotion,
+      iaPaused && 'is-ia-paused',
       to && isDisabled ? 'pointer-events-none' : '',
     ]"
     @click="onRootClick"
@@ -26,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, useSlots } from "vue";
+import { computed, nextTick, onBeforeUnmount, ref, useSlots, watch } from "vue";
 import type { RouteLocationRaw } from "vue-router";
 import { NuxtLink } from "#components";
 
@@ -124,11 +129,35 @@ const faceClass = computed(() => faceFor(props.type, props.color, visualState())
 const focusClass = computed(() =>
   props.type === "ia" ? "focus-visible:outline-[var(--ads-button-ia-border)]" : focusFor[props.color],
 );
-/** O brilho do tipo IA pulsa. Hover, pressed e disabled seguram um quadro fixo. */
+/** Um brilho de gradiente gira em volta da borda do tipo IA. Hover, pressed e disabled seguram a borda fechada. */
 const iaMotion = computed(() => {
   if (props.type !== "ia" || isDisabled.value) return "";
   if (props.state === "hover" || props.state === "pressed") return "";
   return "ads-button-ia";
+});
+
+const root = ref<Element | { $el: Element } | null>(null);
+const iaPaused = ref(false);
+let iaFrameObserver: IntersectionObserver | null = null;
+
+const watchIaRing = () => {
+  iaFrameObserver?.disconnect();
+  iaFrameObserver = null;
+  iaPaused.value = false;
+  if (!iaMotion.value) return;
+  nextTick(() => {
+    const node = root.value instanceof Element ? root.value : root.value?.$el;
+    if (!node || typeof IntersectionObserver === "undefined") return;
+    iaFrameObserver = new IntersectionObserver(([entry]) => {
+      iaPaused.value = !entry?.isIntersecting;
+    });
+    iaFrameObserver.observe(node);
+  });
+};
+
+watch(iaMotion, watchIaRing, { immediate: true });
+onBeforeUnmount(() => {
+  iaFrameObserver?.disconnect();
 });
 
 const visualState = (): AdsButtonState => {
@@ -153,16 +182,17 @@ const focusFor: Record<AdsButtonColor, string> = {
   neutral: "focus-visible:outline-[var(--ads-text-primary)]",
 };
 
+/** Fundo e cor da borda ficam em `.ads-button-ia-face`: a borda é pintada pelo fundo, na mesma espessura em todos os estados. */
 const iaFace = (state: AdsButtonState) => {
   const base =
-    "border-(length:--ads-border-width-slim) border-solid bg-[var(--ads-button-ia-background)] text-[var(--ads-status-innovation-300)]";
+    "border-(length:--ads-border-width-slim) border-solid text-[var(--ads-status-innovation-300)]";
   if (state === "disabled") {
-    return `${base} border-[color-mix(in_srgb,var(--ads-button-ia-border)_40%,transparent)] text-[color-mix(in_srgb,var(--ads-status-innovation-300)_45%,transparent)]`;
+    return `${base} text-[color-mix(in_srgb,var(--ads-status-innovation-300)_45%,transparent)]`;
   }
-  if (state === "hover" || state === "pressed") {
-    return `${base} border-[var(--ads-button-ia-border)] shadow-[0_0_16px_2px_var(--ads-button-ia-glow)]`;
+  if (state === "hover" || state === "pressed" || props.loading) {
+    return `${base} shadow-[0_0_16px_2px_var(--ads-button-ia-glow)]`;
   }
-  return `${base} border-[var(--ads-button-ia-border)] hover:shadow-[0_0_16px_2px_var(--ads-button-ia-glow)] active:shadow-[0_0_12px_0_var(--ads-button-ia-glow)]`;
+  return base;
 };
 
 const faceFor = (type: AdsButtonType, color: AdsButtonColor, state: AdsButtonState) => {
@@ -442,48 +472,97 @@ const secondaryStatus = (color: AdsButtonColor, state: AdsButtonState) => {
 </script>
 
 <style>
-/* Quadros do Figma (Frame 2 a 7): o brilho respira e a borda some nos picos. */
-@keyframes ads-button-ia-glow {
-  0%,
-  100% {
-    border-color: var(--ads-button-ia-border);
-    box-shadow: 0 0 2px 0 var(--ads-button-ia-glow);
-  }
-  16% {
-    border-color: var(--ads-button-ia-border);
-    box-shadow: 0 0 12px 0 var(--ads-button-ia-glow);
-  }
-  33% {
-    border-color: var(--ads-button-ia-border);
-    box-shadow: 0 0 8px 0 var(--ads-button-ia-glow);
-  }
-  50% {
-    border-color: transparent;
-    box-shadow: 0 0 12px 0 var(--ads-button-ia-glow);
-  }
-  66% {
-    border-color: var(--ads-button-ia-border);
-    box-shadow: 0 0 16px 2px var(--ads-button-ia-glow);
-  }
-  83% {
-    border-color: transparent;
-    box-shadow: 0 0 12px 0 var(--ads-button-ia-glow);
-  }
+/* Sem o registro, o navegador não interpola o ângulo e o tamanho: o brilho e a sombra saltariam. */
+@property --ads-button-ia-angle {
+  syntax: "<angle>";
+  inherits: true;
+  initial-value: 0deg;
+}
+
+@property --ads-button-ia-glow-size {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 2px;
+}
+
+/*
+ * A sombra puxa para o lado do brilho: o centro do brilho fica 72deg (20% da volta) à frente do ângulo.
+ * O ângulo do conic-gradient conta a partir do topo, no sentido horário.
+ */
+.ads-button-ia {
+  --ads-button-ia-glow-offset: calc(var(--ads-button-ia-glow-size) / 4);
+  box-shadow: calc(sin(var(--ads-button-ia-angle) + 72deg) * var(--ads-button-ia-glow-offset))
+    calc(cos(var(--ads-button-ia-angle) + 72deg) * -1 * var(--ads-button-ia-glow-offset))
+    var(--ads-button-ia-glow-size) calc(var(--ads-button-ia-glow-size) / 8) var(--ads-button-ia-glow);
+  animation:
+    ads-button-ia-spin 3s linear infinite,
+    ads-button-ia-glow 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.ads-button-ia.is-ia-paused {
+  animation-play-state: paused;
+}
+
+/*
+ * A borda é transparente e o fundo pinta por baixo dela: o miolo fica no padding-box e a cor da borda no border-box.
+ * Assim a espessura e o raio são os da borda nativa, sem camada extra desalinhada no subpixel.
+ */
+.ads-button-ia-face {
+  --ads-button-ia-edge: linear-gradient(var(--ads-button-ia-border) 0 0);
+  border-color: transparent;
+  background:
+    linear-gradient(var(--ads-button-ia-background) 0 0) padding-box,
+    var(--ads-button-ia-edge) border-box;
+}
+
+.ads-button-ia-face.is-ia-muted {
+  --ads-button-ia-edge: linear-gradient(
+    color-mix(in srgb, var(--ads-button-ia-border) 40%, var(--ads-button-ia-background)) 0 0
+  );
 }
 
 .ads-button-ia {
-  animation: ads-button-ia-glow 2.4s ease-in-out infinite;
+  --ads-button-ia-track: color-mix(in srgb, var(--ads-button-ia-border) 20%, var(--ads-button-ia-background));
+  --ads-button-ia-edge: conic-gradient(
+    from var(--ads-button-ia-angle),
+    var(--ads-button-ia-track) 0%,
+    var(--ads-button-ia-glow) 12%,
+    var(--ads-status-innovation-500) 20%,
+    var(--ads-button-ia-border) 24%,
+    var(--ads-button-ia-track) 28%
+  );
+}
+
+@keyframes ads-button-ia-spin {
+  to {
+    --ads-button-ia-angle: 360deg;
+  }
+}
+
+/* Cresce durante a volta e recolhe no fim, para o loop não saltar. */
+@keyframes ads-button-ia-glow {
+  0% {
+    --ads-button-ia-glow-size: 2px;
+  }
+  80% {
+    --ads-button-ia-glow-size: 16px;
+  }
+  100% {
+    --ads-button-ia-glow-size: 2px;
+  }
 }
 
 .ads-button-ia:hover,
 .ads-button-ia:active {
-  animation: none;
+  --ads-button-ia-edge: linear-gradient(var(--ads-button-ia-border) 0 0);
+  box-shadow: 0 0 16px 2px var(--ads-button-ia-glow);
 }
 
 @media (prefers-reduced-motion: reduce) {
   .ads-button-ia {
+    --ads-button-ia-edge: linear-gradient(var(--ads-button-ia-border) 0 0);
+    box-shadow: 0 0 8px 0 var(--ads-button-ia-glow);
     animation: none;
-    box-shadow: 0 0 2px 0 var(--ads-button-ia-glow);
   }
 }
 </style>
