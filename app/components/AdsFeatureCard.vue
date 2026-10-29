@@ -104,15 +104,14 @@ const iconBoxByColor: Record<AdsFeatureCardColor, string> = {
  * Em repouso: borda = --ads-feature-border (neutro), seta = --ads-border-icon-support (cinza).
  */
 const accentByColor: Record<AdsFeatureCardColor, string> = {
-  // Hover: tom claro próximo da caixa do ícone (passo 300 da escala de status).
-  // Primary usa primary-300 (#50b3ff), próximo do fundo da caixa --ads-button-secondary (#e4f2ff).
-  primary: "var(--color-primary-300)",
-  success: "var(--ads-status-success-300)",
-  attention: "var(--ads-status-attention-300)",
-  warning: "var(--ads-status-warning-300)",
-  new: "var(--ads-status-new-300)",
-  blocked: "var(--ads-status-void-300)",
-  innovation: "var(--ads-status-innovation-300)",
+  // Hover: borda e seta no passo 500 da mesma escala do card.
+  primary: "var(--color-primary-500)",
+  success: "var(--ads-status-success-500)",
+  attention: "var(--ads-status-attention-500)",
+  warning: "var(--ads-status-warning-500)",
+  new: "var(--ads-status-new-500)",
+  blocked: "var(--ads-status-void-500)",
+  innovation: "var(--ads-status-innovation-500)",
 };
 
 const props = withDefaults(
