@@ -27,6 +27,9 @@
   --ads-button-secondary-disabled: #d3d8dd;
   --ads-button-secondary-text: #006ff7;
   --ads-button-secondary-disabled-text: #ffffff;
+  --ads-button-ia-background: #f3f0ff;
+  --ads-button-ia-border: #7358cc;
+  --ads-button-ia-glow: #ae96ff;
   --ads-input-height: 40px;
   --ads-input-padding-x: 12px;
   --ads-input-gap: 8px;

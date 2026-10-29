@@ -69,7 +69,7 @@ const sections = [
   {
     id: "botoes",
     label: "Botão",
-    purpose: "Ação de tela. O exemplo segue os parâmetros: tipo, cor, tamanho, conteúdo e estado. Outline e unfilled não têm pressed.",
+    purpose: "Ação de tela. O exemplo segue os parâmetros: tipo, cor, tamanho, conteúdo e estado. Outline e unfilled não têm pressed. O tipo IA pulsa o brilho.",
     components: ["AdsButton"],
   },
   {

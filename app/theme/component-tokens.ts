@@ -54,7 +54,7 @@ export const componentTokenCatalog: readonly TokenComponent[] = [
     id: "button",
     section: "botao",
     label: "Botão",
-    note: "Outline, unfilled e as cores de status continuam nos tokens semânticos.",
+    note: "Outline, unfilled e as cores de status continuam nos tokens semânticos. O tipo IA usa fundo, borda e brilho próprios; o texto é innovation 300.",
     fields: [
       length("--ads-button-radius", "Raio", "Forma", "8px"),
       weight("--ads-button-weight", "Peso", "Forma", "700"),
@@ -83,6 +83,9 @@ export const componentTokenCatalog: readonly TokenComponent[] = [
       color("--ads-button-secondary-disabled", "Fundo desabilitado", "Secundário", "#d3d8dd"),
       color("--ads-button-secondary-text", "Texto", "Secundário", "#006ff7"),
       color("--ads-button-secondary-disabled-text", "Texto desabilitado", "Secundário", "#ffffff"),
+      color("--ads-button-ia-background", "Fundo", "IA", "#f3f0ff"),
+      color("--ads-button-ia-border", "Borda", "IA", "#7358cc"),
+      color("--ads-button-ia-glow", "Brilho", "IA", "#ae96ff"),
     ],
   },
   {

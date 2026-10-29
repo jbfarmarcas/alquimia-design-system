@@ -2,8 +2,15 @@
   <component
     :is="to ? NuxtLink : 'button'"
     v-bind="rootAttrs"
-    class="inline-flex items-center justify-center overflow-hidden rounded-[var(--ads-button-radius)] [font-weight:var(--ads-button-weight)] whitespace-nowrap transition-colors duration-150 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed"
-    :class="[sizeClass, faceClass, focusClass, to && isDisabled ? 'pointer-events-none' : '']"
+    class="inline-flex items-center justify-center [font-weight:var(--ads-button-weight)] whitespace-nowrap transition-colors duration-150 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed"
+    :class="[
+      type === 'ia' ? 'rounded-[var(--ads-radius-xsm)]' : 'overflow-hidden rounded-[var(--ads-button-radius)]',
+      sizeClass,
+      faceClass,
+      focusClass,
+      iaMotion,
+      to && isDisabled ? 'pointer-events-none' : '',
+    ]"
     @click="onRootClick"
   >
     <UIcon
@@ -23,7 +30,7 @@ import { computed, useSlots } from "vue";
 import type { RouteLocationRaw } from "vue-router";
 import { NuxtLink } from "#components";
 
-export type AdsButtonType = "filled" | "outline" | "unfilled" | "secondary";
+export type AdsButtonType = "filled" | "outline" | "unfilled" | "secondary" | "ia";
 export type AdsButtonSize = "md" | "sm";
 export type AdsButtonState = "active" | "hover" | "pressed" | "disabled";
 export type AdsButtonColor = "primary" | "success" | "attention" | "warning" | "new" | "innovation" | "blocked" | "neutral";
@@ -114,7 +121,15 @@ const iconClass = computed(() =>
 );
 
 const faceClass = computed(() => faceFor(props.type, props.color, visualState()));
-const focusClass = computed(() => focusFor[props.color]);
+const focusClass = computed(() =>
+  props.type === "ia" ? "focus-visible:outline-[var(--ads-button-ia-border)]" : focusFor[props.color],
+);
+/** O brilho do tipo IA pulsa. Hover, pressed e disabled seguram um quadro fixo. */
+const iaMotion = computed(() => {
+  if (props.type !== "ia" || isDisabled.value) return "";
+  if (props.state === "hover" || props.state === "pressed") return "";
+  return "ads-button-ia";
+});
 
 const visualState = (): AdsButtonState => {
   if (props.disabled || props.state === "disabled") return "disabled";
@@ -138,7 +153,20 @@ const focusFor: Record<AdsButtonColor, string> = {
   neutral: "focus-visible:outline-[var(--ads-text-primary)]",
 };
 
+const iaFace = (state: AdsButtonState) => {
+  const base =
+    "border-(length:--ads-border-width-slim) border-solid bg-[var(--ads-button-ia-background)] text-[var(--ads-status-innovation-300)]";
+  if (state === "disabled") {
+    return `${base} border-[color-mix(in_srgb,var(--ads-button-ia-border)_40%,transparent)] text-[color-mix(in_srgb,var(--ads-status-innovation-300)_45%,transparent)]`;
+  }
+  if (state === "hover" || state === "pressed") {
+    return `${base} border-[var(--ads-button-ia-border)] shadow-[0_0_16px_2px_var(--ads-button-ia-glow)]`;
+  }
+  return `${base} border-[var(--ads-button-ia-border)] hover:shadow-[0_0_16px_2px_var(--ads-button-ia-glow)] active:shadow-[0_0_12px_0_var(--ads-button-ia-glow)]`;
+};
+
 const faceFor = (type: AdsButtonType, color: AdsButtonColor, state: AdsButtonState) => {
+  if (type === "ia") return iaFace(state);
   if (color === "primary") return primaryFace(type, state);
   if (type === "filled") return filledStatus(color, state);
   if (type === "outline") return outlineStatus(color, state);
@@ -412,3 +440,50 @@ const secondaryStatus = (color: AdsButtonColor, state: AdsButtonState) => {
   return faces[color === "primary" ? "success" : color][state];
 };
 </script>
+
+<style>
+/* Quadros do Figma (Frame 2 a 7): o brilho respira e a borda some nos picos. */
+@keyframes ads-button-ia-glow {
+  0%,
+  100% {
+    border-color: var(--ads-button-ia-border);
+    box-shadow: 0 0 2px 0 var(--ads-button-ia-glow);
+  }
+  16% {
+    border-color: var(--ads-button-ia-border);
+    box-shadow: 0 0 12px 0 var(--ads-button-ia-glow);
+  }
+  33% {
+    border-color: var(--ads-button-ia-border);
+    box-shadow: 0 0 8px 0 var(--ads-button-ia-glow);
+  }
+  50% {
+    border-color: transparent;
+    box-shadow: 0 0 12px 0 var(--ads-button-ia-glow);
+  }
+  66% {
+    border-color: var(--ads-button-ia-border);
+    box-shadow: 0 0 16px 2px var(--ads-button-ia-glow);
+  }
+  83% {
+    border-color: transparent;
+    box-shadow: 0 0 12px 0 var(--ads-button-ia-glow);
+  }
+}
+
+.ads-button-ia {
+  animation: ads-button-ia-glow 2.4s ease-in-out infinite;
+}
+
+.ads-button-ia:hover,
+.ads-button-ia:active {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ads-button-ia {
+    animation: none;
+    box-shadow: 0 0 2px 0 var(--ads-button-ia-glow);
+  }
+}
+</style>

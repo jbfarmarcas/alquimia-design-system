@@ -8,7 +8,7 @@
         :state="previewState"
         :disabled="buttonState === 'disabled'"
         :loading="loading"
-        :label="buttonContent === 'icon' ? '' : 'Button Test'"
+        :label="buttonContent === 'icon' ? '' : buttonType === 'ia' ? 'Ajude a IA' : 'Button Test'"
         :leading="buttonContent === 'label' && leading"
         :trailing="buttonContent === 'label' && trailing"
         :aria-label="buttonContent === 'icon' ? 'Ação' : undefined"
@@ -22,6 +22,7 @@
 
       <div class="grid items-end gap-6 sm:grid-cols-2 lg:grid-cols-3">
         <AdsFilterSelect
+          v-if="buttonType !== 'ia'"
           v-model="buttonColor"
           type="radio"
           label="Cor"
@@ -44,6 +45,9 @@
           class="mt-2 text-xs leading-relaxed text-[var(--ads-text-secondary)]"
         >
           Outline e unfilled não têm pressed.
+        </p>
+        <p v-else-if="buttonType === 'ia'" class="mt-2 text-xs leading-relaxed text-[var(--ads-text-secondary)]">
+          O brilho pulsa sozinho. Hover e pressed seguram o brilho mais forte. A cor de status não entra nesse tipo.
         </p>
       </DocsParam>
 
@@ -87,6 +91,7 @@ const typeItems = [
   { label: "Outline", value: "outline" },
   { label: "Unfilled", value: "unfilled" },
   { label: "Secondary", value: "secondary" },
+  { label: "IA", value: "ia" },
 ];
 
 const colorOptions = [
@@ -128,7 +133,8 @@ const previewState = computed(() =>
 );
 
 watch(buttonType, (type) => {
-  if (buttonState.value === "pressed" && type !== "filled" && type !== "secondary") {
+  if (type === "ia") leading.value = true;
+  if (buttonState.value === "pressed" && type !== "filled" && type !== "secondary" && type !== "ia") {
     buttonState.value = "active";
   }
 });
@@ -139,7 +145,7 @@ const code = computed(() =>
     attr(buttonColor.value !== "primary", "color", buttonColor.value),
     attr(buttonSize.value !== "md", "size", buttonSize.value),
     attr(buttonContent.value === "icon", "aria-label", "Ação"),
-    attr(buttonContent.value === "label", "label", "Button Test"),
+    attr(buttonContent.value === "label", "label", buttonType.value === "ia" ? "Ajude a IA" : "Button Test"),
     attr(buttonContent.value === "label" && leading.value, "leading"),
     attr(buttonContent.value === "label" && trailing.value, "trailing"),
     attr(previewState.value !== null, "state", previewState.value ?? undefined),
