@@ -110,7 +110,7 @@ const featureColorOptions = [
   { value: "warning", label: "Warning" },
   { value: "new", label: "New" },
   { value: "blocked", label: "Blocked" },
-  { value: "innovation", label: "Inovação" },
+  { value: "innovation", label: "Innovation" },
 ];
 
 const deltaSlot = '<template #delta>\n  <span class="text-error">-2,3%</span>\n</template>';

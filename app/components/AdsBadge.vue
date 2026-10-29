@@ -21,7 +21,7 @@ export type AdsBadgeColor = "primary" | "success" | "attention" | "warning" | "n
 
 const props = withDefaults(
   defineProps<{
-    /** Cor do contador. Inovação usa o rosa do handoff (#fde3ff / data-1 800). */
+    /** Cor do contador. Innovation usa o rosa do handoff (#fde3ff / data-1 800). */
     color?: AdsBadgeColor;
     /** Ponto de 8px, sem número. */
     mini?: boolean;

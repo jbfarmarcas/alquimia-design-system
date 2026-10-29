@@ -100,7 +100,7 @@ const colorOptions = [
   { value: "attention", label: "Attention" },
   { value: "warning", label: "Warning" },
   { value: "new", label: "New" },
-  { value: "innovation", label: "Inovação" },
+  { value: "innovation", label: "Innovation" },
   { value: "blocked", label: "Blocked" },
   { value: "neutral", label: "Neutral" },
 ];

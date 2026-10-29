@@ -110,7 +110,7 @@ const badgeColorOptions = [
   { value: "attention", label: "Attention" },
   { value: "warning", label: "Warning" },
   { value: "new", label: "New" },
-  { value: "innovation", label: "Inovação" },
+  { value: "innovation", label: "Innovation" },
   { value: "blocked", label: "Blocked" },
 ];
 
@@ -126,7 +126,7 @@ const pillStatusOptions = [
   { value: "warning", label: "Warning" },
   { value: "new", label: "New" },
   { value: "blocked", label: "Blocked" },
-  { value: "innovation", label: "Inovação" },
+  { value: "innovation", label: "Innovation" },
   { value: "neutral", label: "Neutral" },
 ];
 

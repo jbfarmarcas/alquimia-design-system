@@ -72,7 +72,7 @@ const labels: Record<AdsPillTone, Record<AdsPillStatus, string>> = {
     warning: "Warning",
     new: "New!",
     blocked: "Blocked",
-    innovation: "Inovação",
+    innovation: "Innovation",
     neutral: "Neutral",
   },
   secondary: {
@@ -82,7 +82,7 @@ const labels: Record<AdsPillTone, Record<AdsPillStatus, string>> = {
     warning: "Warning",
     new: "New!",
     blocked: "Blocked",
-    innovation: "Inovação",
+    innovation: "Innovation",
     neutral: "Neutral",
   },
 };

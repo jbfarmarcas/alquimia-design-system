@@ -104,7 +104,7 @@ export const adsAttention = {
   800: "#8f6600",
 } as const;
 
-/** Escala que era Gráfico C2. Cor principal Inovação. */
+/** Escala que era Gráfico C2. Cor principal Innovation. */
 export const adsInnovation = {
   100: "#cabaff",
   200: "#b19aff",

@@ -11,7 +11,7 @@
       </div>
 
       <div v-else-if="component === 'flutuante'">
-        <UButton :color="toastColor" variant="solid" label="Mostrar toast" @click="showFloatingToast" />
+        <AdsButton :color="buttonColor" label="Mostrar toast" @click="showFloatingToast" />
       </div>
 
       <div v-else-if="component === 'arquivo'" class="w-full max-w-md">
@@ -81,7 +81,7 @@ import DocsDemo from "../DocsDemo.vue";
 import DocsParam from "../DocsParam.vue";
 import { docsApis } from "../catalog-docs";
 import { attr, buildTag, indent } from "../../../utils/code-builder";
-import AdsButton from "../../../../../app/components/AdsButton.vue";
+import AdsButton, { type AdsButtonColor } from "../../../../../app/components/AdsButton.vue";
 import AdsFileCard from "../../../../../app/components/AdsFileCard.vue";
 import AdsSegmentedTabs from "../../../../../app/components/AdsSegmentedTabs.vue";
 import AdsSwitch from "../../../../../app/components/AdsSwitch.vue";
@@ -132,6 +132,13 @@ const messages: Record<AdsToastStatus, { title: string; description: string }> =
 };
 
 const toastColor = computed(() => status.value);
+
+/** Mesmo mapeamento do `AdsToast`: o botão usa as cores de status do ADS. */
+const buttonColor = computed((): AdsButtonColor => {
+  if (status.value === "error") return "warning";
+  if (status.value === "warning") return "attention";
+  return status.value;
+});
 
 const language = computed(() => (component.value === "flutuante" ? "ts" : "vue"));
 
