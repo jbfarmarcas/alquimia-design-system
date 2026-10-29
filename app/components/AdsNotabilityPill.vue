@@ -1,6 +1,6 @@
 <template>
   <span
-    class="inline-flex h-6 min-w-[100px] shrink-0 items-center justify-center gap-1 overflow-hidden rounded-full px-2 py-1 text-center text-xs font-bold leading-[1.2] whitespace-nowrap"
+    class="inline-flex h-[var(--ads-notability-height)] min-w-[var(--ads-notability-min-width)] shrink-0 items-center justify-center gap-1 overflow-hidden rounded-full px-[var(--ads-notability-padding-x)] py-1 text-center text-[length:var(--ads-notability-font-size)] [font-weight:var(--ads-notability-weight)] leading-[1.2] whitespace-nowrap"
     :class="surfaceClass"
   >
     {{ resolvedLabel }}

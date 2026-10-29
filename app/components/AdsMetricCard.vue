@@ -3,7 +3,7 @@
     :is="as"
     :type="as === 'button' ? 'button' : undefined"
     :disabled="as === 'button' ? disabled : undefined"
-    class="flex h-full min-w-0 flex-col gap-2 border p-4 text-left font-normal"
+    class="flex h-full min-w-0 flex-col gap-[var(--ads-metric-gap)] border p-[var(--ads-metric-padding)] text-left font-normal"
     :class="[radiusClass, surfaceClass]"
   >
     <div class="flex flex-col items-start gap-1">
@@ -56,15 +56,15 @@ import InvertedTooltip from "./InvertedTooltip.vue";
  * Rótulo: 14px, medium. Valor: 20px, bold. Variação: 14px, bold. Legenda: 12px, regular.
  */
 const labelClass =
-  "text-[length:var(--ads-font-size-xxs)] font-medium leading-[var(--ads-line-height-sm)] text-[var(--ads-text-secondary)]";
+  "text-[length:var(--ads-metric-label-size)] font-medium leading-[var(--ads-line-height-sm)] text-[var(--ads-metric-label)]";
 const valueClass =
-  "text-[length:var(--ads-font-size-rg)] font-bold leading-[var(--ads-line-height-sm)] text-[var(--ads-text-primary)] tabular-nums";
+  "text-[length:var(--ads-metric-value-size)] font-bold leading-[var(--ads-line-height-sm)] text-[var(--ads-metric-value)] tabular-nums";
 const emptyValueClass =
   "text-[length:var(--ads-font-size-xs)] font-medium leading-[var(--ads-line-height-sm)] text-[var(--ads-text-tertiary)]";
 const deltaClass =
   "text-[length:var(--ads-font-size-xxs)] font-bold leading-[var(--ads-line-height-sm)] tabular-nums";
 const captionClass =
-  "text-[length:var(--ads-font-size-xxxs)] font-normal leading-[var(--ads-line-height-md)] text-[var(--ads-text-secondary)]";
+  "text-[length:var(--ads-metric-caption-size)] font-normal leading-[var(--ads-line-height-md)] text-[var(--ads-metric-label)]";
 
 const props = withDefaults(
   defineProps<{
@@ -96,13 +96,13 @@ const props = withDefaults(
 
 const slots = useSlots();
 
-const radiusClass = "rounded-[var(--ads-radius-md)]";
+const radiusClass = "rounded-[var(--ads-metric-radius)]";
 
 const surfaceClass = computed(() => {
   const classes = [
     props.selected
       ? "border-[var(--color-neutral-300)] bg-[var(--color-neutral-100)]"
-      : "border-[var(--ads-border-subtle)] bg-[var(--ads-surface-card)]",
+      : "border-[var(--ads-metric-border)] bg-[var(--ads-metric-background)]",
   ];
 
   if (props.as === "button") {

@@ -7,7 +7,7 @@
 
   <span
     v-else-if="variant === 'skeleton' && lines < 1"
-    class="block animate-pulse rounded-[var(--ads-radius-xsm)] bg-[var(--ads-border-subtle)] motion-reduce:animate-none"
+    class="block animate-pulse rounded-[var(--ads-loading-radius)] bg-[var(--ads-loading-skeleton)] motion-reduce:animate-none"
     role="status"
     aria-label="Carregando"
   />
@@ -21,7 +21,7 @@
     <span
       v-for="(width, index) in skeletonLines"
       :key="index"
-      class="block h-4 animate-pulse rounded-[var(--ads-radius-xsm)] bg-[var(--ads-border-subtle)] motion-reduce:animate-none"
+      class="block h-[var(--ads-loading-bar)] animate-pulse rounded-[var(--ads-loading-radius)] bg-[var(--ads-loading-skeleton)] motion-reduce:animate-none"
       :class="width"
       aria-hidden="true"
     />
@@ -39,7 +39,7 @@
       :class="[sizeClass, toneClass]"
       aria-hidden="true"
     />
-    <p v-if="label" class="text-sm text-[var(--ads-text-secondary)]">
+    <p v-if="label" class="text-[length:var(--ads-loading-label-size)] text-[var(--ads-text-secondary)]">
       {{ label }}
     </p>
   </div>
@@ -92,10 +92,12 @@ const skeletonLines = computed(() =>
 const sizeClass = computed(() => {
   if (props.size === "sm") return "size-6 shrink-0 text-[1.5rem]";
   if (props.size === "lg") return "size-12 shrink-0 text-[3rem]";
-  return "size-8 shrink-0 text-[2rem]";
+  return "size-[var(--ads-loading-spinner)] shrink-0 text-[length:var(--ads-loading-spinner)]";
 });
 
-const toneClass = computed(() => (props.tone === "muted" ? "text-muted" : "text-primary"));
+const toneClass = computed(() =>
+  props.tone === "muted" ? "text-muted" : "text-[var(--ads-loading-spinner-color)]",
+);
 
 const spinnerRootClass = computed(() => {
   if (props.region) {

@@ -33,8 +33,8 @@ withDefaults(
 /** Tooltip padrão escuro do produto (`bg-inverted`). */
 const tooltipUi = {
   content:
-    "z-[70] h-auto max-w-xs rounded-md bg-inverted p-3 text-sm text-inverted shadow-lg ring-0",
+    "z-[70] h-auto max-w-xs rounded-[var(--ads-tooltip-radius)] bg-[var(--ads-tooltip-bg)] px-[var(--ads-tooltip-padding-x)] py-[var(--ads-tooltip-padding-y)] text-[length:var(--ads-tooltip-font-size)] text-[var(--ads-tooltip-text)] shadow-lg ring-0",
   text: "whitespace-normal",
-  arrow: "fill-inverted",
+  arrow: "fill-[var(--ads-tooltip-bg)]",
 };
 </script>

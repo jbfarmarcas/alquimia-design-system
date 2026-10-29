@@ -12,7 +12,7 @@
     }"
   >
     <template #content="{ close }">
-      <div class="flex min-h-0 flex-col gap-[var(--ads-space-xxs)]">
+      <div class="flex min-h-0 w-full flex-col gap-[var(--ads-space-xxs)]">
         <div class="flex items-start gap-[var(--ads-space-nano)]">
           <span
             v-if="icon"
@@ -23,7 +23,7 @@
           </span>
           <div class="flex min-h-[var(--ads-space-xs)] min-w-0 flex-1 items-center">
             <slot name="title">
-              <h2 class="text-[length:var(--ads-font-size-xs)] font-bold leading-[var(--ads-space-xs)] text-[var(--ads-text-primary)]">
+              <h2 class="text-[length:var(--ads-modal-title-size)] font-bold leading-[var(--ads-space-xs)] text-[var(--ads-modal-title)]">
                 {{ title }}
               </h2>
             </slot>
@@ -39,7 +39,7 @@
           </button>
         </div>
 
-        <p v-if="description" class="text-[length:var(--ads-font-size-xxs)] leading-[var(--ads-line-height-md)] text-[var(--ads-text-secondary)]">
+        <p v-if="description" class="text-[length:var(--ads-modal-body-size)] leading-[var(--ads-line-height-md)] text-[var(--ads-modal-body)]">
           {{ description }}
         </p>
 
@@ -47,20 +47,18 @@
           <slot />
         </div>
 
-        <div v-if="slots.footer" class="shrink-0 bg-white">
+        <div v-if="slots.footer" class="flex w-full shrink-0 items-center justify-end gap-[var(--ads-space-quark)] bg-white">
           <slot name="footer" />
         </div>
-        <div v-else-if="showDefaultActions" class="flex items-center justify-end gap-[var(--ads-space-quark)]">
+        <div v-else-if="showDefaultActions" class="flex w-full items-center justify-end gap-[var(--ads-space-quark)]">
           <AdsButton
             v-if="cancelLabel"
             type="unfilled"
-            size="sm"
             :label="cancelLabel"
             @click="dismiss(close)"
           />
           <AdsButton
             v-if="confirmLabel"
-            size="sm"
             :label="confirmLabel"
             @click="emit('confirm')"
           />
@@ -136,9 +134,9 @@ const widths: Record<AdsModalSize, string> = {
 const contentClass = computed(() => {
   const scroll = props.scrollable ? " !max-h-[calc(100dvh-2rem)] !overflow-y-auto" : "";
   if (props.variant === "sheet") {
-    return `!inset-x-0 !bottom-0 !top-auto !left-0 !translate-x-0 !translate-y-0 !w-full !max-w-none !max-h-[calc(100dvh-2rem)] !divide-y-0 !overflow-y-auto !bg-white !p-[var(--ads-space-xs)] !shadow-[var(--ads-shadow-level-2)] !ring-1 !ring-[var(--ads-border-subtle)] !rounded-t-[var(--ads-radius-sm)] !rounded-b-none${scroll}`;
+    return `!inset-x-0 !bottom-0 !top-auto !left-0 !translate-x-0 !translate-y-0 !w-full !max-w-none !max-h-[calc(100dvh-2rem)] !divide-y-0 !overflow-y-auto !bg-[var(--ads-modal-background)] !p-[var(--ads-modal-padding)] !shadow-[var(--ads-shadow-level-2)] !ring-1 !ring-[var(--ads-modal-border)] !rounded-t-[var(--ads-modal-radius)] !rounded-b-none${scroll}`;
   }
-  return `${widths[props.size]} !max-w-none !divide-y-0 !rounded-[var(--ads-radius-sm)] !border !border-neutral-300 !bg-white !p-[var(--ads-space-xs)] !shadow-[var(--ads-shadow-level-3)] !ring-0${scroll}`;
+  return `${widths[props.size]} !max-w-none !divide-y-0 !rounded-[var(--ads-modal-radius)] !border !border-[var(--ads-modal-border)] !bg-[var(--ads-modal-background)] !p-[var(--ads-modal-padding)] !shadow-[var(--ads-shadow-level-3)] !ring-0${scroll}`;
 });
 
 const emit = defineEmits<{

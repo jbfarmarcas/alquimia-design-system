@@ -1,9 +1,9 @@
 <template>
   <label
-    class="inline-flex items-center gap-2"
+    class="inline-flex items-center gap-[var(--ads-radio-gap)]"
     :class="isDisabled ? 'cursor-not-allowed' : 'cursor-pointer'"
   >
-    <span class="relative grid size-[16px] shrink-0 place-items-center">
+    <span class="relative grid size-[var(--ads-radio-size)] shrink-0 place-items-center">
       <input
         v-bind="attrs"
         type="radio"
@@ -16,17 +16,17 @@
         @change="onChange"
       >
       <span
-        class="pointer-events-none col-start-1 row-start-1 size-[16px] rounded-full border-2 bg-[var(--ads-surface-card)] peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-[var(--ads-text-brand)]"
+        class="pointer-events-none col-start-1 row-start-1 size-[var(--ads-radio-size)] rounded-full border-[length:var(--ads-radio-border-width)] bg-[var(--ads-radio-background)] peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-[var(--ads-text-brand)]"
         :class="isDisabled
-          ? 'border-[var(--ads-button-primary-disabled)] peer-checked:border-[var(--ads-button-primary-disabled)] peer-checked:bg-[var(--ads-button-primary-disabled)]'
-          : 'border-[var(--ads-text-brand)] peer-checked:border-[var(--ads-text-brand)] peer-checked:bg-[var(--ads-text-brand)]'"
+          ? 'border-[var(--ads-radio-disabled)] peer-checked:border-[var(--ads-radio-disabled)] peer-checked:bg-[var(--ads-radio-disabled)]'
+          : 'border-[var(--ads-radio-border)] peer-checked:border-[var(--ads-radio-border)] peer-checked:bg-[var(--ads-radio-border)]'"
       />
-      <span class="pointer-events-none col-start-1 row-start-1 size-[8px] rounded-full bg-white opacity-0 peer-checked:opacity-100" />
+      <span class="pointer-events-none col-start-1 row-start-1 size-[var(--ads-radio-dot)] rounded-full bg-[var(--ads-radio-dot-color)] opacity-0 peer-checked:opacity-100" />
     </span>
     <span
       v-if="hasLabel"
-      class="text-[14px] font-normal leading-[1.3]"
-      :class="isDisabled ? 'text-[var(--ads-text-tertiary)]' : 'text-[var(--ads-text-secondary)]'"
+      class="text-[length:var(--ads-radio-label-size)] font-normal leading-[1.3]"
+      :class="isDisabled ? 'text-[var(--ads-text-tertiary)]' : 'text-[var(--ads-radio-label)]'"
     >
       <slot>{{ label }}</slot>
     </span>

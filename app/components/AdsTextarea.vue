@@ -3,21 +3,21 @@
     <label
       v-if="label"
       :for="fieldId"
-      class="text-xs leading-[1.2]"
+      class="text-[length:var(--ads-textarea-label-size)] leading-[1.2]"
       :class="supportClass"
     >
       {{ label }}
     </label>
 
     <div
-      class="relative flex min-h-[153px] rounded-[var(--ads-radius-sm)]"
+      class="relative flex min-h-[var(--ads-textarea-min-height)] rounded-[var(--ads-textarea-radius)]"
       :class="fieldClass"
       :data-state="visualState"
     >
       <textarea
         :id="fieldId"
         v-model="model"
-        class="min-h-[129px] w-full flex-1 resize-y bg-transparent p-3 pe-8 text-sm leading-[1.3] outline-none placeholder:text-current disabled:cursor-not-allowed"
+        class="min-h-[calc(var(--ads-textarea-min-height)-24px)] w-full flex-1 resize-y bg-transparent p-[var(--ads-textarea-padding)] pe-8 text-[length:var(--ads-textarea-font-size)] leading-[1.3] outline-none placeholder:text-current disabled:cursor-not-allowed"
         :placeholder="placeholder"
         :disabled="isDisabled"
         :aria-invalid="error ? true : undefined"
@@ -32,7 +32,7 @@
     <p
       v-if="supportText"
       :id="supportId"
-      class="text-xs leading-[1.2]"
+      class="text-[length:var(--ads-textarea-label-size)] leading-[1.2]"
       :class="supportClass"
     >
       {{ supportText }}
@@ -88,22 +88,22 @@ const supportClass = computed(() =>
 
 const fieldClass = computed(() => {
   const interactiveFocus = props.state === null && !isDisabled.value && !props.error;
-  const focus = interactiveFocus
-    ? "focus-within:border-(length:--ads-border-width-slim) focus-within:border-[var(--color-primary-400)]"
-    : "";
   const text = visualState.value === "default" || visualState.value === "disabled"
-    ? "text-[var(--ads-text-tertiary)]"
-    : "text-[var(--ads-text-secondary)]";
+    ? "text-[var(--ads-textarea-placeholder)]"
+    : "text-[var(--ads-textarea-text)]";
 
   if (visualState.value === "disabled") {
-    return `border border-[var(--ads-border-subtle)] bg-neutral-100 ${text}`;
+    return `border border-[var(--ads-textarea-disabled-border)] bg-[var(--ads-textarea-disabled-background)] ${text}`;
   }
   if (visualState.value === "error") {
-    return `border-(length:--ads-border-width-slim) border-[var(--color-error-300)] bg-[var(--ads-surface-card)] ${text}`;
+    return `border-(length:--ads-border-width-slim) border-[var(--ads-textarea-error-border)] bg-[var(--ads-textarea-background)] ${text}`;
   }
   if (visualState.value === "focus") {
-    return `border-(length:--ads-border-width-slim) border-[var(--color-primary-400)] bg-[var(--ads-surface-card)] ${text}`;
+    return `border-(length:--ads-border-width-slim) border-[var(--ads-textarea-focus-border)] bg-[var(--ads-textarea-background)] ${text}`;
   }
-  return `border border-[var(--ads-border-subtle)] bg-[var(--ads-surface-card)] ${text} ${focus}`;
+  const focus = interactiveFocus
+    ? "focus-within:border-(length:--ads-border-width-slim) focus-within:border-[var(--ads-textarea-focus-border)]"
+    : "";
+  return `border border-[var(--ads-textarea-border)] bg-[var(--ads-textarea-background)] ${text} ${focus}`;
 });
 </script>

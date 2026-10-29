@@ -2,19 +2,20 @@
   <component
     :is="to ? NuxtLink : 'button'"
     v-bind="rootAttrs"
-    class="flex w-[396px] max-w-full flex-col gap-4 rounded-[var(--ads-radius-md)] border border-[var(--ads-border-subtle)] bg-[var(--ads-surface-card)] p-4 text-left transition-colors duration-150 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-    :class="disabled ? 'cursor-not-allowed' : 'hover:border-[var(--ads-text-brand)]'"
+    class="group flex w-[var(--ads-feature-width)] max-w-full flex-col gap-[var(--ads-feature-gap)] rounded-[var(--ads-feature-radius)] border border-[var(--ads-feature-border)] bg-[var(--ads-feature-background)] p-[var(--ads-feature-padding)] text-left transition-colors duration-150 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--ads-feature-accent-hover)]"
+    :class="disabled ? 'cursor-not-allowed' : 'hover:border-[var(--ads-feature-accent-hover)] focus-visible:border-[var(--ads-feature-accent-hover)]'"
+    :style="accentStyle"
     @click="onClick"
   >
     <span class="flex items-start gap-3">
       <span
-        class="grid size-12 shrink-0 place-items-center rounded-[var(--ads-radius-sm)]"
+        class="grid size-[var(--ads-feature-icon-box)] shrink-0 place-items-center rounded-[var(--ads-radius-sm)]"
         :class="iconBoxClass"
       >
         <UIcon :name="icon" class="size-6" />
       </span>
       <span class="min-w-0 flex-1">
-        <span class="block font-bold leading-[1.3]" :class="titleClass">
+        <span class="block text-[length:var(--ads-feature-title-size)] font-bold leading-[1.3]" :class="titleClass">
           {{ title }}
         </span>
         <InvertedTooltip
@@ -23,7 +24,7 @@
         >
           <span
             ref="descriptionEl"
-            class="mt-1 block line-clamp-2 text-sm leading-relaxed"
+            class="mt-1 block line-clamp-2 text-[length:var(--ads-feature-body-size)] leading-relaxed"
             :class="descriptionClass"
           >
             {{ description }}
@@ -33,7 +34,7 @@
       <UIcon
         v-if="!disabled"
         name="i-lucide-arrow-right"
-        class="size-5 shrink-0 text-[var(--ads-border-icon-support)]"
+        class="size-5 shrink-0 text-[var(--ads-border-icon-support)] transition-colors duration-150 ease-out group-hover:text-[var(--ads-feature-accent-hover)] group-focus-visible:text-[var(--ads-feature-accent-hover)]"
       />
     </span>
 
@@ -98,12 +99,28 @@ const iconBoxByColor: Record<AdsFeatureCardColor, string> = {
   innovation: "bg-[var(--ads-status-innovation-100)] text-[var(--ads-status-innovation-800)]",
 };
 
+/**
+ * Cor de acento usada NO HOVER para borda e seta (ambas a mesma cor).
+ * Em repouso: borda = --ads-feature-border (neutro), seta = --ads-border-icon-support (cinza).
+ */
+const accentByColor: Record<AdsFeatureCardColor, string> = {
+  // Hover: tom claro próximo da caixa do ícone (passo 300 da escala de status).
+  // Primary usa primary-300 (#50b3ff), próximo do fundo da caixa --ads-button-secondary (#e4f2ff).
+  primary: "var(--color-primary-300)",
+  success: "var(--ads-status-success-300)",
+  attention: "var(--ads-status-attention-300)",
+  warning: "var(--ads-status-warning-300)",
+  new: "var(--ads-status-new-300)",
+  blocked: "var(--ads-status-void-300)",
+  innovation: "var(--ads-status-innovation-300)",
+};
+
 const props = withDefaults(
   defineProps<{
     title: string;
     description: string;
     icon: string;
-    /** Cor do ícone. Sem valor, fica na cor da marca. */
+    /** Cor do ícone, da seta e da borda. Sem valor, fica na cor da marca. */
     color?: AdsFeatureCardColor;
     /** Vira link. Sem valor, continua botão. */
     to?: RouteLocationRaw;
@@ -168,6 +185,15 @@ const rootAttrs = computed(() =>
       },
 );
 
+const accentStyle = computed(() => {
+  if (props.disabled) {
+    return {};
+  }
+  return {
+    "--ads-feature-accent-hover": accentByColor[props.color],
+  };
+});
+
 const iconBoxClass = computed(() =>
   props.disabled
     ? "bg-[var(--ads-button-secondary-disabled)] text-[var(--ads-text-tertiary)]"
@@ -175,11 +201,11 @@ const iconBoxClass = computed(() =>
 );
 
 const titleClass = computed(() =>
-  props.disabled ? "text-[var(--ads-text-tertiary)]" : "text-[var(--ads-text-primary)]",
+  props.disabled ? "text-[var(--ads-text-tertiary)]" : "text-[var(--ads-feature-title)]",
 );
 
 const descriptionClass = computed(() =>
-  props.disabled ? "text-[var(--ads-text-tertiary)]" : "text-[var(--ads-text-secondary)]",
+  props.disabled ? "text-[var(--ads-text-tertiary)]" : "text-[var(--ads-feature-body)]",
 );
 
 const onClick = (event: MouseEvent) => {

@@ -1,16 +1,16 @@
 <template>
   <label
-    class="inline-flex items-center gap-2"
+    class="inline-flex items-center gap-[var(--ads-checkbox-gap)]"
     :class="isDisabled ? 'cursor-not-allowed' : 'cursor-pointer'"
   >
-    <span class="relative grid size-[16px] shrink-0 place-items-center">
+    <span class="relative grid size-[var(--ads-checkbox-size)] shrink-0 place-items-center">
       <input
         v-bind="attrs"
         type="checkbox"
-        class="peer col-start-1 row-start-1 size-[16px] appearance-none rounded-[var(--ads-radius-xsm)] border-2 bg-[var(--ads-surface-card)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--ads-text-brand)] disabled:cursor-not-allowed"
+        class="peer col-start-1 row-start-1 size-[var(--ads-checkbox-size)] appearance-none rounded-[var(--ads-checkbox-radius)] border-[length:var(--ads-checkbox-border-width)] bg-[var(--ads-checkbox-background)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--ads-text-brand)] disabled:cursor-not-allowed"
         :class="isDisabled
-          ? 'border-[var(--ads-button-primary-disabled)] checked:bg-[var(--ads-button-primary-disabled)] indeterminate:border-[var(--ads-button-primary-disabled)] indeterminate:bg-[var(--ads-button-primary-disabled)]'
-          : 'border-[var(--ads-text-brand)] checked:border-[var(--ads-text-brand)] checked:bg-[var(--ads-text-brand)] indeterminate:border-[var(--ads-text-brand)] indeterminate:bg-[var(--ads-text-brand)]'"
+          ? 'border-[var(--ads-checkbox-disabled)] checked:bg-[var(--ads-checkbox-disabled)] indeterminate:border-[var(--ads-checkbox-disabled)] indeterminate:bg-[var(--ads-checkbox-disabled)]'
+          : 'border-[var(--ads-checkbox-border)] checked:border-[var(--ads-checkbox-checked)] checked:bg-[var(--ads-checkbox-checked)] indeterminate:border-[var(--ads-checkbox-checked)] indeterminate:bg-[var(--ads-checkbox-checked)]'"
         :checked="model"
         :indeterminate="showIndeterminate"
         :disabled="isDisabled"
@@ -33,8 +33,8 @@
     </span>
     <span
       v-if="hasLabel"
-      class="text-[14px] font-normal leading-[1.3]"
-      :class="isDisabled ? 'text-[var(--ads-text-tertiary)]' : 'text-[var(--ads-text-secondary)]'"
+      class="text-[length:var(--ads-checkbox-label-size)] font-normal leading-[1.3]"
+      :class="isDisabled ? 'text-[var(--ads-text-tertiary)]' : 'text-[var(--ads-checkbox-label)]'"
     >
       <slot>{{ label }}</slot>
     </span>

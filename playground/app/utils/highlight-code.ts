@@ -91,3 +91,41 @@ export const highlightCodeLines = (source: string) => {
   const normalized = source.replace(/\n$/, "");
   return highlightSource(normalized).split("\n");
 };
+
+const JSON_TOKEN =
+  /"(?:\\.|[^"\\\n])*"|-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?|true|false|null|[{}\]\[,:]|[^\s"{}[\]:,]+|\s+/g;
+
+const hexString = (part: string) => /^"#[0-9A-Fa-f]{3,8}"$/.test(part);
+
+/** Destaca um JSON: chave, string, cor hexadecimal, número e pontuação. */
+export const highlightJson = (source: string) => {
+  const parts = source.match(JSON_TOKEN) ?? [];
+  let html = "";
+
+  for (let index = 0; index < parts.length; index += 1) {
+    const part = parts[index] ?? "";
+    if (/^\s+$/.test(part)) {
+      html += part;
+      continue;
+    }
+
+    let kind: TokenKind = "text";
+    if (part.startsWith('"')) {
+      let next = index + 1;
+      while (next < parts.length && /^\s+$/.test(parts[next] ?? "")) next += 1;
+      if (parts[next] === ":") kind = "attr";
+      else if (hexString(part)) kind = "number";
+      else kind = "string";
+    } else if (part === "true" || part === "false" || part === "null") {
+      kind = "keyword";
+    } else if (/^-?\d/.test(part)) {
+      kind = "number";
+    } else if ("{}[],:".includes(part)) {
+      kind = "punct";
+    }
+
+    html += `<span class="tok-${kind}">${escapeHtml(part)}</span>`;
+  }
+
+  return html;
+};

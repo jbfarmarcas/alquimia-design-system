@@ -13,7 +13,10 @@ export default defineNuxtConfig({
 
   modules: ["@nuxt/fonts", "@nuxt/icon", "@nuxt/ui", "@vueuse/nuxt"],
 
-  css: [join(currentDir, "app/assets/css/main.css")],
+  css: [
+    join(currentDir, "app/assets/css/main.css"),
+    join(currentDir, "app/assets/css/component-tokens.css"),
+  ],
 
   ui: {
     colorMode: false,

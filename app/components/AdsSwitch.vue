@@ -1,27 +1,27 @@
 <template>
   <label
     class="inline-flex items-center"
-    :class="[hasLabel ? 'gap-2' : '', isDisabled ? 'cursor-not-allowed' : 'cursor-pointer']"
+    :class="[hasLabel ? 'gap-[var(--ads-switch-gap)]' : '', isDisabled ? 'cursor-not-allowed' : 'cursor-pointer']"
   >
-    <span class="relative h-[18px] w-[32px] shrink-0">
+    <span class="relative h-[var(--ads-switch-height)] w-[var(--ads-switch-width)] shrink-0">
       <input
         v-bind="attrs"
         type="checkbox"
         role="switch"
-        class="peer absolute inset-0 appearance-none rounded-[9px] bg-[var(--ads-border-subtle)] transition-colors duration-150 ease-out checked:bg-[var(--ads-button-primary)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--ads-text-brand)] disabled:cursor-not-allowed disabled:bg-[var(--color-neutral-200)] disabled:checked:bg-[var(--ads-button-primary-disabled)]"
+        class="peer absolute inset-0 appearance-none rounded-[var(--ads-switch-radius)] bg-[var(--ads-switch-off)] transition-colors duration-150 ease-out checked:bg-[var(--ads-switch-on)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--ads-text-brand)] disabled:cursor-not-allowed disabled:bg-[var(--ads-switch-disabled)] disabled:checked:bg-[var(--ads-switch-disabled-on)]"
         :checked="model"
         :disabled="isDisabled"
         :aria-checked="model"
         @change="onChange"
       >
       <span
-        class="pointer-events-none absolute top-[3px] left-0 size-[12px] translate-x-[3.207px] rounded-full bg-white transition-transform duration-150 ease-out peer-checked:translate-x-[17px]"
+        class="pointer-events-none absolute top-[var(--ads-switch-inset)] left-0 size-[var(--ads-switch-thumb)] translate-x-[var(--ads-switch-inset)] rounded-full bg-[var(--ads-switch-thumb-color)] transition-transform duration-150 ease-out peer-checked:translate-x-[calc(var(--ads-switch-width)-var(--ads-switch-thumb)-var(--ads-switch-inset))]"
       />
     </span>
     <span
       v-if="hasLabel"
-      class="text-[14px] font-normal leading-[1.3]"
-      :class="isDisabled ? 'text-[var(--ads-text-tertiary)]' : 'text-[var(--ads-text-secondary)]'"
+      class="text-[length:var(--ads-switch-label-size)] font-normal leading-[1.3]"
+      :class="isDisabled ? 'text-[var(--ads-text-tertiary)]' : 'text-[var(--ads-switch-label)]'"
     >
       <slot>{{ label }}</slot>
     </span>

@@ -1,18 +1,18 @@
 <template>
   <div
-    class="flex flex-wrap items-center gap-3 rounded-[var(--ads-radius-sm)] p-3"
+    class="flex flex-wrap items-center gap-[var(--ads-toast-gap)] rounded-[var(--ads-toast-radius)] p-[var(--ads-toast-padding)]"
     :class="[surfaceClass, app ? 'w-[331px] max-w-full' : 'w-full']"
     role="status"
   >
     <div class="flex min-w-0 flex-1 basis-full items-start gap-2 sm:basis-auto">
       <UIcon
         :name="resolvedIcon"
-        class="mt-0.5 size-[18px] shrink-0 text-[var(--ads-text-primary)]"
+        class="mt-0.5 size-[var(--ads-toast-icon)] shrink-0 text-[var(--ads-toast-text)]"
         aria-hidden="true"
       />
       <div class="min-w-0 flex-1">
         <slot>
-          <p class="text-sm font-medium leading-[1.3] text-[var(--ads-text-primary)]">
+          <p class="text-[length:var(--ads-toast-font-size)] [font-weight:var(--ads-toast-weight)] leading-[1.3] text-[var(--ads-toast-text)]">
             {{ resolvedMessage }}
           </p>
         </slot>
@@ -90,11 +90,11 @@ const actionColor = computed((): AdsButtonColor => {
 });
 
 const surfaceClass = computed(() => {
-  if (props.status === "primary") return "bg-primary-50";
+  if (props.status === "primary") return "bg-[var(--ads-toast-primary-bg)]";
   if (props.status === "success") return "bg-[var(--ads-status-success-100)]";
-  if (props.status === "warning") return "bg-[#ffe7b9]";
-  if (props.status === "neutral") return "bg-[#e4f2ff]";
-  return "bg-[#ffbdcd]";
+  if (props.status === "warning") return "bg-[var(--ads-toast-warning-bg)]";
+  if (props.status === "neutral") return "bg-[var(--ads-toast-neutral-bg)]";
+  return "bg-[var(--ads-toast-error-bg)]";
 });
 
 const resolvedIcon = computed(() => {

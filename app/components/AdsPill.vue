@@ -1,6 +1,6 @@
 <template>
   <span
-    class="inline-flex h-6 min-w-[100px] shrink-0 items-center justify-center gap-1 overflow-hidden rounded-full px-2 py-1 text-center text-xs font-bold leading-[1.2] whitespace-nowrap"
+    class="inline-flex h-[var(--ads-pill-height)] min-w-[var(--ads-pill-min-width)] shrink-0 items-center justify-center gap-1 overflow-hidden rounded-full px-[var(--ads-pill-padding-x)] py-1 text-center text-[length:var(--ads-pill-font-size)] [font-weight:var(--ads-pill-weight)] leading-[1.2] whitespace-nowrap"
     :class="surfaceClass"
   >
     <UIcon
@@ -43,7 +43,7 @@ const innovationSecondary = "bg-[#fde3ff] text-[var(--ads-chart-data-1-800)]";
 
 const surfaces: Record<AdsPillTone, Record<AdsPillStatus, string>> = {
   primary: {
-    default: "bg-[#006ff7] text-white",
+    default: "bg-[var(--ads-pill-primary-bg)] text-[var(--ads-pill-primary-text)]",
     success: "bg-[#15c57e] text-white",
     attention: "bg-[#e9a700] text-white",
     warning: "bg-[#dc0034] text-white",

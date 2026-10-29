@@ -2,7 +2,7 @@
   <div class="flex min-w-0 flex-col gap-0.5">
     <div
       v-if="label || info"
-      class="flex items-center gap-0.5 text-xs leading-[1.2]"
+      class="flex items-center gap-0.5 text-[length:var(--ads-number-label-size)] leading-[1.2]"
       :class="supportClass"
     >
       <label v-if="label" :for="fieldId">{{ label }}</label>
@@ -14,7 +14,7 @@
     </div>
 
     <div
-      class="flex h-10 w-full min-w-0 items-center gap-2 rounded-[var(--ads-radius-sm)] px-3"
+      class="flex h-[var(--ads-number-height)] w-full min-w-0 items-center gap-[var(--ads-number-gap)] rounded-[var(--ads-number-radius)] px-[var(--ads-number-padding-x)]"
       :class="fieldClass"
       :data-state="visualState"
     >
@@ -25,7 +25,7 @@
         type="number"
         inputmode="decimal"
         size="4"
-        class="w-0 min-w-0 flex-1 bg-transparent text-sm leading-[1.3] outline-none placeholder:text-current disabled:cursor-not-allowed [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+        class="w-0 min-w-0 flex-1 bg-transparent text-[length:var(--ads-number-font-size)] leading-[1.3] outline-none placeholder:text-current disabled:cursor-not-allowed [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
         :placeholder="placeholder"
         :disabled="isDisabled"
         :min="min"
@@ -56,7 +56,7 @@
           <UIcon name="i-lucide-chevron-down" class="size-3.5" />
         </button>
       </div>
-      <span v-if="suffix" class="shrink-0 text-sm leading-[1.3]">{{ suffix }}</span>
+      <span v-if="suffix" class="shrink-0 text-[length:var(--ads-number-font-size)] leading-[1.3]">{{ suffix }}</span>
     </div>
 
     <p
@@ -149,18 +149,18 @@ const supportClass = computed(() =>
 const fieldClass = computed(() => {
   const interactiveFocus = props.state === null && !isDisabled.value && !props.error;
   const focus = interactiveFocus
-    ? "focus-within:border-(length:--ads-border-width-slim) focus-within:border-[var(--color-primary-400)]"
+    ? "focus-within:border-(length:--ads-border-width-slim) focus-within:border-[var(--ads-number-focus-border)]"
     : "";
 
   if (visualState.value === "disabled") {
-    return "border border-[var(--ads-text-tertiary)] bg-neutral-100 text-[var(--ads-text-tertiary)]";
+    return "border border-[var(--ads-number-disabled-border)] bg-[var(--ads-number-disabled-background)] text-[var(--ads-number-disabled-text)]";
   }
   if (visualState.value === "error") {
-    return `border-(length:--ads-border-width-slim) border-[var(--color-error-300)] bg-[var(--ads-surface-card)] text-[var(--ads-text-secondary)] ${focus}`;
+    return `border-(length:--ads-border-width-slim) border-[var(--ads-number-error-border)] bg-[var(--ads-number-background)] text-[var(--ads-number-text)] ${focus}`;
   }
   if (visualState.value === "focus") {
-    return "border-(length:--ads-border-width-slim) border-[var(--color-primary-400)] bg-[var(--ads-surface-card)] text-[var(--ads-text-secondary)]";
+    return "border-(length:--ads-border-width-slim) border-[var(--ads-number-focus-border)] bg-[var(--ads-number-background)] text-[var(--ads-number-text)]";
   }
-  return `border border-[var(--ads-border-subtle)] bg-[var(--ads-surface-card)] text-[var(--ads-text-secondary)] ${focus}`;
+  return `border border-[var(--ads-number-border)] bg-[var(--ads-number-background)] text-[var(--ads-number-text)] ${focus}`;
 });
 </script>

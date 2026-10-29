@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
+@import "./component-tokens.css";
 
 @theme default {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
@@ -180,14 +181,6 @@
   --ads-border-focused: #6b778c;
   --ads-border-icon: #42526e;
   --ads-border-icon-support: #7a869a;
-  --ads-button-primary: #006ff7;
-  --ads-button-primary-hover: #074ac6;
-  --ads-button-primary-pressed: #00389e;
-  --ads-button-primary-disabled: #89c9ff;
-  --ads-button-secondary: #e4f2ff;
-  --ads-button-secondary-hover: #c7e4ff;
-  --ads-button-secondary-pressed: #89c9ff;
-  --ads-button-secondary-disabled: #d3d8dd;
   --ads-status-success-800: #0e5a3b;
   --ads-status-success-500: #15c57e;
   --ads-status-success-100: #c3ffe6;

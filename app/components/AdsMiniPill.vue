@@ -1,6 +1,6 @@
 <template>
   <span
-    class="inline-flex h-[18px] shrink-0 items-center justify-center rounded-full px-2 py-1 text-[10px] font-bold leading-[1.1] whitespace-nowrap"
+    class="inline-flex h-[var(--ads-mini-height)] shrink-0 items-center justify-center rounded-full px-[var(--ads-mini-padding-x)] py-1 text-[length:var(--ads-mini-font-size)] [font-weight:var(--ads-mini-weight)] leading-[1.1] whitespace-nowrap"
     :class="surfaceClass"
   >
     {{ resolvedLabel }}
@@ -24,9 +24,9 @@ const props = withDefaults(
 );
 
 const surfaces: Record<AdsMiniPillType, string> = {
-  "nao-iniciado": "bg-[#d1d9ed] text-[#18224b]",
-  pausado: "bg-[#ffe7b9] text-[#8f6600]",
-  novo: "bg-[#79e9ff] text-[#006478]",
+  "nao-iniciado": "bg-[var(--ads-mini-idle-bg)] text-[var(--ads-mini-idle-text)]",
+  pausado: "bg-[var(--ads-mini-paused-bg)] text-[var(--ads-mini-paused-text)]",
+  novo: "bg-[var(--ads-mini-new-bg)] text-[var(--ads-mini-new-text)]",
 };
 
 const labels: Record<AdsMiniPillType, string> = {

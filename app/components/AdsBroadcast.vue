@@ -1,12 +1,12 @@
 <template>
   <span
-    class="inline-flex h-6 shrink-0 items-center gap-1 overflow-hidden rounded-full border px-2 py-1"
+    class="inline-flex h-[var(--ads-broadcast-height)] shrink-0 items-center gap-1 overflow-hidden rounded-full border px-[var(--ads-broadcast-padding-x)] py-1"
     :class="surface.shell"
   >
     <span class="flex size-3.5 shrink-0 items-center justify-center" aria-hidden="true">
-      <span class="size-2 rounded-full" :class="surface.mark" />
+      <span class="size-[var(--ads-broadcast-mark)] rounded-full" :class="surface.mark" />
     </span>
-    <span class="text-xs font-bold leading-[1.2] whitespace-nowrap" :class="surface.label">
+    <span class="text-[length:var(--ads-broadcast-font-size)] font-bold leading-[1.2] whitespace-nowrap" :class="surface.label">
       {{ label }}
     </span>
   </span>
@@ -30,14 +30,14 @@ const props = withDefaults(
 
 const surfaces: Record<AdsBroadcastStatus, { shell: string; mark: string; label: string }> = {
   warning: {
-    shell: "border-[#dc0034] bg-[#ffbdcd]",
-    mark: "bg-[#dc0034]",
-    label: "text-[#dc0034]",
+    shell: "border-[var(--ads-broadcast-warning)] bg-[var(--ads-broadcast-warning-bg)]",
+    mark: "bg-[var(--ads-broadcast-warning)]",
+    label: "text-[var(--ads-broadcast-warning)]",
   },
   success: {
-    shell: "border-[#15c57e] bg-[#c3ffe6]",
-    mark: "bg-[#15c57e]",
-    label: "text-[#15c57e]",
+    shell: "border-[var(--ads-broadcast-success)] bg-[var(--ads-broadcast-success-bg)]",
+    mark: "bg-[var(--ads-broadcast-success)]",
+    label: "text-[var(--ads-broadcast-success)]",
   },
 };
 

@@ -2,7 +2,7 @@
   <div class="flex w-full min-w-0 flex-col gap-0.5">
     <div
       v-if="label"
-      class="flex items-center gap-0.5 text-xs leading-[1.2]"
+      class="flex items-center gap-0.5 text-[length:var(--ads-input-label-size)] leading-[1.2]"
       :class="supportClass"
     >
       <label :for="fieldId">{{ label }}</label>
@@ -14,7 +14,7 @@
     </div>
 
     <div
-      class="flex h-10 items-center gap-2 rounded-[var(--ads-radius-sm)] px-3"
+      class="flex h-[var(--ads-input-height)] items-center gap-[var(--ads-input-gap)] rounded-[var(--ads-input-radius)] px-[var(--ads-input-padding-x)]"
       :class="fieldClass"
       :data-state="visualState"
     >
@@ -22,7 +22,7 @@
         :id="fieldId"
         :value="displayValue"
         :type="type"
-        class="min-w-0 flex-1 bg-transparent text-sm leading-[1.3] outline-none placeholder:text-current disabled:cursor-not-allowed"
+        class="min-w-0 flex-1 bg-transparent text-[length:var(--ads-input-font-size)] leading-[1.3] outline-none placeholder:text-current disabled:cursor-not-allowed"
         :class="type === 'number' ? '[appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none' : undefined"
         :placeholder="placeholder"
         :disabled="isDisabled"
@@ -34,7 +34,7 @@
         @focus="emit('focus', $event)"
         @blur="emit('blur', $event)"
       >
-      <span v-if="suffix" class="shrink-0 text-sm leading-[1.3]">{{ suffix }}</span>
+      <span v-if="suffix" class="shrink-0 text-[length:var(--ads-input-font-size)] leading-[1.3]">{{ suffix }}</span>
       <UIcon v-if="icon" :name="icon" class="size-4 shrink-0 text-base" />
     </div>
 
@@ -123,21 +123,21 @@ const supportClass = computed(() =>
 const fieldClass = computed(() => {
   const interactiveFocus = props.state === null && !isDisabled.value && !props.error;
   const focus = interactiveFocus
-    ? "focus-within:border-(length:--ads-border-width-slim) focus-within:border-[var(--color-primary-400)]"
+    ? "focus-within:border-(length:--ads-border-width-slim) focus-within:border-[var(--ads-input-focus-border)]"
     : "";
 
   if (visualState.value === "disabled") {
-    return "border border-[var(--ads-text-tertiary)] bg-neutral-100 text-[var(--ads-text-tertiary)]";
+    return "border border-[var(--ads-input-disabled-border)] bg-[var(--ads-input-disabled-background)] text-[var(--ads-input-disabled-text)]";
   }
   if (visualState.value === "error") {
-    return `border-(length:--ads-border-width-slim) border-[var(--color-error-300)] bg-[var(--ads-surface-card)] text-[var(--ads-text-secondary)] ${focus}`;
+    return `border-(length:--ads-border-width-slim) border-[var(--ads-input-error-border)] bg-[var(--ads-input-background)] text-[var(--ads-input-text)] ${focus}`;
   }
   if (visualState.value === "focus") {
-    return "border-(length:--ads-border-width-slim) border-[var(--color-primary-400)] bg-[var(--ads-surface-card)] text-[var(--ads-text-secondary)]";
+    return "border-(length:--ads-border-width-slim) border-[var(--ads-input-focus-border)] bg-[var(--ads-input-background)] text-[var(--ads-input-text)]";
   }
   if (visualState.value === "ai") {
     return "border border-[#7358cc] bg-[#f3f0ff] text-[var(--ads-text-secondary)]";
   }
-  return `border border-[var(--ads-border-subtle)] bg-[var(--ads-surface-card)] text-[var(--ads-text-secondary)] ${focus}`;
+  return `border border-[var(--ads-input-border)] bg-[var(--ads-input-background)] text-[var(--ads-input-text)] ${focus}`;
 });
 </script>

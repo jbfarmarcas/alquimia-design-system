@@ -144,9 +144,9 @@ const popoverReference = computed(() => {
 });
 
 const rangeFieldClass = computed(() => [
-  "group relative inline-flex w-full cursor-pointer items-center rounded-md text-left transition-colors",
-  "h-10 px-3 text-sm text-highlighted bg-default ring ring-inset ring-accented",
-  "hover:ring-primary focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary",
+  "group relative inline-flex w-full cursor-pointer items-center text-left transition-colors",
+  "h-[var(--ads-date-height)] rounded-[var(--ads-date-radius)] px-[var(--ads-date-padding-x)] text-[length:var(--ads-date-font-size)] [font-weight:var(--ads-date-weight)] leading-[var(--ads-date-line-height)] text-[var(--ads-date-text)] bg-[var(--ads-date-background)] ring ring-inset ring-[var(--ads-date-border)]",
+  "hover:ring-[var(--ads-date-focus-border)] focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--ads-date-focus-border)]",
   "disabled:cursor-not-allowed disabled:opacity-75",
   props.class,
 ]);
@@ -292,11 +292,11 @@ function isDateUnavailable(date: CalendarDate) {
     >
       <span
         class="min-w-0 flex-1 truncate tabular-nums"
-        :class="start || end ? 'text-highlighted' : 'text-dimmed'"
+        :class="start || end ? 'text-[var(--ads-date-text)]' : 'text-[var(--ads-date-placeholder)]'"
       >
         {{ rangeDisplayText }}
       </span>
-      <UIcon name="i-lucide-calendar" class="size-5 shrink-0 text-dimmed" />
+      <UIcon name="i-lucide-calendar" class="size-5 shrink-0 text-[var(--ads-date-placeholder)]" />
     </button>
 
     <template #content="{ close }">

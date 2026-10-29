@@ -3,7 +3,7 @@
     <p
       v-if="label"
       :id="labelId"
-      class="text-xs leading-[1.2] text-[var(--ads-text-secondary)]"
+      class="text-[length:var(--ads-filter-label-size)] leading-[1.2] text-[var(--ads-text-secondary)]"
     >
       {{ label }}
     </p>
@@ -16,7 +16,7 @@
     >
       <button
         type="button"
-        class="flex h-10 max-w-full items-center gap-0.5 rounded-[var(--ads-radius-sm)] px-3 text-sm leading-[1.3] focus-visible:border-(length:--ads-border-width-slim) focus-visible:border-[var(--ads-text-brand)] focus-visible:outline-none disabled:cursor-not-allowed"
+        class="flex h-[var(--ads-filter-height)] max-w-full items-center gap-0.5 rounded-[var(--ads-filter-radius)] px-[var(--ads-filter-padding-x)] text-[length:var(--ads-filter-font-size)] leading-[1.3] focus-visible:border-(length:--ads-border-width-slim) focus-visible:border-[var(--ads-filter-focus-border)] focus-visible:outline-none disabled:cursor-not-allowed"
         :class="[fieldClass, block ? 'w-full justify-between' : 'w-fit']"
         :disabled="disabled"
         :data-state="fieldState"
@@ -62,7 +62,7 @@
     <p
       v-if="supportText"
       :id="supportId"
-      class="text-xs leading-[1.2] text-[var(--ads-text-secondary)]"
+      class="text-[length:var(--ads-filter-label-size)] leading-[1.2] text-[var(--ads-text-secondary)]"
     >
       {{ supportText }}
     </p>
@@ -146,18 +146,15 @@ const fieldState = computed(() => {
 
 const fieldClass = computed(() => {
   if (fieldState.value === "disabled") {
-    return "border border-[var(--ads-neutral-mid-60)] bg-neutral-100 text-[var(--ads-text-tertiary)]";
+    return "border border-[var(--ads-filter-disabled-border)] bg-[var(--ads-filter-disabled-background)] text-[var(--ads-filter-disabled-text)]";
   }
   if (fieldState.value === "error") {
-    return "border-(length:--ads-border-width-slim) border-[var(--color-error-300)] bg-[var(--ads-surface-card)] text-[var(--ads-text-secondary)]";
+    return "border-(length:--ads-border-width-slim) border-[var(--ads-filter-error-border)] bg-[var(--ads-filter-background)] text-[var(--ads-filter-text)]";
   }
   if (fieldState.value === "open") {
-    return "border-(length:--ads-border-width-slim) border-[var(--ads-text-brand)] bg-[var(--ads-surface-card)] text-[var(--ads-text-secondary)]";
+    return "border-(length:--ads-border-width-slim) border-[var(--ads-filter-focus-border)] bg-[var(--ads-filter-background)] text-[var(--ads-filter-text)]";
   }
-  if (fieldState.value === "selected") {
-    return "border border-[var(--ads-text-secondary)] bg-[var(--ads-surface-card)] text-[var(--ads-text-secondary)]";
-  }
-  return "border border-[var(--ads-text-secondary)] bg-[var(--ads-surface-card)] text-[var(--ads-text-secondary)]";
+  return "border border-[var(--ads-filter-border)] bg-[var(--ads-filter-background)] text-[var(--ads-filter-text)]";
 });
 
 const triggerLabel = computed(() =>

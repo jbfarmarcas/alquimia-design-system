@@ -33,7 +33,7 @@
     </div>
 
     <div
-      class="h-2 w-full overflow-hidden rounded-full bg-neutral-200"
+      class="h-[var(--ads-progress-height)] w-full overflow-hidden rounded-[var(--ads-progress-radius)] bg-[var(--ads-progress-track)]"
       role="progressbar"
       :aria-valuenow="indeterminate ? undefined : percentClamped"
       aria-valuemin="0"
@@ -119,7 +119,7 @@ const percentClamped = computed(() =>
 const fillClass = computed(() => {
   if (props.variant === "success") return "bg-success-500";
   if (props.variant === "error") return "bg-error-500";
-  return "bg-primary-500";
+  return "bg-[var(--ads-progress-fill)]";
 });
 
 const effectiveAriaLabel = computed(

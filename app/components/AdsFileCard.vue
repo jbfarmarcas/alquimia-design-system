@@ -1,12 +1,12 @@
 <template>
   <div
-    class="flex min-h-16 flex-col justify-center gap-2 rounded-[var(--ads-radius-sm)] border px-4 py-3"
+    class="flex min-h-[var(--ads-file-min-height)] flex-col justify-center gap-2 rounded-[var(--ads-file-radius)] border px-[var(--ads-file-padding-x)] py-[var(--ads-file-padding-y)]"
     :class="surface.card"
     :role="status === 'error' ? 'alert' : 'status'"
   >
     <p
       v-if="message"
-      class="text-sm font-semibold leading-5"
+      class="text-[length:var(--ads-file-title-size)] font-semibold leading-5"
       :class="surface.message"
     >
       {{ message }}
@@ -14,7 +14,7 @@
     <div class="flex items-center justify-between gap-3">
       <div class="flex min-w-0 items-center gap-2">
         <span
-          class="inline-flex size-8 shrink-0 items-center justify-center rounded-[var(--ads-radius-sm)]"
+          class="inline-flex size-[var(--ads-file-icon-box)] shrink-0 items-center justify-center rounded-[var(--ads-file-radius)]"
           :class="surface.icon"
           aria-hidden="true"
         >
@@ -22,13 +22,13 @@
         </span>
         <div class="min-w-0">
           <InvertedTooltip :text="name">
-            <p class="truncate text-sm font-semibold leading-5 text-[var(--ads-text-primary)]">
+            <p class="truncate text-[length:var(--ads-file-title-size)] font-semibold leading-5 text-[var(--ads-text-primary)]">
               {{ name }}
             </p>
           </InvertedTooltip>
           <p
             v-if="detail"
-            class="text-xs font-normal leading-4 text-[var(--ads-text-secondary)]"
+            class="text-[length:var(--ads-file-detail-size)] font-normal leading-4 text-[var(--ads-text-secondary)]"
           >
             {{ detail }}
           </p>

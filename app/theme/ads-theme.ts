@@ -138,10 +138,14 @@ export const adsInputTheme = {
 };
 
 export const adsInputDateTheme = {
+  slots: {
+    segment:
+      "data-placeholder:![color:var(--ads-date-placeholder)] data-[segment=literal]:![color:var(--ads-date-separator)]",
+  },
   variants: {
     size: {
       md: {
-        base: "h-10 px-3 text-sm gap-1.5 w-full",
+        base: "h-[var(--ads-date-height)] rounded-[var(--ads-date-radius)] px-[var(--ads-date-padding-x)] text-[length:var(--ads-date-font-size)] [font-weight:var(--ads-date-weight)] !leading-[var(--ads-date-line-height)] gap-1.5 w-full ![color:var(--ads-date-text)] !bg-[var(--ads-date-background)] !ring-[var(--ads-date-border)] has-focus-visible:!ring-[var(--ads-date-focus-border)]",
       },
     },
   },
@@ -154,10 +158,10 @@ export const adsInputDateTheme = {
  */
 export const adsLinkTabsUi = {
   root: "items-start",
-  list: "h-[38px] w-full items-start self-stretch border-b border-neutral-300 py-0 px-0",
+  list: "h-[var(--ads-tabs-height)] w-full items-start self-stretch border-b border-[var(--ads-tabs-border)] py-0 px-0",
   trigger:
-    "h-[38px] grow-0 px-3 py-0 text-sm font-medium leading-[1.3] text-neutral-700 data-[state=inactive]:text-neutral-700 data-[state=active]:font-bold data-[state=active]:text-neutral-950",
-  indicator: "-bottom-px h-1 rounded-none bg-primary",
+    "h-[var(--ads-tabs-height)] grow-0 px-[var(--ads-tabs-padding-x)] py-0 text-[length:var(--ads-tabs-font-size)] [font-weight:var(--ads-tabs-weight)] leading-[1.3] text-[var(--ads-tabs-inactive)] data-[state=inactive]:text-[var(--ads-tabs-inactive)] data-[state=active]:font-bold data-[state=active]:text-[var(--ads-tabs-active)]",
+  indicator: "-bottom-px h-[var(--ads-tabs-indicator)] rounded-none bg-[var(--ads-tabs-indicator-color)]",
 } as const;
 
 /**
@@ -167,11 +171,11 @@ export const adsLinkTabsUi = {
  */
 export const adsSegmentedTabsUi = {
   root: "!w-auto shrink-0",
-  list: "!h-[37px] !w-auto !self-start !items-center !gap-1 !rounded-[var(--ads-radius-xsm)] !border-0 !bg-neutral-100 !p-1",
+  list: "!h-[var(--ads-segmented-height)] !w-auto !self-start !items-center !gap-1 !rounded-[var(--ads-segmented-radius)] !border-0 !bg-[var(--ads-segmented-track)] !p-1",
   trigger:
-    "!h-[29px] !grow-0 !gap-3 !rounded-[var(--ads-radius-xsm)] !px-4 !py-0 !text-[length:var(--ads-font-size-xxxs)] !font-normal !leading-[var(--ads-line-height-sm)] !text-neutral-950 data-[state=inactive]:!text-neutral-950 data-[state=active]:!font-bold data-[state=active]:!text-black",
+    "!h-[var(--ads-segmented-item-height)] !grow-0 !gap-3 !rounded-[var(--ads-segmented-radius)] !px-[var(--ads-segmented-padding-x)] !py-0 !text-[length:var(--ads-segmented-font-size)] !font-normal !leading-[var(--ads-line-height-sm)] !text-[var(--ads-segmented-text)] data-[state=inactive]:!text-[var(--ads-segmented-text)] data-[state=active]:!font-bold data-[state=active]:!text-[var(--ads-segmented-active-text)]",
   indicator:
-    "!rounded-[var(--ads-radius-xsm)] !bg-[var(--ads-surface-card)] !shadow-[var(--ads-shadow-level-1)]",
+    "!rounded-[var(--ads-segmented-radius)] !bg-[var(--ads-segmented-active-bg)] !shadow-[var(--ads-shadow-level-1)]",
 } as const;
 
 /**
@@ -248,13 +252,13 @@ export const adsCalendarTheme = {
  * Tooltip ADS (Figma node 5720:10263).
  * Fundo DA-900, título branco em negrito, corpo LI-50, raio MD (12px).
  */
-export const adsTooltipTitleClass = "font-bold text-white";
+export const adsTooltipTitleClass = "font-bold text-[var(--ads-tooltip-title)]";
 
 export const adsTooltipTheme = {
   slots: {
     content:
-      "flex items-start gap-1 h-auto max-w-xs rounded-[var(--ads-radius-md)] bg-neutral-950 px-4 py-3 text-sm leading-[1.4] text-neutral-300 shadow-none ring-0 select-none data-[state=delayed-open]:animate-[scale-in_100ms_ease-out] data-[state=closed]:animate-[scale-out_100ms_ease-in] origin-(--reka-tooltip-content-transform-origin) pointer-events-auto",
-    arrow: "fill-neutral-950",
+      "flex items-start gap-1 h-auto max-w-xs rounded-[var(--ads-tooltip-radius)] bg-[var(--ads-tooltip-bg)] px-[var(--ads-tooltip-padding-x)] py-[var(--ads-tooltip-padding-y)] text-[length:var(--ads-tooltip-font-size)] leading-[1.4] text-[var(--ads-tooltip-text)] shadow-none ring-0 select-none data-[state=delayed-open]:animate-[scale-in_100ms_ease-out] data-[state=closed]:animate-[scale-out_100ms_ease-in] origin-(--reka-tooltip-content-transform-origin) pointer-events-auto",
+    arrow: "fill-[var(--ads-tooltip-bg)]",
     text: "whitespace-normal",
   },
 };
@@ -262,8 +266,8 @@ export const adsTooltipTheme = {
 /** Mesmo visual para tooltips feitas com UPopover em hover. */
 export const adsTooltipPopoverUi = {
   content:
-    "h-auto max-w-xs rounded-[var(--ads-radius-md)] bg-neutral-950 px-4 py-3 text-sm leading-[1.4] text-neutral-300 shadow-none ring-0 data-[state=open]:animate-[scale-in_100ms_ease-out] data-[state=closed]:animate-[scale-out_100ms_ease-in] origin-(--reka-popover-content-transform-origin)",
-  arrow: "fill-neutral-950",
+    "h-auto max-w-xs rounded-[var(--ads-tooltip-radius)] bg-[var(--ads-tooltip-bg)] px-[var(--ads-tooltip-padding-x)] py-[var(--ads-tooltip-padding-y)] text-[length:var(--ads-tooltip-font-size)] leading-[1.4] text-[var(--ads-tooltip-text)] shadow-none ring-0 data-[state=open]:animate-[scale-in_100ms_ease-out] data-[state=closed]:animate-[scale-out_100ms_ease-in] origin-(--reka-popover-content-transform-origin)",
+  arrow: "fill-[var(--ads-tooltip-bg)]",
 };
 
 /**

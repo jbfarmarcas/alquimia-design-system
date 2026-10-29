@@ -3,7 +3,7 @@
     :is="as"
     :type="as === 'button' ? 'button' : undefined"
     :disabled="as === 'button' ? disabled : undefined"
-    class="h-full border p-4 text-left"
+    class="h-full border p-[var(--ads-card-padding)] text-left"
     :class="[radiusClass, surfaceClass]"
   >
     <div
@@ -12,7 +12,7 @@
     >
       <div class="min-w-0 flex-1">
         <slot name="header">
-          <p class="flex items-center justify-between gap-2 font-bold text-[var(--ads-text-primary)]">
+          <p class="flex items-center justify-between gap-2 font-bold text-[var(--ads-card-title)]">
             <span class="min-w-0">{{ title }}</span>
             <slot name="hint" />
           </p>
@@ -28,7 +28,7 @@
       :class="showHeader ? 'mt-2' : undefined"
     >
       <slot>
-        <p class="text-sm leading-relaxed text-[var(--ads-text-secondary)]">
+        <p class="text-[length:var(--ads-card-body-size)] leading-relaxed text-[var(--ads-card-body)]">
           {{ description }}
         </p>
       </slot>
@@ -77,15 +77,15 @@ const props = withDefaults(
 
 const radiusClass = computed(() =>
   props.radius === "sm"
-    ? "rounded-[var(--ads-radius-sm)]"
-    : "rounded-[var(--ads-radius-md)]",
+    ? "rounded-[var(--ads-card-radius-sm)]"
+    : "rounded-[var(--ads-card-radius)]",
 );
 
 const surfaceClass = computed(() => {
   const classes = [
     props.selected
-      ? "border-[var(--color-neutral-300)] bg-[var(--color-neutral-100)]"
-      : "border-[var(--ads-border-subtle)] bg-[var(--ads-surface-card)]",
+      ? "border-[var(--ads-card-selected-border)] bg-[var(--ads-card-selected-background)]"
+      : "border-[var(--ads-card-border)] bg-[var(--ads-card-background)]",
   ];
 
   if (props.as === "button") {

@@ -1,8 +1,8 @@
 <template>
   <div class="flex w-full min-w-0 flex-col gap-0.5">
     <div
-      class="flex items-center gap-2 rounded-[var(--ads-radius-pill)] px-3"
-      :class="[fieldClass, size === 'sm' ? 'h-10' : 'h-[45px]']"
+      class="flex items-center gap-2 rounded-[var(--ads-search-radius)] px-[var(--ads-search-padding-x)]"
+      :class="[fieldClass, size === 'sm' ? 'h-[var(--ads-search-sm-height)]' : 'h-[var(--ads-search-md-height)]']"
       :data-state="visualState"
     >
       <UIcon :name="icon" :class="iconClass" />
@@ -11,7 +11,7 @@
         type="search"
         autocomplete="off"
         class="min-w-0 flex-1 bg-transparent leading-[1.3] outline-none placeholder:text-current disabled:cursor-not-allowed [&::-webkit-search-cancel-button]:hidden"
-        :class="size === 'sm' ? 'text-sm' : 'text-base'"
+        :class="size === 'sm' ? 'text-[length:var(--ads-search-sm-font-size)]' : 'text-[length:var(--ads-search-md-font-size)]'"
         :placeholder="placeholder"
         :disabled="isDisabled"
         :aria-label="ariaLabel || placeholder"
@@ -95,19 +95,19 @@ const hintClass = computed(() => {
 
 const fieldClass = computed(() => {
   const tone = visualState.value === "default" || visualState.value === "disabled"
-    ? "text-[var(--ads-text-tertiary)]"
-    : "text-[var(--ads-text-secondary)]";
+    ? "text-[var(--ads-search-placeholder)]"
+    : "text-[var(--ads-search-text)]";
   const interactiveFocus = props.state === null && !isDisabled.value;
   const focus = interactiveFocus
-    ? "focus-within:border-(length:--ads-border-width-slim) focus-within:border-[var(--ads-text-brand)]"
+    ? "focus-within:border-(length:--ads-border-width-slim) focus-within:border-[var(--ads-search-focus-border)]"
     : "";
 
   if (visualState.value === "disabled") {
-    return `border border-[var(--ads-text-tertiary)] bg-neutral-100 ${tone}`;
+    return `border border-[var(--ads-search-disabled-border)] bg-[var(--ads-search-disabled-background)] ${tone}`;
   }
   if (visualState.value === "focus") {
-    return `border-(length:--ads-border-width-slim) border-[var(--ads-text-brand)] bg-[var(--ads-surface-card)] ${tone}`;
+    return `border-(length:--ads-border-width-slim) border-[var(--ads-search-focus-border)] bg-[var(--ads-search-background)] ${tone}`;
   }
-  return `border border-[var(--ads-border-subtle)] bg-[var(--ads-surface-card)] ${tone} ${focus}`;
+  return `border border-[var(--ads-search-border)] bg-[var(--ads-search-background)] ${tone} ${focus}`;
 });
 </script>

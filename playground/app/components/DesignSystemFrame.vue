@@ -122,6 +122,8 @@ const props = defineProps<{
   sections: readonly { id: string; label: string }[];
 }>();
 
+import { componentTokenCatalog } from "../../../app/theme/component-tokens";
+
 const activeId = defineModel<string>("activeId", { default: "" });
 
 const route = useRoute();
@@ -205,6 +207,15 @@ const pages: readonly DocsPage[] = [
       { id: "modal", label: "Modal" },
       { id: "card", label: "Card" },
     ],
+  },
+  {
+    label: "Tokens",
+    to: "/design-system/tokens",
+    icon: "i-lucide-palette",
+    children: componentTokenCatalog.map((component) => ({
+      id: component.section,
+      label: component.label,
+    })),
   },
   {
     label: "Tabelas",

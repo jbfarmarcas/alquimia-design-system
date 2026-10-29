@@ -452,7 +452,7 @@ export const docsApis = {
         prop("title", "string", "obrigatória", "Título do fluxo."),
         prop("description", "string", "obrigatória", "Texto de apoio. Se cortar, ganha tooltip."),
         prop("icon", "string", "obrigatória", "Ícone Lucide."),
-        prop("color", "primary | success | attention | warning | new | blocked | innovation", "primary", "Cor do ícone, a mesma do pill secondary."),
+        prop("color", "primary | success | attention | warning | new | blocked | innovation", "primary", "Cor do ícone, da seta e da borda. O ícone segue o pill secondary."),
         prop("to", "RouteLocationRaw", "—", "Vira link. Sem valor, continua botão."),
         prop("disabled", "boolean", "false", "Fluxo ainda indisponível."),
         prop("badges", "{ label: string; tone?: AdsPillTone; status?: AdsPillStatus }[]", "—", "Pílulas do rodapé."),

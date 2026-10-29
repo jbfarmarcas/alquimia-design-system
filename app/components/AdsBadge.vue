@@ -1,13 +1,13 @@
 <template>
   <span
     v-if="mini"
-    class="inline-block size-2 shrink-0 rounded-full"
+    class="inline-block size-[var(--ads-badge-dot)] shrink-0 rounded-full"
     :class="surfaceClass"
     aria-hidden="true"
   />
   <span
     v-else
-    class="inline-flex size-6 shrink-0 items-center justify-center overflow-hidden rounded-full px-[5px] py-1 text-xs font-bold leading-4"
+    class="inline-flex size-[var(--ads-badge-size)] shrink-0 items-center justify-center overflow-hidden rounded-full px-[5px] py-1 text-[length:var(--ads-badge-font-size)] [font-weight:var(--ads-badge-weight)] leading-4"
     :class="surfaceClass"
   >
     {{ value }}
@@ -35,13 +35,13 @@ const props = withDefaults(
 );
 
 const surfaces: Record<AdsBadgeColor, string> = {
-  primary: "bg-[var(--ads-surface-brand)] text-white",
-  success: "bg-[var(--ads-status-success-500)] text-white",
-  attention: "bg-[var(--ads-status-attention-500)] text-white",
-  warning: "bg-[var(--ads-status-warning-500)] text-white",
-  new: "bg-[var(--ads-status-new-500)] text-white",
+  primary: "bg-[var(--ads-surface-brand)] text-[var(--ads-badge-text)]",
+  success: "bg-[var(--ads-status-success-500)] text-[var(--ads-badge-text)]",
+  attention: "bg-[var(--ads-status-attention-500)] text-[var(--ads-badge-text)]",
+  warning: "bg-[var(--ads-status-warning-500)] text-[var(--ads-badge-text)]",
+  new: "bg-[var(--ads-status-new-500)] text-[var(--ads-badge-text)]",
   innovation: "bg-[#fde3ff] text-[var(--ads-chart-data-1-800)]",
-  blocked: "bg-[var(--ads-status-void-800)] text-white",
+  blocked: "bg-[var(--ads-status-void-800)] text-[var(--ads-badge-text)]",
 };
 
 const surfaceClass = computed(() => surfaces[props.color]);

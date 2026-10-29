@@ -2,7 +2,7 @@
   <div
     class="w-[270px] overflow-hidden rounded-[var(--ads-radius-sm)] border border-[var(--ads-border-subtle)] bg-[var(--ads-surface-card)] shadow-[var(--ads-shadow-level-1)]"
   >
-    <div v-if="searchable" class="px-4 pt-4">
+    <div v-if="searchable" class="px-4 pt-4 pb-2">
       <UInput
         v-model="query"
         :placeholder="searchPlaceholder"
@@ -165,7 +165,7 @@ const onSelectAll = () => {
  * Busca do painel ADS: pílula.
  */
 const searchFieldUi = {
-  base: "h-10 rounded-[var(--ads-radius-pill)] bg-[var(--ads-surface-card)] text-sm text-[var(--ads-text-secondary)] ring-1 ring-inset ring-[var(--ads-border-subtle)] placeholder:text-[var(--ads-text-tertiary)] focus-visible:ring-2 focus-visible:ring-[var(--ads-text-brand)]",
+  base: "h-10 rounded-[var(--ads-radius-pill)] bg-[var(--ads-surface-card)] text-sm text-[var(--ads-text-secondary)] !outline-none ring-1 ring-inset ring-[var(--ads-border-subtle)] placeholder:text-[var(--ads-text-tertiary)] focus-visible:!outline-none focus-visible:ring-2 focus-visible:ring-[var(--ads-text-brand)]",
   leadingIcon: "text-[var(--ads-text-tertiary)]",
 };
 </script>

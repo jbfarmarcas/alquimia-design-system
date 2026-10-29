@@ -2,7 +2,7 @@
   <component
     :is="to ? NuxtLink : 'button'"
     v-bind="rootAttrs"
-    class="inline-flex items-center justify-center overflow-hidden rounded-[var(--ads-radius-sm)] font-bold whitespace-nowrap transition-colors duration-150 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed"
+    class="inline-flex items-center justify-center overflow-hidden rounded-[var(--ads-button-radius)] [font-weight:var(--ads-button-weight)] whitespace-nowrap transition-colors duration-150 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed"
     :class="[sizeClass, faceClass, focusClass, to && isDisabled ? 'pointer-events-none' : '']"
     @click="onRootClick"
   >
@@ -97,14 +97,20 @@ const onRootClick = (event: MouseEvent) => {
 };
 
 const sizeClass = computed(() => {
-  if (iconOnly.value) return props.size === "sm" ? "size-8 shrink-0" : "size-10 shrink-0";
+  if (iconOnly.value) {
+    return props.size === "sm"
+      ? "size-[var(--ads-button-sm-icon-box)] shrink-0"
+      : "size-[var(--ads-button-md-icon-box)] shrink-0";
+  }
   return props.size === "sm"
-    ? "h-8 gap-2 px-3 text-xs leading-[1.2]"
-    : "gap-2 px-4 py-3 text-sm leading-[1.3]";
+    ? "h-[var(--ads-button-sm-height)] gap-[var(--ads-button-sm-gap)] px-[var(--ads-button-sm-padding-x)] text-[length:var(--ads-button-sm-font-size)] leading-[var(--ads-button-sm-line-height)]"
+    : "gap-[var(--ads-button-md-gap)] px-[var(--ads-button-md-padding-x)] py-[var(--ads-button-md-padding-y)] text-[length:var(--ads-button-md-font-size)] leading-[var(--ads-button-md-line-height)]";
 });
 
 const iconClass = computed(() =>
-  props.size === "sm" ? "size-4 shrink-0 text-base" : "size-[18px] shrink-0 text-[18px]",
+  props.size === "sm"
+    ? "size-[var(--ads-button-sm-icon)] shrink-0 text-[length:var(--ads-button-sm-icon)]"
+    : "size-[var(--ads-button-md-icon)] shrink-0 text-[length:var(--ads-button-md-icon)]",
 );
 
 const faceClass = computed(() => faceFor(props.type, props.color, visualState()));
@@ -118,6 +124,8 @@ const visualState = (): AdsButtonState => {
 
 const contrast = "text-[var(--ads-text-contrast)]";
 const ink = "text-[var(--ads-text-primary)]";
+const filledPrimaryText = "text-[var(--ads-button-primary-text)]";
+const secondaryText = "text-[var(--ads-button-secondary-text)]";
 
 const focusFor: Record<AdsButtonColor, string> = {
   primary: "focus-visible:outline-[var(--ads-text-brand)]",
@@ -146,10 +154,10 @@ const primaryFace = (type: AdsButtonType, state: AdsButtonState) => {
 };
 
 const filledPrimary = (state: AdsButtonState) => {
-  if (state === "hover") return `bg-[var(--ads-button-primary-hover)] ${contrast}`;
-  if (state === "pressed") return `bg-[var(--ads-button-primary-pressed)] ${contrast}`;
-  if (state === "disabled") return `bg-[var(--ads-button-primary-disabled)] ${contrast}`;
-  return `bg-[var(--ads-button-primary)] ${contrast} hover:bg-[var(--ads-button-primary-hover)] active:bg-[var(--ads-button-primary-pressed)]`;
+  if (state === "hover") return `bg-[var(--ads-button-primary-hover)] ${filledPrimaryText}`;
+  if (state === "pressed") return `bg-[var(--ads-button-primary-pressed)] ${filledPrimaryText}`;
+  if (state === "disabled") return `bg-[var(--ads-button-primary-disabled)] ${filledPrimaryText}`;
+  return `bg-[var(--ads-button-primary)] ${filledPrimaryText} hover:bg-[var(--ads-button-primary-hover)] active:bg-[var(--ads-button-primary-pressed)]`;
 };
 
 const outlinePrimaryHover =
@@ -169,13 +177,13 @@ const unfilledPrimary = (state: AdsButtonState) => {
   return "text-[var(--ads-text-brand)] hover:text-[var(--ads-button-primary-hover)]";
 };
 
-const secondaryDisabled = `bg-[var(--ads-button-secondary-disabled)] ${contrast}`;
+const secondaryDisabled = "bg-[var(--ads-button-secondary-disabled)] text-[var(--ads-button-secondary-disabled-text)]";
 
 const secondaryPrimary = (state: AdsButtonState) => {
-  if (state === "hover") return "bg-[var(--ads-button-secondary-hover)] text-[var(--ads-text-brand)]";
-  if (state === "pressed") return "bg-[var(--ads-button-secondary-pressed)] text-[var(--ads-text-brand)]";
+  if (state === "hover") return `bg-[var(--ads-button-secondary-hover)] ${secondaryText}`;
+  if (state === "pressed") return `bg-[var(--ads-button-secondary-pressed)] ${secondaryText}`;
   if (state === "disabled") return secondaryDisabled;
-  return "bg-[var(--ads-button-secondary)] text-[var(--ads-text-brand)] hover:bg-[var(--ads-button-secondary-hover)] active:bg-[var(--ads-button-secondary-pressed)]";
+  return `bg-[var(--ads-button-secondary)] ${secondaryText} hover:bg-[var(--ads-button-secondary-hover)] active:bg-[var(--ads-button-secondary-pressed)]`;
 };
 
 /**
