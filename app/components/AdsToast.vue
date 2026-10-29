@@ -7,7 +7,8 @@
     <div class="flex min-w-0 flex-1 basis-full items-start gap-2 sm:basis-auto">
       <UIcon
         :name="resolvedIcon"
-        class="mt-0.5 size-[var(--ads-toast-icon)] shrink-0 text-[var(--ads-toast-text)]"
+        class="size-[var(--ads-toast-icon)] shrink-0"
+        :class="iconClass"
         aria-hidden="true"
       />
       <div class="min-w-0 flex-1">
@@ -95,6 +96,14 @@ const surfaceClass = computed(() => {
   if (props.status === "warning") return "bg-[var(--ads-toast-warning-bg)]";
   if (props.status === "neutral") return "bg-[var(--ads-toast-neutral-bg)]";
   return "bg-[var(--ads-toast-error-bg)]";
+});
+
+const iconClass = computed(() => {
+  if (props.status === "primary") return "text-[var(--ads-toast-primary-icon)]";
+  if (props.status === "success") return "text-[var(--ads-toast-success-icon)]";
+  if (props.status === "warning") return "text-[var(--ads-toast-warning-icon)]";
+  if (props.status === "neutral") return "text-[var(--ads-toast-neutral-icon)]";
+  return "text-[var(--ads-toast-error-icon)]";
 });
 
 const resolvedIcon = computed(() => {

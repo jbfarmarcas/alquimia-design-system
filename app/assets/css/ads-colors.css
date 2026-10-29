@@ -1,0 +1,246 @@
+/**
+ * Classes de cor do ADS. Gerado a partir de ads-color-swatches.ts e dos tokens semânticos do main.css.
+ * Paleta:    bg-ads-<grupo>-<passo>, text-ads-…, border-ads-…  (ex.: bg-ads-radar-pricing-500)
+ * Semântico: bg-ads-surface-card, text-ads-text-primary, border-ads-border-subtle, bg-ads-status-success-500
+ * "static" mantém as variáveis no CSS mesmo sem uso, para consumo por var(--color-ads-*).
+ */
+@theme static {
+  /* Radar Pricing */
+  --color-ads-radar-pricing-25: #e4f2ff;
+  --color-ads-radar-pricing-50: #c7e4ff;
+  --color-ads-radar-pricing-100: #89c9ff;
+  --color-ads-radar-pricing-200: #50b3ff;
+  --color-ads-radar-pricing-400: #0091ff;
+  --color-ads-radar-pricing-500: #006ff7;
+  --color-ads-radar-pricing-600: #074ac6;
+  --color-ads-radar-pricing-800: #00389e;
+
+  /* Radar Base */
+  --color-ads-radar-base-100: #3f4457;
+  --color-ads-radar-base-200: #2e3342;
+  --color-ads-radar-base-500: #212631;
+  --color-ads-radar-base-600: #1b2029;
+  --color-ads-radar-base-900: #161b22;
+
+  /* Neutro claro */
+  --color-ads-neutro-claro-0: #ffffff;
+  --color-ads-neutro-claro-10: #fafbfc;
+  --color-ads-neutro-claro-20: #f0f3f6;
+  --color-ads-neutro-claro-30: #e5e8eb;
+  --color-ads-neutro-claro-40: #d3d8dd;
+  --color-ads-neutro-claro-50: #c1c7d0;
+
+  /* Neutro médio */
+  --color-ads-neutro-medio-60: #b3bac5;
+  --color-ads-neutro-medio-70: #a5adba;
+  --color-ads-neutro-medio-80: #97a0af;
+  --color-ads-neutro-medio-90: #8993a4;
+  --color-ads-neutro-medio-100: #7a869a;
+  --color-ads-neutro-medio-200: #6b778c;
+  --color-ads-neutro-medio-300: #5e6c84;
+  --color-ads-neutro-medio-400: #505f79;
+
+  /* Neutro escuro */
+  --color-ads-neutro-escuro-500: #42526e;
+  --color-ads-neutro-escuro-600: #344563;
+  --color-ads-neutro-escuro-700: #253858;
+  --color-ads-neutro-escuro-800: #172b4d;
+  --color-ads-neutro-escuro-900: #061938;
+
+  /* Sucesso */
+  --color-ads-sucesso-100: #c3ffe6;
+  --color-ads-sucesso-200: #7fffcb;
+  --color-ads-sucesso-300: #32feaa;
+  --color-ads-sucesso-400: #06eb8f;
+  --color-ads-sucesso-500: #15c57e;
+  --color-ads-sucesso-600: #1c9f6a;
+  --color-ads-sucesso-700: #157850;
+  --color-ads-sucesso-800: #0e5a3b;
+
+  /* Warning */
+  --color-ads-warning-100: #ffbdcd;
+  --color-ads-warning-200: #ff87a4;
+  --color-ads-warning-300: #ff507a;
+  --color-ads-warning-400: #ef164a;
+  --color-ads-warning-500: #dc0034;
+  --color-ads-warning-600: #c0012e;
+  --color-ads-warning-700: #9e062a;
+  --color-ads-warning-800: #840221;
+
+  /* Atenção */
+  --color-ads-atencao-100: #ffe7b9;
+  --color-ads-atencao-200: #ffdc82;
+  --color-ads-atencao-300: #ffca43;
+  --color-ads-atencao-400: #ffb905;
+  --color-ads-atencao-500: #e9a700;
+  --color-ads-atencao-600: #ce9300;
+  --color-ads-atencao-700: #ad7b00;
+  --color-ads-atencao-800: #8f6600;
+
+  /* Inovação */
+  --color-ads-inovacao-100: #cabaff;
+  --color-ads-inovacao-200: #b19aff;
+  --color-ads-inovacao-300: #9e80ff;
+  --color-ads-inovacao-400: #825cff;
+  --color-ads-inovacao-500: #7349ff;
+  --color-ads-inovacao-600: #613dda;
+  --color-ads-inovacao-700: #4c30a8;
+  --color-ads-inovacao-800: #3c287c;
+
+  /* Oportunidade */
+  --color-ads-oportunidade-100: #c4f5ff;
+  --color-ads-oportunidade-200: #79e9ff;
+  --color-ads-oportunidade-300: #49d8f4;
+  --color-ads-oportunidade-400: #04c8ef;
+  --color-ads-oportunidade-500: #05b4d8;
+  --color-ads-oportunidade-600: #01a0bf;
+  --color-ads-oportunidade-700: #007a93;
+  --color-ads-oportunidade-800: #006478;
+
+  /* Void */
+  --color-ads-void-100: #cfdef3;
+  --color-ads-void-200: #b4c5df;
+  --color-ads-void-300: #91a2bb;
+  --color-ads-void-400: #738298;
+  --color-ads-void-500: #556171;
+  --color-ads-void-600: #3c434e;
+  --color-ads-void-700: #282c34;
+  --color-ads-void-800: #0e1013;
+
+  /* Gráfico C1 */
+  --color-ads-grafico-c1-100: #f8b4ff;
+  --color-ads-grafico-c1-200: #f58eff;
+  --color-ads-grafico-c1-300: #ee60fb;
+  --color-ads-grafico-c1-400: #e837f9;
+  --color-ads-grafico-c1-500: #cc1fdd;
+  --color-ads-grafico-c1-600: #b121be;
+  --color-ads-grafico-c1-700: #951fa0;
+  --color-ads-grafico-c1-800: #76197e;
+
+  /* Gráfico C3 */
+  --color-ads-grafico-c3-100: #ffb0b0;
+  --color-ads-grafico-c3-200: #ff8e8e;
+  --color-ads-grafico-c3-300: #ff7272;
+  --color-ads-grafico-c3-400: #f76565;
+  --color-ads-grafico-c3-500: #e46161;
+  --color-ads-grafico-c3-600: #cc5252;
+  --color-ads-grafico-c3-700: #b54444;
+  --color-ads-grafico-c3-800: #983a3a;
+
+  /* Gráfico C4 */
+  --color-ads-grafico-c4-100: #b6ffca;
+  --color-ads-grafico-c4-200: #86e7a2;
+  --color-ads-grafico-c4-300: #4bd973;
+  --color-ads-grafico-c4-400: #1ac44a;
+  --color-ads-grafico-c4-500: #24ab4a;
+  --color-ads-grafico-c4-600: #1c8f3d;
+  --color-ads-grafico-c4-700: #167130;
+  --color-ads-grafico-c4-800: #115825;
+
+  /* Gráfico C5 */
+  --color-ads-grafico-c5-100: #a2baff;
+  --color-ads-grafico-c5-200: #8ca5ee;
+  --color-ads-grafico-c5-300: #768dd0;
+  --color-ads-grafico-c5-400: #677bb6;
+  --color-ads-grafico-c5-500: #546596;
+  --color-ads-grafico-c5-600: #445279;
+  --color-ads-grafico-c5-700: #374261;
+  --color-ads-grafico-c5-800: #252c41;
+
+  /* Produtos Radar */
+  --color-ads-produtos-radar-1: #ef7d18;
+  --color-ads-produtos-radar-2: #07509f;
+  --color-ads-produtos-radar-3: #009159;
+  --color-ads-produtos-radar-4: #5a2d87;
+  --color-ads-produtos-radar-5: #ff5410;
+  --color-ads-produtos-radar-6: #050505;
+  --color-ads-produtos-radar-7: #c2113b;
+  --color-ads-produtos-radar-8: #8c6bfa;
+  --color-ads-produtos-radar-9: #0091ff;
+  --color-ads-produtos-radar-10: #8b89c9;
+  --color-ads-produtos-radar-11: #007a93;
+
+  /* Semânticos (apontam para as variáveis --ads-* do :root) */
+  --color-ads-border-width-none: var(--ads-border-width-none);
+  --color-ads-border-width-hairline: var(--ads-border-width-hairline);
+  --color-ads-border-width-slim: var(--ads-border-width-slim);
+  --color-ads-border-width-thin: var(--ads-border-width-thin);
+  --color-ads-border-width-thick: var(--ads-border-width-thick);
+  --color-ads-border-width-heavy: var(--ads-border-width-heavy);
+  --color-ads-surface-main: var(--ads-surface-main);
+  --color-ads-surface-card: var(--ads-surface-card);
+  --color-ads-surface-brand: var(--ads-surface-brand);
+  --color-ads-text-primary: var(--ads-text-primary);
+  --color-ads-text-secondary: var(--ads-text-secondary);
+  --color-ads-text-tertiary: var(--ads-text-tertiary);
+  --color-ads-text-brand: var(--ads-text-brand);
+  --color-ads-text-disabled: var(--ads-text-disabled);
+  --color-ads-text-contrast: var(--ads-text-contrast);
+  --color-ads-border-subtle: var(--ads-border-subtle);
+  --color-ads-border-focused: var(--ads-border-focused);
+  --color-ads-border-icon: var(--ads-border-icon);
+  --color-ads-border-icon-support: var(--ads-border-icon-support);
+  --color-ads-status-success-800: var(--ads-status-success-800);
+  --color-ads-status-success-500: var(--ads-status-success-500);
+  --color-ads-status-success-100: var(--ads-status-success-100);
+  --color-ads-status-warning-800: var(--ads-status-warning-800);
+  --color-ads-status-warning-500: var(--ads-status-warning-500);
+  --color-ads-status-warning-100: var(--ads-status-warning-100);
+  --color-ads-status-attention-800: var(--ads-status-attention-800);
+  --color-ads-status-attention-500: var(--ads-status-attention-500);
+  --color-ads-status-attention-100: var(--ads-status-attention-100);
+  --color-ads-status-new-800: var(--ads-status-new-800);
+  --color-ads-status-new-500: var(--ads-status-new-500);
+  --color-ads-status-new-100: var(--ads-status-new-100);
+  --color-ads-status-void-800: var(--ads-status-void-800);
+  --color-ads-status-void-500: var(--ads-status-void-500);
+  --color-ads-status-void-100: var(--ads-status-void-100);
+  --color-ads-status-innovation-800: var(--ads-status-innovation-800);
+  --color-ads-status-innovation-500: var(--ads-status-innovation-500);
+  --color-ads-status-innovation-100: var(--ads-status-innovation-100);
+  --color-ads-status-success-200: var(--ads-status-success-200);
+  --color-ads-status-success-300: var(--ads-status-success-300);
+  --color-ads-status-success-400: var(--ads-status-success-400);
+  --color-ads-status-success-600: var(--ads-status-success-600);
+  --color-ads-status-success-700: var(--ads-status-success-700);
+  --color-ads-status-warning-200: var(--ads-status-warning-200);
+  --color-ads-status-warning-300: var(--ads-status-warning-300);
+  --color-ads-status-warning-400: var(--ads-status-warning-400);
+  --color-ads-status-warning-600: var(--ads-status-warning-600);
+  --color-ads-status-warning-700: var(--ads-status-warning-700);
+  --color-ads-status-attention-200: var(--ads-status-attention-200);
+  --color-ads-status-attention-300: var(--ads-status-attention-300);
+  --color-ads-status-attention-400: var(--ads-status-attention-400);
+  --color-ads-status-attention-600: var(--ads-status-attention-600);
+  --color-ads-status-attention-700: var(--ads-status-attention-700);
+  --color-ads-status-new-200: var(--ads-status-new-200);
+  --color-ads-status-new-300: var(--ads-status-new-300);
+  --color-ads-status-new-400: var(--ads-status-new-400);
+  --color-ads-status-new-600: var(--ads-status-new-600);
+  --color-ads-status-new-700: var(--ads-status-new-700);
+  --color-ads-status-void-200: var(--ads-status-void-200);
+  --color-ads-status-void-300: var(--ads-status-void-300);
+  --color-ads-status-void-400: var(--ads-status-void-400);
+  --color-ads-status-void-600: var(--ads-status-void-600);
+  --color-ads-status-void-700: var(--ads-status-void-700);
+  --color-ads-status-innovation-200: var(--ads-status-innovation-200);
+  --color-ads-status-innovation-300: var(--ads-status-innovation-300);
+  --color-ads-status-innovation-400: var(--ads-status-innovation-400);
+  --color-ads-status-innovation-600: var(--ads-status-innovation-600);
+  --color-ads-status-innovation-700: var(--ads-status-innovation-700);
+  --color-ads-chart-data-1-800: var(--ads-chart-data-1-800);
+  --color-ads-chart-data-1-400: var(--ads-chart-data-1-400);
+  --color-ads-chart-data-1-100: var(--ads-chart-data-1-100);
+  --color-ads-chart-data-2-800: var(--ads-chart-data-2-800);
+  --color-ads-chart-data-2-500: var(--ads-chart-data-2-500);
+  --color-ads-chart-data-2-100: var(--ads-chart-data-2-100);
+  --color-ads-chart-data-3-800: var(--ads-chart-data-3-800);
+  --color-ads-chart-data-3-400: var(--ads-chart-data-3-400);
+  --color-ads-chart-data-3-100: var(--ads-chart-data-3-100);
+  --color-ads-chart-data-4-800: var(--ads-chart-data-4-800);
+  --color-ads-chart-data-4-500: var(--ads-chart-data-4-500);
+  --color-ads-chart-data-4-100: var(--ads-chart-data-4-100);
+  --color-ads-chart-data-5-800: var(--ads-chart-data-5-800);
+  --color-ads-chart-data-5-400: var(--ads-chart-data-5-400);
+  --color-ads-chart-data-5-100: var(--ads-chart-data-5-100);
+}

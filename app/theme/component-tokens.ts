@@ -258,6 +258,11 @@ export const componentTokenCatalog: readonly TokenComponent[] = [
       color("--ads-toast-error-bg", "Fundo de erro", "Cores", "#ffbdcd"),
       color("--ads-toast-warning-bg", "Fundo de alerta", "Cores", "#ffe7b9"),
       color("--ads-toast-neutral-bg", "Fundo neutro", "Cores", "#e4f2ff"),
+      color("--ads-toast-primary-icon", "Ícone primário", "Cores", "#006ff7"),
+      color("--ads-toast-success-icon", "Ícone de sucesso", "Cores", "#0e5a3b"),
+      color("--ads-toast-error-icon", "Ícone de erro", "Cores", "#840221"),
+      color("--ads-toast-warning-icon", "Ícone de alerta", "Cores", "#8f6600"),
+      color("--ads-toast-neutral-icon", "Ícone neutro", "Cores", "#006ff7"),
     ],
   },
   {

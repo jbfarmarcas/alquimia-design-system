@@ -15,6 +15,7 @@
             />
             <span class="mt-1 block text-xs font-medium text-[var(--ads-text-primary)]">{{ swatch.step }}</span>
             <span class="block font-mono text-[10px] uppercase text-[var(--ads-text-secondary)]">{{ swatch.hex }}</span>
+            <span class="block break-all font-mono text-[10px] text-[var(--ads-text-secondary)]">{{ swatch.surface }}</span>
           </button>
         </li>
       </ul>
@@ -77,6 +78,7 @@ const code = computed(() => {
   if (!selected.value) return "";
   return buildTag("div", [
     attr(true, "class", `${selected.value.surface} h-10 w-10 rounded-sm`),
+    // Também disponíveis: selected.value.text e selected.value.border.
   ]);
 });
 </script>

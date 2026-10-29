@@ -138,6 +138,11 @@
   --ads-toast-error-bg: #ffbdcd;
   --ads-toast-warning-bg: #ffe7b9;
   --ads-toast-neutral-bg: #e4f2ff;
+  --ads-toast-primary-icon: #006ff7;
+  --ads-toast-success-icon: #0e5a3b;
+  --ads-toast-error-icon: #840221;
+  --ads-toast-warning-icon: #8f6600;
+  --ads-toast-neutral-icon: #006ff7;
   --ads-file-min-height: 64px;
   --ads-file-radius: 8px;
   --ads-file-padding-x: 16px;
