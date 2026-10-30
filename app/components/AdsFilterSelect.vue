@@ -16,7 +16,7 @@
     >
       <button
         type="button"
-        class="flex h-[var(--ads-filter-height)] max-w-full items-center gap-0.5 rounded-[var(--ads-filter-radius)] px-[var(--ads-filter-padding-x)] text-[length:var(--ads-filter-font-size)] leading-[1.3] focus-visible:border-(length:--ads-border-width-slim) focus-visible:border-[var(--ads-filter-focus-border)] focus-visible:outline-none disabled:cursor-not-allowed"
+        class="flex h-[var(--ads-filter-height)] max-w-full items-center gap-0.5 rounded-[var(--ads-filter-radius)] px-[var(--ads-filter-padding-x)] text-[length:var(--ads-filter-font-size)] leading-[1.3] transition-colors focus-visible:border-(length:--ads-border-width-slim) focus-visible:border-[var(--ads-filter-focus-border)] focus-visible:outline-none disabled:cursor-not-allowed"
         :class="[fieldClass, block ? 'w-full justify-between' : 'w-fit']"
         :disabled="disabled"
         :data-state="fieldState"
@@ -33,7 +33,7 @@
         >
           <span class="min-w-0 truncate text-left">{{ triggerLabel }}</span>
         </InvertedTooltip>
-        <UIcon name="i-lucide-chevron-down" class="size-4 shrink-0 text-base" />
+        <UIcon name="i-lucide-chevron-down" class="size-4 shrink-0 text-base" :class="chevronClass" />
       </button>
 
       <template #content>
@@ -154,7 +154,16 @@ const fieldClass = computed(() => {
   if (fieldState.value === "open") {
     return "border-(length:--ads-border-width-slim) border-[var(--ads-filter-focus-border)] bg-[var(--ads-filter-background)] text-[var(--ads-filter-text)]";
   }
-  return "border border-[var(--ads-filter-border)] bg-[var(--ads-filter-background)] text-[var(--ads-filter-text)]";
+  if (fieldState.value === "selected") {
+    return "border border-[var(--ads-filter-border)] hover:border-[var(--ads-filter-hover-border)] bg-ads-neutro-claro-20 text-[var(--ads-filter-text)]";
+  }
+  return "border border-[var(--ads-filter-border)] hover:border-[var(--ads-filter-hover-border)] bg-[var(--ads-filter-background)] text-[var(--ads-filter-text)]";
+});
+
+const chevronClass = computed(() => {
+  if (fieldState.value === "disabled") return "text-ads-neutro-medio-60";
+  if (fieldState.value === "selected") return "text-ads-neutro-escuro-500";
+  return "text-ads-neutro-medio-100";
 });
 
 const triggerLabel = computed(() =>

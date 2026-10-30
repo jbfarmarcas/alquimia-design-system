@@ -29,11 +29,11 @@
         v-for="(month, index) in ADS_FILTER_MONTHS"
         :key="month.short"
         type="button"
-        class="flex items-center justify-center rounded-[var(--ads-radius-xsm)] text-sm leading-[1.3]"
+        class="flex items-center justify-center rounded-[var(--ads-radius-xsm)] text-sm leading-[1.3] transition-colors focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[var(--ads-date-focus-border)] disabled:cursor-not-allowed"
         :class="
           index === selectedMonthIndex
             ? 'bg-[var(--ads-surface-brand)] font-bold text-[var(--ads-text-contrast)]'
-            : 'text-[var(--ads-text-primary)]'
+            : 'text-[var(--ads-text-primary)] enabled:hover:bg-[var(--ads-month-hover-bg)]'
         "
         :aria-label="month.full"
         :aria-pressed="index === selectedMonthIndex"

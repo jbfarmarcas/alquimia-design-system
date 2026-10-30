@@ -1,7 +1,7 @@
 <template>
   <div class="flex w-full min-w-0 flex-col gap-0.5">
     <div
-      class="flex items-center gap-2 rounded-[var(--ads-search-radius)] px-[var(--ads-search-padding-x)]"
+      class="flex items-center gap-2 rounded-[var(--ads-search-radius)] transition-colors px-[var(--ads-search-padding-x)]"
       :class="[fieldClass, size === 'sm' ? 'h-[var(--ads-search-sm-height)]' : 'h-[var(--ads-search-md-height)]']"
       :data-state="visualState"
     >
@@ -99,7 +99,7 @@ const fieldClass = computed(() => {
     : "text-[var(--ads-search-text)]";
   const interactiveFocus = props.state === null && !isDisabled.value;
   const focus = interactiveFocus
-    ? "focus-within:border-(length:--ads-border-width-slim) focus-within:border-[var(--ads-search-focus-border)]"
+    ? "hover:not-focus-within:border-[var(--ads-search-hover-border)] focus-within:border-(length:--ads-border-width-slim) focus-within:border-[var(--ads-search-focus-border)]"
     : "";
 
   if (visualState.value === "disabled") {

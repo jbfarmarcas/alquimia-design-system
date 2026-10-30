@@ -1,6 +1,7 @@
 <template>
   <div
-    class="w-[270px] overflow-hidden rounded-[var(--ads-radius-sm)] border border-[var(--ads-border-subtle)] bg-[var(--ads-surface-card)] shadow-[var(--ads-shadow-level-1)]"
+    class="overflow-hidden rounded-[var(--ads-radius-sm)] border border-ads-neutro-claro-50 bg-[var(--ads-surface-card)] shadow-[var(--ads-shadow-level-1)]"
+    :class="widthClass"
   >
     <div v-if="searchable" class="px-4 pt-4 pb-2">
       <UInput
@@ -54,7 +55,7 @@
 
       <div
         v-if="showSelectAll || groups.matches.length"
-        class="overflow-y-auto overscroll-contain [scrollbar-color:var(--ads-border-subtle)_transparent] [scrollbar-width:thin]"
+        class="overflow-y-auto overscroll-contain [scrollbar-color:var(--color-ads-neutro-claro-50)_transparent] [scrollbar-width:thin]"
         :class="
           groups.exact.length
             ? 'max-h-[244px] border-t-[0.5px] border-[var(--ads-border-icon)]'
@@ -118,6 +119,7 @@ const props = withDefaults(
     emptyLabel?: string;
     searchPlaceholder?: string;
     listLabel?: string;
+    widthClass?: string;
   }>(),
   {
     searchable: true,
@@ -126,6 +128,7 @@ const props = withDefaults(
     emptyLabel: "Nenhum resultado",
     searchPlaceholder: "Pesquisar",
     listLabel: "Opções",
+    widthClass: "w-[270px]",
   },
 );
 
@@ -165,7 +168,7 @@ const onSelectAll = () => {
  * Busca do painel ADS: pílula.
  */
 const searchFieldUi = {
-  base: "h-10 rounded-[var(--ads-radius-pill)] bg-[var(--ads-surface-card)] text-sm text-[var(--ads-text-secondary)] !outline-none ring-1 ring-inset ring-[var(--ads-border-subtle)] placeholder:text-[var(--ads-text-tertiary)] focus-visible:!outline-none focus-visible:ring-2 focus-visible:ring-[var(--ads-text-brand)]",
+  base: "h-10 rounded-[var(--ads-radius-pill)] bg-[var(--ads-surface-card)] text-sm text-[var(--ads-text-secondary)] !outline-none ring-1 ring-inset ring-ads-neutro-claro-50 enabled:hover:ring-[var(--ads-filter-hover-border)] placeholder:text-[var(--ads-text-tertiary)] focus-visible:!outline-none focus-visible:ring-(length:--ads-border-width-slim) focus-visible:ring-[var(--ads-text-brand)]",
   leadingIcon: "text-[var(--ads-text-tertiary)]",
 };
 </script>

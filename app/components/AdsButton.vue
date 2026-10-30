@@ -5,7 +5,7 @@
     v-bind="rootAttrs"
     class="inline-flex items-center justify-center [font-weight:var(--ads-button-weight)] whitespace-nowrap transition-colors duration-150 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed"
     :class="[
-      'rounded-[var(--ads-button-radius)]',
+      type === 'ia' ? 'rounded-[var(--ads-button-ia-radius)]' : 'rounded-[var(--ads-button-radius)]',
       type !== 'ia' && 'overflow-hidden',
       sizeClass,
       faceClass,
@@ -109,14 +109,15 @@ const onRootClick = (event: MouseEvent) => {
 };
 
 const sizeClass = computed(() => {
+  const iaLine = props.type === "ia" && props.size !== "sm" ? " leading-[var(--ads-button-ia-line-height)]" : "";
   if (iconOnly.value) {
     return props.size === "sm"
       ? "size-[var(--ads-button-sm-icon-box)] shrink-0"
       : "size-[var(--ads-button-md-icon-box)] shrink-0";
   }
   return props.size === "sm"
-    ? "h-[var(--ads-button-sm-height)] gap-[var(--ads-button-sm-gap)] px-[var(--ads-button-sm-padding-x)] text-[length:var(--ads-button-sm-font-size)] leading-[var(--ads-button-sm-line-height)]"
-    : "gap-[var(--ads-button-md-gap)] px-[var(--ads-button-md-padding-x)] py-[var(--ads-button-md-padding-y)] text-[length:var(--ads-button-md-font-size)] leading-[var(--ads-button-md-line-height)]";
+    ? `h-[var(--ads-button-sm-height)] gap-[var(--ads-button-sm-gap)] px-[var(--ads-button-sm-padding-x)] text-[length:var(--ads-button-sm-font-size)] leading-[var(--ads-button-sm-line-height)]${iaLine}`
+    : `gap-[var(--ads-button-md-gap)] px-[var(--ads-button-md-padding-x)] py-[var(--ads-button-md-padding-y)] text-[length:var(--ads-button-md-font-size)] leading-[var(--ads-button-md-line-height)]${iaLine}`;
 });
 
 const iconClass = computed(() =>

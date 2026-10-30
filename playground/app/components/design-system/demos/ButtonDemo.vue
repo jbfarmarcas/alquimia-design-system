@@ -1,5 +1,5 @@
 <template>
-  <DocsDemo language="vue" :code="code" :apis="docsApis.botoes">
+  <DocsDemo language="vue" :code="code" :apis="docsApis.button">
     <template #preview>
       <AdsButton
         :type="buttonType"
@@ -139,8 +139,8 @@ watch(buttonType, (type) => {
   }
 });
 
-const code = computed(() =>
-  buildTag("AdsButton", [
+const code = computed(() => {
+  return buildTag("AdsButton", [
     attr(buttonType.value !== "filled", "type", buttonType.value),
     attr(buttonColor.value !== "primary", "color", buttonColor.value),
     attr(buttonSize.value !== "md", "size", buttonSize.value),
@@ -151,6 +151,6 @@ const code = computed(() =>
     attr(previewState.value !== null, "state", previewState.value ?? undefined),
     attr(buttonState.value === "disabled", "disabled"),
     attr(loading.value, "loading"),
-  ]),
-);
+  ]);
+});
 </script>

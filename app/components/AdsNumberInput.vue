@@ -14,7 +14,7 @@
     </div>
 
     <div
-      class="flex h-[var(--ads-number-height)] w-full min-w-0 items-center gap-[var(--ads-number-gap)] rounded-[var(--ads-number-radius)] px-[var(--ads-number-padding-x)]"
+      class="flex h-[var(--ads-number-height)] w-full transition-colors min-w-0 items-center gap-[var(--ads-number-gap)] rounded-[var(--ads-number-radius)] px-[var(--ads-number-padding-x)]"
       :class="fieldClass"
       :data-state="visualState"
     >
@@ -149,7 +149,7 @@ const supportClass = computed(() =>
 const fieldClass = computed(() => {
   const interactiveFocus = props.state === null && !isDisabled.value && !props.error;
   const focus = interactiveFocus
-    ? "focus-within:border-(length:--ads-border-width-slim) focus-within:border-[var(--ads-number-focus-border)]"
+    ? "hover:not-focus-within:border-[var(--ads-number-hover-border)] focus-within:border-(length:--ads-border-width-slim) focus-within:border-[var(--ads-number-focus-border)]"
     : "";
 
   if (visualState.value === "disabled") {

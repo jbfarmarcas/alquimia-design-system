@@ -53,7 +53,7 @@ const prop = (
 const buttonColors = "primary | success | attention | warning | new | innovation | blocked | neutral";
 const pillStatuses = "default | success | attention | warning | new | blocked | innovation | neutral";
 
-/** Propriedades, eventos e slots de cada seção. O código vem dos parâmetros de cada demonstração. */
+/** Propriedades, eventos e slots de cada seção, uma por componente. As chaves são os ids de `catalog-sections.ts`. O código vem dos parâmetros de cada demonstração. */
 export const docsApis = {
   cores: [
     {
@@ -78,7 +78,7 @@ export const docsApis = {
       ],
     },
   ],
-  botoes: [
+  button: [
     {
       name: "AdsButton",
       summary: "Ação de tela. Sem rótulo, o botão fica quadrado e mostra só o ícone.",
@@ -100,7 +100,30 @@ export const docsApis = {
       slots: [{ name: "default", description: "Substitui o label." }],
     },
   ],
-  campos: [
+  "button-group": [
+    {
+      name: "AdsButtonGroup",
+      summary: "Segmentos unidos. O valor escolhido fica em negrito e com fundo claro.",
+      props: [
+        prop("v-model", "string", "obrigatório", "Valor do segmento."),
+        prop("options", "{ value, label }[]", "obrigatória", "Segmentos."),
+        prop("ariaLabel", "string", "Grupo de botões", "Nome do grupo."),
+      ],
+    },
+  ],
+  "button-menu": [
+    {
+      name: "AdsButtonMenu",
+      summary: "Painel do button dropdown. O gatilho fica fora do componente.",
+      props: [
+        prop("options", "{ value, title, subtitle?, icon? }[]", "obrigatória", "Linhas do menu."),
+        prop("showSubtitles", "boolean", "true", "Figma Show subtitles."),
+        prop("showIcons", "boolean", "true", "Figma Show icons."),
+      ],
+      events: [{ name: "select", payload: "string", description: "A linha foi escolhida." }],
+    },
+  ],
+  input: [
     {
       name: "AdsInput",
       props: [
@@ -123,6 +146,8 @@ export const docsApis = {
         { name: "blur", payload: "FocusEvent", description: "O campo perde o foco." },
       ],
     },
+  ],
+  "number-input": [
     {
       name: "AdsNumberInput",
       summary: "Campo numérico com setas de passo e sufixo.",
@@ -144,6 +169,8 @@ export const docsApis = {
         { name: "blur", payload: "FocusEvent", description: "O campo perde o foco." },
       ],
     },
+  ],
+  "search-input": [
     {
       name: "AdsSearchInput",
       props: [
@@ -157,6 +184,8 @@ export const docsApis = {
         prop("state", "default | active | focus | disabled | null", "null", "Congela o estado na documentação."),
       ],
     },
+  ],
+  textarea: [
     {
       name: "AdsTextarea",
       props: [
@@ -169,6 +198,8 @@ export const docsApis = {
         prop("state", "default | active | focus | error | disabled | null", "null", "Congela o estado na documentação."),
       ],
     },
+  ],
+  "date-picker": [
     {
       name: "AdsDatePicker",
       summary: "Data única no v-model. Com range, o período vai em start e end.",
@@ -187,7 +218,17 @@ export const docsApis = {
       ],
     },
   ],
-  filtro: [
+  "month-picker": [
+    {
+      name: "AdsMonthPicker",
+      summary: "Grade de meses, 290×284. O filtro de mês embute esta peça.",
+      props: [
+        prop("v-model", "string", '""', "Mês no formato AAAA-MM."),
+      ],
+      events: [{ name: "pick", payload: "—", description: "Um mês foi escolhido. O valor fica no v-model." }],
+    },
+  ],
+  "filter-select": [
     {
       name: "AdsFilterSelect",
       summary: "Select com lista, busca ou calendário de mês. Rótulo longo ganha reticências e tooltip.",
@@ -210,7 +251,57 @@ export const docsApis = {
       ],
     },
   ],
-  abas: [
+  "list-dropdown": [
+    {
+      name: "AdsListDropdown",
+      summary: "Lista de rádio com busca opcional. É o List Dropdown do Figma.",
+      props: [
+        prop("v-model", "string", '""', "Valor escolhido."),
+        prop("options", "{ value, label }[]", "obrigatória", "Linhas."),
+        prop("search", "boolean", "true", "Figma Search."),
+        prop("emptyLabel", "string", "Nenhum resultado", "Lista vazia depois da busca."),
+      ],
+      events: [{ name: "pick", payload: "string", description: "Uma opção de rádio foi escolhida." }],
+    },
+  ],
+  "filter-dropdown": [
+    {
+      name: "AdsFilterDropdown",
+      summary: "Painel da lista, com busca, selecionar todos e divisores.",
+      props: [
+        prop("v-model", "string | string[]", "obrigatório", "checkbox usa string[]. radio usa string."),
+        prop("type", "checkbox | radio", "obrigatória", "Modo da lista."),
+        prop("options", "{ value, label }[]", "obrigatória", "Linhas."),
+        prop("searchable", "boolean", "true", "Mostra a busca."),
+        prop("selectAll", "boolean", "true", "Mostra selecionar todos no checkbox."),
+      ],
+    },
+  ],
+  "filter-option": [
+    {
+      name: "AdsFilterOption",
+      summary: "Linha da lista. Checkbox alinha a caixa; rádio selecionado fica em negrito.",
+      props: [
+        prop("mode", "checkbox | radio", "obrigatória", "Tipo da linha."),
+        prop("label", "string", "obrigatória", "Texto. Acima de 22 caracteres, ganha reticências e tooltip."),
+        prop("selected", "boolean", "false", "Linha marcada."),
+        prop("indeterminate", "boolean", "false", "Estado misto, só no checkbox."),
+      ],
+      events: [{ name: "select", payload: "—", description: "A linha foi acionada." }],
+    },
+  ],
+  "dropdown-menu": [
+    {
+      name: "AdsDropdownMenu",
+      summary: "Menu de ações do Nuxt UI com o tema ADS. Não é o painel de filtro.",
+      props: [
+        prop("items", "DropdownMenuItem[]", "obrigatória", "Ações do menu."),
+        prop("content.side", "top | right | bottom | left", "bottom", "Lado do painel."),
+      ],
+      slots: [{ name: "default", description: "Gatilho do menu." }],
+    },
+  ],
+  tabs: [
     {
       name: "AdsTabs",
       summary: "Faixa de links para trocar a visão da mesma tela.",
@@ -226,6 +317,8 @@ export const docsApis = {
         { name: "content", description: "Painel da aba ativa." },
       ],
     },
+  ],
+  "segmented-tabs": [
     {
       name: "AdsSegmentedTabs",
       summary: "Filtro curto em pílula. Não renderiza painel.",
@@ -236,14 +329,17 @@ export const docsApis = {
       ],
     },
   ],
-  feedback: [
+  toast: [
     {
       name: "AdsToast",
       summary: "Faixa de aviso na página. O toast flutuante usa useToast do Nuxt UI.",
       props: [
-        prop("status", "primary | success | error | warning | neutral", "error", "Cor e ícone da faixa."),
-        prop("app", "boolean", "false", "Faixa estreita de 331px, a variação App."),
-        prop("message", "string", "—", "Texto. O slot padrão substitui."),
+        prop("status", "primary | success | error | warning | neutral | loading", "error", "Cor e ícone. No reporte escuro, warning é Attention e loading é o spinner."),
+        prop("appearance", "banner | status", "banner", "banner é a faixa clara. status é o reporte escuro de 331px."),
+        prop("app", "boolean", "false", "Faixa estreita de 331px, a variação App. Ignorado em status."),
+        prop("message", "string", "—", "Texto da faixa. O slot padrão substitui."),
+        prop("title", "string", "—", "Título do reporte escuro. Sem valor, usa a mensagem do status."),
+        prop("subtitle", "string", "—", "Linha opcional do reporte escuro."),
         prop("icon", "string", "—", "Ícone Lucide. Sem valor, segue o status."),
         prop("closable", "boolean", "true", "Mostra o botão de fechar."),
         prop("actionLabel", "string", "—", "Rótulo da ação, como tentar de novo."),
@@ -255,6 +351,8 @@ export const docsApis = {
       ],
       slots: [{ name: "default", description: "Substitui a mensagem." }],
     },
+  ],
+  "file-card": [
     {
       name: "AdsFileCard",
       props: [
@@ -267,6 +365,97 @@ export const docsApis = {
         prop("removeLabel", "string", "Remover arquivo", "Nome acessível da ação de remover."),
       ],
       events: [{ name: "remove", payload: "—", description: "A ação de remover foi acionada." }],
+    },
+  ],
+  "empty-state": [
+    {
+      name: "AdsEmptyState",
+      props: [
+        prop("title", "string", "Título do empty state", "Título."),
+        prop("subtitle", "string", "texto de apoio", "Some se vazio."),
+        prop("small", "boolean", "false", "Figma Small=Yes."),
+        prop("showActions", "boolean", "true", "Dois botões. O slot padrão substitui."),
+        prop("primaryLabel", "string", "Button Test", "Botão preenchido."),
+        prop("secondaryLabel", "string", "Button Test", "Botão sem fundo."),
+      ],
+    },
+  ],
+  pagination: [
+    {
+      name: "AdsPagination",
+      props: [
+        prop("v-model:page", "number", "1", "Página atual."),
+        prop("totalPages", "number", "1", "Total. Acima de 7, entram reticências."),
+        prop("prevLabel", "string", "Anterior", "Ação anterior."),
+        prop("nextLabel", "string", "Próximo", "Ação seguinte."),
+      ],
+    },
+  ],
+  tooltip: [
+    {
+      name: "AdsTooltip",
+      summary: "Balão com título e descrição brancos. Abre no hover e no foco do gatilho.",
+      props: [
+        prop("wing", "up | down | left | right", "up", "Lado da seta."),
+        prop("title", "string", "Título", "Some com showTitle falso."),
+        prop("description", "string", "Descrição", "Some com showDescription falso."),
+        prop("showTitle", "boolean", "true", "Mostra o título."),
+        prop("showDescription", "boolean", "true", "Mostra a descrição."),
+      ],
+      slots: [{ name: "default", description: "Gatilho. O balão abre no hover e no foco. Sem slot, o balão fica fixo na tela, só para documentação." }],
+    },
+  ],
+  steptip: [
+    {
+      name: "AdsSteptip",
+      props: [
+        prop("step", "number", "1", "Passo atual."),
+        prop("totalSteps", "number", "3", "No último passo o botão vira concluir."),
+        prop("title", "string", "Título do passo", "Título."),
+        prop("description", "string", "—", "Texto do passo."),
+        prop("side", "top | right | bottom | left", "bottom", "Lado do gatilho onde o passo abre. Só vale com slot."),
+        prop("delayDuration", "number", "150", "Espera antes de abrir, em milissegundos."),
+      ],
+      slots: [{ name: "default", description: "Elemento que o passo explica. O passo abre no hover e no foco. Sem slot, fica fixo na tela." }],
+      events: [
+        { name: "skip", payload: "—", description: "Pular o passo." },
+        { name: "back", payload: "—", description: "Voltar um passo." },
+        { name: "next", payload: "—", description: "Avançar." },
+        { name: "finish", payload: "—", description: "Concluir no último passo." },
+      ],
+    },
+  ],
+  charttip: [
+    {
+      name: "AdsCharttip",
+      props: [
+        prop("title", "string", "Título", "Título central."),
+        prop("rows", "{ label, value, colorClass? }[]", "3 séries", "Linhas do gráfico."),
+        prop("wing", "up | down | left | right", "down", "Com slot, lado em que o painel abre. A seta não é desenhada."),
+        prop("delayDuration", "number", "150", "Espera antes de abrir, em milissegundos."),
+      ],
+      slots: [{ name: "default", description: "Ponto do gráfico, como uma barra. O painel abre no hover e no foco. Sem slot, fica fixo na tela." }],
+    },
+  ],
+  smalltip: [
+    {
+      name: "AdsSmalltip",
+      props: [
+        prop("text", "string", "Clique para ver mais", "Linha de 10px."),
+        prop("delayDuration", "number", "150", "Espera antes de abrir, em milissegundos."),
+      ],
+      slots: [{ name: "default", description: "Gatilho, como um ícone de info. A dica abre no hover e no foco. Sem slot, fica fixa na tela." }],
+    },
+  ],
+  "tooltip-nuxt-ui": [
+    {
+      name: "UTooltip",
+      summary: "Tooltip claro do Nuxt UI, com o tema ADS. Use para uma dica curta em uma ação.",
+      props: [
+        prop("text", "string", "—", "Texto do tooltip."),
+        prop("arrow", "boolean", "false", "Mostra a seta apontando para o gatilho."),
+      ],
+      slots: [{ name: "default", description: "Gatilho do tooltip." }],
     },
     {
       name: "InvertedTooltip",
@@ -282,7 +471,7 @@ export const docsApis = {
       slots: [{ name: "default", description: "Gatilho. No texto truncado, o elemento precisa truncar." }],
     },
   ],
-  carregando: [
+  loading: [
     {
       name: "AdsLoading",
       props: [
@@ -294,6 +483,8 @@ export const docsApis = {
         prop("lines", "number", "0", "Linhas do skeleton. Zero desenha um bloco; a class define altura e largura."),
       ],
     },
+  ],
+  "overlay-loading": [
     {
       name: "useOverlayLoading",
       summary: "Cobre a página quando o processo não tem uma área própria. As opções abaixo são passadas para show() e update().",
@@ -318,6 +509,8 @@ export const docsApis = {
         { name: "getCurrentId", signature: "() => symbol | null", description: "Id do overlay aberto." },
       ],
     },
+  ],
+  "progress-bar-loading": [
     {
       name: "ProgressBarLoading",
       props: [
@@ -335,13 +528,15 @@ export const docsApis = {
         prop("rootClass", "string", "flex flex-col gap-3", "Classe do contêiner."),
       ],
     },
+  ],
+  "product-table-skeleton": [
     {
       name: "ProductTableSkeleton",
       summary: "Mock local do playground. O bloco genérico continua AdsLoading.",
       props: [prop("rows", "number", "4", "Quantidade de linhas do esqueleto.")],
     },
   ],
-  pills: [
+  badge: [
     {
       name: "AdsBadge",
       props: [
@@ -350,6 +545,8 @@ export const docsApis = {
         prop("value", "string | number", "2", "Número ou texto do contador. Ignorado no mini."),
       ],
     },
+  ],
+  broadcast: [
     {
       name: "AdsBroadcast",
       props: [
@@ -357,6 +554,8 @@ export const docsApis = {
         prop("status", "warning | success", "warning", "Cor do ponto e do texto."),
       ],
     },
+  ],
+  pill: [
     {
       name: "AdsPill",
       props: [
@@ -367,6 +566,8 @@ export const docsApis = {
         prop("iconClass", "string", "—", "Classes do ícone, como o giro do carregamento."),
       ],
     },
+  ],
+  "notability-pill": [
     {
       name: "AdsNotabilityPill",
       props: [
@@ -374,6 +575,8 @@ export const docsApis = {
         prop("label", "string", "—", "Texto. Sem valor, formata o nome da notabilidade."),
       ],
     },
+  ],
+  "mini-pill": [
     {
       name: "AdsMiniPill",
       props: [
@@ -382,7 +585,17 @@ export const docsApis = {
       ],
     },
   ],
-  controles: [
+  "farmarcas-pill": [
+    {
+      name: "AdsFarmarcasPill",
+      summary: "Pill de departamento. Não substitui a pill de notabilidade.",
+      props: [
+        prop("department", "AdsFarmarcasDepartment", "expansao", "Um dos 20 departamentos."),
+        prop("label", "string", '""', "Texto. Vazio usa o nome do departamento."),
+      ],
+    },
+  ],
+  switch: [
     {
       name: "AdsSwitch",
       props: [
@@ -392,6 +605,8 @@ export const docsApis = {
       ],
       slots: [{ name: "default", description: "Substitui o label." }],
     },
+  ],
+  checkbox: [
     {
       name: "AdsCheckbox",
       props: [
@@ -402,6 +617,8 @@ export const docsApis = {
       ],
       slots: [{ name: "default", description: "Substitui o label." }],
     },
+  ],
+  radio: [
     {
       name: "AdsRadio",
       summary: "Radios do mesmo grupo compartilham v-model e name.",
@@ -444,7 +661,66 @@ export const docsApis = {
       ],
     },
   ],
-  card: [
+  "menu-bar": [
+    {
+      name: "AdsMenuBar",
+      summary: "Barra vertical do RADAR. Itens internos não são exportados.",
+      props: [
+        prop("items", "AdsMenuBarItem[]", "menu default", "Rótulo, ícone e link. dividerBefore desenha o fio."),
+        prop("activeId", "string", '""', "Item selecionado, em azul."),
+        prop("openId", "string", '""', "Item aberto: faixa de 4px à esquerda."),
+      ],
+    },
+  ],
+  "navbar-app": [
+    {
+      name: "AdsNavbarApp",
+      summary: "Barra inferior do app, 88px.",
+      props: [
+        prop("items", "AdsNavbarAppItem[]", "Home, Agenda, Apps, Tickets, Perfil", "Cinco destinos."),
+        prop("activeId", "string", "home", "Destino ativo. O ícone ganha fundo #344563."),
+      ],
+    },
+  ],
+  "navbar-desk": [
+    {
+      name: "AdsNavbarDesk",
+      summary: "Barra superior de 64px com marca, tag de produto e ações.",
+      props: [
+        prop("product", "AdsProductTagName | null", "performance", "Tag à direita da marca. null esconde."),
+        prop("productLabel", "string", "performance", "Texto da tag."),
+        prop("showBroadcast", "boolean", "true", "Pílula LIVE."),
+        prop("avatarUrl", "string", '""', "Foto circular de 32px. Vazio mostra um ícone."),
+      ],
+    },
+  ],
+  "side-menu": [
+    {
+      name: "AdsSideMenu",
+      summary: "Menu de 224px. Filho, mãe aberta e item regular seguem o Figma.",
+      props: [
+        prop("items", "AdsSideMenuItem[]", "obrigatória", "Árvore. children abre e fecha no clique."),
+        prop("defaultOpen", "string[]", "[]", "Ids já abertos."),
+      ],
+    },
+  ],
+  footer: [
+    {
+      name: "AdsFooter",
+      props: [prop("developerLabel", "string", "Desenvolvido por", "Texto ao lado da logo.")],
+    },
+  ],
+  "product-tag": [
+    {
+      name: "AdsProductTag",
+      summary: "Tag de produto da navbar. Mapeia o _Tags interno do Figma.",
+      props: [
+        prop("product", "AdsProductTagName", "performance", "Produto. A cor vem da escala de produtos Radar."),
+        prop("label", "string", '""', "Texto. Vazio usa o nome do produto."),
+      ],
+    },
+  ],
+  "feature-card": [
     {
       name: "AdsFeatureCard",
       summary: "Entrada de um fluxo, com 396px: ícone, título, descrição e seta.",
@@ -461,6 +737,8 @@ export const docsApis = {
       ],
       events: [{ name: "click", payload: "MouseEvent", description: "O cartão foi acionado enquanto não está desabilitado." }],
     },
+  ],
+  card: [
     {
       name: "AdsCard",
       summary: "Cartão de conteúdo. Substitui UCard.",
@@ -481,6 +759,8 @@ export const docsApis = {
         { name: "footer", description: "Rodapé. Substitui footerText." },
       ],
     },
+  ],
+  "metric-card": [
     {
       name: "AdsMetricCard",
       summary: "Número em destaque. Rótulo 14 medium, valor 20 bold, variação 14 bold, legenda 12 regular.",

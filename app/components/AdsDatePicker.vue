@@ -146,12 +146,36 @@ const popoverReference = computed(() => {
 const rangeFieldClass = computed(() => [
   "group relative inline-flex w-full cursor-pointer items-center text-left transition-colors",
   "h-[var(--ads-date-height)] rounded-[var(--ads-date-radius)] px-[var(--ads-date-padding-x)] text-[length:var(--ads-date-font-size)] [font-weight:var(--ads-date-weight)] leading-[var(--ads-date-line-height)] text-[var(--ads-date-text)] bg-[var(--ads-date-background)] ring ring-inset ring-[var(--ads-date-border)]",
-  "hover:ring-[var(--ads-date-focus-border)] focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--ads-date-focus-border)]",
+  "enabled:hover:ring-[var(--ads-date-hover-border)] focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--ads-date-focus-border)]",
   "disabled:cursor-not-allowed disabled:opacity-75",
   props.class,
 ]);
 
 const popoverUi = { content: "w-auto max-w-none p-0" };
+
+/**
+ * Grade do range no Figma (5712:6691): mês com 258px, 7 colunas de 35,14px e 2px entre elas,
+ * linhas de 36px (semana + 5 semanas = 216px) e dia de 32px de altura.
+ */
+const rangeCalendarUi = {
+  body: "flex-row gap-14 space-x-0 space-y-0 pt-0 sm:space-x-0",
+  grid: "w-[258px] space-y-0",
+  gridWeekDaysRow: "mb-0 h-9 grid-cols-7 items-center gap-x-0.5",
+  gridBody: "grid",
+  gridRow: "h-9 grid-cols-7 items-center gap-x-0.5",
+  cell: "flex h-9 w-full items-center justify-self-stretch",
+  cellTrigger: "m-0 h-8 w-full",
+};
+
+/** Intl em pt-BR devolve o mês em minúscula ("outubro de 2026"). Só a primeira letra muda; o ano fica igual. */
+function capitalizeFirst(value: string) {
+  return value ? value.charAt(0).toLocaleUpperCase(UI_LOCALE_CODE) + value.slice(1) : value;
+}
+
+/** Cabeçalho do mês no Figma (_Date Picker Header, 5709:19265): Inter Bold 14, linha 130%, text/primary. */
+const singleCalendarUi = {
+  heading: "text-sm font-bold leading-[1.3] text-[var(--ads-text-primary)]",
+};
 
 function monthTitle(date: CalendarDate) {
   return calendarMonthTitle(date, UI_LOCALE_CODE);
@@ -300,69 +324,75 @@ function isDateUnavailable(date: CalendarDate) {
     </button>
 
     <template #content="{ close }">
-      <div class="ads-date-range-panel w-[40rem] max-w-[calc(100vw-2rem)] bg-white p-4">
-        <p class="mb-3 text-sm font-medium text-neutral-900" aria-live="polite">
+      <div class="ads-date-range-panel max-w-[calc(100vw-2rem)] overflow-x-auto bg-white">
+        <p class="px-4 pt-4 text-sm font-medium text-neutral-900" aria-live="polite">
           {{ rangeStepLabel }}
         </p>
-        <div class="mb-2 grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <div class="flex items-center justify-between gap-2">
-            <AdsButton
-              type="unfilled"
-              size="sm"
-              leading
-              icon="i-lucide-chevron-left"
-              aria-label="Mês anterior"
-              :disabled="!canShiftToPreviousMonth"
-              @click="moveVisibleMonth(-1)"
-            />
-            <span class="text-sm font-semibold text-neutral-900">
-              {{ monthTitle(leftMonth) }}
-            </span>
-            <span class="size-8 shrink-0" aria-hidden="true" />
+        <!-- Figma Range Date Picker (5712:6691): dois painéis de 290×284, 24px entre eles. -->
+        <div class="relative w-[604px]">
+          <div class="pointer-events-none absolute inset-0 grid grid-cols-[290px_290px] gap-6" aria-hidden="true">
+            <div class="rounded-s-[var(--ads-radius-xsm)] bg-[var(--ads-surface-card)]" />
+            <div class="rounded-e-[var(--ads-radius-xsm)] bg-[var(--ads-surface-card)]" />
           </div>
-          <div class="flex items-center justify-between gap-2">
-            <span class="size-8 shrink-0" aria-hidden="true" />
-            <span class="text-sm font-semibold text-neutral-900">
-              {{ monthTitle(rightMonth) }}
-            </span>
-            <AdsButton
-              type="unfilled"
-              size="sm"
-              leading
-              icon="i-lucide-chevron-right"
-              aria-label="Próximo mês"
-              :disabled="!canShiftToNextMonth"
-              @click="moveVisibleMonth(1)"
-            />
+          <div class="relative flex flex-col gap-3 p-4">
+            <div class="grid grid-cols-[258px_258px] gap-x-14">
+              <div class="flex h-6 items-center justify-between">
+                <button
+                  type="button"
+                  class="ads-date-range-nav"
+                  aria-label="Mês anterior"
+                  :disabled="!canShiftToPreviousMonth"
+                  @click="moveVisibleMonth(-1)"
+                >
+                  <UIcon name="i-lucide-chevron-left" class="size-6" />
+                </button>
+                <span class="ads-date-range-title">{{ monthTitle(leftMonth) }}</span>
+                <span class="size-6 shrink-0" aria-hidden="true" />
+              </div>
+              <div class="flex h-6 items-center justify-between">
+                <span class="size-6 shrink-0" aria-hidden="true" />
+                <span class="ads-date-range-title">{{ monthTitle(rightMonth) }}</span>
+                <button
+                  type="button"
+                  class="ads-date-range-nav"
+                  aria-label="Próximo mês"
+                  :disabled="!canShiftToNextMonth"
+                  @click="moveVisibleMonth(1)"
+                >
+                  <UIcon name="i-lucide-chevron-right" class="size-6" />
+                </button>
+              </div>
+            </div>
+            <UCalendar
+              :key="`range-${rangeCalendarKey}`"
+              :model-value="draftRange"
+              :placeholder="leftMonth"
+              :locale="UI_LOCALE_CODE"
+              range
+              :number-of-months="2"
+              :month-controls="false"
+              :year-controls="false"
+              weekday-format="narrow"
+              :week-starts-on="0"
+              :min-value="minCalendarDate"
+              :max-value="maxCalendarDate"
+              disable-days-outside-current-view
+              :is-date-unavailable="isDateUnavailable"
+              color="neutral"
+              variant="outline"
+              class="ads-date-picker"
+              :ui="rangeCalendarUi"
+              @update:model-value="onDraftUpdate"
+              @update:placeholder="onRangePlaceholderUpdate"
+            >
+              <template #week-day="{ day }">
+                {{ weekdayLetter(day) }}
+              </template>
+            </UCalendar>
           </div>
         </div>
-        <UCalendar
-          :key="`range-${rangeCalendarKey}`"
-          :model-value="draftRange"
-          :placeholder="leftMonth"
-          :locale="UI_LOCALE_CODE"
-          range
-          :number-of-months="2"
-          :month-controls="false"
-          :year-controls="false"
-          weekday-format="narrow"
-          :week-starts-on="0"
-          :min-value="minCalendarDate"
-          :max-value="maxCalendarDate"
-          disable-days-outside-current-view
-          :is-date-unavailable="isDateUnavailable"
-          color="neutral"
-          variant="outline"
-          class="ads-date-picker"
-          @update:model-value="onDraftUpdate"
-          @update:placeholder="onRangePlaceholderUpdate"
-        >
-          <template #week-day="{ day }">
-            {{ weekdayLetter(day) }}
-          </template>
-        </UCalendar>
 
-        <div class="mt-4 flex items-center justify-between gap-3">
+        <div class="flex items-center justify-between gap-3 px-4 pb-4">
           <AdsButton
             type="unfilled"
             size="sm"
@@ -429,8 +459,13 @@ function isDateUnavailable(date: CalendarDate) {
             color="primary"
             variant="solid"
             class="ads-date-picker p-2"
+            :ui="singleCalendarUi"
             @update:model-value="onCalendarModelUpdate"
-          />
+          >
+            <template #heading="{ value }">
+              {{ capitalizeFirst(value) }}
+            </template>
+          </UCalendar>
         </template>
       </UPopover>
     </template>

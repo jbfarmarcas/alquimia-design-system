@@ -145,7 +145,7 @@ export const adsInputDateTheme = {
   variants: {
     size: {
       md: {
-        base: "h-[var(--ads-date-height)] rounded-[var(--ads-date-radius)] px-[var(--ads-date-padding-x)] text-[length:var(--ads-date-font-size)] [font-weight:var(--ads-date-weight)] !leading-[var(--ads-date-line-height)] gap-1.5 w-full ![color:var(--ads-date-text)] !bg-[var(--ads-date-background)] !ring-[var(--ads-date-border)] has-focus-visible:!ring-[var(--ads-date-focus-border)]",
+        base: "h-[var(--ads-date-height)] rounded-[var(--ads-date-radius)] px-[var(--ads-date-padding-x)] text-[length:var(--ads-date-font-size)] [font-weight:var(--ads-date-weight)] !leading-[var(--ads-date-line-height)] gap-1.5 w-full ![color:var(--ads-date-text)] !bg-[var(--ads-date-background)] !ring-[var(--ads-date-border)] hover:not-data-disabled:not-data-readonly:not-has-focus-visible:!ring-[var(--ads-date-hover-border)] has-focus-visible:!ring-[var(--ads-date-focus-border)]",
       },
     },
   },
@@ -153,7 +153,7 @@ export const adsInputDateTheme = {
 
 /**
  * Tabs link ADS.
- * Lista 38px, itens no tamanho do texto, faixa inferior 1px #C1C7D0.
+ * Lista 39px, itens no tamanho do texto, faixa inferior 1px #C1C7D0.
  * Inativo: Inter 14 medium, #505F79. Ativo: bold, #061938, risco 4px #006FF7.
  */
 export const adsLinkTabsUi = {
@@ -167,6 +167,7 @@ export const adsLinkTabsUi = {
 /**
  * Tabs segmentadas ADS (Figma Switch Tabs).
  * Trilha 37px em neutral-100 (Neutral Light 20, #F0F3F6), raio 4px, respiro 4px.
+ * Item ativo com 30px.
  * Inativo: Inter 12 regular, #061938. Ativo: bold, preto, pill branca com sombra nível 1.
  */
 export const adsSegmentedTabsUi = {

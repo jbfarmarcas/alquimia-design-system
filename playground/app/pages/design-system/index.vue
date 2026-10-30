@@ -5,21 +5,33 @@
     lede="Cada seção mostra o componente real, os parâmetros que mudam o exemplo, o código para copiar e a tabela de propriedades."
     :sections="sections"
   >
-    <nav class="mt-12" aria-label="Índice">
-      <ul class="grid gap-3 sm:grid-cols-2">
-        <li v-for="section in sections" :key="section.id">
-          <a
-            :href="`#${section.id}`"
-            class="flex h-full flex-col gap-2 rounded-[var(--ads-radius-md)] border border-[var(--ads-border-subtle)] bg-[var(--ads-surface-card)] px-5 py-4 transition-colors duration-150 ease-out hover:border-primary-200 hover:bg-primary-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-            @click="activeId = section.id"
-          >
-            <span class="font-bold text-[var(--ads-text-primary)]">{{ section.label }}</span>
-            <span class="text-sm leading-relaxed text-[var(--ads-text-secondary)]">
-              {{ section.purpose }}
-            </span>
-          </a>
-        </li>
-      </ul>
+    <nav class="mt-12 flex flex-col gap-8" aria-label="Índice">
+      <div v-for="(group, groupIndex) in catalogGroups" :key="group.name" class="flex flex-col gap-3">
+        <p
+          v-if="group.sections.length > 1"
+          :id="`indice-grupo-${groupIndex}`"
+          class="text-[length:var(--ads-font-size-xxxs)] font-bold tracking-[0.14em] text-[var(--ads-text-tertiary)] uppercase"
+        >
+          {{ group.name }}
+        </p>
+        <ul
+          class="grid gap-3 sm:grid-cols-2"
+          :aria-labelledby="group.sections.length > 1 ? `indice-grupo-${groupIndex}` : undefined"
+        >
+          <li v-for="section in group.sections" :key="section.id">
+            <a
+              :href="`#${section.id}`"
+              class="flex h-full flex-col gap-2 rounded-[var(--ads-radius-md)] border border-[var(--ads-border-subtle)] bg-[var(--ads-surface-card)] px-5 py-4 transition-colors duration-150 ease-out hover:border-primary-200 hover:bg-primary-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+              @click="activeId = section.id"
+            >
+              <span class="font-bold text-[var(--ads-text-primary)]">{{ section.label }}</span>
+              <span class="text-sm leading-relaxed text-[var(--ads-text-secondary)]">
+                {{ section.purpose }}
+              </span>
+            </a>
+          </li>
+        </ul>
+      </div>
     </nav>
 
     <section
@@ -31,6 +43,7 @@
       <DesignSystemSectionHeading
         :section="section"
         :copied-name="copiedName"
+        :figma="figmaLinksFor(section.id)"
         @copy="copyComponentName"
       />
       <component :is="demos[section.id]" />
@@ -39,108 +52,120 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref } from "vue";
+import { onBeforeUnmount, onMounted, ref, type Component } from "vue";
 import DesignSystemFrame from "../../components/DesignSystemFrame.vue";
 import DesignSystemSectionHeading from "../../components/DesignSystemSectionHeading.vue";
+import { catalogGroups, catalogSections, type CatalogSectionId } from "../../components/design-system/catalog-sections";
+import { figmaLinksFor } from "../../components/design-system/figma-links";
+import BadgeDemo from "../../components/design-system/demos/BadgeDemo.vue";
+import BroadcastDemo from "../../components/design-system/demos/BroadcastDemo.vue";
 import ButtonDemo from "../../components/design-system/demos/ButtonDemo.vue";
-import ColorsDemo from "../../components/design-system/demos/ColorsDemo.vue";
-import ControlsDemo from "../../components/design-system/demos/ControlsDemo.vue";
+import ButtonGroupDemo from "../../components/design-system/demos/ButtonGroupDemo.vue";
+import ButtonMenuDemo from "../../components/design-system/demos/ButtonMenuDemo.vue";
 import CardDemo from "../../components/design-system/demos/CardDemo.vue";
-import FeedbackDemo from "../../components/design-system/demos/FeedbackDemo.vue";
-import FieldsDemo from "../../components/design-system/demos/FieldsDemo.vue";
-import FilterDemo from "../../components/design-system/demos/FilterDemo.vue";
+import CharttipDemo from "../../components/design-system/demos/CharttipDemo.vue";
+import CheckboxDemo from "../../components/design-system/demos/CheckboxDemo.vue";
+import ColorsDemo from "../../components/design-system/demos/ColorsDemo.vue";
+import DatePickerDemo from "../../components/design-system/demos/DatePickerDemo.vue";
+import DropdownMenuDemo from "../../components/design-system/demos/DropdownMenuDemo.vue";
+import EmptyStateDemo from "../../components/design-system/demos/EmptyStateDemo.vue";
+import FarmarcasPillDemo from "../../components/design-system/demos/FarmarcasPillDemo.vue";
+import FeatureCardDemo from "../../components/design-system/demos/FeatureCardDemo.vue";
+import FileCardDemo from "../../components/design-system/demos/FileCardDemo.vue";
+import FilterDropdownDemo from "../../components/design-system/demos/FilterDropdownDemo.vue";
+import FilterOptionDemo from "../../components/design-system/demos/FilterOptionDemo.vue";
+import FilterSelectDemo from "../../components/design-system/demos/FilterSelectDemo.vue";
+import FooterDemo from "../../components/design-system/demos/FooterDemo.vue";
+import InputDemo from "../../components/design-system/demos/InputDemo.vue";
+import ListDropdownDemo from "../../components/design-system/demos/ListDropdownDemo.vue";
 import LoadingDemo from "../../components/design-system/demos/LoadingDemo.vue";
+import MenuBarDemo from "../../components/design-system/demos/MenuBarDemo.vue";
+import MetricCardDemo from "../../components/design-system/demos/MetricCardDemo.vue";
+import MiniPillDemo from "../../components/design-system/demos/MiniPillDemo.vue";
 import ModalDemo from "../../components/design-system/demos/ModalDemo.vue";
-import PillsDemo from "../../components/design-system/demos/PillsDemo.vue";
+import MonthPickerDemo from "../../components/design-system/demos/MonthPickerDemo.vue";
+import NavbarAppDemo from "../../components/design-system/demos/NavbarAppDemo.vue";
+import NavbarDeskDemo from "../../components/design-system/demos/NavbarDeskDemo.vue";
+import NotabilityPillDemo from "../../components/design-system/demos/NotabilityPillDemo.vue";
+import NumberInputDemo from "../../components/design-system/demos/NumberInputDemo.vue";
+import NuxtTooltipDemo from "../../components/design-system/demos/NuxtTooltipDemo.vue";
+import OverlayLoadingDemo from "../../components/design-system/demos/OverlayLoadingDemo.vue";
+import PaginationDemo from "../../components/design-system/demos/PaginationDemo.vue";
+import PillDemo from "../../components/design-system/demos/PillDemo.vue";
+import ProductTableSkeletonDemo from "../../components/design-system/demos/ProductTableSkeletonDemo.vue";
+import ProductTagDemo from "../../components/design-system/demos/ProductTagDemo.vue";
+import ProgressBarLoadingDemo from "../../components/design-system/demos/ProgressBarLoadingDemo.vue";
+import RadioDemo from "../../components/design-system/demos/RadioDemo.vue";
+import SearchInputDemo from "../../components/design-system/demos/SearchInputDemo.vue";
+import SegmentedTabsDemo from "../../components/design-system/demos/SegmentedTabsDemo.vue";
+import SideMenuDemo from "../../components/design-system/demos/SideMenuDemo.vue";
+import SmalltipDemo from "../../components/design-system/demos/SmalltipDemo.vue";
+import SteptipDemo from "../../components/design-system/demos/SteptipDemo.vue";
+import SwitchDemo from "../../components/design-system/demos/SwitchDemo.vue";
 import TabsDemo from "../../components/design-system/demos/TabsDemo.vue";
+import TextareaDemo from "../../components/design-system/demos/TextareaDemo.vue";
+import ToastDemo from "../../components/design-system/demos/ToastDemo.vue";
+import TooltipDemo from "../../components/design-system/demos/TooltipDemo.vue";
 
 definePageMeta({
   name: "design-system",
   layout: "design-system",
 });
 
-const sections = [
-  {
-    id: "cores",
-    label: "Cores",
-    purpose: "Escalas do ADS. O passo é o nome do token; o hex é o valor no código.",
-    components: [],
-  },
-  {
-    id: "botoes",
-    label: "Botão",
-    purpose: "Ação de tela. O exemplo segue os parâmetros: tipo, cor, tamanho, conteúdo e estado. Outline e unfilled não têm pressed. No tipo IA, um brilho de gradiente gira em volta da borda.",
-    components: ["AdsButton"],
-  },
-  {
-    id: "campos",
-    label: "Campos",
-    purpose: "Formulário, número, busca, texto longo e data. O rótulo fica acima do campo.",
-    components: ["AdsInput", "AdsNumberInput", "AdsSearchInput", "AdsTextarea", "AdsDatePicker"],
-  },
-  {
-    id: "filtro",
-    label: "Filtro",
-    purpose: "Select com lista, busca ou calendário de mês. Rótulo longo ganha reticências e tooltip.",
-    components: ["AdsFilterSelect"],
-  },
-  {
-    id: "abas",
-    label: "Abas",
-    purpose: "Troca de visão na mesma tela: link para seções, segmented para um filtro curto.",
-    components: ["AdsTabs", "AdsSegmentedTabs"],
-  },
-  {
-    id: "feedback",
-    label: "Feedback",
-    purpose: "Aviso, toast flutuante, arquivo escolhido e tooltip. O arquivo usa success e warning do ADS.",
-    components: ["AdsToast", "AdsFileCard", "UTooltip", "InvertedTooltip"],
-  },
-  {
-    id: "carregando",
-    label: "Carregando",
-    purpose: "Espera na tela. Spinner na área vazia, skeleton quando o formato já é conhecido, shimmer quando o conteúdo continua visível. Ação no botão, processo de tela, percentual e o esqueleto de tabela usam a peça de cada caso.",
-    components: ["AdsLoading", "AdsButton", "useOverlayLoading", "ProgressBarLoading", "ProductTableSkeleton"],
-  },
-  {
-    id: "pills",
-    label: "Pills",
-    purpose: "Estado e contagem em uma peça compacta.",
-    components: ["AdsBadge", "AdsBroadcast", "AdsPill", "AdsNotabilityPill", "AdsMiniPill"],
-  },
-  {
-    id: "controles",
-    label: "Controles",
-    purpose: "Switch, checkbox e radio. Texto de 14, regular, na cor secondary.",
-    components: ["AdsSwitch", "AdsCheckbox", "AdsRadio"],
-  },
-  {
-    id: "modal",
-    label: "Modal",
-    purpose: "Confirmação que interrompe: título, texto de apoio e duas ações.",
-    components: ["AdsModal"],
-  },
-  {
-    id: "card",
-    label: "Card",
-    purpose: "AdsFeatureCard é a entrada de um fluxo: ícone, título, descrição e seta, com 396px. AdsCard é o cartão de conteúdo e substitui UCard. AdsMetricCard é o número em destaque.",
-    components: ["AdsFeatureCard", "AdsCard", "AdsMetricCard"],
-  },
-] as const;
+const sections = catalogSections;
 
+/** Uma demonstração por seção. O `satisfies` acusa id sem demo ou demo sem seção. */
 const demos = {
   cores: ColorsDemo,
-  botoes: ButtonDemo,
-  campos: FieldsDemo,
-  filtro: FilterDemo,
-  abas: TabsDemo,
-  feedback: FeedbackDemo,
-  carregando: LoadingDemo,
-  pills: PillsDemo,
-  controles: ControlsDemo,
+  button: ButtonDemo,
+  "button-group": ButtonGroupDemo,
+  "button-menu": ButtonMenuDemo,
+  input: InputDemo,
+  "number-input": NumberInputDemo,
+  "search-input": SearchInputDemo,
+  textarea: TextareaDemo,
+  "date-picker": DatePickerDemo,
+  "month-picker": MonthPickerDemo,
+  "filter-select": FilterSelectDemo,
+  "list-dropdown": ListDropdownDemo,
+  "filter-dropdown": FilterDropdownDemo,
+  "filter-option": FilterOptionDemo,
+  "dropdown-menu": DropdownMenuDemo,
+  tabs: TabsDemo,
+  "segmented-tabs": SegmentedTabsDemo,
+  toast: ToastDemo,
+  "file-card": FileCardDemo,
+  "empty-state": EmptyStateDemo,
+  pagination: PaginationDemo,
+  tooltip: TooltipDemo,
+  steptip: SteptipDemo,
+  charttip: CharttipDemo,
+  smalltip: SmalltipDemo,
+  "tooltip-nuxt-ui": NuxtTooltipDemo,
+  loading: LoadingDemo,
+  "overlay-loading": OverlayLoadingDemo,
+  "progress-bar-loading": ProgressBarLoadingDemo,
+  "product-table-skeleton": ProductTableSkeletonDemo,
+  badge: BadgeDemo,
+  broadcast: BroadcastDemo,
+  pill: PillDemo,
+  "notability-pill": NotabilityPillDemo,
+  "mini-pill": MiniPillDemo,
+  "farmarcas-pill": FarmarcasPillDemo,
+  switch: SwitchDemo,
+  checkbox: CheckboxDemo,
+  radio: RadioDemo,
   modal: ModalDemo,
+  "menu-bar": MenuBarDemo,
+  "navbar-app": NavbarAppDemo,
+  "navbar-desk": NavbarDeskDemo,
+  "side-menu": SideMenuDemo,
+  footer: FooterDemo,
+  "product-tag": ProductTagDemo,
+  "feature-card": FeatureCardDemo,
   card: CardDemo,
-} as const;
+  "metric-card": MetricCardDemo,
+} as const satisfies Record<CatalogSectionId, Component>;
 
 const activeId = ref<(typeof sections)[number]["id"] | "">("");
 const copiedName = ref("");

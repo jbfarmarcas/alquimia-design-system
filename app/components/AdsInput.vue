@@ -14,7 +14,7 @@
     </div>
 
     <div
-      class="flex h-[var(--ads-input-height)] items-center gap-[var(--ads-input-gap)] rounded-[var(--ads-input-radius)] px-[var(--ads-input-padding-x)]"
+      class="flex h-[var(--ads-input-height)] items-center transition-colors gap-[var(--ads-input-gap)] rounded-[var(--ads-input-radius)] px-[var(--ads-input-padding-x)]"
       :class="fieldClass"
       :data-state="visualState"
     >
@@ -123,7 +123,7 @@ const supportClass = computed(() =>
 const fieldClass = computed(() => {
   const interactiveFocus = props.state === null && !isDisabled.value && !props.error;
   const focus = interactiveFocus
-    ? "focus-within:border-(length:--ads-border-width-slim) focus-within:border-[var(--ads-input-focus-border)]"
+    ? "hover:not-focus-within:border-[var(--ads-input-hover-border)] focus-within:border-(length:--ads-border-width-slim) focus-within:border-[var(--ads-input-focus-border)]"
     : "";
 
   if (visualState.value === "disabled") {

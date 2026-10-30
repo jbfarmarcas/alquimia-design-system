@@ -50,7 +50,7 @@
             :collapsed="collapsed"
             :tooltip="collapsed"
             :popover="collapsed"
-            :items="menuItems"
+            :items="collapsed ? collapsedMenuItems : menuItems"
             :ui="menuUi"
           />
         </nav>
@@ -123,6 +123,7 @@ const props = defineProps<{
 }>();
 
 import { componentTokenCatalog } from "../../../app/theme/component-tokens";
+import { catalogGroups } from "./design-system/catalog-sections";
 
 const activeId = defineModel<string>("activeId", { default: "" });
 
@@ -182,31 +183,31 @@ watch(
   },
 );
 
+/** Item do menu: um link para a seção ou, com `heading`, o nome do grupo, sem link. */
+type DocsChild = { id: string; label: string; heading?: boolean };
+
 type DocsPage = {
   label: string;
   to: string;
   icon: string;
-  children: readonly { id: string; label: string }[];
+  children: readonly DocsChild[];
 };
+
+/** Catálogo: uma entrada por componente, sob o nome do antigo grupo. Grupo de uma seção só não ganha título. */
+function catalogNavChildren(): DocsChild[] {
+  return catalogGroups.flatMap((group) => {
+    const links = group.sections.map((section) => ({ id: section.id, label: section.label }));
+    if (group.sections.length < 2) return links;
+    return [{ id: `grupo-${group.name}`, label: group.name, heading: true }, ...links];
+  });
+}
 
 const pages: readonly DocsPage[] = [
   {
     label: "Catálogo",
     to: "/design-system",
     icon: "i-lucide-component",
-    children: [
-      { id: "cores", label: "Cores" },
-      { id: "botoes", label: "Botão" },
-      { id: "campos", label: "Campos" },
-      { id: "filtro", label: "Filtro" },
-      { id: "abas", label: "Abas" },
-      { id: "feedback", label: "Feedback" },
-      { id: "carregando", label: "Carregando" },
-      { id: "pills", label: "Pills" },
-      { id: "controles", label: "Controles" },
-      { id: "modal", label: "Modal" },
-      { id: "card", label: "Card" },
-    ],
+    children: catalogNavChildren(),
   },
   {
     label: "Tokens",
@@ -229,7 +230,7 @@ const pages: readonly DocsPage[] = [
   },
 ];
 
-const menuItems = computed<NavigationMenuItem[]>(() =>
+const menuItemsFor = (collapsed: boolean): NavigationMenuItem[] =>
   pages.map((page) => {
     const here = onPage(page.to);
     const sectionOpen = here && props.sections.some((section) => section.id === activeId.value);
@@ -240,10 +241,13 @@ const menuItems = computed<NavigationMenuItem[]>(() =>
       exact: true,
       defaultOpen: true,
       active: here && !sectionOpen,
-      children: page.children.map((child) => {
+      children: page.children.flatMap((child): NavigationMenuItem[] => {
+        if (child.heading) {
+          return collapsed ? [] : [{ label: child.label, type: "label", class: groupHeadingClass }];
+        }
         const active = here && activeId.value === child.id;
         const openNotes = openNoteCount(child.id, page.to);
-        return {
+        return [{
           label: child.label,
           to: `${page.to}#${child.id}`,
           active,
@@ -255,11 +259,17 @@ const menuItems = computed<NavigationMenuItem[]>(() =>
             selectSection(child.id);
             if (here) scrollToSection(child.id);
           },
-        };
+        }];
       }),
     };
-  }),
-);
+  });
+
+const menuItems = computed(() => menuItemsFor(false));
+const collapsedMenuItems = computed(() => menuItemsFor(true));
+
+/** Título de grupo no menu: mesmo tom do sobretítulo da página, sem link. */
+const groupHeadingClass =
+  "mt-2 px-2.5 pt-1.5 pb-0.5 text-[length:var(--ads-font-size-xxxs)] font-bold tracking-[0.14em] text-[var(--ads-text-tertiary)] uppercase";
 
 const menuUi = {
   root: "w-full",

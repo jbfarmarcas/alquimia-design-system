@@ -1,5 +1,5 @@
 <template>
-  <DocsDemo language="vue" :code="code" :apis="docsApis.filtro">
+  <DocsDemo language="vue" :code="code" :apis="docsApis['filter-select']">
     <template #preview>
       <div class="w-72 max-w-full">
         <AdsFilterSelect
@@ -19,11 +19,9 @@
       <DocsParam label="Tipo">
         <AdsSegmentedTabs v-model="kind" :items="kindItems" aria-label="Tipo do filtro" />
       </DocsParam>
-
       <DocsParam label="Estado">
         <AdsSegmentedTabs v-model="filterState" :items="stateItems" aria-label="Estado do filtro" />
       </DocsParam>
-
       <AdsSwitch v-model="hintOn" label="Orientação" />
     </template>
   </DocsDemo>
@@ -77,7 +75,6 @@ const radioOptions = [
 ];
 
 const options = computed(() => (kind.value === "checkbox" ? checkboxOptions : radioOptions));
-
 const supportHint = computed(() => (hintOn.value && filterState.value !== "erro" ? HINT : ""));
 
 watch([kind, filterState], () => {

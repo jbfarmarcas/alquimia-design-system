@@ -23,7 +23,7 @@
           </span>
           <div class="flex min-h-[var(--ads-space-xs)] min-w-0 flex-1 items-center">
             <slot name="title">
-              <h2 class="text-[length:var(--ads-modal-title-size)] font-bold leading-[var(--ads-space-xs)] text-[var(--ads-modal-title)]">
+              <h2 class="text-[length:var(--ads-modal-title-size)] font-bold leading-[1.3] text-[var(--ads-modal-title)]">
                 {{ title }}
               </h2>
             </slot>
@@ -35,7 +35,7 @@
             aria-label="Fechar"
             @click="dismiss(close)"
           >
-            <UIcon name="i-lucide-x" class="size-[var(--ads-space-xxs)]" />
+            <UIcon name="i-lucide-x" class="size-[18px]" />
           </button>
         </div>
 
@@ -81,9 +81,8 @@ import AdsButton from "./AdsButton.vue";
  * - padding do cartão e faixa do cabeçalho: space-xs (24px)
  * - vão entre cabeçalho, texto, conteúdo e ações: space-xxs (16px)
  * - vão entre ícone, título e fechar: space-nano (8px)
- * - ícone e X: space-xxs (16px), centralizados na faixa de 24px
- * - título: font-size-xs (16px), bold; a line-height é a faixa (24px)
- *   para a primeira linha coincidir com o ícone e o fechar
+ * - ícone: space-xxs (16px). O X do desktop segue o SM do Figma (18px)
+ * - título: 20px bold, line-height 130% (Subtitle 20 do Figma)
  */
 export type AdsModalVariant = "dialog" | "sheet";
 export type AdsModalSize = "md" | "lg" | "xl" | "2xl" | "3xl";

@@ -10,7 +10,7 @@
     </label>
 
     <div
-      class="relative flex min-h-[var(--ads-textarea-min-height)] rounded-[var(--ads-textarea-radius)]"
+      class="relative flex min-h-[var(--ads-textarea-min-height)] transition-colors rounded-[var(--ads-textarea-radius)]"
       :class="fieldClass"
       :data-state="visualState"
     >
@@ -25,7 +25,7 @@
       />
       <UIcon
         name="i-lucide-move-diagonal-2"
-        class="pointer-events-none absolute end-3 bottom-3 size-4 text-base text-[var(--ads-text-tertiary)]"
+        class="pointer-events-none absolute end-3 bottom-3 size-4 text-base text-ads-neutro-medio-60"
       />
     </div>
 
@@ -102,7 +102,7 @@ const fieldClass = computed(() => {
     return `border-(length:--ads-border-width-slim) border-[var(--ads-textarea-focus-border)] bg-[var(--ads-textarea-background)] ${text}`;
   }
   const focus = interactiveFocus
-    ? "focus-within:border-(length:--ads-border-width-slim) focus-within:border-[var(--ads-textarea-focus-border)]"
+    ? "hover:not-focus-within:border-[var(--ads-textarea-hover-border)] focus-within:border-(length:--ads-border-width-slim) focus-within:border-[var(--ads-textarea-focus-border)]"
     : "";
   return `border border-[var(--ads-textarea-border)] bg-[var(--ads-textarea-background)] ${text} ${focus}`;
 });

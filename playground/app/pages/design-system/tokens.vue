@@ -28,11 +28,24 @@
           data-review-preview
           class="flex min-h-80 flex-col gap-4 rounded-[var(--ads-radius-md)] border border-[var(--ads-border-subtle)] bg-[var(--ads-surface-card)] p-5 md:sticky md:top-4 md:max-h-[calc(100dvh-7rem)] md:overflow-auto"
         >
-          <p class="text-[length:var(--ads-font-size-xxxs)] font-bold tracking-[0.14em] text-[var(--ads-text-brand)] uppercase">
-            Componente
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <p class="text-[length:var(--ads-font-size-xxxs)] font-bold tracking-[0.14em] text-[var(--ads-text-brand)] uppercase">
+              Componente
+            </p>
+            <AdsSwitch v-model="spacingOn" label="Espaçamentos" />
+          </div>
+          <p class="text-xs leading-relaxed text-[var(--ads-text-secondary)]">
+            Passe o mouse ou foque uma parte do componente para ver o token e o valor do rascunho.
           </p>
           <div class="flex flex-1 items-center justify-center py-6">
-            <TokenPreview :id="current.id" />
+            <TokenInspector
+              :component="current"
+              :fields="tokenFields"
+              :tokens="draft"
+              :spacing="spacingOn"
+            >
+              <TokenPreview :id="current.id" />
+            </TokenInspector>
           </div>
         </div>
 
@@ -131,6 +144,10 @@ watch(
     activeId.value = sectionFromHash();
   },
 );
+/** Inspeção estilo Dev Mode: padding e gap pintados no preview. */
+const spacingOn = ref(true);
+const tokenFields = allTokenFields();
+
 const saving = ref(false);
 const loaded = ref(false);
 const message = ref("");

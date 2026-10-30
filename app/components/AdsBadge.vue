@@ -7,7 +7,7 @@
   />
   <span
     v-else
-    class="inline-flex size-[var(--ads-badge-size)] shrink-0 items-center justify-center overflow-hidden rounded-full px-[5px] py-1 text-[length:var(--ads-badge-font-size)] [font-weight:var(--ads-badge-weight)] leading-4"
+    class="inline-flex size-[var(--ads-badge-size)] shrink-0 items-center justify-center overflow-hidden rounded-full px-[5px] py-1 text-[length:var(--ads-badge-font-size)] [font-weight:var(--ads-badge-weight)] leading-[1.2]"
     :class="surfaceClass"
   >
     {{ value }}
