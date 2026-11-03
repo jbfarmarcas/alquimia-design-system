@@ -8,7 +8,6 @@ export default defineNuxtConfig({
     name: "design-system",
   },
 
-  srcDir: "app",
   compatibilityDate: "2025-06-17",
 
   modules: ["@nuxt/fonts", "@nuxt/icon", "@nuxt/ui", "@vueuse/nuxt"],
