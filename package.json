@@ -21,7 +21,7 @@
     "dev": "nuxt dev playground --port 3010",
     "build": "nuxt build playground",
     "preview": "nuxt preview playground --port 3010",
-    "postinstall": "nuxt prepare playground"
+    "prepare": "nuxt prepare playground"
   },
   "dependencies": {
     "@iconify-json/lucide": "^1.2.104",
