@@ -178,3 +178,6 @@ export const figmaLinks = {
 
 export const figmaLinksFor = (id: CatalogSectionId): readonly FigmaComponentLink[] =>
   id === "cores" ? [] : figmaLinks[id];
+
+/** A seção tem ao menos um nó no Figma. Muda sozinho quando `absent(...)` vira `node(...)` acima. */
+export const hasFigmaNode = (id: CatalogSectionId): boolean => figmaLinksFor(id).some((link) => link.figma !== null);

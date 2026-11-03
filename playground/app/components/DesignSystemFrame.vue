@@ -124,6 +124,7 @@ const props = defineProps<{
 
 import { componentTokenCatalog } from "../../../app/theme/component-tokens";
 import { catalogGroups } from "./design-system/catalog-sections";
+import { hasFigmaNode } from "./design-system/figma-links";
 import { INSTALL_SECTIONS } from "./design-system/install-docs";
 
 const activeId = defineModel<string>("activeId", { default: "" });
@@ -194,13 +195,25 @@ type DocsPage = {
   children: readonly DocsChild[];
 };
 
-/** Catálogo: uma entrada por componente, sob o nome do antigo grupo. Grupo de uma seção só não ganha título. */
+/**
+ * Catálogo: seções que não são componente (Cores) abrem a lista sem título; depois vêm dois grupos,
+ * "No Figma" e "Sem mapeamento no Figma". A divisão sai de `figma-links.ts`, e dentro de cada grupo
+ * vale a ordem do catálogo.
+ */
 function catalogNavChildren(): DocsChild[] {
-  return catalogGroups.flatMap((group) => {
-    const links = group.sections.map((section) => ({ id: section.id, label: section.label }));
-    if (group.sections.length < 2) return links;
-    return [{ id: `grupo-${group.name}`, label: group.name, heading: true }, ...links];
-  });
+  const sections = catalogGroups.flatMap((group) => group.sections);
+  const toLink = (section: (typeof sections)[number]): DocsChild => ({ id: section.id, label: section.label });
+  const intro = sections.filter((section) => section.components.length === 0).map(toLink);
+  const components = sections.filter((section) => section.components.length > 0);
+  const mapped = components.filter((section) => hasFigmaNode(section.id)).map(toLink);
+  const unmapped = components.filter((section) => !hasFigmaNode(section.id)).map(toLink);
+  return [
+    ...intro,
+    ...(mapped.length ? [{ id: "grupo-no-figma", label: "No Figma", heading: true }, ...mapped] : []),
+    ...(unmapped.length
+      ? [{ id: "grupo-sem-figma", label: "Sem mapeamento no Figma", heading: true }, ...unmapped]
+      : []),
+  ];
 }
 
 const pages: readonly DocsPage[] = [
