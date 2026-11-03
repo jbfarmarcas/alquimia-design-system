@@ -140,6 +140,8 @@
       title="Simulação"
       description="Simulações de preços e cenários."
       icon="i-lucide-calculator"
+      :badges="[{ label: 'Novo', status: 'new' }]"
+      footer-text="Atualizada hoje"
     />
   </div>
 

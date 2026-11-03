@@ -7,6 +7,7 @@
         icon="i-lucide-calculator"
         :color="featureColor"
         :disabled="disabled"
+        :badges="badgesOn ? badges : undefined"
         :footer-text="footerOn ? 'Atualizada hoje' : undefined"
       />
     </template>
@@ -22,6 +23,7 @@
       />
       <div class="flex flex-wrap items-center gap-x-8 gap-y-4">
         <AdsSwitch v-model="disabled" label="Em breve" />
+        <AdsSwitch v-model="badgesOn" label="Badges" />
         <AdsSwitch v-model="footerOn" label="Rodapé" />
       </div>
     </template>
@@ -33,13 +35,19 @@ import { computed, ref } from "vue";
 import DocsDemo from "../DocsDemo.vue";
 import { docsApis } from "../catalog-docs";
 import { attr, buildTag } from "../../../utils/code-builder";
-import AdsFeatureCard, { type AdsFeatureCardColor } from "../../../../../app/components/AdsFeatureCard.vue";
+import AdsFeatureCard, { type AdsFeatureCardBadge, type AdsFeatureCardColor } from "../../../../../app/components/AdsFeatureCard.vue";
 import AdsFilterSelect from "../../../../../app/components/AdsFilterSelect.vue";
 import AdsSwitch from "../../../../../app/components/AdsSwitch.vue";
 
 const featureColor = ref<AdsFeatureCardColor>("success");
 const disabled = ref(false);
+const badgesOn = ref(true);
 const footerOn = ref(true);
+
+const badges: AdsFeatureCardBadge[] = [
+  { label: "Novo", status: "new" },
+  { label: "Preços", status: "default" },
+];
 
 const featureColorOptions = [
   { value: "primary", label: "Primary" },
@@ -58,6 +66,11 @@ const code = computed(() =>
     attr(true, "icon", "i-lucide-calculator"),
     attr(featureColor.value !== "primary", "color", featureColor.value),
     attr(disabled.value, "disabled"),
+    attr(
+      badgesOn.value,
+      ":badges",
+      "[{ label: 'Novo', status: 'new' }, { label: 'Preços', status: 'default' }]",
+    ),
     attr(footerOn.value, "footer-text", "Atualizada hoje"),
   ]),
 );
