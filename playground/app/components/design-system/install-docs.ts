@@ -62,15 +62,19 @@ export const INSTALL_REQUIREMENTS = [
   { name: "Nuxt", value: "^4.0.0 (peer dependency, instalada por você)." },
   { name: "Vue", value: "^3.5.18 (peer dependency, instalada por você)." },
   {
-    name: "Já incluídos",
-    value: "@nuxt/ui v4, @nuxt/fonts, @nuxt/icon, @vueuse/nuxt, Tailwind CSS v4 e os ícones Lucide. Não instale de novo.",
+    name: "Também peers",
+    value:
+      "@nuxt/ui ^4.3.0, tailwindcss ^4.0.15, @nuxt/icon ^2.2.0, @nuxt/fonts ^0.12.1 ou ^0.14.0, @vueuse/core e @vueuse/nuxt ^14.0.0, @internationalized/date ^3.12.4. A versão é a do seu projeto: o app não ganha uma segunda cópia do Nuxt UI.",
   },
+  { name: "Já incluídos", value: "Os ícones Lucide (@iconify-json/lucide)." },
 ] as const;
 
+const INSTALL_PEERS = "@nuxt/ui @nuxt/fonts @nuxt/icon @vueuse/core @vueuse/nuxt @internationalized/date tailwindcss";
+
 export const INSTALL_COMMANDS = [
-  { id: "pnpm", label: "pnpm", code: `pnpm add ${INSTALL_PACKAGE}\n` },
-  { id: "npm", label: "npm", code: `npm install ${INSTALL_PACKAGE}\n` },
-  { id: "yarn", label: "yarn", code: `yarn add ${INSTALL_PACKAGE}\n` },
+  { id: "pnpm", label: "pnpm", code: `pnpm add ${INSTALL_PACKAGE} ${INSTALL_PEERS}\n` },
+  { id: "npm", label: "npm", code: `npm install ${INSTALL_PACKAGE} ${INSTALL_PEERS}\n` },
+  { id: "yarn", label: "yarn", code: `yarn add ${INSTALL_PACKAGE} ${INSTALL_PEERS}\n` },
 ] as const;
 
 export const INSTALL_CONFIG_CODE = `// nuxt.config.ts

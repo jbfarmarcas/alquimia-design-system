@@ -21,6 +21,7 @@ Confirme no projeto, e corrija se faltar:
    </script>
    ```
 3. Nuxt `^4` e Vue `^3.5.18`.
+4. As peers estão no `package.json` do projeto: `@nuxt/ui ^4.3.0`, `tailwindcss ^4.0.15`, `@nuxt/icon ^2.2.0`, `@nuxt/fonts ^0.12.1 || ^0.14.0`, `@vueuse/core` e `@vueuse/nuxt ^14.0.0`, `@internationalized/date ^3.12.4`. Elas são do projeto, não do ADS: `pnpm add` delas, sem instalar versão diferente. `pnpm why @nuxt/ui` deve mostrar uma única versão.
 
 A layer já registra `@nuxt/ui`, `@nuxt/fonts`, `@nuxt/icon` e `@vueuse/nuxt`, o CSS global, a fonte Inter e a coleção `lucide`. **Não** registre esses módulos de novo nem importe outro CSS do Nuxt UI.
 
@@ -115,4 +116,5 @@ Auto-importados, de `app/utils`:
 | Toast, tooltip ou modal não aparecem | Falta o `UApp` |
 | `Ads*` não é encontrado | Falta `extends: ["ads-nuxt"]`; reinicie o servidor |
 | Sem estilo ou sem fonte | Módulos do Nuxt UI registrados em duplicidade |
+| `pnpm why @nuxt/ui` mostra duas versões, ou `~` aponta para `app/` que não existe | Versão do ADS anterior à `0.1.2` (herdava `srcDir`) ou peer fora do range; atualize o `ads-nuxt` e rode `pnpm dedupe` |
 | pnpm avisa de scripts de build ignorados | Comportamento do pnpm 10; `pnpm approve-builds` |

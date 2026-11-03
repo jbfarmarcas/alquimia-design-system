@@ -47,21 +47,29 @@ O pacote é uma **Nuxt Layer**: ao estendê-lo, seu projeto recebe de uma vez os
 | Node.js     | 20+ (recomendado 22) |
 | Nuxt        | `^4.0.0`  |
 | Vue         | `^3.5.18` |
+| `@nuxt/ui`  | `^4.3.0`  |
+| `tailwindcss` | `^4.0.15` |
+| `@nuxt/icon` | `^2.2.0` |
+| `@nuxt/fonts` | `^0.12.1` ou `^0.14.0` |
+| `@vueuse/nuxt` e `@vueuse/core` | `^14.0.0` |
+| `@internationalized/date` | `^3.12.4` |
 
-`nuxt` e `vue` são *peer dependencies*. As demais (`@nuxt/ui`, `@nuxt/fonts`, `@nuxt/icon`, `@vueuse/nuxt`, `tailwindcss`, ícones Lucide) já vêm como dependências do pacote.
+Todas são *peer dependencies*: ficam a cargo do seu projeto, que escolhe a versão. Assim o app não ganha uma segunda cópia do Nuxt UI nem do Tailwind. Se o projeto já usa o Nuxt UI v4, normalmente já tem quase tudo. Os ícones Lucide (`@iconify-json/lucide`) vêm como dependência do pacote.
 
 ## Instalação
 
 ```bash
 # pnpm
-pnpm add ads-nuxt
+pnpm add ads-nuxt @nuxt/ui @nuxt/fonts @nuxt/icon @vueuse/core @vueuse/nuxt @internationalized/date tailwindcss
 
 # npm
-npm install ads-nuxt
+npm install ads-nuxt @nuxt/ui @nuxt/fonts @nuxt/icon @vueuse/core @vueuse/nuxt @internationalized/date tailwindcss
 
 # yarn
-yarn add ads-nuxt
+yarn add ads-nuxt @nuxt/ui @nuxt/fonts @nuxt/icon @vueuse/core @vueuse/nuxt @internationalized/date tailwindcss
 ```
+
+Se algum desses pacotes já estiver no `package.json`, o comando só mantém a versão existente. Para conferir que não há cópia duplicada: `pnpm why @nuxt/ui` deve mostrar uma única versão.
 
 ### Skill para o agente de IA (opcional)
 
