@@ -111,7 +111,7 @@ Os componentes são auto-importados, sem `import` manual:
 
 ```vue
 <template>
-  <AdsCard title="Cadastro" description="Preencha os dados abaixo.">
+  <AdsCard title="Cadastro">
     <div class="flex flex-col gap-4">
       <AdsInput v-model="nome" label="Nome" placeholder="Digite seu nome" />
       <AdsButton type="filled" label="Salvar" leading icon="i-lucide-save" />
@@ -503,6 +503,7 @@ Páginas do playground:
 
 | Rota                      | Conteúdo |
 | ------------------------- | -------- |
+| `/design-system/instalacao` | Manual de instalação da biblioteca |
 | `/design-system`          | Catálogo de componentes com demos e código |
 | `/design-system/tabelas`  | Variações de tabela |
 | `/design-system/tokens`   | Editor visual dos tokens de componente |
@@ -517,8 +518,11 @@ docker compose up
 
 O pacote publica apenas `app/` e `nuxt.config.ts` (campo `files`), com acesso público:
 
+A publicação é feita pelo GitHub Actions (`.github/workflows/publish.yml`), com Trusted Publishing (sem token). Para lançar uma versão:
+
 ```bash
-pnpm publish
+npm version patch --ignore-scripts   # ou minor / major: cria o commit e a tag vX.Y.Z
+git push --follow-tags
 ```
 
 ## Estrutura do projeto

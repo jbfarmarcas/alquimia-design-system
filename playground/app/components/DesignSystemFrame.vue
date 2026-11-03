@@ -124,6 +124,7 @@ const props = defineProps<{
 
 import { componentTokenCatalog } from "../../../app/theme/component-tokens";
 import { catalogGroups } from "./design-system/catalog-sections";
+import { INSTALL_SECTIONS } from "./design-system/install-docs";
 
 const activeId = defineModel<string>("activeId", { default: "" });
 
@@ -203,6 +204,12 @@ function catalogNavChildren(): DocsChild[] {
 }
 
 const pages: readonly DocsPage[] = [
+  {
+    label: "Instalação",
+    to: "/design-system/instalacao",
+    icon: "i-lucide-package",
+    children: INSTALL_SECTIONS.map((section) => ({ id: section.id, label: section.label })),
+  },
   {
     label: "Catálogo",
     to: "/design-system",
