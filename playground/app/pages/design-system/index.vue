@@ -67,7 +67,6 @@ import CharttipDemo from "../../components/design-system/demos/CharttipDemo.vue"
 import CheckboxDemo from "../../components/design-system/demos/CheckboxDemo.vue";
 import ColorsDemo from "../../components/design-system/demos/ColorsDemo.vue";
 import DatePickerDemo from "../../components/design-system/demos/DatePickerDemo.vue";
-import DropdownMenuDemo from "../../components/design-system/demos/DropdownMenuDemo.vue";
 import EmptyStateDemo from "../../components/design-system/demos/EmptyStateDemo.vue";
 import FarmarcasPillDemo from "../../components/design-system/demos/FarmarcasPillDemo.vue";
 import FeatureCardDemo from "../../components/design-system/demos/FeatureCardDemo.vue";
@@ -88,7 +87,6 @@ import NavbarAppDemo from "../../components/design-system/demos/NavbarAppDemo.vu
 import NavbarDeskDemo from "../../components/design-system/demos/NavbarDeskDemo.vue";
 import NotabilityPillDemo from "../../components/design-system/demos/NotabilityPillDemo.vue";
 import NumberInputDemo from "../../components/design-system/demos/NumberInputDemo.vue";
-import NuxtTooltipDemo from "../../components/design-system/demos/NuxtTooltipDemo.vue";
 import OverlayLoadingDemo from "../../components/design-system/demos/OverlayLoadingDemo.vue";
 import PaginationDemo from "../../components/design-system/demos/PaginationDemo.vue";
 import PillDemo from "../../components/design-system/demos/PillDemo.vue";
@@ -130,7 +128,6 @@ const demos = {
   "list-dropdown": ListDropdownDemo,
   "filter-dropdown": FilterDropdownDemo,
   "filter-option": FilterOptionDemo,
-  "dropdown-menu": DropdownMenuDemo,
   tabs: TabsDemo,
   "segmented-tabs": SegmentedTabsDemo,
   toast: ToastDemo,
@@ -141,7 +138,6 @@ const demos = {
   steptip: SteptipDemo,
   charttip: CharttipDemo,
   smalltip: SmalltipDemo,
-  "tooltip-nuxt-ui": NuxtTooltipDemo,
   loading: LoadingDemo,
   "overlay-loading": OverlayLoadingDemo,
   "progress-bar-loading": ProgressBarLoadingDemo,

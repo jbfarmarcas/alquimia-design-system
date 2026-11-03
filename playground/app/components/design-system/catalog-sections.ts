@@ -106,14 +106,6 @@ export const catalogSections = [
     components: ["AdsFilterOption"],
   },
   {
-    id: "dropdown-menu",
-    label: "Menu de ações",
-    group: "Filtro",
-    purpose: "Menu de ações do Nuxt UI com o tema ADS. Não é o painel de filtro.",
-    components: ["AdsDropdownMenu"],
-  },
-
-  {
     id: "tabs",
     label: "Abas",
     group: "Abas",
@@ -184,14 +176,6 @@ export const catalogSections = [
     purpose: "Dica de uma linha, em 10px. Com slot, abre no hover.",
     components: ["AdsSmalltip"],
   },
-  {
-    id: "tooltip-nuxt-ui",
-    label: "Tooltip (Nuxt UI)",
-    group: "Feedback",
-    purpose: "UTooltip claro para dica curta em uma ação, e InvertedTooltip escuro para texto que não cabe na linha.",
-    components: ["UTooltip", "InvertedTooltip"],
-  },
-
   {
     id: "loading",
     label: "Loading",

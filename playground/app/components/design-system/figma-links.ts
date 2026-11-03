@@ -99,13 +99,6 @@ export const figmaLinks = {
       related: [node("_Itens Radio", "6507:8696")],
     },
   ],
-  "dropdown-menu": [
-    absent(
-      "AdsDropdownMenu",
-      "Menu de ações do Nuxt UI. O Dropdown do Figma é o filtro e o button_dropdown é o AdsButtonMenu.",
-      true,
-    ),
-  ],
   tabs: [{ component: "AdsTabs", figma: node("Tabs", "3658:2419"), note: "A página Tabs está marcada com 🔴 no Figma." }],
   "segmented-tabs": [
     { component: "AdsSegmentedTabs", figma: node("Switch Tabs", "3611:5505"), note: "A página Tabs está marcada com 🔴 no Figma." },
@@ -129,14 +122,6 @@ export const figmaLinks = {
     { component: "AdsCharttip", figma: node("Charttip", "6471:852"), related: [node("_Charttip", "3482:2533")] },
   ],
   smalltip: [{ component: "AdsSmalltip", figma: node("Smalltips", "4107:1816") }],
-  "tooltip-nuxt-ui": [
-    absent("UTooltip", "Tooltip do Nuxt UI com o tema ADS. Não há tooltip claro no inventário."),
-    absent(
-      "InvertedTooltip",
-      "Tooltip de texto truncado, só no código. Usa as cores do Tooltip do Figma, mas não é um set de lá.",
-      true,
-    ),
-  ],
   loading: [absent("AdsLoading", "Não há loading, skeleton nem shimmer no inventário.")],
   "overlay-loading": [absent("useOverlayLoading", "Não há overlay de processo no inventário.")],
   "progress-bar-loading": [absent("ProgressBarLoading", "Não há barra de progresso no inventário.")],

@@ -290,17 +290,6 @@ export const docsApis = {
       events: [{ name: "select", payload: "—", description: "A linha foi acionada." }],
     },
   ],
-  "dropdown-menu": [
-    {
-      name: "AdsDropdownMenu",
-      summary: "Menu de ações do Nuxt UI com o tema ADS. Não é o painel de filtro.",
-      props: [
-        prop("items", "DropdownMenuItem[]", "obrigatória", "Ações do menu."),
-        prop("content.side", "top | right | bottom | left", "bottom", "Lado do painel."),
-      ],
-      slots: [{ name: "default", description: "Gatilho do menu." }],
-    },
-  ],
   tabs: [
     {
       name: "AdsTabs",
@@ -445,30 +434,6 @@ export const docsApis = {
         prop("delayDuration", "number", "150", "Espera antes de abrir, em milissegundos."),
       ],
       slots: [{ name: "default", description: "Gatilho, como um ícone de info. A dica abre no hover e no foco. Sem slot, fica fixa na tela." }],
-    },
-  ],
-  "tooltip-nuxt-ui": [
-    {
-      name: "UTooltip",
-      summary: "Tooltip claro do Nuxt UI, com o tema ADS. Use para uma dica curta em uma ação.",
-      props: [
-        prop("text", "string", "—", "Texto do tooltip."),
-        prop("arrow", "boolean", "false", "Mostra a seta apontando para o gatilho."),
-      ],
-      slots: [{ name: "default", description: "Gatilho do tooltip." }],
-    },
-    {
-      name: "InvertedTooltip",
-      summary: "Tooltip escuro para texto que não cabe na linha. O tooltip claro do exemplo é o UTooltip.",
-      props: [
-        prop("text", "string", "obrigatória", "Texto do tooltip. Vazio desliga o tooltip."),
-        prop("delayDuration", "number", "150", "Espera antes de abrir, em milissegundos."),
-        prop("disabled", "boolean", "false", "Não abre."),
-        prop("content.side", "top | right | bottom | left", "top", "Lado em relação ao gatilho."),
-        prop("content.align", "start | center | end", "start", "Alinhamento no lado escolhido."),
-        prop("content.sideOffset", "number", "8", "Distância do gatilho, em pixels."),
-      ],
-      slots: [{ name: "default", description: "Gatilho. No texto truncado, o elemento precisa truncar." }],
     },
   ],
   loading: [
