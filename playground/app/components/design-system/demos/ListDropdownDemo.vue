@@ -18,13 +18,41 @@ import { attr, buildTag } from "../../../utils/code-builder";
 import AdsListDropdown from "../../../../../app/components/AdsListDropdown.vue";
 import AdsSwitch from "../../../../../app/components/AdsSwitch.vue";
 
-const listValue = ref("mes");
+const listValue = ref("farmarcas");
 const searchOn = ref(true);
 
+/** 30 farmácias/redes — volume alto para demonstrar rolagem e busca */
 const radioOptions = [
-  { value: "mes", label: "Último mês" },
-  { value: "trimestre", label: "Último trimestre" },
-  { value: "ytd", label: "YTD" },
+  { value: "abrafarma", label: "Abrafarma" },
+  { value: "araujo", label: "Araujo" },
+  { value: "bigfarma", label: "Big Farma" },
+  { value: "braspharma", label: "Braspharma" },
+  { value: "catedral", label: "Catedral" },
+  { value: "drogacenter", label: "Drogacenter" },
+  { value: "drogal", label: "Drogal" },
+  { value: "drogaria-sao-paulo", label: "Drogaria São Paulo" },
+  { value: "drogasil", label: "Drogasil" },
+  { value: "drogatel", label: "Drogatel" },
+  { value: "drogazul", label: "Drogazul" },
+  { value: "farmarcas", label: "Farmarcas" },
+  { value: "farmacias-app", label: "Farmácias App" },
+  { value: "farmacias-pague-menos", label: "Farmácias Pague Menos" },
+  { value: "farmais", label: "FarMais" },
+  { value: "farmaprime", label: "FarmaPrime" },
+  { value: "farmarede", label: "FarmaRede" },
+  { value: "farmasul", label: "FarmaSul" },
+  { value: "farmavida", label: "FarmaVida" },
+  { value: "gran-pharmaco", label: "Gran Pharmaco" },
+  { value: "extrafarma", label: "Extrafarma" },
+  { value: "nissei", label: "Nissei" },
+  { value: "panvel", label: "Panvel" },
+  { value: "parceiro-farma", label: "Parceiro Farma" },
+  { value: "raia", label: "Raia" },
+  { value: "redepharma", label: "Redepharma" },
+  { value: "sao-joao", label: "São João" },
+  { value: "ultrafarma", label: "Ultrafarma" },
+  { value: "unidroga", label: "Unidroga" },
+  { value: "venancio", label: "Venâncio" },
 ];
 
 const code = computed(() =>

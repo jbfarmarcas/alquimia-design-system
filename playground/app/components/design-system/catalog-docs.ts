@@ -390,6 +390,7 @@ export const docsApis = {
         prop("description", "string", "Descrição", "Some com showDescription falso."),
         prop("showTitle", "boolean", "true", "Mostra o título."),
         prop("showDescription", "boolean", "true", "Mostra a descrição."),
+        prop("delayDuration", "number", "150", "Espera antes de abrir, em milissegundos."),
       ],
       slots: [{ name: "default", description: "Gatilho. O balão abre no hover e no foco. Sem slot, o balão fica fixo na tela, só para documentação." }],
     },
