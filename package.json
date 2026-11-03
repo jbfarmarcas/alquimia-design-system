@@ -1,7 +1,15 @@
 {
-  "name": "alquimia-design-system",
-  "version": "0.0.0",
-  "private": true,
+  "name": "ads-nuxt",
+  "version": "0.1.0",
+  "license": "MIT",
+  "description": "Alquimia Design System para Nuxt, construído sobre Nuxt UI",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jbfarmarcas/alquimia-design-system.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "type": "module",
   "packageManager": "pnpm@10.4.1",
   "main": "./nuxt.config.ts",
@@ -23,8 +31,7 @@
     "@nuxt/ui": "^4.3.0",
     "@vueuse/core": "^14.0.0",
     "@vueuse/nuxt": "^14.0.0",
-    "tailwindcss": "^4.0.15",
-    "vue-router": "^4.5.0"
+    "tailwindcss": "^4.0.15"
   },
   "peerDependencies": {
     "nuxt": "^4.0.0",
@@ -33,6 +40,7 @@
   "devDependencies": {
     "nuxt": "^4.0.0",
     "typescript": "^5.6.3",
-    "vue": "^3.5.18"
+    "vue": "^3.5.18",
+    "vue-router": "^4.5.0"
   }
 }
