@@ -534,8 +534,10 @@ Páginas do playground:
 ### Docker
 
 ```bash
-docker compose up
+docker compose up --build
 ```
+
+A imagem executa o build de produção do playground (`pnpm build`) e serve o resultado em `http://localhost:3010`. Não há hot reload no container: para desenvolver, use `pnpm dev`.
 
 ### Publicação
 

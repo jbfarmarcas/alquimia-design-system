@@ -11,10 +11,13 @@ COPY playground ./playground
 
 RUN pnpm install --frozen-lockfile
 
+# Build de produção do playground (gera playground/.output)
+RUN pnpm build
+
+ENV NODE_ENV=production
 ENV HOST=0.0.0.0
 ENV PORT=3010
-ENV CHOKIDAR_USEPOLLING=true
 
 EXPOSE 3010
 
-CMD ["pnpm", "exec", "nuxt", "dev", "playground", "--host", "0.0.0.0", "--port", "3010"]
+CMD ["node", "playground/.output/server/index.mjs"]

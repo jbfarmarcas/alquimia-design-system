@@ -6,13 +6,10 @@ services:
     environment:
       HOST: 0.0.0.0
       PORT: "3010"
-      CHOKIDAR_USEPOLLING: "true"
     volumes:
-      - ./app:/app/app
-      - ./nuxt.config.ts:/app/nuxt.config.ts
-      - ./playground:/app/playground
-      - playground-nuxt:/app/playground/.nuxt
+      # Persiste o banco SQLite das anotações de revisão entre rebuilds
+      - playground-data:/app/playground/data
     init: true
 
 volumes:
-  playground-nuxt:
+  playground-data:
