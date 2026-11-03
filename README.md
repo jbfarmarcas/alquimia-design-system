@@ -63,6 +63,18 @@ npm install ads-nuxt
 yarn add ads-nuxt
 ```
 
+### Skill para o agente de IA (opcional)
+
+O repositório traz a skill `ads-nuxt`, que ensina o agente do seu projeto (Cursor, Claude Code e outros) a usar o ADS: componentes, tokens, utilitários e armadilhas conhecidas.
+
+```bash
+npx skills add jbfarmarcas/alquimia-design-system --skill ads-nuxt   # instalar
+npx skills update ads-nuxt                                          # atualizar
+npx skills remove ads-nuxt                                          # remover
+```
+
+Rode na raiz do projeto que usa o `ads-nuxt`. A skill entra em `.agents/skills/ads-nuxt` e o projeto ganha um `skills-lock.json`. Faça commit dos dois e rode `update` depois de atualizar o pacote.
+
 ## Configuração
 
 Estenda a layer no `nuxt.config.ts` do seu projeto:
@@ -497,6 +509,9 @@ pnpm install
 pnpm dev       # playground em http://localhost:3010
 pnpm build     # build do playground
 pnpm preview   # preview do build
+
+pnpm skill:reference   # regenera skills/ads-nuxt/reference.md a partir de app/
+pnpm skill:check       # falha se o reference.md estiver desatualizado
 ```
 
 Páginas do playground:
@@ -541,6 +556,8 @@ git push --follow-tags
 │   ├── types/              # Tipos compartilhados
 │   └── utils/              # Utilitários de formatação e helpers
 ├── playground/             # App de documentação (não publicado)
+├── skills/ads-nuxt/        # Skill para agentes de IA (SKILL.md + reference.md gerado)
+├── scripts/                # generate-skill-reference.mjs (pnpm skill:reference)
 ├── nuxt.config.ts          # Entrada da layer
 └── package.json
 ```

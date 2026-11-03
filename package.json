@@ -21,7 +21,9 @@
     "dev": "nuxt dev playground --port 3010",
     "build": "nuxt build playground",
     "preview": "nuxt preview playground --port 3010",
-    "prepare": "nuxt prepare playground"
+    "prepare": "nuxt prepare playground",
+    "skill:reference": "node scripts/generate-skill-reference.mjs",
+    "skill:check": "node scripts/generate-skill-reference.mjs --check"
   },
   "dependencies": {
     "@iconify-json/lucide": "^1.2.104",

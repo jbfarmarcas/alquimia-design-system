@@ -1,0 +1,29 @@
+---
+description: Toda alteração na biblioteca deve verificar se a skill ads-nuxt (skills/ads-nuxt) precisa ser atualizada
+alwaysApply: true
+---
+
+# Manter a skill `ads-nuxt` em dia
+
+A skill em `skills/ads-nuxt/` é o que os projetos consumidores leem para usar o ADS. Se ela divergir do código, o agente deles gera código errado.
+
+**Ao terminar qualquer alteração, antes de responder, faça a verificação abaixo e diga o resultado ao usuário** ("skill atualizada: …" ou "skill sem mudanças: …"). Não pule por a mudança parecer pequena.
+
+## O que verificar
+
+| Mudou | Atualize |
+| ----- | -------- |
+| Props, eventos, slots, `v-model` ou tipos de qualquer `app/components/*.vue`, ou tipos em `app/utils` e `app/types` | `reference.md`: rode `pnpm skill:reference` |
+| Componente criado, removido ou renomeado | `pnpm skill:reference` **e** a tabela "Componentes" do `SKILL.md` |
+| Comportamento que surpreende (prop que substitui outra, nome de prop enganoso) | seção "Armadilhas conhecidas" do `SKILL.md` |
+| Tokens ou CSS: `app/assets/css/*`, `app/theme/*` | tabela "Tokens" do `SKILL.md` (nomes, escalas, prefixos) |
+| Funções de `app/utils` ou `app/composables` | seção "Utilitários e composables" do `SKILL.md` |
+| `nuxt.config.ts`, `app/app.config.ts`, `app/locale`, `app/plugins`, versões de Nuxt/Vue no `package.json` | "Antes de começar" e "Regras de uso" do `SKILL.md` |
+| Passos de instalação ou configuração | `SKILL.md`, o README e `playground/app/components/design-system/install-docs.ts` (página Instalação) |
+
+## Como
+
+1. Rode `pnpm skill:check`. Se falhar, rode `pnpm skill:reference` e inclua o `reference.md` na mesma alteração.
+2. **Nunca edite `reference.md` à mão.** É gerado de `app/`. Se o resultado sair errado, corrija `scripts/generate-skill-reference.mjs`.
+3. Edite `SKILL.md` só no que mudou. Mantenha abaixo de 500 linhas, sem texto que o agente já saiba.
+4. Se a alteração for só no `playground/`, em testes ou em docs sem efeito no uso da biblioteca, a skill não muda: diga isso.

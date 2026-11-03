@@ -47,6 +47,12 @@ export const INSTALL_SECTIONS = [
     purpose: "Confirme que a instalação está certa e veja onde costuma falhar.",
     components: [],
   },
+  {
+    id: "skill",
+    label: "Skill para o agente",
+    purpose: "Ensina o agente de IA do projeto (Cursor, Claude Code e outros) a usar o ADS: componentes, tokens e utilitários.",
+    components: [],
+  },
 ] as const;
 
 export type InstallSectionId = (typeof INSTALL_SECTIONS)[number]["id"];
@@ -128,6 +134,34 @@ export default defineAppConfig({
   },
 });
 `;
+
+export const INSTALL_SKILL_NAME = "ads-nuxt";
+export const INSTALL_SKILL_REPO = "jbfarmarcas/alquimia-design-system";
+
+export const INSTALL_SKILL_COMMANDS = [
+  {
+    id: "add",
+    label: "instalar",
+    code: `npx skills add ${INSTALL_SKILL_REPO} --skill ${INSTALL_SKILL_NAME}\n`,
+  },
+  { id: "update", label: "atualizar", code: `npx skills update ${INSTALL_SKILL_NAME}\n` },
+  { id: "remove", label: "remover", code: `npx skills remove ${INSTALL_SKILL_NAME}\n` },
+] as const;
+
+export const INSTALL_SKILL_CONTENT = [
+  "Como estender a layer e envolver o app com UApp.",
+  "Regras de uso: componente Ads* primeiro, token em vez de valor fixo, ícones Lucide, tema claro.",
+  "Armadilhas conhecidas de componentes, como AdsButton, AdsCard e AdsModal.",
+  "Tabela de tokens (superfície, texto, borda, status, raio, espaço, fonte, sombra).",
+  "Utilitários pt-BR e composables.",
+  "Referência com props, eventos e slots de todos os componentes, gerada do código.",
+] as const;
+
+export const INSTALL_SKILL_NOTES = [
+  "Rode o comando na raiz do projeto que usa o ads-nuxt. O CLI pergunta em quais agentes instalar. Para só o Cursor, acrescente -a cursor.",
+  "A skill entra em .agents/skills/ads-nuxt, e o projeto ganha um skills-lock.json para registrar a versão. Faça commit dos dois.",
+  "Rode npx skills update depois de atualizar o ads-nuxt, para a referência de componentes acompanhar a versão instalada.",
+] as const;
 
 export const INSTALL_CHECKLIST = [
   "Rodar o projeto (pnpm dev) abre a página sem erro no terminal.",

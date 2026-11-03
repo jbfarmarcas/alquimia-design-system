@@ -118,6 +118,32 @@
         </dl>
       </div>
     </section>
+
+    <section id="skill" :class="sectionClass">
+      <DesignSystemSectionHeading :section="section('skill')" :copied-name="copiedName" @copy="copyName" />
+      <div class="grid gap-4 lg:grid-cols-3">
+        <DocsCode
+          v-for="command in INSTALL_SKILL_COMMANDS"
+          :key="command.id"
+          :code="command.code"
+          :language="command.label"
+        />
+      </div>
+      <div class="grid items-start gap-8 lg:grid-cols-2">
+        <div class="flex flex-col gap-3">
+          <p class="text-sm font-bold text-[var(--ads-text-primary)]">O que a skill traz</p>
+          <ul class="flex list-disc flex-col gap-1.5 ps-5 text-sm leading-relaxed text-[var(--ads-text-secondary)]">
+            <li v-for="item in INSTALL_SKILL_CONTENT" :key="item">{{ item }}</li>
+          </ul>
+        </div>
+        <div class="flex flex-col gap-3">
+          <p class="text-sm font-bold text-[var(--ads-text-primary)]">Como funciona</p>
+          <ul class="flex list-disc flex-col gap-1.5 ps-5 text-sm leading-relaxed text-[var(--ads-text-secondary)]">
+            <li v-for="item in INSTALL_SKILL_NOTES" :key="item">{{ item }}</li>
+          </ul>
+        </div>
+      </div>
+    </section>
   </DesignSystemFrame>
 </template>
 
@@ -135,6 +161,9 @@ import {
   INSTALL_REGISTERED,
   INSTALL_REQUIREMENTS,
   INSTALL_SECTIONS,
+  INSTALL_SKILL_COMMANDS,
+  INSTALL_SKILL_CONTENT,
+  INSTALL_SKILL_NOTES,
   INSTALL_THEME_CODE,
   INSTALL_TOKENS_CODE,
   INSTALL_USAGE_CODE,
