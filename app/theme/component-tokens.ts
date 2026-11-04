@@ -94,7 +94,7 @@ export const componentTokenCatalog: readonly TokenComponent[] = [
     id: "input",
     section: "campo",
     label: "Campo",
-    note: "Vale para o AdsInput. O estado de IA continua com a cor própria.",
+    note: "Vale para o AdsInput. O estado de IA usa os tokens do botão IA (--ads-button-ia-background e --ads-button-ia-border), também nos campos de busca e filtro.",
     fields: [
       length("--ads-input-height", "Altura", "Medida", "40px"),
       length("--ads-input-padding-x", "Padding horizontal", "Medida", "12px"),

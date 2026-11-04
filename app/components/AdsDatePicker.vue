@@ -34,10 +34,13 @@ const props = withDefaults(
     size?: "sm" | "md" | "lg";
     maximumDays?: number;
     class?: string;
+    /** O valor veio de uma sugestão de IA. Quem usa limpa a marca quando a pessoa edita. */
+    aiSuggestion?: boolean;
   }>(),
   {
     range: false,
     size: "md",
+    aiSuggestion: false,
   },
 );
 
@@ -150,8 +153,16 @@ const rangeFieldClass = computed(() => [
   "h-[var(--ads-date-height)] rounded-[var(--ads-date-radius)] px-[var(--ads-date-padding-x)] text-[length:var(--ads-date-font-size)] [font-weight:var(--ads-date-weight)] leading-[var(--ads-date-line-height)] text-[var(--ads-date-text)] bg-[var(--ads-date-background)] ring ring-inset ring-[var(--ads-date-border)]",
   "enabled:hover:ring-[var(--ads-date-hover-border)] focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--ads-date-focus-border)]",
   "disabled:cursor-not-allowed disabled:opacity-75",
+  props.aiSuggestion && "bg-[var(--ads-button-ia-background)] ring-[var(--ads-button-ia-border)]",
   props.class,
 ]);
+
+/** O tema do UInputDate usa `!`, então a sugestão de IA também precisa de `!` para vencer. */
+const inputDateUi = computed(() =>
+  props.aiSuggestion
+    ? { base: "!bg-[var(--ads-button-ia-background)] !ring-[var(--ads-button-ia-border)]" }
+    : undefined,
+);
 
 const popoverUi = { content: "w-auto max-w-none p-0" };
 
@@ -430,6 +441,7 @@ function isDateUnavailable(value: DateValue) {
     :model-value="calendarModel"
     :locale="UI_LOCALE_CODE"
     :size="size"
+    :ui="inputDateUi"
     :disabled="disabled"
     :readonly="readonly"
     :min-value="minCalendarDate"

@@ -37,7 +37,7 @@ import AdsNumberInput from "../../../../../app/components/AdsNumberInput.vue";
 import AdsSegmentedTabs from "../../../../../app/components/AdsSegmentedTabs.vue";
 import AdsSwitch from "../../../../../app/components/AdsSwitch.vue";
 
-type FieldState = "default" | "active" | "focus" | "error" | "disabled";
+type FieldState = "default" | "active" | "focus" | "error" | "disabled" | "ai";
 
 const HINT = "Orientação curta sobre o campo.";
 const ERROR = "Informe um valor para continuar.";
@@ -53,10 +53,12 @@ const stateItems: { label: string; value: FieldState }[] = [
   { label: "Foco", value: "focus" },
   { label: "Erro", value: "error" },
   { label: "Desabilitado", value: "disabled" },
+  { label: "IA", value: "ai" },
 ];
 
 const sample = (value: FieldState) => {
   if (value === "default") return "";
+  if (value === "ai") return "12";
   return "Texto digitado";
 };
 
@@ -69,7 +71,7 @@ const supportError = computed(() => (state.value === "error" ? ERROR : ""));
 const supportHint = computed(() => (hintOn.value && state.value !== "error" ? HINT : ""));
 
 const code = computed(() => {
-  const frozen = ["active", "focus"].includes(state.value);
+  const frozen = ["active", "focus", "ai"].includes(state.value);
 
   return buildTag("AdsNumberInput", [
     attr(true, "v-model", "text"),

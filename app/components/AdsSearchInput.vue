@@ -40,7 +40,7 @@
 <script setup lang="ts">
 import { computed, useId } from "vue";
 
-export type AdsSearchInputState = "default" | "active" | "focus" | "disabled";
+export type AdsSearchInputState = "default" | "active" | "focus" | "disabled" | "ai";
 export type AdsSearchInputSize = "md" | "sm";
 
 const props = withDefaults(
@@ -53,6 +53,8 @@ const props = withDefaults(
     size?: AdsSearchInputSize;
     /** Estado congelado para a documentação. `null` segue o campo. */
     state?: AdsSearchInputState | null;
+    /** O texto veio de uma sugestão de IA. Quem usa limpa a marca quando a pessoa edita. */
+    aiSuggestion?: boolean;
   }>(),
   {
     placeholder: "Pesquisar",
@@ -62,6 +64,7 @@ const props = withDefaults(
     icon: "i-lucide-search",
     size: "md",
     state: null,
+    aiSuggestion: false,
   },
 );
 
@@ -74,10 +77,13 @@ const isDisabled = computed(() => props.disabled || props.state === "disabled");
 const visualState = computed<AdsSearchInputState>(() => {
   if (isDisabled.value) return "disabled";
   if (props.state) return props.state;
+  if (props.aiSuggestion) return "ai";
   return model.value ? "active" : "default";
 });
 
-const showClear = computed(() => visualState.value === "active" || visualState.value === "focus");
+const showClear = computed(
+  () => visualState.value === "active" || visualState.value === "focus" || visualState.value === "ai",
+);
 
 const iconClass = computed(() =>
   props.size === "sm"
@@ -107,6 +113,9 @@ const fieldClass = computed(() => {
   }
   if (visualState.value === "focus") {
     return `border-(length:--ads-border-width-slim) border-[var(--ads-search-focus-border)] bg-[var(--ads-search-background)] ${tone}`;
+  }
+  if (visualState.value === "ai") {
+    return `border border-[var(--ads-button-ia-border)] bg-[var(--ads-button-ia-background)] ${tone} ${focus}`;
   }
   return `border border-[var(--ads-search-border)] bg-[var(--ads-search-background)] ${tone} ${focus}`;
 });

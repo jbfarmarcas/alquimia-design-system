@@ -37,7 +37,7 @@ import AdsSearchInput from "../../../../../app/components/AdsSearchInput.vue";
 import AdsSegmentedTabs from "../../../../../app/components/AdsSegmentedTabs.vue";
 import AdsSwitch from "../../../../../app/components/AdsSwitch.vue";
 
-type FieldState = "default" | "active" | "focus" | "disabled";
+type FieldState = "default" | "active" | "focus" | "disabled" | "ai";
 
 const HINT = "Orientação curta sobre o campo.";
 
@@ -51,10 +51,12 @@ const stateItems: { label: string; value: FieldState }[] = [
   { label: "Ativo", value: "active" },
   { label: "Foco", value: "focus" },
   { label: "Desabilitado", value: "disabled" },
+  { label: "IA", value: "ai" },
 ];
 
 const sample = (value: FieldState) => {
   if (value === "default") return "";
+  if (value === "ai") return "Taxas com cartão de crédito";
   return "Texto digitado";
 };
 
@@ -71,7 +73,7 @@ const searchSizeItems = [
 ];
 
 const code = computed(() => {
-  const frozen = ["active", "focus"].includes(state.value);
+  const frozen = ["active", "focus", "ai"].includes(state.value);
 
   return buildTag("AdsSearchInput", [
     attr(true, "v-model", "text"),

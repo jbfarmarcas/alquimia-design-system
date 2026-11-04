@@ -41,6 +41,7 @@ A layer já registra `@nuxt/ui`, `@nuxt/fonts`, `@nuxt/icon` e `@vueuse/nuxt`, o
 - `AdsCard`: o slot padrão **substitui** `description`. Use um ou outro.
 - `AdsModal`: abre com `v-model:open`. Eventos `confirm`, `cancel` e `dismiss`.
 - `AdsDatePicker` e `AdsMonthPicker` trafegam datas como string `YYYY-MM-DD`. Intervalo: `range` com `v-model:start` e `v-model:end`.
+- Valor preenchido por IA: `AdsInput`, `AdsNumberInput`, `AdsTextarea`, `AdsSearchInput`, `AdsDatePicker` e `AdsFilterSelect` têm a prop `ai-suggestion`. Ela não se desliga sozinha: ponha `false` quando a pessoa editar. Erro e desabilitado têm prioridade.
 - `state` nos componentes congela hover, focus etc. para documentação. Não use em telas reais.
 - Toast flutuante: `useToast()` do Nuxt UI. O plugin da layer aplica cores e ícones do ADS.
 

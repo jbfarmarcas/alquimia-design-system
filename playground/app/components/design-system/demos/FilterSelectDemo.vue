@@ -10,6 +10,7 @@
           :hint="supportHint"
           :error="filterState === 'erro' ? ERROR : ''"
           :disabled="filterState === 'desabilitado'"
+          :ai-suggestion="filterState === 'ia'"
           :options="options"
         />
       </div>
@@ -38,7 +39,7 @@ import AdsSegmentedTabs from "../../../../../app/components/AdsSegmentedTabs.vue
 import AdsSwitch from "../../../../../app/components/AdsSwitch.vue";
 
 type FilterKind = "checkbox" | "radio" | "month";
-type FilterState = "vazio" | "preenchido" | "erro" | "desabilitado";
+type FilterState = "vazio" | "preenchido" | "ia" | "erro" | "desabilitado";
 
 const HINT = "Orientação curta sobre o campo.";
 const ERROR = "Informe um valor para continuar.";
@@ -57,6 +58,7 @@ const kindItems = [
 const stateItems = [
   { label: "Vazio", value: "vazio" },
   { label: "Preenchido", value: "preenchido" },
+  { label: "IA", value: "ia" },
   { label: "Erro", value: "erro" },
   { label: "Desabilitado", value: "desabilitado" },
 ];
@@ -135,7 +137,7 @@ const options = computed(() => (kind.value === "checkbox" ? checkboxOptions : ra
 const supportHint = computed(() => (hintOn.value && filterState.value !== "erro" ? HINT : ""));
 
 watch([kind, filterState], () => {
-  if (filterState.value !== "preenchido") {
+  if (filterState.value !== "preenchido" && filterState.value !== "ia") {
     selection.value = kind.value === "checkbox" ? [] : "";
     return;
   }
@@ -153,6 +155,7 @@ const code = computed(() =>
     attr(filterState.value === "erro", "error", ERROR),
     attr(supportHint.value !== "", "hint", HINT),
     attr(filterState.value === "desabilitado", "disabled"),
+    attr(filterState.value === "ia", "ai-suggestion"),
   ]),
 );
 </script>

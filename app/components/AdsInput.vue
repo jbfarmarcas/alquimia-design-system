@@ -70,6 +70,8 @@ const props = withDefaults(
     step?: string | number;
     /** Estado congelado para a documentação. `null` segue o campo. */
     state?: AdsInputState | null;
+    /** O valor veio de uma sugestão de IA. Quem usa limpa a marca quando a pessoa edita. */
+    aiSuggestion?: boolean;
   }>(),
   {
     label: "",
@@ -82,6 +84,7 @@ const props = withDefaults(
     type: "text",
     suffix: "",
     state: null,
+    aiSuggestion: false,
   },
 );
 
@@ -110,6 +113,7 @@ const visualState = computed<AdsInputState>(() => {
   if (isDisabled.value) return "disabled";
   if (props.state) return props.state;
   if (props.error) return "error";
+  if (props.aiSuggestion) return "ai";
   return displayValue.value ? "active" : "default";
 });
 
@@ -136,7 +140,7 @@ const fieldClass = computed(() => {
     return "border-(length:--ads-border-width-slim) border-[var(--ads-input-focus-border)] bg-[var(--ads-input-background)] text-[var(--ads-input-text)]";
   }
   if (visualState.value === "ai") {
-    return "border border-[#7358cc] bg-[#f3f0ff] text-[var(--ads-text-secondary)]";
+    return `border border-[var(--ads-button-ia-border)] bg-[var(--ads-button-ia-background)] text-[var(--ads-text-secondary)] ${focus}`;
   }
   return `border border-[var(--ads-input-border)] bg-[var(--ads-input-background)] text-[var(--ads-input-text)] ${focus}`;
 });

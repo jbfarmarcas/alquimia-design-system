@@ -74,7 +74,7 @@
 import { computed, useId, useTemplateRef } from "vue";
 import AdsTooltip from "./AdsTooltip.vue";
 
-export type AdsNumberInputState = "default" | "active" | "focus" | "error" | "disabled";
+export type AdsNumberInputState = "default" | "active" | "focus" | "error" | "disabled" | "ai";
 
 const props = withDefaults(
   defineProps<{
@@ -89,6 +89,8 @@ const props = withDefaults(
     step?: string | number;
     /** Estado congelado para a documentação. `null` segue o campo. */
     state?: AdsNumberInputState | null;
+    /** O valor veio de uma sugestão de IA. Quem usa limpa a marca quando a pessoa edita. */
+    aiSuggestion?: boolean;
   }>(),
   {
     label: "",
@@ -99,6 +101,7 @@ const props = withDefaults(
     suffix: "",
     disabled: false,
     state: null,
+    aiSuggestion: false,
   },
 );
 
@@ -136,6 +139,7 @@ const visualState = computed<AdsNumberInputState>(() => {
   if (isDisabled.value) return "disabled";
   if (props.state) return props.state;
   if (props.error) return "error";
+  if (props.aiSuggestion) return "ai";
   return displayValue.value ? "active" : "default";
 });
 
@@ -160,6 +164,9 @@ const fieldClass = computed(() => {
   }
   if (visualState.value === "focus") {
     return "border-(length:--ads-border-width-slim) border-[var(--ads-number-focus-border)] bg-[var(--ads-number-background)] text-[var(--ads-number-text)]";
+  }
+  if (visualState.value === "ai") {
+    return `border border-[var(--ads-button-ia-border)] bg-[var(--ads-button-ia-background)] text-[var(--ads-number-text)] ${focus}`;
   }
   return `border border-[var(--ads-number-border)] bg-[var(--ads-number-background)] text-[var(--ads-number-text)] ${focus}`;
 });

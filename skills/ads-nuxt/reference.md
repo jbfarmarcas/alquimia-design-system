@@ -207,6 +207,8 @@ Props:
   size?: "sm" | "md" | "lg";
   maximumDays?: number;
   class?: string;
+  /** O valor veio de uma sugestão de IA. Quem usa limpa a marca quando a pessoa edita. */
+  aiSuggestion?: boolean;
 }
 ```
 
@@ -416,6 +418,8 @@ Props:
   searchPlaceholder?: string;
   /** O gatilho ocupa a largura do campo, como um select de formulário. */
   block?: boolean;
+  /** O valor veio de uma sugestão de IA. Quem usa limpa a marca quando a pessoa altera a seleção. */
+  aiSuggestion?: boolean;
 }
 ```
 
@@ -458,6 +462,8 @@ Props:
   step?: string | number;
   /** Estado congelado para a documentação. `null` segue o campo. */
   state?: AdsInputState | null;
+  /** O valor veio de uma sugestão de IA. Quem usa limpa a marca quando a pessoa edita. */
+  aiSuggestion?: boolean;
 }
 ```
 
@@ -751,12 +757,14 @@ Props:
   step?: string | number;
   /** Estado congelado para a documentação. `null` segue o campo. */
   state?: AdsNumberInputState | null;
+  /** O valor veio de uma sugestão de IA. Quem usa limpa a marca quando a pessoa edita. */
+  aiSuggestion?: boolean;
 }
 ```
 
 Tipos:
 ```ts
-type AdsNumberInputState = "default" | "active" | "focus" | "error" | "disabled";
+type AdsNumberInputState = "default" | "active" | "focus" | "error" | "disabled" | "ai";
 ```
 
 Models: `v-model: string | number`
@@ -869,12 +877,14 @@ Props:
   size?: AdsSearchInputSize;
   /** Estado congelado para a documentação. `null` segue o campo. */
   state?: AdsSearchInputState | null;
+  /** O texto veio de uma sugestão de IA. Quem usa limpa a marca quando a pessoa edita. */
+  aiSuggestion?: boolean;
 }
 ```
 
 Tipos:
 ```ts
-type AdsSearchInputState = "default" | "active" | "focus" | "disabled";
+type AdsSearchInputState = "default" | "active" | "focus" | "disabled" | "ai";
 
 type AdsSearchInputSize = "md" | "sm";
 ```
@@ -1082,12 +1092,14 @@ Props:
   disabled?: boolean;
   /** Estado congelado para a documentação. `null` segue o campo. */
   state?: AdsTextareaState | null;
+  /** O texto veio de uma sugestão de IA. Quem usa limpa a marca quando a pessoa edita. */
+  aiSuggestion?: boolean;
 }
 ```
 
 Tipos:
 ```ts
-type AdsTextareaState = "default" | "active" | "focus" | "error" | "disabled";
+type AdsTextareaState = "default" | "active" | "focus" | "error" | "disabled" | "ai";
 ```
 
 Models: `v-model: string`

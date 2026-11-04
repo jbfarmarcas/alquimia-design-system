@@ -100,6 +100,8 @@ const props = withDefaults(
     searchPlaceholder?: string;
     /** O gatilho ocupa a largura do campo, como um select de formulário. */
     block?: boolean;
+    /** O valor veio de uma sugestão de IA. Quem usa limpa a marca quando a pessoa altera a seleção. */
+    aiSuggestion?: boolean;
   }>(),
   {
     placeholder: "Selecione",
@@ -112,6 +114,7 @@ const props = withDefaults(
     emptyLabel: "Nenhum resultado",
     searchPlaceholder: "Pesquisar",
     block: false,
+    aiSuggestion: false,
   },
 );
 
@@ -141,6 +144,7 @@ const fieldState = computed(() => {
   if (props.disabled) return "disabled";
   if (props.error) return "error";
   if (isOpen.value) return "open";
+  if (props.aiSuggestion) return "ai";
   if (hasValue.value) return "selected";
   return "default";
 });
@@ -155,6 +159,9 @@ const fieldClass = computed(() => {
   if (fieldState.value === "open") {
     return "border-(length:--ads-border-width-slim) border-[var(--ads-filter-focus-border)] bg-[var(--ads-filter-background)] text-[var(--ads-filter-text)]";
   }
+  if (fieldState.value === "ai") {
+    return "border border-[var(--ads-button-ia-border)] bg-[var(--ads-button-ia-background)] hover:border-[var(--ads-filter-hover-border)] text-[var(--ads-filter-text)]";
+  }
   if (fieldState.value === "selected") {
     return "border border-[var(--ads-filter-border)] hover:border-[var(--ads-filter-hover-border)] bg-ads-neutro-claro-20 text-[var(--ads-filter-text)]";
   }
@@ -163,7 +170,7 @@ const fieldClass = computed(() => {
 
 const chevronClass = computed(() => {
   if (fieldState.value === "disabled") return "text-ads-neutro-medio-60";
-  if (fieldState.value === "selected") return "text-ads-neutro-escuro-500";
+  if (fieldState.value === "selected" || fieldState.value === "ai") return "text-ads-neutro-escuro-500";
   return "text-ads-neutro-medio-100";
 });
 

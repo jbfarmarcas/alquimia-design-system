@@ -43,7 +43,7 @@
 <script setup lang="ts">
 import { computed, useId } from "vue";
 
-export type AdsTextareaState = "default" | "active" | "focus" | "error" | "disabled";
+export type AdsTextareaState = "default" | "active" | "focus" | "error" | "disabled" | "ai";
 
 const props = withDefaults(
   defineProps<{
@@ -54,6 +54,8 @@ const props = withDefaults(
     disabled?: boolean;
     /** Estado congelado para a documentação. `null` segue o campo. */
     state?: AdsTextareaState | null;
+    /** O texto veio de uma sugestão de IA. Quem usa limpa a marca quando a pessoa edita. */
+    aiSuggestion?: boolean;
   }>(),
   {
     label: "",
@@ -62,6 +64,7 @@ const props = withDefaults(
     placeholder: "",
     disabled: false,
     state: null,
+    aiSuggestion: false,
   },
 );
 
@@ -76,6 +79,7 @@ const visualState = computed<AdsTextareaState>(() => {
   if (isDisabled.value) return "disabled";
   if (props.state) return props.state;
   if (props.error) return "error";
+  if (props.aiSuggestion) return "ai";
   return model.value ? "active" : "default";
 });
 
@@ -104,6 +108,9 @@ const fieldClass = computed(() => {
   const focus = interactiveFocus
     ? "hover:not-focus-within:border-[var(--ads-textarea-hover-border)] focus-within:border-(length:--ads-border-width-slim) focus-within:border-[var(--ads-textarea-focus-border)]"
     : "";
+  if (visualState.value === "ai") {
+    return `border border-[var(--ads-button-ia-border)] bg-[var(--ads-button-ia-background)] ${text} ${focus}`;
+  }
   return `border border-[var(--ads-textarea-border)] bg-[var(--ads-textarea-background)] ${text} ${focus}`;
 });
 </script>
