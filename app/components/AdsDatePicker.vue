@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { isEqualMonth, type CalendarDate } from "@internationalized/date";
+import { isEqualMonth, toCalendarDate, type CalendarDate, type DateValue } from "@internationalized/date";
 import { computed, nextTick, ref, shallowRef, watch } from "vue";
 import AdsButton from "./AdsButton.vue";
 import { UI_LOCALE_CODE } from "../locale/pt-br";
@@ -16,7 +16,9 @@ import {
   isOutsideMaximumWindow,
   shiftVisibleMonth,
   visibleMonthAfterPlaceholder,
+  toCalendarModel,
   type CalendarDateRangeValue,
+  type CalendarEventValue,
 } from "../utils/calendar-date";
 
 const DATE_PLACEHOLDER = "dd/mm/aaaa";
@@ -181,7 +183,8 @@ function monthTitle(date: CalendarDate) {
   return calendarMonthTitle(date, UI_LOCALE_CODE);
 }
 
-function onRangePlaceholderUpdate(value: CalendarDate) {
+function onRangePlaceholderUpdate(placeholder: DateValue) {
+  const value = toCalendarDate(placeholder);
   const next = visibleMonthAfterPlaceholder(leftPlaceholder.value, value);
   if (next.compare(leftPlaceholder.value) !== 0) {
     leftPlaceholder.value = next;
@@ -215,7 +218,8 @@ function applyExternalModels() {
   }
 }
 
-function onCalendarModelUpdate(value: CalendarModel) {
+function onCalendarModelUpdate(event: CalendarEventValue) {
+  const value = toCalendarModel(event);
   if (calendarRangesEqual(calendarModel.value, value)) return;
 
   syncingFromCalendar.value = true;
@@ -237,9 +241,10 @@ function resetDraftFromCommitted() {
   leftPlaceholder.value = anchor.set({ day: 1 });
 }
 
-function onDraftUpdate(value: CalendarDateRangeValue | undefined) {
+function onDraftUpdate(value: CalendarEventValue) {
   if (ignoreDraftUpdates.value) return;
-  draftRange.value = value;
+  const range = toCalendarModel(value);
+  draftRange.value = range && isCalendarDateRange(range) ? range : undefined;
 }
 
 function clearDraft() {
@@ -287,7 +292,8 @@ watch([modelValue, start, end, () => props.range], applyExternalModels, {
   immediate: true,
 });
 
-function isDateUnavailable(date: CalendarDate) {
+function isDateUnavailable(value: DateValue) {
+  const date = toCalendarDate(value);
   if (minCalendarDate.value && date.compare(minCalendarDate.value) < 0) {
     return true;
   }

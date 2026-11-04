@@ -1,11 +1,46 @@
-import { CalendarDate, isEqualMonth, parseDate } from "@internationalized/date";
+import {
+  CalendarDate,
+  isEqualMonth,
+  parseDate,
+  toCalendarDate,
+  type DateValue,
+} from "@internationalized/date";
 
 const DATE_ONLY_REGEX = /^\d{4}-\d{2}-\d{2}$/;
 
+/** Intervalo com início definido. O fim fica `undefined` enquanto o usuário escolhe. */
 export type CalendarDateRangeValue = {
   start: CalendarDate;
-  end?: CalendarDate;
+  end: CalendarDate | undefined;
 };
+
+/** Valor que o Nuxt UI (UCalendar, UInputDate) entrega nos eventos `update:model-value`. */
+export type CalendarEventValue =
+  | DateValue
+  | { start: DateValue | undefined; end: DateValue | undefined }
+  | DateValue[]
+  | null
+  | undefined;
+
+/** Converte o intervalo do Nuxt UI. Sem início, não há intervalo. */
+export function toCalendarDateRange(
+  value: { start?: DateValue; end?: DateValue } | null | undefined,
+): CalendarDateRangeValue | undefined {
+  if (!value?.start) return undefined;
+  return {
+    start: toCalendarDate(value.start),
+    end: value.end ? toCalendarDate(value.end) : undefined,
+  };
+}
+
+/** Converte o valor emitido pelo Nuxt UI para data única ou intervalo. Lista de datas não é usada aqui. */
+export function toCalendarModel(
+  value: CalendarEventValue,
+): CalendarDate | CalendarDateRangeValue | undefined {
+  if (!value || Array.isArray(value)) return undefined;
+  if ("start" in value) return toCalendarDateRange(value);
+  return toCalendarDate(value);
+}
 
 export function dateStringToCalendarDate(
   value: string,
@@ -26,7 +61,7 @@ export function dateStringsToCalendarRange(
   if (!startDate) return undefined;
 
   const endDate = dateStringToCalendarDate(end);
-  if (!endDate) return { start: startDate };
+  if (!endDate) return { start: startDate, end: undefined };
 
   return { start: startDate, end: endDate };
 }
