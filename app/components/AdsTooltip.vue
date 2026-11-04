@@ -3,7 +3,8 @@
     v-if="hasTrigger"
     arrow
     :delay-duration="delayDuration"
-    :content="{ side, align: 'center', sideOffset: 8 }"
+    :disabled="disabled"
+    :content="{ side, align, sideOffset: 8 }"
     :ui="tooltipUi"
   >
     <slot />
@@ -37,6 +38,10 @@ const props = withDefaults(
     /** Figma `Wing Position`. */
     wing?: Wing;
     delayDuration?: number;
+    /** Alinhamento do balão em relação ao gatilho. */
+    align?: "start" | "center" | "end";
+    /** Não abre o balão. Útil para texto que só aparece quando é cortado. */
+    disabled?: boolean;
   }>(),
   {
     title: "Título",
@@ -45,6 +50,8 @@ const props = withDefaults(
     showDescription: true,
     wing: "up",
     delayDuration: 150,
+    align: "center",
+    disabled: false,
   },
 );
 

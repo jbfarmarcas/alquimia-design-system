@@ -124,7 +124,7 @@ export const adsTableColumn = {
   select: { class: { th: "w-px pe-0", td: "w-px pe-0" } },
   /** Ação da linha, sempre à direita. */
   action: { class: { th: "w-px", td: "w-px text-right" } },
-  /** Texto longo que trunca com InvertedTooltip. */
+  /** Texto longo que trunca com AdsTooltip. */
   truncate: { class: { td: "max-w-72 truncate" } },
 } as const;
 

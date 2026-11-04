@@ -18,9 +18,11 @@
         <span class="block text-[length:var(--ads-feature-title-size)] font-bold leading-[1.3]" :class="titleClass">
           {{ title }}
         </span>
-        <InvertedTooltip
-          :text="description"
+        <AdsTooltip
+          :description="description"
+          :show-title="false"
           :disabled="!isDescriptionTruncated"
+          align="start"
         >
           <span
             ref="descriptionEl"
@@ -29,7 +31,7 @@
           >
             {{ description }}
           </span>
-        </InvertedTooltip>
+        </AdsTooltip>
       </span>
       <UIcon
         v-if="!disabled"
@@ -71,7 +73,7 @@ import { useResizeObserver } from "@vueuse/core";
 import { NuxtLink } from "#components";
 import AdsPill from "./AdsPill.vue";
 import type { AdsPillStatus, AdsPillTone } from "./AdsPill.vue";
-import InvertedTooltip from "./InvertedTooltip.vue";
+import AdsTooltip from "./AdsTooltip.vue";
 
 export interface AdsFeatureCardBadge {
   label: string;

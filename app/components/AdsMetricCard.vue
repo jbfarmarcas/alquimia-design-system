@@ -9,13 +9,13 @@
     <div class="flex flex-col items-start gap-1">
       <div class="flex min-w-0 items-center gap-2">
         <p :class="labelClass">{{ title }}</p>
-        <InvertedTooltip v-if="hint" :text="hint" class="shrink-0">
+        <AdsTooltip v-if="hint" :description="hint" :show-title="false" class="shrink-0">
           <UIcon
             name="i-lucide-help-circle"
             size="xs"
             class="align-middle text-[var(--ads-border-icon-support)]"
           />
-        </InvertedTooltip>
+        </AdsTooltip>
       </div>
       <slot name="status" />
     </div>
@@ -49,7 +49,7 @@
 
 <script setup lang="ts">
 import { computed, useSlots } from "vue";
-import InvertedTooltip from "./InvertedTooltip.vue";
+import AdsTooltip from "./AdsTooltip.vue";
 
 /**
  * Número em destaque.

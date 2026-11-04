@@ -26,13 +26,14 @@
         :aria-labelledby="label ? labelId : undefined"
         :aria-describedby="supportText ? supportId : undefined"
       >
-        <InvertedTooltip
-          :text="triggerLabel"
+        <AdsTooltip
+          :description="triggerLabel"
+          :show-title="false"
           :disabled="!triggerHasTooltip"
-          :content="{ side: 'top', align: 'start', sideOffset: 4 }"
+          align="start"
         >
           <span class="min-w-0 truncate text-left">{{ triggerLabel }}</span>
-        </InvertedTooltip>
+        </AdsTooltip>
         <UIcon name="i-lucide-chevron-down" class="size-4 shrink-0 text-base" :class="chevronClass" />
       </button>
 
@@ -73,7 +74,7 @@
 import { computed, ref, useId, watch } from "vue";
 import AdsFilterDropdown from "./AdsFilterDropdown.vue";
 import AdsMonthPicker from "./AdsMonthPicker.vue";
-import InvertedTooltip from "./InvertedTooltip.vue";
+import AdsTooltip from "./AdsTooltip.vue";
 import {
   filterLabelNeedsTooltip,
   filterTriggerLabel,

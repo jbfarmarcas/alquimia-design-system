@@ -6,11 +6,11 @@
       :class="supportClass"
     >
       <label :for="fieldId">{{ label }}</label>
-      <InvertedTooltip v-if="info" :text="info">
+      <AdsTooltip v-if="info" :description="info" :show-title="false">
         <span class="inline-flex">
           <UIcon name="i-lucide-info" class="size-3 text-xs" />
         </span>
-      </InvertedTooltip>
+      </AdsTooltip>
     </div>
 
     <div
@@ -51,7 +51,7 @@
 
 <script setup lang="ts">
 import { computed, useId } from "vue";
-import InvertedTooltip from "./InvertedTooltip.vue";
+import AdsTooltip from "./AdsTooltip.vue";
 
 export type AdsInputState = "default" | "active" | "focus" | "error" | "disabled" | "ai";
 

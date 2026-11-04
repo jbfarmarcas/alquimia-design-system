@@ -65,9 +65,9 @@
     <UTooltip arrow text="Ação principal.">
       <AdsButton type="outline" label="Passe o mouse" />
     </UTooltip>
-    <InvertedTooltip text="Preço médio desta praça.">
-      <span class="text-sm text-[var(--ads-text-primary)]">Tooltip invertido</span>
-    </InvertedTooltip>
+    <AdsTooltip description="Preço médio desta praça." :show-title="false">
+      <span class="text-sm text-[var(--ads-text-primary)]">Tooltip só com descrição</span>
+    </AdsTooltip>
     <AdsTooltip title="Título" description="Descrição branca." />
     <AdsSmalltip />
   </div>

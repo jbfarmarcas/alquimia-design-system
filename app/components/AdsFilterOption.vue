@@ -4,8 +4,8 @@
     class="flex h-[50px] w-full items-center gap-2 py-4 text-left hover:bg-neutral-100"
     :class="mode === 'checkbox' ? 'ps-4' : 'ps-6'"
     :role="mode === 'checkbox' ? 'checkbox' : 'option'"
-    :aria-checked="checkedState === undefined ? undefined : String(checkedState)"
-    :aria-selected="mode === 'radio' ? String(selected) : undefined"
+    :aria-checked="checkedState"
+    :aria-selected="mode === 'radio' ? selected : undefined"
     @click="emit('select')"
   >
     <span
@@ -24,10 +24,12 @@
         class="size-3 text-[var(--ads-text-contrast)]"
       />
     </span>
-    <InvertedTooltip
-      :text="label"
+    <AdsTooltip
+      :description="label"
+      :show-title="false"
       :disabled="!needsTooltip"
-      :content="{ side: 'bottom', align: 'start', sideOffset: 4 }"
+      wing="down"
+      align="start"
     >
       <span
         class="block min-w-0 truncate text-sm leading-[1.3] text-[var(--ads-text-secondary)]"
@@ -35,13 +37,13 @@
       >
         {{ displayLabel }}
       </span>
-    </InvertedTooltip>
+    </AdsTooltip>
   </button>
 </template>
 
 <script setup lang="ts">
 import { computed } from "vue";
-import InvertedTooltip from "./InvertedTooltip.vue";
+import AdsTooltip from "./AdsTooltip.vue";
 import {
   filterLabelNeedsTooltip,
   truncateFilterLabel,

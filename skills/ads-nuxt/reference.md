@@ -3,7 +3,7 @@
 > Gerado por `pnpm skill:reference` a partir de `app/components`. Não edite à mão.
 > Para o comportamento exato, leia o `.vue` em `node_modules/ads-nuxt/app/components/`.
 
-49 componentes. Todos são auto-importados pelo Nuxt.
+48 componentes. Todos são auto-importados pelo Nuxt.
 
 ## AdsBadge
 
@@ -1144,30 +1144,16 @@ Props:
   /** Figma `Wing Position`. */
   wing?: Wing;
   delayDuration?: number;
+  /** Alinhamento do balão em relação ao gatilho. */
+  align?: "start" | "center" | "end";
+  /** Não abre o balão. Útil para texto que só aparece quando é cortado. */
+  disabled?: boolean;
 }
 ```
 
 Tipos:
 ```ts
 type Wing = "up" | "down" | "left" | "right";
-```
-
-Slots: `default`
-
-## InvertedTooltip
-
-Props:
-```ts
-{
-  text: string;
-  delayDuration?: number;
-  disabled?: boolean;
-  content?: {
-    side?: "top" | "right" | "bottom" | "left";
-    align?: "start" | "center" | "end";
-    sideOffset?: number;
-  };
-}
 ```
 
 Slots: `default`

@@ -21,11 +21,11 @@
           <UIcon :name="resolvedIcon" class="size-4" />
         </span>
         <div class="min-w-0">
-          <InvertedTooltip :text="name">
+          <AdsTooltip :description="name" :show-title="false" align="start">
             <p class="truncate text-[length:var(--ads-file-title-size)] font-semibold leading-5 text-[var(--ads-text-primary)]">
               {{ name }}
             </p>
-          </InvertedTooltip>
+          </AdsTooltip>
           <p
             v-if="detail"
             class="text-[length:var(--ads-file-detail-size)] font-normal leading-4 text-[var(--ads-text-secondary)]"
@@ -50,7 +50,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import AdsButton from "./AdsButton.vue";
-import InvertedTooltip from "./InvertedTooltip.vue";
+import AdsTooltip from "./AdsTooltip.vue";
 
 export type AdsFileCardStatus = "success" | "error";
 

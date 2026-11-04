@@ -93,7 +93,7 @@ Auto-importados, de `app/utils`:
 | `money.ts` | `numberToBRL`, `numberToCompactBRL`, `parseStringMoneyToFloat`, `formatPriceInput`, `parsePriceInput` |
 | `percentage.ts` | `formatPercentage`, `formatPercentageWithDecimals`, `formatPercentagePtBr` |
 | `parser.ts` | datas e percentuais: `formatDateOnlyToPtBr`, `formatDateToPtBr`, `daysBetweenDateOnly`, `parseToPercentage`… |
-| `calendar-date.ts` | conversão `string` ↔ `CalendarDate` |
+| `calendar-date.ts` | conversão `string` ↔ `CalendarDate` e dos valores emitidos pelo Nuxt UI (`toCalendarModel`, `toCalendarDateRange`) |
 | `ads-table.ts` | helpers de coluna do `AdsTable` (`adsTableColumn`, `adsTablePinned`, `adsTableGroup`…) |
 | `ads-filter-select.ts` | helpers do `AdsFilterSelect` |
 

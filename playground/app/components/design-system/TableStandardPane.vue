@@ -306,9 +306,9 @@
 
   <AdsTable v-else-if="name === 'ImportFilePreview'" :data="demoPreviewRows" :columns="previewColumns">
     <template v-for="(header, index) in demoPreviewHeaders" :key="header" #[`c${index}-cell`]="{ row }">
-      <InvertedTooltip v-if="row.original[`c${index}`]" :text="row.original[`c${index}`] ?? ''" class="block min-w-0">
+      <AdsTooltip v-if="row.original[`c${index}`]" :description="row.original[`c${index}`] ?? ''" :show-title="false" align="start" class="block min-w-0">
         <span class="block">{{ row.original[`c${index}`] }}</span>
-      </InvertedTooltip>
+      </AdsTooltip>
       <span v-else class="text-[var(--ads-text-tertiary)]">—</span>
     </template>
   </AdsTable>
@@ -325,7 +325,7 @@ import AdsNumberInput from "../../../../app/components/AdsNumberInput.vue";
 import AdsPill from "../../../../app/components/AdsPill.vue";
 import AdsTable from "../../../../app/components/AdsTable.vue";
 import AdsTableToolbar from "../../../../app/components/AdsTableToolbar.vue";
-import InvertedTooltip from "../../../../app/components/InvertedTooltip.vue";
+import AdsTooltip from "../../../../app/components/AdsTooltip.vue";
 import {
   adsTableCellFill,
   adsTableColumn,
