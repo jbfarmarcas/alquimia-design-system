@@ -205,7 +205,7 @@ function onRangePlaceholderUpdate(placeholder: DateValue) {
   leftPlaceholder.value = leftPlaceholder.value.copy();
 }
 
-function moveVisibleMonth(delta: -1 | 1) {
+async function moveVisibleMonth(delta: -1 | 1) {
   const next = shiftVisibleMonth(
     leftPlaceholder.value,
     delta,
@@ -213,6 +213,8 @@ function moveVisibleMonth(delta: -1 | 1) {
     navigationMax.value,
   );
   if (next.compare(leftPlaceholder.value) === 0) return;
+  leftPlaceholder.value = next.add({ years: 1 });
+  await nextTick();
   leftPlaceholder.value = next;
 }
 
@@ -260,8 +262,7 @@ function onDraftUpdate(value: CalendarEventValue) {
 
 function clearDraft() {
   // Os dois calendários guardam o intervalo por conta própria. Remontar
-  // descarta o destaque; o flag ignora o eco desse estado ao desmontar.
-  ignoreDraftUpdates.value = true;
+  // descarta o destaque; o flag ignora o eco desse estado ao desmontar.  ignoreDraftUpdates.value = true;
   draftRange.value = undefined;
   start.value = "";
   end.value = "";
