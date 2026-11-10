@@ -10,7 +10,7 @@
 Props:
 ```ts
 {
-  /** Cor do contador. Innovation usa o rosa do handoff (#fde3ff / data-1 800). */
+  /** Cor do contador. Sem valor: primary no badge e new (#05b4d8) no mini, como no Figma (Context=Secondary). */
   color?: AdsBadgeColor;
   /** Ponto de 8px, sem número. */
   mini?: boolean;
@@ -606,6 +606,8 @@ type AdsMenuBarItem = {
   icon: string;
   to?: RouteLocationRaw;
   dividerBefore?: boolean;
+  /** Linha depois do item. O Figma fecha a lista com uma linha após Campanhas. */
+  dividerAfter?: boolean;
   state?: AdsMenuBarState;
 };
 
@@ -772,6 +774,8 @@ Props:
   product?: AdsProductTagName | null;
   productLabel?: string;
   showBroadcast?: boolean;
+  /** Texto da pílula de broadcast (ex.: "LIVE"). Sem valor, a pílula não aparece. */
+  broadcastLabel?: string;
   avatarUrl?: string;
   actions?: AdsNavbarDeskAction[];
 }

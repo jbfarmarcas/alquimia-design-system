@@ -93,7 +93,7 @@ const iconClass = computed(() =>
 
 const hintClass = computed(() => {
   const tone = visualState.value === "disabled"
-    ? "text-[var(--ads-text-tertiary)]"
+    ? "text-[var(--ads-search-placeholder)]"
     : "text-[var(--ads-text-secondary)]";
   const type = props.size === "sm" ? "text-[10px] leading-[1.1]" : "text-xs leading-[1.2]";
   return `${type} ${tone}`;
@@ -115,7 +115,7 @@ const fieldClass = computed(() => {
     return `border-(length:--ads-border-width-slim) border-[var(--ads-search-focus-border)] bg-[var(--ads-search-background)] ${tone}`;
   }
   if (visualState.value === "ai") {
-    return `border border-[var(--ads-button-ia-border)] bg-[var(--ads-surface-ai)] text-[var(--ads-text-ai)] ${focus}`;
+    return `border border-[var(--ads-text-ai)] bg-[var(--ads-surface-ai)] text-[var(--ads-text-secondary)] ${focus}`;
   }
   return `border border-[var(--ads-search-border)] bg-[var(--ads-search-background)] ${tone} ${focus}`;
 });

@@ -109,15 +109,22 @@ const onRootClick = (event: MouseEvent) => {
 };
 
 const sizeClass = computed(() => {
-  const iaLine = props.type === "ia" && props.size !== "sm" ? " leading-[var(--ads-button-ia-line-height)]" : "";
+  // Espaço antes do ${iaLine}: colada na interpolação, a classe anterior não é gerada pelo Tailwind.
+  const iaLine = props.type === "ia" && props.size !== "sm" ? "leading-[var(--ads-button-ia-line-height)]" : "";
   if (iconOnly.value) {
     return props.size === "sm"
       ? "size-[var(--ads-button-sm-icon-box)] shrink-0"
       : "size-[var(--ads-button-md-icon-box)] shrink-0";
   }
+  // Outline: a borda de 1px fica por dentro, como no Figma; o padding desconta 1px para manter o tamanho dos outros tipos.
+  if (props.type === "outline") {
+    return props.size === "sm"
+      ? "h-[var(--ads-button-sm-height)] gap-[var(--ads-button-sm-gap)] px-[calc(var(--ads-button-sm-padding-x)-1px)] text-[length:var(--ads-button-sm-font-size)] leading-[var(--ads-button-sm-line-height)]"
+      : "gap-[var(--ads-button-md-gap)] px-[calc(var(--ads-button-md-padding-x)-1px)] py-[calc(var(--ads-button-md-padding-y)-1px)] text-[length:var(--ads-button-md-font-size)] leading-[var(--ads-button-md-line-height)]";
+  }
   return props.size === "sm"
-    ? `h-[var(--ads-button-sm-height)] gap-[var(--ads-button-sm-gap)] px-[var(--ads-button-sm-padding-x)] text-[length:var(--ads-button-sm-font-size)] leading-[var(--ads-button-sm-line-height)]${iaLine}`
-    : `gap-[var(--ads-button-md-gap)] px-[var(--ads-button-md-padding-x)] py-[var(--ads-button-md-padding-y)] text-[length:var(--ads-button-md-font-size)] leading-[var(--ads-button-md-line-height)]${iaLine}`;
+    ? `h-[var(--ads-button-sm-height)] gap-[var(--ads-button-sm-gap)] px-[var(--ads-button-sm-padding-x)] text-[length:var(--ads-button-sm-font-size)] leading-[var(--ads-button-sm-line-height)] ${iaLine}`
+    : `gap-[var(--ads-button-md-gap)] px-[var(--ads-button-md-padding-x)] py-[var(--ads-button-md-padding-y)] text-[length:var(--ads-button-md-font-size)] leading-[var(--ads-button-md-line-height)] ${iaLine}`;
 });
 
 const iconClass = computed(() =>
@@ -218,15 +225,16 @@ const filledPrimary = (state: AdsButtonState) => {
   return `bg-[var(--ads-button-primary)] ${filledPrimaryText} hover:bg-[var(--ads-button-primary-hover)] active:bg-[var(--ads-button-primary-pressed)]`;
 };
 
+/** Figma: hover do outline com borda de 2px e texto brand-strong (#074ac6). */
 const outlinePrimaryHover =
-  "border border-[var(--ads-text-brand)] bg-[var(--ads-button-secondary-hover)] text-[var(--ads-text-brand)] shadow-[inset_0_0_0_1px_var(--ads-text-brand)]";
+  "border border-[var(--ads-button-primary-hover)] bg-[var(--ads-button-secondary-hover)] text-[var(--ads-button-primary-hover)] shadow-[inset_0_0_0_1px_var(--ads-button-primary-hover)]";
 
 const outlinePrimary = (state: AdsButtonState) => {
   if (state === "hover" || state === "pressed") return outlinePrimaryHover;
   if (state === "disabled") {
     return "border border-[var(--ads-button-primary-disabled)] bg-[color-mix(in_srgb,var(--ads-button-secondary)_50%,transparent)] text-[var(--ads-button-primary-disabled)]";
   }
-  return "border border-[var(--ads-text-brand)] text-[var(--ads-text-brand)] hover:bg-[var(--ads-button-secondary-hover)] hover:shadow-[inset_0_0_0_1px_var(--ads-text-brand)]";
+  return "border border-[var(--ads-text-brand)] text-[var(--ads-text-brand)] hover:border-[var(--ads-button-primary-hover)] hover:bg-[var(--ads-button-secondary-hover)] hover:text-[var(--ads-button-primary-hover)] hover:shadow-[inset_0_0_0_1px_var(--ads-button-primary-hover)]";
 };
 
 const unfilledPrimary = (state: AdsButtonState) => {

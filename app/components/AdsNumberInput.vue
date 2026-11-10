@@ -25,7 +25,7 @@
         type="number"
         inputmode="decimal"
         size="4"
-        class="w-0 min-w-0 flex-1 bg-transparent text-[length:var(--ads-number-font-size)] leading-[1.3] outline-none placeholder:text-current disabled:cursor-not-allowed [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+        class="w-0 min-w-0 flex-1 bg-transparent text-[length:var(--ads-number-font-size)] leading-[1.3] text-[var(--ads-text-primary)] outline-none placeholder:text-[var(--ads-number-text)] disabled:cursor-not-allowed disabled:text-[var(--ads-number-disabled-text)] [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
         :placeholder="placeholder"
         :disabled="isDisabled"
         :min="min"
@@ -36,27 +36,27 @@
         @focus="emit('focus', $event)"
         @blur="emit('blur', $event)"
       >
+      <span v-if="suffix" class="shrink-0 text-[length:var(--ads-number-font-size)] leading-[1.3]">{{ suffix }}</span>
       <div class="flex shrink-0 flex-col">
         <button
           type="button"
-          class="inline-flex size-4 items-center justify-center rounded-sm text-current hover:bg-[var(--ads-button-secondary-hover)] disabled:cursor-not-allowed"
+          class="inline-flex h-3 w-4 items-center justify-center rounded-sm text-current hover:bg-[var(--ads-button-secondary-hover)] disabled:cursor-not-allowed"
           aria-label="Aumentar valor"
           :disabled="isDisabled"
           @mousedown.prevent="stepBy(1)"
         >
-          <UIcon name="i-lucide-chevron-up" class="size-3.5" />
+          <UIcon name="i-lucide-chevron-up" class="size-3" />
         </button>
         <button
           type="button"
-          class="inline-flex size-4 items-center justify-center rounded-sm text-current hover:bg-[var(--ads-button-secondary-hover)] disabled:cursor-not-allowed"
+          class="inline-flex h-3 w-4 items-center justify-center rounded-sm text-current hover:bg-[var(--ads-button-secondary-hover)] disabled:cursor-not-allowed"
           aria-label="Diminuir valor"
           :disabled="isDisabled"
           @mousedown.prevent="stepBy(-1)"
         >
-          <UIcon name="i-lucide-chevron-down" class="size-3.5" />
+          <UIcon name="i-lucide-chevron-down" class="size-3" />
         </button>
       </div>
-      <span v-if="suffix" class="shrink-0 text-[length:var(--ads-number-font-size)] leading-[1.3]">{{ suffix }}</span>
     </div>
 
     <p
@@ -146,7 +146,7 @@ const visualState = computed<AdsNumberInputState>(() => {
 const supportText = computed(() => props.error || props.hint);
 const supportClass = computed(() =>
   visualState.value === "disabled"
-    ? "text-[var(--ads-text-tertiary)]"
+    ? "text-[var(--ads-number-disabled-text)]"
     : "text-[var(--ads-text-secondary)]",
 );
 
@@ -166,7 +166,7 @@ const fieldClass = computed(() => {
     return "border-(length:--ads-border-width-slim) border-[var(--ads-number-focus-border)] bg-[var(--ads-number-background)] text-[var(--ads-number-text)]";
   }
   if (visualState.value === "ai") {
-    return `border border-[var(--ads-button-ia-border)] bg-[var(--ads-surface-ai)] text-[var(--ads-text-ai)] ${focus}`;
+    return `border border-[var(--ads-text-ai)] bg-[var(--ads-surface-ai)] text-[var(--ads-number-text)] ${focus}`;
   }
   return `border border-[var(--ads-number-border)] bg-[var(--ads-number-background)] text-[var(--ads-number-text)] ${focus}`;
 });

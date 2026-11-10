@@ -39,7 +39,7 @@ export type AdsNavbarAppItem = {
 export const adsNavbarAppItems: AdsNavbarAppItem[] = [
   { id: "home", label: "Home", icon: "i-lucide-home" },
   { id: "agenda", label: "Agenda", icon: "i-lucide-calendar-days" },
-  { id: "apps", label: "Apps", icon: "i-lucide-layout-grid" },
+  { id: "apps", label: "Produtos", icon: "i-lucide-layout-grid" },
   { id: "tickets", label: "Tickets", icon: "i-lucide-messages-square" },
   { id: "perfil", label: "Perfil", icon: "i-lucide-circle-user" },
 ];

@@ -2,7 +2,8 @@
   <DefinePanel>
     <div class="flex min-w-[var(--ads-charttip-min-width)] flex-col gap-4 rounded-[var(--ads-tooltip-radius)] bg-[var(--ads-tooltip-bg)] p-4 text-[var(--ads-tooltip-title)] shadow-[var(--ads-shadow-level-1)]">
       <p v-if="title" class="text-center text-base leading-[1.3] font-bold">{{ title }}</p>
-      <ul class="flex flex-col gap-2">
+      <!-- Figma 6471:852: 16px entre o título e cada linha. -->
+      <ul class="flex flex-col gap-4">
         <li v-for="(row, index) in rows" :key="index" class="flex items-center gap-2 text-sm leading-[1.3]">
           <span class="size-[var(--ads-charttip-swatch)] shrink-0 rounded-[var(--ads-radius-xsm)]" :class="row.colorClass" :style="row.color ? { background: row.color } : undefined" />
           <span class="min-w-0 flex-1">{{ row.label }}</span>
@@ -73,6 +74,6 @@ const side = computed(() => {
 
 /** O painel já tem fundo, raio e sombra: o conteúdo do UTooltip só posiciona. */
 const tooltipUi = {
-  content: "z-[70] h-auto rounded-none bg-transparent p-0 shadow-none ring-0",
+  content: "z-[70] h-auto max-w-none rounded-none bg-transparent p-0 shadow-none ring-0",
 };
 </script>

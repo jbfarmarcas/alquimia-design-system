@@ -46,7 +46,8 @@
           </p>
           <p
             v-if="description"
-            class="mt-0.5 text-[length:var(--ads-toast-font-size)] leading-[1.3] text-[var(--ads-text-secondary)]"
+            class="text-[length:var(--ads-toast-font-size)] leading-[1.3] text-[var(--ads-text-secondary)]"
+            :class="app ? 'mt-1' : 'mt-0.5'"
           >
             {{ description }}
           </p>
@@ -55,12 +56,12 @@
     </div>
     <div
       v-if="actionLabel || closable"
-      class="ml-auto flex shrink-0 items-center gap-2"
+      class="ml-auto flex shrink-0 items-center gap-[var(--ads-toast-gap)]"
     >
       <button
         v-if="actionLabel"
         type="button"
-        class="text-[length:var(--ads-toast-font-size)] [font-weight:var(--ads-toast-weight)] underline-offset-2 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2"
+        class="text-[length:var(--ads-toast-font-size)] leading-[1.3] font-bold underline-offset-2 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2"
         :class="actionTextClass"
         @click="emit('action')"
       >
@@ -69,7 +70,7 @@
       <button
         v-if="closable"
         type="button"
-        class="flex size-6 shrink-0 items-center justify-center rounded text-[var(--ads-text-primary)] hover:bg-black/5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--ads-text-primary)]"
+        class="flex size-[18px] shrink-0 items-center justify-center rounded-[var(--ads-radius-xsm)] text-[var(--ads-text-primary)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--ads-text-primary)]"
         aria-label="Fechar"
         @click="emit('close')"
       >
@@ -141,7 +142,7 @@ const iconClass = computed(() => {
 const actionTextClass = computed(() => {
   if (props.status === "success") return "text-[var(--ads-toast-success-icon)]";
   if (props.status === "warning" || props.status === "attention") return "text-[var(--ads-toast-warning-icon)]";
-  if (props.status === "neutral") return "text-[var(--ads-text-secondary)]";
+  if (props.status === "neutral") return "text-[var(--ads-toast-neutral-icon)]";
   if (props.status === "loading") return "text-[var(--ads-toast-primary-icon)]";
   return "text-[var(--ads-toast-error-icon)]";
 });

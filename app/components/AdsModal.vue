@@ -13,13 +13,13 @@
   >
     <template #content="{ close }">
       <div class="flex min-h-0 w-full flex-col gap-[var(--ads-space-xxs)]">
-        <div class="flex items-start gap-[var(--ads-space-nano)]">
+        <div class="flex items-start gap-[var(--ads-space-quark)]">
           <span
             v-if="icon"
             class="flex size-[var(--ads-space-xs)] shrink-0 items-center justify-center text-[var(--ads-text-primary)]"
             aria-hidden="true"
           >
-            <UIcon :name="icon" class="size-[var(--ads-space-xxs)]" />
+            <UIcon :name="icon" :class="variant === 'sheet' ? 'size-4' : 'size-[18px]'" />
           </span>
           <div class="flex min-h-[var(--ads-space-xs)] min-w-0 flex-1 items-center">
             <slot name="title">
@@ -54,11 +54,13 @@
           <AdsButton
             v-if="cancelLabel"
             type="unfilled"
+            size="sm"
             :label="cancelLabel"
             @click="dismiss(close)"
           />
           <AdsButton
             v-if="confirmLabel"
+            size="sm"
             :label="confirmLabel"
             @click="emit('confirm')"
           />
@@ -80,8 +82,9 @@ import AdsButton from "./AdsButton.vue";
  * Espaçamento, na escala ADS:
  * - padding do cartão e faixa do cabeçalho: space-xs (24px)
  * - vão entre cabeçalho, texto, conteúdo e ações: space-xxs (16px)
- * - vão entre ícone, título e fechar: space-nano (8px)
- * - ícone: space-xxs (16px). O X do desktop segue o SM do Figma (18px)
+ * - vão entre ícone, título e fechar: space-quark (4px)
+ * - ícone: 18px no dialog (SM do Figma) e 16px no sheet (XS); X com 18px
+ * - ações padrão: botões sm (32px, 12px bold), como no Figma
  * - título: 20px bold, line-height 130% (Subtitle 20 do Figma)
  */
 export type AdsModalVariant = "dialog" | "sheet";

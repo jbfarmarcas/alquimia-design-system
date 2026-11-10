@@ -40,7 +40,7 @@
         <span :class="emptyMessageClass">{{ emptyMessage }}</span>
       </div>
       <p v-else class="flex min-w-0 flex-wrap items-baseline gap-1">
-        <span :class="bigValueClass">{{ value }}</span>
+        <span :class="[bigValueClass, selected ? '!text-[var(--ads-text-brand)]' : '']">{{ value }}</span>
         <span v-if="unit" class="text-[length:var(--ads-font-size-xxxs)] font-bold leading-[1.2] text-[var(--ads-text-secondary)]">{{ unit }}</span>
       </p>
     </template>

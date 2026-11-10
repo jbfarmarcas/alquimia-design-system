@@ -1,12 +1,15 @@
 <template>
   <DefinePanel>
-    <div class="flex w-[var(--ads-steptip-width)] flex-col gap-3 rounded-[var(--ads-tooltip-radius)] bg-[var(--ads-tooltip-bg)] p-4 text-[var(--ads-tooltip-title)] shadow-[var(--ads-shadow-level-1)]">
-      <div class="flex items-start justify-between gap-3">
-        <p class="text-base leading-[1.3] font-bold">{{ title }}</p>
-        <p class="shrink-0 text-xs leading-[1.2] font-medium">{{ step }}/{{ totalSteps }}</p>
+    <div class="flex w-[var(--ads-steptip-width)] flex-col gap-4 rounded-[var(--ads-tooltip-radius)] bg-[var(--ads-tooltip-bg)] p-4 text-[var(--ads-tooltip-title)] shadow-[var(--ads-shadow-level-1)]">
+      <!-- Figma 5722:8160: título↔descrição 4px; bloco de texto↔botões 16px. -->
+      <div class="flex flex-col gap-1">
+        <div class="flex items-start justify-between gap-3">
+          <p class="text-base leading-[1.3] font-bold">{{ title }}</p>
+          <p class="shrink-0 text-xs leading-[1.2] font-medium">{{ step }}/{{ totalSteps }}</p>
+        </div>
+        <p class="text-sm leading-[1.3]">{{ description }}</p>
       </div>
-      <p class="text-sm leading-[1.3]">{{ description }}</p>
-      <div class="flex items-center justify-between gap-3">
+      <div class="flex items-center justify-between gap-3 leading-[1.3]">
         <button
           type="button"
           class="text-base text-[var(--ads-steptip-skip)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--ads-tooltip-title)]"
@@ -96,6 +99,6 @@ const side = computed(() => props.side);
 
 /** O painel já tem fundo, raio e sombra: o conteúdo do UTooltip só posiciona. */
 const tooltipUi = {
-  content: "z-[70] h-auto rounded-none bg-transparent p-0 shadow-none ring-0",
+  content: "z-[70] h-auto max-w-none rounded-none bg-transparent p-0 shadow-none ring-0",
 };
 </script>

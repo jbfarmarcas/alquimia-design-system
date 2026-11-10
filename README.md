@@ -461,13 +461,15 @@ Opções (`OverlayLoadingOptions`):
 
 | Opção             | Tipo |
 | ----------------- | ---- |
-| `variant`         | `"loading"` \| `"success"` \| `"error"` \| `"search"` \| `"info"` |
+| `variant`         | `"loading"` \| `"search"` \| `"info"` \| `"success"` \| `"error"` \| `"warning"` (ícone Lucide animado) |
 | `title`, `description`, `hint` | `string` |
 | `showProgress`, `progress` | `boolean`, `number` |
 | `iconSrc`         | `string` |
 | `actionLabel`, `onAction` | rótulo e callback de ação |
+| `actionIcon`      | ícone Lucide da ação (padrão: `i-lucide-refresh-cw` só no erro) |
+| `secondaryActionLabel`, `secondaryActionIcon`, `onSecondaryAction` | segunda ação (unfilled); sem callback, fecha o overlay |
 | `onUserClose`     | callback ao usuário fechar |
-| `closableVariants`| `("success" \| "error")[]` — variantes que o usuário pode fechar |
+| `closableVariants`| `("info" \| "success" \| "error" \| "warning")[]` — variantes que o usuário pode fechar |
 
 ## Utilitários
 
@@ -552,7 +554,7 @@ git push --follow-tags
 .
 ├── app/                    # Conteúdo publicado no npm (a layer)
 │   ├── app.config.ts       # Tema do Nuxt UI
-│   ├── assets/             # CSS, SVGs de marca e animações
+│   ├── assets/             # CSS e SVGs de marca
 │   ├── components/         # Componentes Ads*
 │   ├── composables/        # useOverlayLoading
 │   ├── constants/          # Constantes (swatches de cor)

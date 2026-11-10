@@ -11,11 +11,11 @@
       class="flex flex-col border-b-[0.5px] border-[var(--ads-button-menu-border)] px-4 pt-2 pb-4 text-left last:border-b-0 hover:bg-ads-neutro-claro-20 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-[var(--ads-text-brand)]"
       @click="emit('select', option.value)"
     >
-      <span class="flex h-10 items-center gap-2 text-[length:var(--ads-button-menu-title-size)] leading-[1.3] font-medium text-[var(--ads-button-menu-title)]">
+      <span class="flex h-10 items-center gap-2 px-4 text-[length:var(--ads-button-menu-title-size)] leading-[1.3] font-medium text-[var(--ads-button-menu-title)]">
         <UIcon v-if="showIcons" :name="option.icon || 'i-lucide-sparkles'" class="size-4 shrink-0" />
         {{ option.title }}
       </span>
-      <span v-if="showSubtitles && option.subtitle" class="line-clamp-2 text-[length:var(--ads-button-menu-subtitle-size)] leading-[1.2] text-[var(--ads-button-menu-subtitle)]">
+      <span v-if="showSubtitles && option.subtitle" class="line-clamp-2 px-4 text-[length:var(--ads-button-menu-subtitle-size)] leading-[1.2] text-[var(--ads-button-menu-subtitle)]">
         {{ option.subtitle }}
       </span>
     </button>

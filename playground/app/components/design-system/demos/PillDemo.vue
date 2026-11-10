@@ -6,6 +6,7 @@
           v-if="pillVariant === 'broadcast'"
           variant="broadcast"
           :status="broadcastStatus"
+          label="LIVE"
         />
         <AdsPill
           v-else
@@ -118,7 +119,7 @@ const pillSizeItems = [
 
 const code = computed(() =>
   pillVariant.value === "broadcast"
-    ? buildTag("AdsPill", [attr(true, "variant", "broadcast"), attr(true, "status", broadcastStatus.value)])
+    ? buildTag("AdsPill", [attr(true, "variant", "broadcast"), attr(true, "status", broadcastStatus.value), attr(true, "label", "LIVE")])
     : buildTag("AdsPill", [
     attr(pillStatus.value !== "default", "status", pillStatus.value),
     attr(pillTone.value !== "primary", "tone", pillTone.value),

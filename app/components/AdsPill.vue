@@ -139,6 +139,6 @@ const broadcastSizeClass =
 
 const surfaceClass = computed(() => props.customSurface ?? surfaces[props.tone][props.status]);
 const resolvedLabel = computed(
-  () => props.label ?? (isBroadcast.value ? "LIVE" : labels[props.tone][props.status]),
+  () => props.label ?? (isBroadcast.value ? "" : labels[props.tone][props.status]),
 );
 </script>

@@ -2,7 +2,7 @@
   <DocsDemo language="vue" :code="code" :apis="docsApis['navbar-desk']">
     <template #preview>
       <div class="w-full overflow-x-auto">
-        <AdsNavbarDesk :product="product" :product-label="product" />
+        <AdsNavbarDesk :product="product" :product-label="product" broadcast-label="LIVE" />
       </div>
     </template>
 
@@ -39,6 +39,6 @@ const productOptions = [
 ];
 
 const code = computed(() =>
-  buildTag("AdsNavbarDesk", [attr(product.value !== "performance", "product", product.value)]),
+  buildTag("AdsNavbarDesk", [attr(product.value !== "performance", "product", product.value), attr(true, "broadcast-label", "LIVE")]),
 );
 </script>

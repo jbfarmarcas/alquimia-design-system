@@ -13,7 +13,10 @@
       <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6" />
       <path d="M9 9l6 6M15 9l-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
     </svg>
-    <div class="flex max-w-xs flex-col items-center gap-[var(--ads-empty-text-gap)]">
+    <div
+      class="flex flex-col items-center"
+      :class="small ? 'max-w-[208px] gap-[var(--ads-empty-text-gap-sm)]' : 'max-w-xs gap-[var(--ads-empty-text-gap)]'"
+    >
       <p
         class="font-bold leading-[1.3] text-[var(--ads-text-primary)]"
         :class="small ? 'text-[length:var(--ads-empty-title-size-sm)]' : 'text-[length:var(--ads-empty-title-size)]'"
@@ -26,8 +29,8 @@
     </div>
     <div v-if="showActions" class="flex flex-col items-center gap-2">
       <slot>
-        <AdsButton :label="primaryLabel" leading trailing />
-        <AdsButton type="unfilled" :label="secondaryLabel" leading trailing />
+        <AdsButton :label="primaryLabel" :size="small ? 'sm' : 'md'" leading trailing />
+        <AdsButton type="unfilled" :label="secondaryLabel" :size="small ? 'sm' : 'md'" leading trailing />
       </slot>
     </div>
   </div>

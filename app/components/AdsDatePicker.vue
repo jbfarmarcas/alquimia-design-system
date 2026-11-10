@@ -153,18 +153,23 @@ const rangeFieldClass = computed(() => [
   "h-[var(--ads-date-height)] rounded-[var(--ads-date-radius)] px-[var(--ads-date-padding-x)] text-[length:var(--ads-date-font-size)] [font-weight:var(--ads-date-weight)] leading-[var(--ads-date-line-height)] text-[var(--ads-date-text)] bg-[var(--ads-date-background)] ring ring-inset ring-[var(--ads-date-border)]",
   "enabled:hover:ring-[var(--ads-date-hover-border)] focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--ads-date-focus-border)]",
   "disabled:cursor-not-allowed disabled:opacity-75",
-  props.aiSuggestion && "bg-[var(--ads-button-ia-background)] ring-[var(--ads-button-ia-border)]",
+  props.aiSuggestion && "bg-[var(--ads-surface-ai)] ring-[var(--ads-text-ai)]",
   props.class,
 ]);
 
 /** O tema do UInputDate usa `!`, então a sugestão de IA também precisa de `!` para vencer. */
 const inputDateUi = computed(() =>
   props.aiSuggestion
-    ? { base: "!bg-[var(--ads-button-ia-background)] !ring-[var(--ads-button-ia-border)]" }
+    ? { base: "!bg-[var(--ads-surface-ai)] !ring-[var(--ads-text-ai)]" }
     : undefined,
 );
 
 const popoverUi = { content: "w-auto max-w-none p-0" };
+
+/** Card do Date Picker no Figma (5709:21034): 290px, raio XSM, sombra 0 4px 5px 15%. */
+const singlePopoverUi = {
+  content: "w-auto max-w-none p-0 rounded-[var(--ads-radius-xsm)] ring-0 shadow-[0_4px_5px_rgba(0,0,0,0.15)]",
+};
 
 /**
  * Grade do range no Figma (5712:6691): mês com 258px, 7 colunas de 35,14px e 2px entre elas,
@@ -188,6 +193,14 @@ function capitalizeFirst(value: string) {
 /** Cabeçalho do mês no Figma (_Date Picker Header, 5709:19265): Inter Bold 14, linha 130%, text/primary. */
 const singleCalendarUi = {
   heading: "text-sm font-bold leading-[1.3] text-[var(--ads-text-primary)]",
+  header: "h-6",
+  body: "pt-3",
+  grid: "w-[258px] space-y-0",
+  gridWeekDaysRow: "mb-0 h-9 grid-cols-7 items-center gap-x-0.5",
+  gridBody: "grid",
+  gridRow: "h-9 grid-cols-7 items-center gap-x-0.5",
+  cell: "flex h-9 w-full items-center justify-self-stretch",
+  cellTrigger: "m-0 h-8 w-full",
 };
 
 function monthTitle(date: CalendarDate) {
@@ -456,7 +469,7 @@ function isDateUnavailable(value: DateValue) {
       <UPopover
         :reference="popoverReference"
         :content="{ align: 'end', side: 'bottom' }"
-        :ui="popoverUi"
+        :ui="singlePopoverUi"
       >
         <AdsButton
           type="unfilled"
@@ -475,9 +488,13 @@ function isDateUnavailable(value: DateValue) {
             :min-value="minCalendarDate"
             :max-value="maxCalendarDate"
             :is-date-unavailable="isDateUnavailable"
-            color="primary"
-            variant="solid"
-            class="ads-date-picker p-2"
+            :year-controls="false"
+            weekday-format="narrow"
+            :week-starts-on="0"
+            :fixed-weeks="false"
+            color="neutral"
+            variant="outline"
+            class="ads-date-picker ads-date-single p-4"
             :ui="singleCalendarUi"
             @update:model-value="onCalendarModelUpdate"
           >

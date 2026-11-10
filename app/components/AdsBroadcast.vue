@@ -17,7 +17,7 @@ withDefaults(
     status?: AdsBroadcastStatus;
   }>(),
   {
-    label: "LIVE",
+    label: "",
     status: "warning",
   },
 );

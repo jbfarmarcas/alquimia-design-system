@@ -47,7 +47,7 @@ A layer já registra `@nuxt/ui`, `@nuxt/fonts`, `@nuxt/icon` e `@vueuse/nuxt`, o
 - `AdsToast`: `appearance="banner"` = Toast Header; `appearance="status"` = Toast Alert. Status `primary` foi **removido** — use `neutral`. Na faixa banner, `loading` também foi removido. `status="loading"` é válido só no reporte escuro (`appearance="status"`).
 - `AdsPill`: status `innovation` e `neutral` foram **removidos**. 6 status válidos: `default`, `success`, `attention`, `warning`, `new`, `blocked`. Nova prop `size`: `"md"` (Pill, 24px, padrão) ou `"sm"` (Small Pill, 18px). **`AdsSmallPill` foi removido** — use `<AdsPill size="sm">`. **`AdsMiniPill` foi removido** — use `<AdsPill size="sm" tone="secondary">`.
 - `AdsBadge`: prop `color` **só no código**.
-- Broadcast agora é `<AdsPill variant="broadcast" status="warning|success">` (LIVE por padrão; ignora `tone` e `size`). `AdsBroadcast` continua como atalho de compatibilidade; prefira a Pill. O `status` é **só no código** (o Figma tem só uma variante).
+- Broadcast agora é `<AdsPill variant="broadcast" status="warning|success">` (sem texto padrão: passe `label`, ex. `label="LIVE"`; ignora `tone` e `size`). No `AdsNavbarDesk`, use `broadcast-label`. `AdsBroadcast` continua como atalho de compatibilidade; prefira a Pill. O `status` é **só no código** (o Figma tem só uma variante).
 - `AdsSegmentedTabs`: `items[n].icon` (24px, à esquerda) e `items[n].subtitle` (12px regular secundário, abaixo do rótulo) seguem o Switch Tabs do Figma; com eles a aba cresce além dos 30px. Antes, o `subtitle` não aparecia.
 - `AdsNotabilityPill`: renderiza `AdsPill` internamente via `customSurface`. A API pública não mudou.
 - `AdsFarmarcasPill` foi **removido**, junto com os tokens `--ads-farmarcas-*`.

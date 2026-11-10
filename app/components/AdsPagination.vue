@@ -15,7 +15,7 @@
           v-else
           type="button"
           class="flex size-[var(--ads-pagination-cell)] items-center justify-center rounded-[var(--ads-radius-xsm)] text-sm leading-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--ads-text-brand)]"
-          :class="item.page === page ? 'bg-[var(--ads-pagination-selected)] text-[var(--ads-text-contrast)]' : 'text-[var(--ads-pagination-number)] hover:bg-ads-neutro-claro-20'"
+          :class="item.page === page ? 'bg-[var(--ads-pagination-selected)] text-[var(--ads-text-contrast)]' : 'text-[var(--ads-pagination-number)] hover:bg-ads-neutro-claro-30'"
           :aria-current="item.page === page ? 'page' : undefined"
           @click="go(item.page)"
         >

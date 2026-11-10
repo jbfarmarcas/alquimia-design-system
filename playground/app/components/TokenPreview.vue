@@ -160,7 +160,7 @@
     <AdsNavbarApp />
   </div>
   <div v-else-if="id === 'navbar-desk'" class="w-full overflow-x-auto">
-    <AdsNavbarDesk />
+    <AdsNavbarDesk broadcast-label="LIVE" />
   </div>
   <div v-else-if="id === 'side'" class="max-h-80 overflow-auto">
     <AdsSideMenu :items="sideItems" :default-open="['mae']" />

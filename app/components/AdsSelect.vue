@@ -211,7 +211,7 @@ const fieldClass = computed(() => {
     return "border-(length:--ads-border-width-slim) border-[var(--ads-filter-focus-border)] bg-[var(--ads-filter-background)] text-[var(--ads-filter-text)]";
   }
   if (fieldState.value === "ai") {
-    return "border border-[var(--ads-button-ia-border)] bg-[var(--ads-button-ia-background)] hover:border-[var(--ads-filter-hover-border)] text-[var(--ads-filter-text)]";
+    return "border border-[var(--ads-text-ai)] bg-[var(--ads-surface-ai)] hover:border-[var(--ads-filter-hover-border)] text-[var(--ads-filter-text)]";
   }
   if (fieldState.value === "selected") {
     return "border border-[var(--ads-filter-border)] hover:border-[var(--ads-filter-hover-border)] bg-ads-neutro-claro-20 text-[var(--ads-filter-text)]";

@@ -21,14 +21,14 @@ export type AdsBadgeColor = "primary" | "success" | "attention" | "warning" | "n
 
 const props = withDefaults(
   defineProps<{
-    /** Cor do contador. Innovation usa o rosa do handoff (#fde3ff / data-1 800). */
+    /** Cor do contador. Sem valor: primary no badge e new (#05b4d8) no mini, como no Figma (Context=Secondary). */
     color?: AdsBadgeColor;
     /** Ponto de 8px, sem número. */
     mini?: boolean;
     value?: string | number;
   }>(),
   {
-    color: "primary",
+    color: undefined,
     mini: false,
     value: 2,
   },
@@ -43,5 +43,5 @@ const surfaces: Record<AdsBadgeColor, string> = {
   blocked: "bg-[var(--ads-status-void-800)] text-[var(--ads-badge-text)]",
 };
 
-const surfaceClass = computed(() => surfaces[props.color]);
+const surfaceClass = computed(() => surfaces[props.color ?? (props.mini ? "new" : "primary")]);
 </script>

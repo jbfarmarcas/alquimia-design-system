@@ -41,6 +41,6 @@ const badgeColorOptions = [
 ];
 
 const code = computed(() =>
-  buildTag("AdsBadge", [attr(badgeColor.value !== "primary", "color", badgeColor.value), attr(badgeMini.value, "mini")]),
+  buildTag("AdsBadge", [attr(badgeColor.value !== (badgeMini.value ? "new" : "primary"), "color", badgeColor.value), attr(badgeMini.value, "mini")]),
 );
 </script>

@@ -1,9 +1,9 @@
 <template>
   <span
-    class="inline-flex h-[var(--ads-product-tag-height)] items-center rounded-[var(--ads-radius-xsm)] px-1.5 text-[length:var(--ads-product-tag-font-size)] leading-none font-medium text-[var(--ads-text-contrast)]"
+    class="inline-flex h-[var(--ads-product-tag-height)] items-center px-1.5 text-[length:var(--ads-product-tag-font-size)] leading-none font-medium text-[var(--ads-text-contrast)]"
     :class="surface"
   >
-    {{ label || product }}
+    {{ label || labels[product] }}
   </span>
 </template>
 
@@ -55,6 +55,25 @@ const surfaces: Record<AdsProductTagName, string> = {
   financas: "bg-ads-produtos-radar-6",
   performance: "bg-ads-produtos-radar-6",
   encontro: "bg-ads-produtos-radar-5",
+};
+
+/** Nomes como no Figma (com acento; captador aparece como "prisma"). */
+const labels: Record<AdsProductTagName, string> = {
+  marketing: "marketing",
+  promocoes: "promoções",
+  vendas: "vendas",
+  captador: "prisma",
+  estoque: "estoque",
+  pricing: "pricing",
+  crm: "crm",
+  compras: "compras",
+  gestao: "gestão",
+  trade: "trade",
+  capacitacao: "capacitação",
+  ecommerce: "e-commerce",
+  financas: "finanças",
+  performance: "performance",
+  encontro: "encontro",
 };
 
 const surface = computed(() => surfaces[props.product]);

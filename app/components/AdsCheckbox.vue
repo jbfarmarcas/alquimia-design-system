@@ -34,7 +34,7 @@
     <span
       v-if="hasLabel"
       class="text-[length:var(--ads-checkbox-label-size)] font-normal leading-[1.3]"
-      :class="isDisabled ? 'text-[var(--ads-text-tertiary)]' : 'text-[var(--ads-checkbox-label)]'"
+      :class="isDisabled ? 'text-ads-neutro-medio-70' : 'text-[var(--ads-checkbox-label)]'"
     >
       <slot>{{ label }}</slot>
     </span>

@@ -225,7 +225,7 @@ export const adsDropdownMenuUi = {
     "!min-w-56 !bg-[var(--ads-surface-card)] !shadow-[var(--ads-shadow-level-1)] !ring-0 !rounded-[var(--ads-radius-sm)] border border-[var(--ads-border-subtle)]",
   viewport: "!divide-y-0",
   group: "!p-0",
-  item: "!items-center !gap-2 !rounded-none !p-0 !ps-6 !pe-3 !py-4 !text-sm !font-normal !text-[var(--ads-text-secondary)] border-b border-[#d3d8dd] last:border-b-0 before:!hidden data-highlighted:!bg-neutral-100",
+  item: "!items-center !gap-3 !rounded-none !p-[var(--ads-select-item-padding)] !text-sm !font-normal !text-[var(--ads-text-secondary)] border-b border-[var(--ads-select-panel-border)] last:border-b-0 before:!hidden data-highlighted:!bg-[var(--ads-select-item-hover)]",
   itemLeadingIcon: "!size-4 !text-[var(--ads-text-secondary)]",
   itemLabel: "!truncate !text-sm !font-normal !text-[var(--ads-text-secondary)]",
 } as const;

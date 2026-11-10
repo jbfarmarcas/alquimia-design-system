@@ -25,6 +25,11 @@
           :class="labelTone(item)"
         >{{ item.label }}</span>
       </component>
+      <span
+        v-if="item.dividerAfter"
+        class="h-px w-12 bg-[var(--ads-menu-divider)]"
+        role="separator"
+      />
     </template>
   </nav>
 </template>
@@ -40,6 +45,8 @@ export type AdsMenuBarItem = {
   icon: string;
   to?: RouteLocationRaw;
   dividerBefore?: boolean;
+  /** Linha depois do item. O Figma fecha a lista com uma linha após Campanhas. */
+  dividerAfter?: boolean;
   state?: AdsMenuBarState;
 };
 
@@ -55,7 +62,7 @@ export const adsMenuBarItems: AdsMenuBarItem[] = [
   { id: "relatorios", label: "Relatórios", icon: "i-lucide-bar-chart-big" },
   { id: "promocao", label: "Promoção", icon: "i-lucide-trophy" },
   { id: "encontro", label: "Encontro\nFarmarcas", icon: "i-lucide-contact" },
-  { id: "campanhas", label: "Campanhas", icon: "i-lucide-goal", dividerBefore: false },
+  { id: "campanhas", label: "Campanhas", icon: "i-lucide-goal", dividerAfter: true },
 ];
 </script>
 

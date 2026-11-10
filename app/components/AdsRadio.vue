@@ -26,7 +26,7 @@
     <span
       v-if="hasLabel"
       class="text-[length:var(--ads-radio-label-size)] font-normal leading-[1.3]"
-      :class="isDisabled ? 'text-[var(--ads-text-tertiary)]' : 'text-[var(--ads-radio-label)]'"
+      :class="isDisabled ? 'text-ads-neutro-medio-70' : 'text-[var(--ads-radio-label)]'"
     >
       <slot>{{ label }}</slot>
     </span>

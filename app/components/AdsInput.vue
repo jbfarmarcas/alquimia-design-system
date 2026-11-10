@@ -120,7 +120,7 @@ const visualState = computed<AdsInputState>(() => {
 const supportText = computed(() => props.error || props.hint);
 const supportClass = computed(() =>
   visualState.value === "disabled"
-    ? "text-[var(--ads-text-tertiary)]"
+    ? "text-[var(--ads-input-disabled-text)]"
     : "text-[var(--ads-text-secondary)]",
 );
 
@@ -140,7 +140,8 @@ const fieldClass = computed(() => {
     return "border-(length:--ads-border-width-slim) border-[var(--ads-input-focus-border)] bg-[var(--ads-input-background)] text-[var(--ads-input-text)]";
   }
   if (visualState.value === "ai") {
-    return `border border-[var(--ads-button-ia-border)] bg-[var(--ads-surface-ai)] text-[var(--ads-text-ai)] ${focus}`;
+    // Figma AI Mode: borda text/ai (#613dda), fundo surface/ai e texto secundário.
+    return `border border-[var(--ads-text-ai)] bg-[var(--ads-surface-ai)] text-[var(--ads-input-text)] ${focus}`;
   }
   return `border border-[var(--ads-input-border)] bg-[var(--ads-input-background)] text-[var(--ads-input-text)] ${focus}`;
 });

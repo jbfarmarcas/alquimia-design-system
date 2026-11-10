@@ -86,7 +86,7 @@ const visualState = computed<AdsTextareaState>(() => {
 const supportText = computed(() => props.error || props.hint);
 const supportClass = computed(() =>
   visualState.value === "disabled"
-    ? "text-[var(--ads-text-tertiary)]"
+    ? "text-[var(--ads-textarea-placeholder)]"
     : "text-[var(--ads-text-secondary)]",
 );
 
@@ -109,7 +109,7 @@ const fieldClass = computed(() => {
     ? "hover:not-focus-within:border-[var(--ads-textarea-hover-border)] focus-within:border-(length:--ads-border-width-slim) focus-within:border-[var(--ads-textarea-focus-border)]"
     : "";
   if (visualState.value === "ai") {
-    return `border border-[var(--ads-button-ia-border)] bg-[var(--ads-surface-ai)] text-[var(--ads-text-ai)] ${focus}`;
+    return `border border-[var(--ads-text-ai)] bg-[var(--ads-surface-ai)] text-[var(--ads-text-secondary)] ${focus}`;
   }
   return `border border-[var(--ads-textarea-border)] bg-[var(--ads-textarea-background)] ${text} ${focus}`;
 });

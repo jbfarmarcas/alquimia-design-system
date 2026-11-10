@@ -387,10 +387,7 @@
   }
 
   /**
-   * Date picker ADS. Especificidade acima de data-[selected]:bg-primary
-   * e do ring do variant outline (data-[selected]:ring).
-   * Cap: primary-500 + branco. Meio: primary-100 + texto primary-500.
-   * Cada dia fica arredondado, sem faixa contínua e sem borda no selecionado.
+   * Painel de período: cabeçalho próprio (título e setas fora do UCalendar).
    */
   .ads-date-range-panel .ads-date-picker > [data-slot="header"] {
     display: none;
@@ -406,31 +403,7 @@
     pointer-events: none;
   }
 
-  .ads-date-picker [data-slot="headCell"] {
-    color: var(--color-neutral-500);
-    font-size: 0.75rem;
-    font-weight: 500;
-  }
-
-  .ads-date-picker [data-slot="cellTrigger"][data-outside-view] {
-    color: var(--color-neutral-300);
-  }
-
-  .ads-date-picker
-    [data-slot="gridRow"]
-    > [data-slot="cell"]:first-child
-    [data-slot="cellTrigger"]:not([data-selected]):not([data-outside-view]),
-  .ads-date-picker
-    [data-slot="gridRow"]
-    > [data-slot="cell"]:last-child
-    [data-slot="cellTrigger"]:not([data-selected]):not([data-outside-view]) {
-    color: var(--color-primary-400);
-  }
-
-  .ads-date-picker [data-slot="cellTrigger"] {
-    border-radius: 0.375rem;
-  }
-
+  /* Sem o ring do variant outline no dia escolhido. */
   .ads-date-picker [data-slot="cellTrigger"][data-selected],
   .ads-date-picker [data-slot="cellTrigger"][data-highlighted],
   .ads-date-picker [data-slot="cellTrigger"][data-selection-start],
@@ -438,30 +411,12 @@
     box-shadow: none;
   }
 
-  .ads-date-picker [data-slot="cellTrigger"][data-selection-start],
-  .ads-date-picker [data-slot="cellTrigger"][data-selection-end] {
-    background-color: var(--color-primary-500);
-    color: #fff;
-  }
-
-  .ads-date-picker
-    [data-slot="cellTrigger"][data-selected]:not([data-selection-start]):not(
-      [data-selection-end]
-    ),
-  .ads-date-picker
-    [data-slot="cellTrigger"][data-highlighted]:not([data-selection-start]):not(
-      [data-selection-end]
-    ) {
-    background-color: var(--color-primary-100);
-    color: var(--color-primary-500);
-  }
-
   /**
-   * Range Date Picker do Figma (5712:6691), só no painel de período.
+   * Date Picker do Figma (Mode=Day 5709:21034; período 5712:6691), na data única e no painel de período.
    * _Date Picker options: dia 14 regular; fim de semana text/tertiary; hoje text/primary;
    * fora do mês ou desabilitado neutrals/light/40; hover radar/25 com raio SM.
    * Selecionado: pontas text/brand + text/contrast; meio buttons/secondary/hover + text/brand,
-   * ambos em bold e com raio SM em cada dia (2px entre os dias). Um dia só usa raio XSM.
+   * ambos em bold e com raio SM em cada dia (2px entre os dias). Um dia só (período de um dia ou data única) usa raio XSM.
    */
   .ads-date-range-panel .ads-date-range-title {
     color: var(--ads-text-primary);
@@ -492,7 +447,7 @@
   }
 
   /* Semana: Inter 12 regular, 120%, "Universal/50% Gray" (#797B86, sem token ADS). */
-  .ads-date-range-panel .ads-date-picker [data-slot="headCell"] {
+  .ads-date-picker [data-slot="headCell"] {
     color: #797b86;
     font-size: 12px;
     font-weight: var(--ads-font-weight-regular);
@@ -500,7 +455,7 @@
     text-align: center;
   }
 
-  .ads-date-range-panel .ads-date-picker [data-slot="cellTrigger"] {
+  .ads-date-picker [data-slot="cellTrigger"] {
     border-radius: var(--ads-radius-sm);
     color: var(--ads-text-secondary);
     font-size: 14px;
@@ -508,50 +463,56 @@
     line-height: 1.3;
   }
 
-  .ads-date-range-panel
-    .ads-date-picker
+  .ads-date-picker
     [data-slot="gridRow"]
     > [data-slot="cell"]:first-child
     [data-slot="cellTrigger"]:not([data-selected]):not([data-highlighted]):not([data-outside-view]):not([data-disabled]),
-  .ads-date-range-panel
-    .ads-date-picker
+  .ads-date-picker
     [data-slot="gridRow"]
     > [data-slot="cell"]:last-child
     [data-slot="cellTrigger"]:not([data-selected]):not([data-highlighted]):not([data-outside-view]):not([data-disabled]) {
     color: var(--ads-text-tertiary);
   }
 
-  .ads-date-range-panel .ads-date-picker [data-slot="gridRow"] > [data-slot="cell"] [data-slot="cellTrigger"][data-today]:not([data-selected]):not([data-highlighted]):not([data-disabled]) {
+  .ads-date-picker [data-slot="gridRow"] > [data-slot="cell"] [data-slot="cellTrigger"][data-today]:not([data-selected]):not([data-highlighted]):not([data-disabled]) {
     color: var(--ads-text-primary);
   }
 
-  .ads-date-range-panel .ads-date-picker [data-slot="gridRow"] > [data-slot="cell"] [data-slot="cellTrigger"]:not([data-selected]):not([data-highlighted]):not([data-disabled]):not([data-unavailable]):not(
+  .ads-date-picker [data-slot="gridRow"] > [data-slot="cell"] [data-slot="cellTrigger"]:not([data-selected]):not([data-highlighted]):not([data-disabled]):not([data-unavailable]):not(
       [data-outside-view]
     ):hover {
     background-color: var(--color-ads-radar-25);
   }
 
-  .ads-date-range-panel .ads-date-picker [data-slot="gridRow"] > [data-slot="cell"] [data-slot="cellTrigger"][data-selection-start]:not([data-outside-view]),
-  .ads-date-range-panel .ads-date-picker [data-slot="gridRow"] > [data-slot="cell"] [data-slot="cellTrigger"][data-selection-end]:not([data-outside-view]) {
+  .ads-date-picker [data-slot="gridRow"] > [data-slot="cell"] [data-slot="cellTrigger"][data-selection-start]:not([data-outside-view]),
+  .ads-date-picker [data-slot="gridRow"] > [data-slot="cell"] [data-slot="cellTrigger"][data-selection-end]:not([data-outside-view]) {
     background-color: var(--ads-text-brand);
     color: var(--ads-text-contrast);
     font-weight: var(--ads-font-weight-bold);
   }
 
-  .ads-date-range-panel .ads-date-picker [data-slot="gridRow"] > [data-slot="cell"] [data-slot="cellTrigger"][data-selection-start][data-selection-end] {
+  .ads-date-picker [data-slot="gridRow"] > [data-slot="cell"] [data-slot="cellTrigger"][data-selection-start][data-selection-end] {
     border-radius: var(--ads-radius-xsm);
   }
 
-  .ads-date-range-panel .ads-date-picker [data-slot="gridRow"] > [data-slot="cell"] [data-slot="cellTrigger"][data-selected]:not([data-selection-start]):not([data-selection-end]):not([data-outside-view]),
-  .ads-date-range-panel .ads-date-picker [data-slot="gridRow"] > [data-slot="cell"] [data-slot="cellTrigger"][data-highlighted]:not([data-selection-start]):not([data-selection-end]):not([data-outside-view]) {
+  .ads-date-picker [data-slot="gridRow"] > [data-slot="cell"] [data-slot="cellTrigger"][data-selected]:not([data-selection-start]):not([data-selection-end]):not([data-outside-view]),
+  .ads-date-picker [data-slot="gridRow"] > [data-slot="cell"] [data-slot="cellTrigger"][data-highlighted]:not([data-selection-start]):not([data-selection-end]):not([data-outside-view]) {
     background-color: var(--ads-button-secondary-hover);
     color: var(--ads-text-brand);
     font-weight: var(--ads-font-weight-bold);
   }
 
-  .ads-date-range-panel .ads-date-picker [data-slot="cellTrigger"][data-outside-view],
-  .ads-date-range-panel .ads-date-picker [data-slot="cellTrigger"][data-disabled],
-  .ads-date-range-panel .ads-date-picker [data-slot="cellTrigger"][data-unavailable] {
+  /* Data única (Mode=Day): o dia escolhido é ponta, não meio de período. */
+  .ads-date-single.ads-date-picker [data-slot="gridRow"] > [data-slot="cell"] [data-slot="cellTrigger"][data-selected]:not([data-selection-start]):not([data-selection-end]):not([data-outside-view]) {
+    border-radius: var(--ads-radius-xsm);
+    background-color: var(--ads-text-brand);
+    color: var(--ads-text-contrast);
+    font-weight: var(--ads-font-weight-bold);
+  }
+
+  .ads-date-picker [data-slot="cellTrigger"][data-outside-view],
+  .ads-date-picker [data-slot="cellTrigger"][data-disabled],
+  .ads-date-picker [data-slot="cellTrigger"][data-unavailable] {
     /* Vence as regras de fim de semana e de seleção, inclusive as globais do .ads-date-picker. */
     background-color: transparent !important;
     color: var(--color-ads-neutro-claro-40) !important;
