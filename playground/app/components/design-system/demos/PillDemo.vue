@@ -29,7 +29,7 @@
 
       <template v-else>
       <div class="grid items-end gap-6 sm:grid-cols-3">
-        <AdsFilterSelect
+        <AdsSelect
           v-model="pillStatus"
           type="radio"
           label="Status"
@@ -74,7 +74,7 @@ import DocsDemo from "../DocsDemo.vue";
 import DocsParam from "../DocsParam.vue";
 import { docsApis } from "../catalog-docs";
 import { attr, buildTag } from "../../../utils/code-builder";
-import AdsFilterSelect from "../../../../../app/components/AdsFilterSelect.vue";
+import AdsSelect from "../../../../../app/components/AdsSelect.vue";
 import AdsPill, { type AdsPillSize, type AdsPillStatus, type AdsPillTone, type AdsPillVariant } from "../../../../../app/components/AdsPill.vue";
 import AdsSegmentedTabs from "../../../../../app/components/AdsSegmentedTabs.vue";
 import AdsSwitch from "../../../../../app/components/AdsSwitch.vue";

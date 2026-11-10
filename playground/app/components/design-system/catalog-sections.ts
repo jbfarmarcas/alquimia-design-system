@@ -57,6 +57,13 @@ export const catalogSections = [
     components: ["AdsSearchInput"],
   },
   {
+    id: "select",
+    label: "Select",
+    group: "Campos",
+    purpose: "Seleção simples, múltipla ou de mês. Gatilho em campo, próprio ou só a lista; opções com subtítulo, selo e busca.",
+    components: ["AdsSelect"],
+  },
+  {
     id: "textarea",
     label: "Texto longo",
     group: "Campos",
@@ -76,42 +83,6 @@ export const catalogSections = [
     group: "Campos",
     purpose: "Grade de meses, 290×284. O filtro de mês embute esta peça.",
     components: ["AdsMonthPicker"],
-  },
-
-  {
-    id: "filter-select",
-    label: "Select de filtro",
-    group: "Filtros",
-    purpose: "Select com lista, busca ou calendário de mês. Rótulo longo ganha reticências e tooltip.",
-    components: ["AdsFilterSelect"],
-  },
-  {
-    id: "list-dropdown",
-    label: "Lista",
-    group: "Filtros",
-    purpose: "Lista de rádio com busca opcional. É o List Dropdown do Figma.",
-    components: ["AdsListDropdown"],
-  },
-  {
-    id: "filter-dropdown",
-    label: "Painel de filtro",
-    group: "Filtros",
-    purpose: "Painel da lista, com busca, selecionar todos e divisores.",
-    components: ["AdsFilterDropdown"],
-  },
-  {
-    id: "filter-option",
-    label: "Opção de filtro",
-    group: "Filtros",
-    purpose: "Linha da lista. Checkbox alinha a caixa; rádio selecionado fica em negrito.",
-    components: ["AdsFilterOption"],
-  },
-  {
-    id: "dropdown-menu",
-    label: "Dropdown Menu",
-    group: "Filtros",
-    purpose: "Menu suspenso de ações ou de seleção simples/múltipla, com busca opcional, badge e subtítulo. Pode ser usado junto do Painel de filtro.",
-    components: ["AdsDropdownMenu"],
   },
   {
     id: "tabs",
@@ -294,6 +265,13 @@ export const catalogSections = [
     components: ["AdsProductTag"],
   },
 
+  {
+    id: "dropdown-menu",
+    label: "Menu de ações",
+    group: "Navegação",
+    purpose: "Menu suspenso de ações. Para escolher valores, use o Select.",
+    components: ["AdsDropdownMenu"],
+  },
   {
     id: "stepper",
     label: "Stepper",

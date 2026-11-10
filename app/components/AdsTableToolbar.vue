@@ -28,7 +28,7 @@ withDefaults(
     /** Título à esquerda. Sem título, a busca e os filtros ocupam a faixa. */
     title?: string;
     description?: string;
-    /** Mostra o AdsSearchInput. O filtro entra no slot padrão, com AdsFilterSelect. */
+    /** Mostra o AdsSearchInput. O filtro entra no slot padrão, com AdsSelect. */
     searchable?: boolean;
     searchPlaceholder?: string;
   }>(),

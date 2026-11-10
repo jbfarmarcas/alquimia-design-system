@@ -5,7 +5,7 @@
     </template>
 
     <template #params>
-      <AdsFilterSelect
+      <AdsSelect
         v-model="product"
         type="radio"
         label="Produto"
@@ -22,7 +22,7 @@ import { computed, ref } from "vue";
 import DocsDemo from "../DocsDemo.vue";
 import { docsApis } from "../catalog-docs";
 import { attr, buildTag } from "../../../utils/code-builder";
-import AdsFilterSelect from "../../../../../app/components/AdsFilterSelect.vue";
+import AdsSelect from "../../../../../app/components/AdsSelect.vue";
 import AdsProductTag, { type AdsProductTagName } from "../../../../../app/components/AdsProductTag.vue";
 
 const product = ref<AdsProductTagName>("performance");

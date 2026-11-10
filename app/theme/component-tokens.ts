@@ -634,12 +634,6 @@ export const componentTokenCatalog: readonly TokenComponent[] = [
     ],
   },
   {
-    id: "list",
-    section: "lista",
-    label: "Lista",
-    fields: [length("--ads-list-min-width", "Largura mínima", "Medida", "260px")],
-  },
-  {
     id: "pagination",
     section: "paginacao",
     label: "Paginação",

@@ -41,7 +41,8 @@ A layer já registra `@nuxt/ui`, `@nuxt/fonts`, `@nuxt/icon` e `@vueuse/nuxt`, o
 - `AdsCard`: prop `type` (`container` | `details`). No `details`, as linhas vêm de `rows` (`{ icon?, label, value }`). `loading` agora mostra o loader do Radar (container) ou skeleton (details), não shimmer. `empty` mantém o cabeçalho e mostra o `AdsEmptyState` pequeno (`emptyMessage`, `emptyDescription`). Slot `hint` foi **removido** — use a prop `hint` (ícone de info) ou o slot `actions`. `description` e `footerText` são **só no código**. `as` aceita `"div"`, `"button"` ou um componente de link (como `NuxtLink`, com `to` no card); o hover é padrão em todos os cards clicáveis (`AdsCard`, `AdsMetricCard`, `AdsFeatureCard`): neutro, borda `--ads-card-hover-border` (#c1c7d0) e sombra nível 1; `:hoverable="false"` desliga.
 - `AdsModal`: abre com `v-model:open`. Eventos `confirm`, `cancel` e `dismiss`. Prop `size` **só no código**.
 - `AdsDatePicker` e `AdsMonthPicker` trafegam datas como string `YYYY-MM-DD`. Intervalo: `range` com `v-model:start` e `v-model:end`.
-- Valor preenchido por IA: `AdsInput`, `AdsNumberInput`, `AdsTextarea`, `AdsSearchInput`, `AdsDatePicker` e `AdsFilterSelect` têm a prop `ai-suggestion`. Para `AdsSearchInput` e `AdsTextarea`, `ai-suggestion` e o estado `ai` são **só no código** (o Figma não os tem). Ela não se desliga sozinha: ponha `false` quando a pessoa editar. Erro e desabilitado têm prioridade.
+- `AdsSelect` é o **único** componente de seleção (antigos `AdsFilterSelect`, `AdsListDropdown`, `AdsFilterDropdown`, `AdsFilterOption` e o `mode` do `AdsDropdownMenu`). `type`: `checkbox` (múltipla), `radio` (simples) ou `month`. Gatilho: campo do Figma por padrão, slot `#trigger` (`{ open, label, hasValue }`) para um gatilho próprio, ou `inline` para só a lista. Opções: `{ value, label, subtitle?, badge?: { label, tone?: "brand" | "ai", icon? }, disabled? }`; selo `ai` usa sparkles. Lista de 320px que rola a partir de 320px de altura. `AdsSelectPanel` e `AdsSelectItem` são peças internas. `AdsDropdownMenu` agora é só menu de ações (`items`).
+- Valor preenchido por IA: `AdsInput`, `AdsNumberInput`, `AdsTextarea`, `AdsSearchInput`, `AdsDatePicker` e `AdsSelect` têm a prop `ai-suggestion`. Para `AdsSearchInput` e `AdsTextarea`, `ai-suggestion` e o estado `ai` são **só no código** (o Figma não os tem). Ela não se desliga sozinha: ponha `false` quando a pessoa editar. Erro e desabilitado têm prioridade.
 - `state` nos componentes congela hover, focus etc. para documentação. Não use em telas reais.
 - `AdsToast`: `appearance="banner"` = Toast Header; `appearance="status"` = Toast Alert. Status `primary` foi **removido** — use `neutral`. Na faixa banner, `loading` também foi removido. `status="loading"` é válido só no reporte escuro (`appearance="status"`).
 - `AdsPill`: status `innovation` e `neutral` foram **removidos**. 6 status válidos: `default`, `success`, `attention`, `warning`, `new`, `blocked`. Nova prop `size`: `"md"` (Pill, 24px, padrão) ou `"sm"` (Small Pill, 18px). **`AdsSmallPill` foi removido** — use `<AdsPill size="sm">`. **`AdsMiniPill` foi removido** — use `<AdsPill size="sm" tone="secondary">`.
@@ -66,8 +67,8 @@ A layer já registra `@nuxt/ui`, `@nuxt/fonts`, `@nuxt/icon` e `@vueuse/nuxt`, o
 | Grupo | Componentes |
 | ----- | ----------- |
 | Ações | `AdsButton`, `AdsButtonGroup`, `AdsButtonMenu` |
-| Formulário | `AdsInput`, `AdsNumberInput`, `AdsTextarea`, `AdsSearchInput`, `AdsCheckbox`, `AdsRadio`, `AdsSwitch`, `AdsDatePicker`, `AdsMonthPicker`, `AdsFilterSelect`, `AdsFilterDropdown`, `AdsFilterOption` |
-| Navegação | `AdsNavbarDesk`, `AdsNavbarApp`, `AdsSideMenu`, `AdsMenuBar`, `AdsTabs`, `AdsSegmentedTabs`, `AdsPagination`, `AdsDropdownMenu` (prop `mode`), `AdsListDropdown`, `AdsFooter`, `AdsStepper` |
+| Formulário | `AdsInput`, `AdsNumberInput`, `AdsTextarea`, `AdsSearchInput`, `AdsCheckbox`, `AdsRadio`, `AdsSwitch`, `AdsDatePicker`, `AdsMonthPicker`, `AdsSelect` |
+| Navegação | `AdsNavbarDesk`, `AdsNavbarApp`, `AdsSideMenu`, `AdsMenuBar`, `AdsTabs`, `AdsSegmentedTabs`, `AdsPagination`, `AdsDropdownMenu` (só ações), `AdsFooter`, `AdsStepper` |
 | Dados | `AdsTable`, `AdsTableHeaderCell`, `AdsHeavyTable`, `AdsHeavyAccountCell`, `AdsHeavyHeaderCell`, `AdsTableSkeleton`, `AdsTableToolbar`, `AdsCard`, `AdsMetricCard`, `AdsPanelCard`, `AdsFeatureCard`, `AdsFileCard`, `AdsEmptyState`, `AdsCardVariation`, `AdsCardPeriod`, `AdsCardHint` |
 | Status | `AdsBadge`, `AdsPill` (size `md`/`sm`, variant `broadcast`), `AdsBroadcast` (atalho), `AdsNotabilityPill`, `AdsProductTag` |
 | Feedback | `AdsModal`, `AdsToast`, `AdsTooltip`, `AdsSmalltip`, `AdsSteptip`, `AdsCharttip`, `AdsLoading`, `ProgressBarLoading`, `OverlayLoading` |
@@ -115,7 +116,7 @@ Auto-importados, de `app/utils`:
 | `parser.ts` | datas e percentuais: `formatDateOnlyToPtBr`, `formatDateToPtBr`, `daysBetweenDateOnly`, `parseToPercentage`… |
 | `calendar-date.ts` | conversão `string` ↔ `CalendarDate` e dos valores emitidos pelo Nuxt UI (`toCalendarModel`, `toCalendarDateRange`) |
 | `ads-table.ts` | helpers de coluna do `AdsTable` e `AdsHeavyTable`: `adsTableGroup`, `adsTableCellFill`, `adsTableTreeIndent`, `adsHeavyGroupTdAttrs`, `adsHeavyGroupContentClass`, `adsHeavyVariationClass`, `adsHeavyColumn`, `adsHeavyAccountColumn`, `buildAdsTableUi`, `buildAdsHeavyTableUi`; tipos: `AdsTableCellType`, `AdsTableGroupTone` (inclui `"ai"`) |
-| `ads-filter-select.ts` | helpers do `AdsFilterSelect` |
+| `ads-filter-select.ts` | helpers do `AdsSelect` |
 
 `useOverlayLoading()`: overlay de tela cheia com `show`, `update`, `close`, `isOpen`, `getCurrentId`.
 

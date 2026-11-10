@@ -87,21 +87,12 @@ export const figmaLinks = {
   "month-picker": [
     { component: "AdsMonthPicker", figma: node("Date Picker", "5709:19294"), note: "Mode=Month do Date Picker." },
   ],
-  "filter-select": [{ component: "AdsFilterSelect", figma: node("Select", "5247:811") }],
-  "list-dropdown": [{ component: "AdsListDropdown", figma: node("List Dropdown", "6513:6320") }],
-  "filter-dropdown": [
+  select: [
     {
-      component: "AdsFilterDropdown",
-      figma: node("Dropdown", "5251:1009"),
-      related: [node("_root_dropdown", "6506:4492")],
-      note: "O Dropdown mostra os filtros montados. O _root_dropdown tem checkbox, rádio e busca.",
-    },
-  ],
-  "filter-option": [
-    {
-      component: "AdsFilterOption",
-      figma: node("_Itens Checkbox", "6507:2398"),
-      related: [node("_Itens Radio", "6507:8696")],
+      component: "AdsSelect",
+      figma: node("Select", "5247:811"),
+      related: [node("Super dropdown", "8890:904"), node("_Dropdown Item", "8890:780")],
+      note: "Um componente: campo (Select), lista (Super dropdown) e itens (_Dropdown Item).",
     },
   ],
   tabs: [{ component: "AdsTabs", figma: node("Tabs", "3658:2419"), note: "Figma: 🔄 Atualizado: Tabs." }],
@@ -236,8 +227,7 @@ export const figmaLinks = {
     {
       component: "AdsDropdownMenu",
       figma: node("Super dropdown", "8890:904"),
-      related: [node("_Dropdown Item", "8890:780")],
-      note: "Figma: 🔄 Atualizado: Select / Filter. Nó 8890:904 'Super dropdown' — componente Set que agrupa as variantes Simples e Checkbox. Não existe nó separado 'Dropdown Menu' neste arquivo.",
+      note: "Só ações. A seleção é o AdsSelect.",
     },
   ],
   table: [

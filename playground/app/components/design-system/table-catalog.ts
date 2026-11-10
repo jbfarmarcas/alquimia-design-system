@@ -60,7 +60,7 @@ export const TABLE_CHROME = [
   },
   {
     part: "Busca",
-    value: "AdsTableToolbar: título à esquerda, AdsSearchInput e o slot de AdsFilterSelect à direita.",
+    value: "AdsTableToolbar: título à esquerda, AdsSearchInput e o slot de AdsSelect à direita.",
   },
   {
     part: "Carregamento",
@@ -177,7 +177,7 @@ export const TABLE_INVENTORY: TableInventoryRow[] = [
     base: "UTable",
     header: "#FAFBFC, caixa alta, borda #C1C7D0",
     rows: "Divisória neutral-100",
-    features: "Papel por linha no AdsFilterSelect, popover de histórico",
+    features: "Papel por linha no AdsSelect, popover de histórico",
     variant: "lista",
     render: "vivo",
   },

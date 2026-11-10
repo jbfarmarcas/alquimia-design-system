@@ -237,19 +237,19 @@ export const docsApis = {
       events: [{ name: "pick", payload: "—", description: "Um mês foi escolhido. O valor fica no v-model." }],
     },
   ],
-  "filter-select": [
+  select: [
     {
-      name: "AdsFilterSelect",
-      summary: "Select com lista, busca ou calendário de mês. Rótulo longo ganha reticências e tooltip.",
+      name: "AdsSelect",
+      summary: "Único componente de seleção (Figma Select + Super dropdown). Lista simples ou múltipla, ou mês. Gatilho em campo, próprio (#trigger) ou nenhum (inline). Rótulo longo ganha reticências e tooltip.",
       props: [
         prop("v-model", "string | string[]", "obrigatório", "checkbox usa string[]. radio e month usam string."),
-        prop("type", "checkbox | radio | month", "obrigatória", "Lista múltipla, escolha única ou mês."),
+        prop("type", "checkbox | radio | month", "obrigatória", "Múltipla (checkbox), simples (radio) ou mês."),
         prop("label", "string", "—", "Rótulo acima do campo."),
         prop("hint", "string", "—", "Texto de apoio. Some quando há error."),
         prop("error", "string", "—", "Mensagem de erro."),
         prop("placeholder", "string", "Selecione", "Texto sem valor."),
         prop("disabled", "boolean", "false", "Impede a abertura."),
-        prop("options", "{ value: string; label: string }[]", "[]", "Itens da lista. month não usa options."),
+        prop("options", "AdsSelectOption[]", "[]", "{ value, label, subtitle?, badge?: { label, tone?: brand | ai, icon? }, disabled? }. month não usa options. A busca procura no título e no subtítulo."),
         prop("searchable", "boolean | null", "null", "null busca só no checkbox."),
         prop("selectAll", "boolean | null", "null", "null mostra “selecionar todos” só no checkbox."),
         prop("selectAllLabel", "string", "Selecionar todos", "Rótulo da ação de marcar todos."),
@@ -257,49 +257,15 @@ export const docsApis = {
         prop("emptyLabel", "string", "Nenhum resultado", "Lista vazia depois da busca."),
         prop("searchPlaceholder", "string", "Pesquisar", "Placeholder da busca interna."),
         prop("block", "boolean", "false", "O gatilho ocupa a largura do campo."),
+        prop("inline", "boolean", "false", "Só a lista, sem gatilho nem popover. label, hint e error não aparecem."),
+        prop("panelWidthClass", "string", "w-[320px] max-w-full", "Largura da lista."),
         prop("aiSuggestion", "boolean", "false", "Marca a seleção como sugestão de IA. Erro e desabilitado têm prioridade; aberto mostra o foco. Quem usa volta para false quando a pessoa altera."),
       ],
+      events: [{ name: "pick", payload: "string | string[]", description: "Escolha feita. No radio e no month o popover fecha." }],
+      slots: [{ name: "trigger", description: "Gatilho próprio. Recebe { open, label, hasValue }." }],
     },
   ],
-  "list-dropdown": [
-    {
-      name: "AdsListDropdown",
-      summary: "Lista de rádio com busca opcional. É o List Dropdown do Figma.",
-      props: [
-        prop("v-model", "string", '""', "Valor escolhido."),
-        prop("options", "{ value, label }[]", "obrigatória", "Linhas."),
-        prop("search", "boolean", "true", "Figma Search."),
-        prop("emptyLabel", "string", "Nenhum resultado", "Lista vazia depois da busca."),
-      ],
-      events: [{ name: "pick", payload: "string", description: "Uma opção de rádio foi escolhida." }],
-    },
-  ],
-  "filter-dropdown": [
-    {
-      name: "AdsFilterDropdown",
-      summary: "Painel da lista, com busca, selecionar todos e divisores.",
-      props: [
-        prop("v-model", "string | string[]", "obrigatório", "checkbox usa string[]. radio usa string."),
-        prop("type", "checkbox | radio", "obrigatória", "Modo da lista."),
-        prop("options", "{ value, label }[]", "obrigatória", "Linhas."),
-        prop("searchable", "boolean", "true", "Mostra a busca."),
-        prop("selectAll", "boolean", "true", "Mostra selecionar todos no checkbox."),
-      ],
-    },
-  ],
-  "filter-option": [
-    {
-      name: "AdsFilterOption",
-      summary: "Linha da lista. Checkbox alinha a caixa; rádio selecionado fica em negrito.",
-      props: [
-        prop("mode", "checkbox | radio", "obrigatória", "Tipo da linha."),
-        prop("label", "string", "obrigatória", "Texto. Acima de 22 caracteres, ganha reticências e tooltip."),
-        prop("selected", "boolean", "false", "Linha marcada."),
-        prop("indeterminate", "boolean", "false", "Estado misto, só no checkbox."),
-      ],
-      events: [{ name: "select", payload: "—", description: "A linha foi acionada." }],
-    },
-  ],
+
   tabs: [
     {
       name: "AdsTabs",
@@ -821,25 +787,12 @@ export const docsApis = {
   "dropdown-menu": [
     {
       name: "AdsDropdownMenu",
-      summary: "Menu suspenso de ações (API original) ou de seleção simples/múltipla com busca opcional, badge e subtítulo. Pode ser usado junto do Painel de filtro.",
+      summary: "Menu suspenso de ações sobre o UDropdownMenu. Para escolher valores, use o AdsSelect.",
       props: [
-        prop("mode", "'simple' | 'checkbox' | undefined", "undefined", "Modo de operação. Sem mode: wrapper de UDropdownMenu (DropdownMenuItems). simple: seleção única. checkbox: seleção múltipla."),
-        prop("options", "AdsDropdownMenuOption[]", "[]", "Opções do menu (obrigatório quando mode está definido). Cada opção aceita value, label, subtitle, badge e disabled."),
-        prop("items", "DropdownMenuItem[] | DropdownMenuItem[][]", "[]", "Items do menu (API original, obrigatório quando mode é undefined)."),
-        prop("searchable", "boolean", "false", "Exibe campo de busca na parte superior do painel."),
-        prop("searchPlaceholder", "string", "'Pesquisar'", "Placeholder do campo de busca."),
-        prop("emptyLabel", "string", "'Nenhum resultado'", "Mensagem exibida quando nenhuma opção corresponde à busca."),
-        prop("listLabel", "string", "'Opções'", "Rótulo acessível da lista (aria-label do listbox)."),
-        prop("minWidth", "string", "'224px'", "Largura mínima do painel suspenso."),
-        prop("content", "{ side?, align?, sideOffset? }", "bottom/start/4", "Configuração do posicionamento do popover."),
+        prop("items", "DropdownMenuItem[] | DropdownMenuItem[][]", "[]", "Ações. Arrays aninhados viram grupos com separador."),
+        prop("content", "{ side?, align?, sideOffset? }", "—", "Posição do menu."),
       ],
-      events: [
-        { name: "update:modelValue", payload: "string | string[]", description: "Valor selecionado (v-model). string em mode=simple, string[] em mode=checkbox." },
-        { name: "pick", payload: "string | string[]", description: "Emitido após a seleção ser confirmada. Em mode=simple, fecha o painel automaticamente." },
-      ],
-      slots: [
-        { name: "default", description: "Gatilho do menu (ex.: UButton). Obrigatório." },
-      ],
+      slots: [{ name: "default", description: "Gatilho do menu (ex.: UButton)." }],
     },
   ],
   table: [

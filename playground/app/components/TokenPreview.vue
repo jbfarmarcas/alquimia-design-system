@@ -34,7 +34,7 @@
   </div>
 
   <div v-else-if="id === 'filter'">
-    <AdsFilterSelect
+    <AdsSelect
       v-model="filter"
       type="checkbox"
       label="Rede"
@@ -177,7 +177,7 @@
     <AdsButtonMenu :options="menuOptions" />
   </div>
   <div v-else-if="id === 'list'" class="w-full">
-    <AdsListDropdown v-model="listValue" :options="filterOptions" />
+    <AdsSelect v-model="listValue" type="radio" :options="filterOptions" searchable inline />
   </div>
   <div v-else-if="id === 'pagination'">
     <AdsPagination v-model:page="page" :total-pages="8" />

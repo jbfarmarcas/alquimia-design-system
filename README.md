@@ -167,8 +167,7 @@ const nome = ref("");
 | `AdsSwitch`       | Alternador (toggle). |
 | `AdsDatePicker`   | Seletor de data ou intervalo, com `min`, `max` e `maximumDays`. |
 | `AdsMonthPicker`  | Seletor de mês. |
-| `AdsFilterSelect` | Filtro com seleção (checkbox, radio ou mês). |
-| `AdsFilterDropdown` / `AdsFilterOption` | Dropdown de filtros e suas opções. |
+| `AdsSelect` | Único componente de seleção: simples, múltipla ou mês. Gatilho em campo, próprio (`#trigger`) ou só a lista (`inline`). Opções com subtítulo, selo e busca. |
 
 ### Navegação
 
@@ -180,7 +179,7 @@ const nome = ref("");
 | `AdsTabs`         | Abas em formato de link. |
 | `AdsSegmentedTabs`| Abas segmentadas. |
 | `AdsPagination`   | Paginação com reticências automáticas (`v-model:page`). |
-| `AdsDropdownMenu` / `AdsListDropdown` | Menus suspensos. |
+| `AdsDropdownMenu` | Menu de ações. |
 | `AdsFooter`       | Rodapé. |
 
 ### Exibição de dados
@@ -482,7 +481,7 @@ Todos ficam em `app/utils` e são auto-importados pelo Nuxt.
 | `calendar-date.ts`    | Conversão entre `string` e `CalendarDate` (`@internationalized/date`) e helpers de intervalo |
 | `notability.ts`       | `formatNotability` |
 | `category-role.ts`    | `CATEGORY_ROLES`, `formatCategoryRole`, `parseCategoryRole` |
-| `ads-filter-select.ts`| Helpers para `AdsFilterSelect` (agrupamento, seleção, rótulos, meses) |
+| `ads-filter-select.ts`| Helpers para `AdsSelect` (agrupamento, seleção, rótulos, meses) |
 | `ads-table.ts`        | Helpers e tipos para `AdsTable` |
 
 ```ts

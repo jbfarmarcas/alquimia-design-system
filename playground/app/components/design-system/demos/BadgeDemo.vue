@@ -5,7 +5,7 @@
     </template>
 
     <template #params>
-      <AdsFilterSelect
+      <AdsSelect
         v-model="badgeColor"
         type="radio"
         label="Cor"
@@ -24,7 +24,7 @@ import DocsDemo from "../DocsDemo.vue";
 import { docsApis } from "../catalog-docs";
 import { attr, buildTag } from "../../../utils/code-builder";
 import AdsBadge, { type AdsBadgeColor } from "../../../../../app/components/AdsBadge.vue";
-import AdsFilterSelect from "../../../../../app/components/AdsFilterSelect.vue";
+import AdsSelect from "../../../../../app/components/AdsSelect.vue";
 import AdsSwitch from "../../../../../app/components/AdsSwitch.vue";
 
 const badgeColor = ref<AdsBadgeColor>("primary");

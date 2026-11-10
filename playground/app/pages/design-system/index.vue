@@ -69,12 +69,9 @@ import DatePickerDemo from "../../components/design-system/demos/DatePickerDemo.
 import EmptyStateDemo from "../../components/design-system/demos/EmptyStateDemo.vue";
 import FeatureCardDemo from "../../components/design-system/demos/FeatureCardDemo.vue";
 import FileCardDemo from "../../components/design-system/demos/FileCardDemo.vue";
-import FilterDropdownDemo from "../../components/design-system/demos/FilterDropdownDemo.vue";
-import FilterOptionDemo from "../../components/design-system/demos/FilterOptionDemo.vue";
-import FilterSelectDemo from "../../components/design-system/demos/FilterSelectDemo.vue";
+import SelectDemo from "../../components/design-system/demos/SelectDemo.vue";
 import FooterDemo from "../../components/design-system/demos/FooterDemo.vue";
 import InputDemo from "../../components/design-system/demos/InputDemo.vue";
-import ListDropdownDemo from "../../components/design-system/demos/ListDropdownDemo.vue";
 import LoadingDemo from "../../components/design-system/demos/LoadingDemo.vue";
 import MenuBarDemo from "../../components/design-system/demos/MenuBarDemo.vue";
 import MetricCardDemo from "../../components/design-system/demos/MetricCardDemo.vue";
@@ -127,10 +124,7 @@ const demos = {
   textarea: TextareaDemo,
   "date-picker": DatePickerDemo,
   "month-picker": MonthPickerDemo,
-  "filter-select": FilterSelectDemo,
-  "list-dropdown": ListDropdownDemo,
-  "filter-dropdown": FilterDropdownDemo,
-  "filter-option": FilterOptionDemo,
+  select: SelectDemo,
   "dropdown-menu": DropdownMenuDemo,
   tabs: TabsDemo,
   "segmented-tabs": SegmentedTabsDemo,

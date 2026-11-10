@@ -16,9 +16,22 @@ export const ADS_FILTER_MONTHS = [
   { short: "Dez", full: "Dezembro" },
 ] as const;
 
+/** Texto curto acima do título da opção, como "Novo!" ou "Sugestão Inteligente". */
+export interface AdsFilterOptionBadge {
+  label: string;
+  /** brand (azul, padrão) ou ai (roxo, com sparkles se não houver ícone). */
+  tone?: "brand" | "ai";
+  /** Ícone Lucide de 12px antes do texto. */
+  icon?: string;
+}
+
 export interface AdsFilterOption {
   value: string;
   label: string;
+  /** Linha de apoio abaixo do título. Também entra na busca. */
+  subtitle?: string;
+  badge?: AdsFilterOptionBadge;
+  disabled?: boolean;
 }
 
 export const toAdsFilterOptions = (
@@ -35,6 +48,11 @@ export const toAdsFilterOptions = (
   }));
 
 export type AdsFilterType = "checkbox" | "radio" | "month";
+
+/** Nomes do AdsSelect. */
+export type AdsSelectOption = AdsFilterOption;
+export type AdsSelectOptionBadge = AdsFilterOptionBadge;
+export type AdsSelectType = AdsFilterType;
 export type AdsFilterCheckState = "all" | "none" | "partial";
 
 const MONTH_VALUE = /^(\d{4})-(\d{2})$/;
@@ -68,8 +86,9 @@ export const groupFilterOptions = (
   const matches: AdsFilterOption[] = [];
   for (const option of options) {
     const label = option.label.toLocaleLowerCase("pt-BR");
+    const subtitle = option.subtitle?.toLocaleLowerCase("pt-BR") ?? "";
     if (label === normalized) exact.push(option);
-    else if (label.includes(normalized)) matches.push(option);
+    else if (label.includes(normalized) || subtitle.includes(normalized)) matches.push(option);
   }
 
   return {

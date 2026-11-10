@@ -239,7 +239,7 @@
       title="Classificação de Categorias"
       description="Ajuste os papéis para redefinir a notabilidade dos produtos."
     >
-      <AdsFilterSelect
+      <AdsSelect
         v-model="roleFilter"
         type="radio"
         class="sm:w-44"
@@ -255,7 +255,7 @@
       <span class="text-[var(--ads-text-primary)]">{{ row.original.category }}</span>
     </template>
     <template #role-cell="{ row }">
-      <AdsFilterSelect
+      <AdsSelect
         v-model="row.original.role"
         type="radio"
         :searchable="false"
@@ -319,7 +319,7 @@ import { computed, reactive, ref } from "vue";
 import type { TableColumn } from "@nuxt/ui";
 import AdsButton from "../../../../app/components/AdsButton.vue";
 import AdsCheckbox from "../../../../app/components/AdsCheckbox.vue";
-import AdsFilterSelect from "../../../../app/components/AdsFilterSelect.vue";
+import AdsSelect from "../../../../app/components/AdsSelect.vue";
 import AdsNotabilityPill from "../../../../app/components/AdsNotabilityPill.vue";
 import AdsNumberInput from "../../../../app/components/AdsNumberInput.vue";
 import AdsPill from "../../../../app/components/AdsPill.vue";

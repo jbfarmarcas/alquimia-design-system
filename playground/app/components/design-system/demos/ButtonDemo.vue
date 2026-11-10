@@ -21,7 +21,7 @@
       </DocsParam>
 
       <div class="grid items-end gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        <AdsFilterSelect
+        <AdsSelect
           v-if="buttonType !== 'ia'"
           v-model="buttonColor"
           type="radio"
@@ -71,7 +71,7 @@ import AdsButton, {
   type AdsButtonSize,
   type AdsButtonType,
 } from "../../../../../app/components/AdsButton.vue";
-import AdsFilterSelect from "../../../../../app/components/AdsFilterSelect.vue";
+import AdsSelect from "../../../../../app/components/AdsSelect.vue";
 import AdsSegmentedTabs from "../../../../../app/components/AdsSegmentedTabs.vue";
 import AdsSwitch from "../../../../../app/components/AdsSwitch.vue";
 

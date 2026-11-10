@@ -14,7 +14,7 @@
     </template>
 
     <template #params>
-      <AdsFilterSelect
+      <AdsSelect
         v-model="featureColor"
         type="radio"
         label="Cor do ícone"
@@ -38,7 +38,7 @@ import DocsDemo from "../DocsDemo.vue";
 import { docsApis } from "../catalog-docs";
 import { attr, buildTag } from "../../../utils/code-builder";
 import AdsFeatureCard, { type AdsFeatureCardBadge, type AdsFeatureCardColor } from "../../../../../app/components/AdsFeatureCard.vue";
-import AdsFilterSelect from "../../../../../app/components/AdsFilterSelect.vue";
+import AdsSelect from "../../../../../app/components/AdsSelect.vue";
 import AdsSwitch from "../../../../../app/components/AdsSwitch.vue";
 
 const featureColor = ref<AdsFeatureCardColor>("success");

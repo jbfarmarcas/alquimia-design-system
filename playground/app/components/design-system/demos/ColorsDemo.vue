@@ -23,7 +23,7 @@
 
     <template #params>
       <div class="grid gap-6 sm:grid-cols-2">
-        <AdsFilterSelect
+        <AdsSelect
           v-model="groupName"
           type="radio"
           label="Grupo"
@@ -31,7 +31,7 @@
           :searchable="false"
           :options="groupOptions"
         />
-        <AdsFilterSelect
+        <AdsSelect
           v-model="step"
           type="radio"
           label="Passo"
@@ -49,7 +49,7 @@ import { computed, ref, watch } from "vue";
 import DocsDemo from "../DocsDemo.vue";
 import { docsApis } from "../catalog-docs";
 import { attr, buildTag } from "../../../utils/code-builder";
-import AdsFilterSelect from "../../../../../app/components/AdsFilterSelect.vue";
+import AdsSelect from "../../../../../app/components/AdsSelect.vue";
 import { adsColorGroups } from "../../../../../app/constants/ads-color-swatches";
 
 const groupOptions = adsColorGroups.map((item) => ({ value: item.name, label: item.name }));

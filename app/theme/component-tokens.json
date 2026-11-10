@@ -338,7 +338,6 @@
   "--ads-button-menu-title": "#42526e",
   "--ads-button-menu-subtitle": "#5e6c84",
   "--ads-button-menu-border": "#c1c7d0",
-  "--ads-list-min-width": "260px",
   "--ads-pagination-cell": "24px",
   "--ads-pagination-gap": "12px",
   "--ads-pagination-number-gap": "4px",

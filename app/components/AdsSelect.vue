@@ -1,5 +1,31 @@
+<!--
+  AdsSelect — o único componente de seleção do ADS (Figma: Select + Super dropdown + _Dropdown Item).
+  type: checkbox (múltipla), radio (simples) ou month (calendário de mês).
+  Gatilho: o campo do Figma por padrão; #trigger troca por um elemento próprio; inline mostra só a lista.
+  Opções aceitam subtitle, badge e disabled.
+-->
 <template>
-  <div class="flex w-full min-w-0 flex-col gap-0.5">
+  <!-- Só a lista, sem gatilho (antigo List Dropdown / painel) -->
+  <template v-if="inline">
+    <AdsMonthPicker v-if="type === 'month'" v-model="monthModel" />
+    <AdsSelectPanel
+      v-else
+      v-model="model"
+      v-model:query="query"
+      :type="listType"
+      :options="options"
+      :searchable="showSearch"
+      :select-all="showSelectAll"
+      :select-all-label="selectAllLabel"
+      :empty-label="emptyLabel"
+      :search-placeholder="searchPlaceholder"
+      :list-label="label || 'Opções'"
+      :width-class="panelWidthClass"
+      @pick="emit('pick', model)"
+    />
+  </template>
+
+  <div v-else class="flex min-w-0 flex-col gap-0.5" :class="block || !$slots.trigger ? 'w-full' : 'w-fit'">
     <p
       v-if="label"
       :id="labelId"
@@ -14,7 +40,15 @@
       :content="{ align: 'start', side: 'bottom', sideOffset: 4 }"
       :ui="popoverUi"
     >
+      <slot
+        v-if="$slots.trigger"
+        name="trigger"
+        :open="isOpen"
+        :label="triggerLabel"
+        :has-value="hasValue"
+      />
       <button
+        v-else
         type="button"
         class="flex h-[var(--ads-filter-height)] max-w-full items-center gap-0.5 rounded-[var(--ads-filter-radius)] px-[var(--ads-filter-padding-x)] text-[length:var(--ads-filter-font-size)] leading-[1.3] transition-colors focus-visible:border-(length:--ads-border-width-slim) focus-visible:border-[var(--ads-filter-focus-border)] focus-visible:outline-none disabled:cursor-not-allowed"
         :class="[fieldClass, block ? 'w-full justify-between' : 'w-fit']"
@@ -41,9 +75,9 @@
         <AdsMonthPicker
           v-if="type === 'month'"
           v-model="monthModel"
-          @pick="isOpen = false"
+          @pick="onPick"
         />
-        <AdsFilterDropdown
+        <AdsSelectPanel
           v-else
           v-model="model"
           v-model:query="query"
@@ -55,7 +89,8 @@
           :empty-label="emptyLabel"
           :search-placeholder="searchPlaceholder"
           :list-label="label || 'Opções'"
-          @pick="isOpen = false"
+          :width-class="panelWidthClass"
+          @pick="onPick"
         />
       </template>
     </UPopover>
@@ -72,7 +107,7 @@
 
 <script setup lang="ts">
 import { computed, ref, useId, watch } from "vue";
-import AdsFilterDropdown from "./AdsFilterDropdown.vue";
+import AdsSelectPanel from "./AdsSelectPanel.vue";
 import AdsMonthPicker from "./AdsMonthPicker.vue";
 import AdsTooltip from "./AdsTooltip.vue";
 import {
@@ -102,6 +137,10 @@ const props = withDefaults(
     block?: boolean;
     /** O valor veio de uma sugestão de IA. Quem usa limpa a marca quando a pessoa altera a seleção. */
     aiSuggestion?: boolean;
+    /** Mostra só a lista, sem gatilho nem popover. */
+    inline?: boolean;
+    /** Largura da lista. O Figma usa 320px. */
+    panelWidthClass?: string;
   }>(),
   {
     placeholder: "Selecione",
@@ -115,10 +154,22 @@ const props = withDefaults(
     searchPlaceholder: "Pesquisar",
     block: false,
     aiSuggestion: false,
+    inline: false,
+    panelWidthClass: "w-[320px] max-w-full",
   },
 );
 
 const model = defineModel<string | string[]>({ required: true });
+
+const emit = defineEmits<{
+  /** Escolha feita: no radio e no month o popover fecha. */
+  pick: [value: string | string[]];
+}>();
+
+defineSlots<{
+  /** Gatilho próprio (botão, chip…). Recebe open, label e hasValue. */
+  trigger?: (props: { open: boolean; label: string; hasValue: boolean }) => unknown;
+}>();
 
 const isOpen = ref(false);
 const query = ref("");
@@ -192,6 +243,11 @@ const monthModel = computed({
     model.value = value;
   },
 });
+
+const onPick = () => {
+  isOpen.value = false;
+  emit("pick", model.value);
+};
 
 watch(isOpen, (open) => {
   if (!open) query.value = "";

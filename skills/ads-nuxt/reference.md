@@ -3,7 +3,7 @@
 > Gerado por `pnpm skill:reference` a partir de `app/components`. Não edite à mão.
 > Para o comportamento exato, leia o `.vue` em `node_modules/ads-nuxt/app/components/`.
 
-56 componentes. Todos são auto-importados pelo Nuxt.
+55 componentes. Todos são auto-importados pelo Nuxt.
 
 ## AdsBadge
 
@@ -296,62 +296,13 @@ Models: `v-model: string`, `v-model:start: string`, `v-model:end: string`
 Props:
 ```ts
 {
-  /**
-   * Modo de operação.
-   * - `undefined` (padrão): wrapper de UDropdownMenu com DropdownMenuItems (API original).
-   * - `'simple'`: seleção única (radio).
-   * - `'checkbox'`: seleção múltipla.
-   */
-  mode?: "simple" | "checkbox";
-  /** Opções. Obrigatório quando mode está definido. */
-  options?: AdsDropdownMenuOption[];
-  /** Items do menu (API original). Obrigatório quando mode é undefined. */
+  /** Ações do menu. Grupos em arrays aninhados ganham separador. */
   items?: DropdownMenuItem[] | DropdownMenuItem[][];
-  /** Configuração do popover. */
   content?: {
     side?: "top" | "right" | "bottom" | "left";
     align?: "start" | "center" | "end";
     sideOffset?: number;
   };
-  /** Exibe campo de busca. */
-  searchable?: boolean;
-  /** Placeholder do campo de busca. */
-  searchPlaceholder?: string;
-  /** Mensagem quando nenhum resultado é encontrado. */
-  emptyLabel?: string;
-  /** Rótulo acessível da lista (aria-label). */
-  listLabel?: string;
-  /** Largura mínima do painel. */
-  minWidth?: string;
-}
-```
-
-Tipos:
-```ts
-interface AdsDropdownMenuOption {
-  value: string;
-  label: string;
-  /** Texto de apoio abaixo do rótulo. */
-  subtitle?: string;
-  /** Badge à direita da opção. */
-  badge?: AdsDropdownMenuBadge;
-  disabled?: boolean;
-}
-
-interface AdsDropdownMenuBadge {
-  label: string;
-  /** Estilo inline para a badge (ex.: { background: 'var(--ads-status-success-100)', color: 'var(--ads-status-success-800)' }). */
-  style?: Record<string, string>;
-}
-```
-
-Models: `v-model: string | string[]`
-
-Eventos:
-```ts
-{
-  /** Emitido quando o usuário confirma uma seleção (modo simple fecha o popover). */
-  pick: [value: string | string[]];
 }
 ```
 
@@ -450,85 +401,6 @@ Eventos:
   remove: [];
 }
 ```
-
-## AdsFilterDropdown
-
-Props:
-```ts
-{
-  type: "checkbox" | "radio";
-  options: FilterOption[];
-  searchable?: boolean;
-  selectAll?: boolean;
-  selectAllLabel?: string;
-  emptyLabel?: string;
-  searchPlaceholder?: string;
-  listLabel?: string;
-  widthClass?: string;
-}
-```
-
-Models: `v-model: string | string[]`, `v-model:query: string`
-
-Eventos:
-```ts
-{ pick: [] }
-```
-
-## AdsFilterOption
-
-Props:
-```ts
-{
-  label: string;
-  mode: "checkbox" | "radio";
-  selected?: boolean;
-  indeterminate?: boolean;
-}
-```
-
-Eventos:
-```ts
-{ select: [] }
-```
-
-## AdsFilterSelect
-
-Props:
-```ts
-{
-  type: AdsFilterType;
-  label?: string;
-  hint?: string;
-  error?: string;
-  placeholder?: string;
-  disabled?: boolean;
-  options?: AdsFilterOption[];
-  /** `null` = padrão do tipo (checkbox busca e seleciona todos). */
-  searchable?: boolean | null;
-  selectAll?: boolean | null;
-  selectAllLabel?: string;
-  allSelectedLabel?: string;
-  emptyLabel?: string;
-  searchPlaceholder?: string;
-  /** O gatilho ocupa a largura do campo, como um select de formulário. */
-  block?: boolean;
-  /** O valor veio de uma sugestão de IA. Quem usa limpa a marca quando a pessoa altera a seleção. */
-  aiSuggestion?: boolean;
-}
-```
-
-Tipos:
-```ts
-interface AdsFilterOption {
-  value: string;
-  label: string;
-}
-
-type AdsFilterType = "checkbox" | "radio" | "month";
-```
-
-Models: `v-model: string | string[]`
 
 ## AdsFooter
 
@@ -673,37 +545,6 @@ Eventos:
 {
   focus: [event: FocusEvent];
   blur: [event: FocusEvent];
-}
-```
-
-## AdsListDropdown
-
-Props:
-```ts
-{
-  options: AdsFilterOption[];
-  /** Figma `Search`. */
-  search?: boolean;
-  emptyLabel?: string;
-  searchPlaceholder?: string;
-  listLabel?: string;
-}
-```
-
-Tipos:
-```ts
-interface AdsFilterOption {
-  value: string;
-  label: string;
-}
-```
-
-Models: `v-model: string`
-
-Eventos:
-```ts
-{
-  pick: [value: string];
 }
 ```
 
@@ -1175,6 +1016,134 @@ interface AdsSegmentedTabsItem extends Omit<TabsItem, "slot"> {
 
 Models: `v-model: T`
 
+## AdsSelect
+
+Props:
+```ts
+{
+  type: AdsFilterType;
+  label?: string;
+  hint?: string;
+  error?: string;
+  placeholder?: string;
+  disabled?: boolean;
+  options?: AdsFilterOption[];
+  /** `null` = padrão do tipo (checkbox busca e seleciona todos). */
+  searchable?: boolean | null;
+  selectAll?: boolean | null;
+  selectAllLabel?: string;
+  allSelectedLabel?: string;
+  emptyLabel?: string;
+  searchPlaceholder?: string;
+  /** O gatilho ocupa a largura do campo, como um select de formulário. */
+  block?: boolean;
+  /** O valor veio de uma sugestão de IA. Quem usa limpa a marca quando a pessoa altera a seleção. */
+  aiSuggestion?: boolean;
+  /** Mostra só a lista, sem gatilho nem popover. */
+  inline?: boolean;
+  /** Largura da lista. O Figma usa 320px. */
+  panelWidthClass?: string;
+}
+```
+
+Tipos:
+```ts
+interface AdsFilterOption {
+  value: string;
+  label: string;
+  /** Linha de apoio abaixo do título. Também entra na busca. */
+  subtitle?: string;
+  badge?: AdsFilterOptionBadge;
+  disabled?: boolean;
+}
+
+type AdsFilterType = "checkbox" | "radio" | "month";
+
+interface AdsFilterOptionBadge {
+  label: string;
+  /** brand (azul, padrão) ou ai (roxo, com sparkles se não houver ícone). */
+  tone?: "brand" | "ai";
+  /** Ícone Lucide de 12px antes do texto. */
+  icon?: string;
+}
+```
+
+Models: `v-model: string | string[]`
+
+Eventos:
+```ts
+{
+  /** Escolha feita: no radio e no month o popover fecha. */
+  pick: [value: string | string[]];
+}
+```
+
+Slots: `trigger`
+
+## AdsSelectItem
+
+Props:
+```ts
+{
+  label: string;
+  /** radio: seleção simples. checkbox: seleção múltipla. */
+  mode: "checkbox" | "radio";
+  selected?: boolean;
+  indeterminate?: boolean;
+  disabled?: boolean;
+  /** Linha de apoio abaixo do título. */
+  subtitle?: string;
+  /** Texto curto acima do título, como "Novo!" (brand) ou "Sugestão Inteligente" (ai). */
+  badge?: AdsFilterOptionBadge;
+  /** Linha de 1px embaixo. O painel desliga no último item. */
+  divider?: boolean;
+}
+```
+
+Tipos:
+```ts
+interface AdsFilterOptionBadge {
+  label: string;
+  /** brand (azul, padrão) ou ai (roxo, com sparkles se não houver ícone). */
+  tone?: "brand" | "ai";
+  /** Ícone Lucide de 12px antes do texto. */
+  icon?: string;
+}
+```
+
+Eventos:
+```ts
+{ select: [] }
+```
+
+## AdsSelectPanel
+
+Props:
+```ts
+{
+  /** radio: seleção simples (Figma Simples). checkbox: seleção múltipla. */
+  type: "checkbox" | "radio";
+  options: FilterOption[];
+  /** Campo de busca no topo, com divisória. */
+  searchable?: boolean;
+  /** "Selecionar todos" no começo da lista. Só no checkbox, e some durante a busca. */
+  selectAll?: boolean;
+  selectAllLabel?: string;
+  emptyLabel?: string;
+  searchPlaceholder?: string;
+  listLabel?: string;
+  /** Largura do painel. O Figma usa 320px. */
+  widthClass?: string;
+}
+```
+
+Models: `v-model: string | string[]`, `v-model:query: string`
+
+Eventos:
+```ts
+{ pick: [] }
+```
+
 ## AdsSideMenu
 
 Props:
@@ -1444,7 +1413,7 @@ Props:
   /** Título à esquerda. Sem título, a busca e os filtros ocupam a faixa. */
   title?: string;
   description?: string;
-  /** Mostra o AdsSearchInput. O filtro entra no slot padrão, com AdsFilterSelect. */
+  /** Mostra o AdsSearchInput. O filtro entra no slot padrão, com AdsSelect. */
   searchable?: boolean;
   searchPlaceholder?: string;
 }
