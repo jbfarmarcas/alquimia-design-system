@@ -58,7 +58,6 @@ import DesignSystemSectionHeading from "../../components/DesignSystemSectionHead
 import { catalogGroups, catalogSections, type CatalogSectionId } from "../../components/design-system/catalog-sections";
 import { figmaLinksFor } from "../../components/design-system/figma-links";
 import BadgeDemo from "../../components/design-system/demos/BadgeDemo.vue";
-import BroadcastDemo from "../../components/design-system/demos/BroadcastDemo.vue";
 import ButtonDemo from "../../components/design-system/demos/ButtonDemo.vue";
 import ButtonGroupDemo from "../../components/design-system/demos/ButtonGroupDemo.vue";
 import ButtonMenuDemo from "../../components/design-system/demos/ButtonMenuDemo.vue";
@@ -68,7 +67,6 @@ import CheckboxDemo from "../../components/design-system/demos/CheckboxDemo.vue"
 import ColorsDemo from "../../components/design-system/demos/ColorsDemo.vue";
 import DatePickerDemo from "../../components/design-system/demos/DatePickerDemo.vue";
 import EmptyStateDemo from "../../components/design-system/demos/EmptyStateDemo.vue";
-import FarmarcasPillDemo from "../../components/design-system/demos/FarmarcasPillDemo.vue";
 import FeatureCardDemo from "../../components/design-system/demos/FeatureCardDemo.vue";
 import FileCardDemo from "../../components/design-system/demos/FileCardDemo.vue";
 import FilterDropdownDemo from "../../components/design-system/demos/FilterDropdownDemo.vue";
@@ -80,7 +78,6 @@ import ListDropdownDemo from "../../components/design-system/demos/ListDropdownD
 import LoadingDemo from "../../components/design-system/demos/LoadingDemo.vue";
 import MenuBarDemo from "../../components/design-system/demos/MenuBarDemo.vue";
 import MetricCardDemo from "../../components/design-system/demos/MetricCardDemo.vue";
-import MiniPillDemo from "../../components/design-system/demos/MiniPillDemo.vue";
 import ModalDemo from "../../components/design-system/demos/ModalDemo.vue";
 import MonthPickerDemo from "../../components/design-system/demos/MonthPickerDemo.vue";
 import NavbarAppDemo from "../../components/design-system/demos/NavbarAppDemo.vue";
@@ -91,6 +88,7 @@ import OverlayLoadingDemo from "../../components/design-system/demos/OverlayLoad
 import PaginationDemo from "../../components/design-system/demos/PaginationDemo.vue";
 import PillDemo from "../../components/design-system/demos/PillDemo.vue";
 import TableSkeletonDemo from "../../components/design-system/demos/ProductTableSkeletonDemo.vue";
+import PanelCardDemo from "../../components/design-system/demos/PanelCardDemo.vue";
 import TableDemo from "../../components/design-system/demos/TableDemo.vue";
 import HeavyTableDemo from "../../components/design-system/demos/HeavyTableDemo.vue";
 import ProductTagDemo from "../../components/design-system/demos/ProductTagDemo.vue";
@@ -105,15 +103,17 @@ import SwitchDemo from "../../components/design-system/demos/SwitchDemo.vue";
 import TabsDemo from "../../components/design-system/demos/TabsDemo.vue";
 import TextareaDemo from "../../components/design-system/demos/TextareaDemo.vue";
 import ToastDemo from "../../components/design-system/demos/ToastDemo.vue";
-import StepperDemo from "../../components/design-system/demos/StepperDemo.vue";
 import TooltipDemo from "../../components/design-system/demos/TooltipDemo.vue";
+import StepperDemo from "../../components/design-system/demos/StepperDemo.vue";
+import DropdownMenuDemo from "../../components/design-system/demos/DropdownMenuDemo.vue";
 
 definePageMeta({
   name: "design-system",
   layout: "design-system",
 });
 
-const sections = catalogSections;
+// Página na mesma ordem do menu: grupo por grupo.
+const sections: readonly (typeof catalogSections)[number][] = catalogGroups.flatMap((group) => group.sections);
 
 /** Uma demonstração por seção. O `satisfies` acusa id sem demo ou demo sem seção. */
 const demos = {
@@ -131,6 +131,7 @@ const demos = {
   "list-dropdown": ListDropdownDemo,
   "filter-dropdown": FilterDropdownDemo,
   "filter-option": FilterOptionDemo,
+  "dropdown-menu": DropdownMenuDemo,
   tabs: TabsDemo,
   "segmented-tabs": SegmentedTabsDemo,
   toast: ToastDemo,
@@ -138,7 +139,6 @@ const demos = {
   "empty-state": EmptyStateDemo,
   pagination: PaginationDemo,
   tooltip: TooltipDemo,
-  stepper: StepperDemo,
   steptip: SteptipDemo,
   charttip: CharttipDemo,
   smalltip: SmalltipDemo,
@@ -147,11 +147,8 @@ const demos = {
   "progress-bar-loading": ProgressBarLoadingDemo,
   "table-skeleton": TableSkeletonDemo,
   badge: BadgeDemo,
-  broadcast: BroadcastDemo,
   pill: PillDemo,
   "notability-pill": NotabilityPillDemo,
-  "mini-pill": MiniPillDemo,
-  "farmarcas-pill": FarmarcasPillDemo,
   switch: SwitchDemo,
   checkbox: CheckboxDemo,
   radio: RadioDemo,
@@ -162,9 +159,11 @@ const demos = {
   "side-menu": SideMenuDemo,
   footer: FooterDemo,
   "product-tag": ProductTagDemo,
+  stepper: StepperDemo,
   "feature-card": FeatureCardDemo,
   card: CardDemo,
   "metric-card": MetricCardDemo,
+  "panel-card": PanelCardDemo,
   table: TableDemo,
   "heavy-table": HeavyTableDemo,
 } as const satisfies Record<CatalogSectionId, Component>;

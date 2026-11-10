@@ -47,13 +47,14 @@ const labelOn = ref(true);
 const hintOn = ref(true);
 const text = ref("");
 
+// Estados com os nomes do Figma: Default, Actived, Focus, Error, Disable, AI Mode.
 const stateItems: { label: string; value: FieldState }[] = [
   { label: "Default", value: "default" },
-  { label: "Ativo", value: "active" },
-  { label: "Foco", value: "focus" },
-  { label: "Erro", value: "error" },
-  { label: "Desabilitado", value: "disabled" },
-  { label: "IA", value: "ai" },
+  { label: "Actived", value: "active" },
+  { label: "Focus", value: "focus" },
+  { label: "Error", value: "error" },
+  { label: "Disable", value: "disabled" },
+  { label: "AI Mode", value: "ai" },
 ];
 
 const sample = (value: FieldState) => {

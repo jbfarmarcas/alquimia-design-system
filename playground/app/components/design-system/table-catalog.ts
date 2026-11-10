@@ -243,7 +243,7 @@ export const TABLE_SECTIONS: readonly TableSection[] = [
   {
     id: "cell-types",
     label: "Tipos de célula",
-    purpose: "Os 8 tipos de célula do _Table Cell do Figma: Texto, Ícone + Texto, Pill, Botão, Link, Meta, Ações e Combinado.",
+    purpose: "Os 9 tipos de célula do _Table Cell do Figma: Texto, Ícone + Texto, Pill, Botão, Link, Meta, Ações, Combinado e Progresso.",
     components: ["AdsTable"],
   },
   {

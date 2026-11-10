@@ -200,10 +200,8 @@ const nome = ref("");
 | Componente           | Descrição |
 | -------------------- | --------- |
 | `AdsBadge`           | Contador ou ponto (`mini`) em 7 cores. |
-| `AdsPill`            | Pílula de status (`default`, `success`, `attention`, `warning`, `new`, `blocked`, `innovation`, `neutral`) em tom `primary` ou `secondary`. |
-| `AdsMiniPill`        | Versão compacta da pílula. |
+| `AdsPill`            | Pílula de status em tom `primary` ou `secondary` e tamanho `md` (Pill) ou `sm` (Small Pill). |
 | `AdsNotabilityPill`  | Pílula de notabilidade. |
-| `AdsFarmarcasPill`   | Pílula de marca Farmarcas. |
 | `AdsProductTag`      | Tag de produto. |
 
 ### Feedback e overlays
@@ -528,7 +526,6 @@ Páginas do playground:
 | ------------------------- | -------- |
 | `/design-system/instalacao` | Manual de instalação da biblioteca |
 | `/design-system`          | Catálogo de componentes com demos e código |
-| `/design-system/tabelas`  | Variações de tabela |
 | `/design-system/tokens`   | Editor visual dos tokens de componente |
 
 ### Docker

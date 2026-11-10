@@ -38,7 +38,7 @@ import { NuxtLink } from "#components";
 export type AdsButtonType = "filled" | "outline" | "unfilled" | "secondary" | "ia";
 export type AdsButtonSize = "md" | "sm";
 export type AdsButtonState = "active" | "hover" | "pressed" | "disabled";
-export type AdsButtonColor = "primary" | "success" | "attention" | "warning" | "new" | "innovation" | "blocked" | "neutral";
+export type AdsButtonColor = "primary" | "success" | "attention" | "warning" | "new" | "blocked" | "neutral";
 
 const props = withDefaults(
   defineProps<{
@@ -178,7 +178,6 @@ const focusFor: Record<AdsButtonColor, string> = {
   attention: "focus-visible:outline-[var(--ads-status-attention-800)]",
   warning: "focus-visible:outline-[var(--ads-status-warning-600)]",
   new: "focus-visible:outline-[var(--ads-status-new-700)]",
-  innovation: "focus-visible:outline-[var(--ads-status-innovation-700)]",
   blocked: "focus-visible:outline-[var(--ads-status-void-800)]",
   neutral: "focus-visible:outline-[var(--ads-text-primary)]",
 };
@@ -186,9 +185,9 @@ const focusFor: Record<AdsButtonColor, string> = {
 /** Fundo e cor da borda ficam em `.ads-button-ia-face`: a borda é pintada pelo fundo, na mesma espessura em todos os estados. */
 const iaFace = (state: AdsButtonState) => {
   const base =
-    "border-(length:--ads-border-width-slim) border-solid text-[var(--ads-status-innovation-300)]";
+    "border-(length:--ads-border-width-slim) border-solid text-[var(--ads-text-ai)]";
   if (state === "disabled") {
-    return `${base} text-[color-mix(in_srgb,var(--ads-status-innovation-300)_45%,transparent)]`;
+    return `${base} text-[color-mix(in_srgb,var(--ads-text-ai)_45%,transparent)]`;
   }
   if (state === "hover" || state === "pressed" || props.loading) {
     return `${base} shadow-[0_0_16px_2px_var(--ads-button-ia-glow)]`;
@@ -274,12 +273,6 @@ const filledStatus = (color: AdsButtonColor, state: AdsButtonState) => {
     if (state === "disabled") return "bg-[var(--ads-status-new-100)] text-[var(--ads-status-new-800)]";
     return `bg-[var(--ads-status-new-500)] ${ink} hover:bg-[var(--ads-status-new-600)] active:bg-[var(--ads-status-new-800)] active:text-[var(--ads-text-contrast)]`;
   }
-  if (color === "innovation") {
-    if (state === "hover") return `bg-[var(--ads-status-innovation-600)] ${contrast}`;
-    if (state === "pressed") return `bg-[var(--ads-status-innovation-800)] ${contrast}`;
-    if (state === "disabled") return "bg-[var(--ads-status-innovation-100)] text-[var(--ads-status-innovation-800)]";
-    return `bg-[var(--ads-status-innovation-500)] ${contrast} hover:bg-[var(--ads-status-innovation-600)] active:bg-[var(--ads-status-innovation-800)]`;
-  }
   if (color === "neutral") {
     if (state === "hover") return `bg-[var(--color-neutral-800)] ${contrast}`;
     if (state === "pressed") return `bg-[var(--color-neutral-900)] ${contrast}`;
@@ -334,16 +327,6 @@ const outlineStatus = (color: AdsButtonColor, state: AdsButtonState) => {
       disabled:
         "border border-[var(--ads-status-new-300)] bg-[color-mix(in_srgb,var(--ads-status-new-100)_50%,transparent)] text-[var(--ads-status-new-300)]",
     },
-    innovation: {
-      active:
-        "border border-[var(--ads-status-innovation-700)] text-[var(--ads-status-innovation-700)] hover:bg-[var(--ads-status-innovation-100)] hover:shadow-[inset_0_0_0_1px_var(--ads-status-innovation-700)]",
-      hover:
-        "border border-[var(--ads-status-innovation-700)] bg-[var(--ads-status-innovation-100)] text-[var(--ads-status-innovation-700)] shadow-[inset_0_0_0_1px_var(--ads-status-innovation-700)]",
-      pressed:
-        "border border-[var(--ads-status-innovation-700)] bg-[var(--ads-status-innovation-100)] text-[var(--ads-status-innovation-700)] shadow-[inset_0_0_0_1px_var(--ads-status-innovation-700)]",
-      disabled:
-        "border border-[var(--ads-status-innovation-300)] bg-[color-mix(in_srgb,var(--ads-status-innovation-100)_50%,transparent)] text-[var(--ads-status-innovation-300)]",
-    },
     blocked: {
       active:
         "border border-[var(--ads-status-void-800)] text-[var(--ads-status-void-800)] hover:bg-[var(--ads-status-void-100)] hover:shadow-[inset_0_0_0_1px_var(--ads-status-void-800)]",
@@ -394,12 +377,6 @@ const unfilledStatus = (color: AdsButtonColor, state: AdsButtonState) => {
       pressed: "bg-[var(--ads-status-new-100)] text-[var(--ads-status-new-700)]",
       disabled: "text-[var(--ads-status-new-300)]",
     },
-    innovation: {
-      active: "text-[var(--ads-status-innovation-700)] hover:bg-[var(--ads-status-innovation-100)]",
-      hover: "bg-[var(--ads-status-innovation-100)] text-[var(--ads-status-innovation-700)]",
-      pressed: "bg-[var(--ads-status-innovation-100)] text-[var(--ads-status-innovation-700)]",
-      disabled: "text-[var(--ads-status-innovation-300)]",
-    },
     blocked: {
       active: "text-[var(--ads-status-void-800)] hover:bg-[var(--ads-status-void-100)]",
       hover: "bg-[var(--ads-status-void-100)] text-[var(--ads-status-void-800)]",
@@ -444,13 +421,6 @@ const secondaryStatus = (color: AdsButtonColor, state: AdsButtonState) => {
         "bg-[var(--ads-status-new-100)] text-[var(--ads-status-new-800)] hover:bg-[var(--ads-status-new-200)] active:bg-[var(--ads-status-new-300)]",
       hover: "bg-[var(--ads-status-new-200)] text-[var(--ads-status-new-800)]",
       pressed: "bg-[var(--ads-status-new-300)] text-[var(--ads-status-new-800)]",
-      disabled: secondaryDisabled,
-    },
-    innovation: {
-      active:
-        "bg-[var(--ads-status-innovation-100)] text-[var(--ads-status-innovation-800)] hover:bg-[var(--ads-status-innovation-200)] active:bg-[var(--ads-status-innovation-300)]",
-      hover: "bg-[var(--ads-status-innovation-200)] text-[var(--ads-status-innovation-800)]",
-      pressed: "bg-[var(--ads-status-innovation-300)] text-[var(--ads-status-innovation-800)]",
       disabled: secondaryDisabled,
     },
     blocked: {
@@ -528,7 +498,7 @@ const secondaryStatus = (color: AdsButtonColor, state: AdsButtonState) => {
     from var(--ads-button-ia-angle),
     var(--ads-button-ia-track) 0%,
     var(--ads-button-ia-glow) 12%,
-    var(--ads-status-innovation-500) 20%,
+    var(--ads-button-ia-border) 20%,
     var(--ads-button-ia-border) 24%,
     var(--ads-button-ia-track) 28%
   );

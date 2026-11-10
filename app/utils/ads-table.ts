@@ -1,12 +1,13 @@
 /**
  * Padrão visual das tabelas ADS sobre o UTable.
  *
- * Figma: cabeçalho com fundo surface/main (#FAFBFC), texto Body 14 Medium em text/secondary.
- * Borda: borders/subtle (#E5E8EB, via --ads-border-subtle).
+ * Figma: cabeçalho com fundo neutrals/light/20 (#F0F3F6), borda neutrals/light/40 (#D3D8DD),
+ * texto Body 14 Bold em text/secondary. Linhas de 64px.
+ * Borda das células: borders/subtle (#E5E8EB, via --ads-border-subtle).
  * Raio: radius-md (12px). Dentro de AdsCard, framed false.
  *
  * Variantes documentadas no Figma:
- *   - **Table** (operacional): cabeçalho fixo × colunas fixas, 8 tipos de célula.
+ *   - **Table** (operacional): cabeçalho fixo × colunas fixas, 9 tipos de célula.
  *   - **Heavy Table** (financeira): cabeçalho em dois níveis, grupos em accordion.
  *
  * Variantes Lista/Grade continuam funcionar mas não são o foco da documentação.
@@ -17,10 +18,9 @@ export const ADS_TABLE_CELL_TEXT =
   "text-[length:var(--ads-font-size-xxs)] leading-[var(--ads-line-height-md)]";
 
 /**
- * Cabeçalho: mesmo 14px, peso medium (500) — Figma: Body 14 Medium.
- * Antes de nov/2026 era font-bold; atualizado para font-medium em alinhamento com o Figma.
+ * Cabeçalho: mesmo 14px em negrito — Figma: Body 14 Bold.
  */
-export const ADS_TABLE_HEADER_TEXT = `${ADS_TABLE_CELL_TEXT} font-medium`;
+export const ADS_TABLE_HEADER_TEXT = `${ADS_TABLE_CELL_TEXT} font-bold`;
 
 export type AdsTableDensity = "md" | "sm";
 
@@ -38,6 +38,10 @@ export interface AdsTableLook {
   borders?: AdsTableBorders;
   /** Fundo por nível: neutral-200, neutral-100 e surface-main. Desligado, a linha fica surface-card. */
   depth?: boolean;
+  /** Cabeçalho fixo ganha a sombra que o separa das linhas que rolam por baixo. */
+  stickyHeader?: boolean;
+  /** Linha de 1px na borda da coluna fixa. A Heavy Table desenha a sua por divisória de período. */
+  pinnedEdge?: boolean;
 }
 
 export type AdsTableUi = {
@@ -54,12 +58,25 @@ export type AdsTableUi = {
   loading: string;
 };
 
-const CELL_PADDING: Record<AdsTableDensity, string> = {
-  md: "px-4 py-3",
-  sm: "px-3 py-2",
+/** md segue o Figma: cabeçalho de 48px e linha de 64px. sm é a grade compacta. */
+const CELL_SIZE: Record<AdsTableDensity, { th: string; td: string }> = {
+  md: { th: "h-12 px-4 py-2", td: "h-16 px-4 py-2" },
+  sm: { th: "px-3 py-2", td: "px-3 py-2" },
 };
 
+/** Altura e respiro da célula, para o skeleton ocupar o mesmo espaço da linha de dados. */
+export const adsTableCellSize = (density: AdsTableDensity) => CELL_SIZE[density].td;
+
 const GRID_BORDER = "border-r border-[var(--ads-border-subtle)] last:border-r-0";
+
+/** No thead inteiro: em cada th a sombra vazaria para os lados e riscaria as colunas. */
+const STICKY_HEADER_SHADOW = "drop-shadow-[0_2px_3px_rgb(6_25_56/8%)]";
+
+/** Faixa de 8px ao lado da coluna fixa, por cima da coluna que rola. */
+const PIN_FADE = [
+  "data-[pinned=left]:after:pointer-events-none data-[pinned=left]:after:absolute data-[pinned=left]:after:top-0 data-[pinned=left]:after:-bottom-px data-[pinned=left]:after:left-full data-[pinned=left]:after:w-2 data-[pinned=left]:after:bg-linear-to-r data-[pinned=left]:after:from-[rgb(6_25_56/10%)] data-[pinned=left]:after:to-[rgb(6_25_56/0%)]",
+  "data-[pinned=right]:after:pointer-events-none data-[pinned=right]:after:absolute data-[pinned=right]:after:top-0 data-[pinned=right]:after:-bottom-px data-[pinned=right]:after:right-full data-[pinned=right]:after:w-2 data-[pinned=right]:after:bg-linear-to-r data-[pinned=right]:after:from-[rgb(6_25_56/0%)] data-[pinned=right]:after:to-[rgb(6_25_56/10%)]",
+].join(" ");
 
 export const buildAdsTableUi = ({
   density = "md",
@@ -67,15 +84,16 @@ export const buildAdsTableUi = ({
   framed = true,
   borders = "lines",
   depth = false,
+  stickyHeader = false,
+  pinnedEdge: showPinnedEdge = true,
 }: AdsTableLook = {}): AdsTableUi => {
-  const padding = CELL_PADDING[density];
+  const size = CELL_SIZE[density];
   const grid = borders === "grid" ? GRID_BORDER : "";
   // Na grade a borda da direita já fecha a coluna fixa da esquerda; a da direita desenha a sua
   // por fora, em cima da borda da vizinha, para não somar 2px.
-  const pinnedEdge =
-    borders === "grid"
-      ? "data-[pinned=right]:shadow-[-1px_0_0_var(--ads-border-subtle)]"
-      : "data-[pinned=left]:shadow-[inset_-1px_0_0_var(--ads-border-subtle)] data-[pinned=right]:shadow-[inset_1px_0_0_var(--ads-border-subtle)]";
+  const gridPinnedEdge = "data-[pinned=right]:shadow-[-1px_0_0_var(--ads-border-subtle)]";
+  const linesPinnedEdge = "data-[pinned=left]:border-r data-[pinned=right]:border-l";
+  const pinnedEdge = !showPinnedEdge ? "" : borders === "grid" ? gridPinnedEdge : linesPinnedEdge;
 
   return {
     root: [
@@ -84,8 +102,7 @@ export const buildAdsTableUi = ({
       framed ? "rounded-[var(--ads-radius-md)] border border-[var(--ads-border-subtle)]" : "",
     ].join(" "),
     base: "min-w-full border-separate border-spacing-0",
-    // Cabeçalho: surface/main (#FAFBFC) — Figma: fundo surface/main, não neutral-100.
-    thead: "z-[2] bg-[var(--ads-surface-main)] backdrop-blur-none",
+    thead: `z-[2] bg-neutral-100 backdrop-blur-none ${stickyHeader ? STICKY_HEADER_SHADOW : ""}`.trim(),
     tbody: [
       "divide-y-0 [&>tr:last-child>td]:border-b-0",
       striped ? "[&>tr:nth-child(even)>td:not(:has([data-cell-fill]))]:bg-[var(--ads-surface-main)]" : "",
@@ -102,25 +119,29 @@ export const buildAdsTableUi = ({
     ].join(" "),
     tr: "",
     th: [
-      padding,
-      // Figma: surface/main no fundo, text-secondary na cor, font-medium no peso.
-      "border-b border-[var(--ads-border-subtle)] bg-[var(--ads-surface-main)] text-left align-middle whitespace-normal text-[var(--ads-text-secondary)] has-data-cell-fill:!h-px has-data-cell-fill:!p-0",
+      size.th,
+      "border-b bg-neutral-100 text-left align-middle whitespace-normal text-[var(--ads-text-secondary)] has-data-cell-fill:!h-px has-data-cell-fill:!p-0",
       grid,
+      // Depois da grade: o cabeçalho tem borda mais forte que a das células.
+      "border-[var(--color-ads-neutro-claro-40)]",
       ADS_TABLE_HEADER_TEXT,
       "[&[colspan]]:text-center [&[colspan]]:text-[var(--ads-text-primary)]",
       "data-[pinned=left]:z-[3] data-[pinned=right]:z-[3]",
       pinnedEdge,
+      PIN_FADE,
     ].join(" "),
     td: [
-      padding,
-      "border-b border-[var(--ads-border-subtle)] bg-[var(--ads-surface-card)] align-middle whitespace-normal text-[var(--ads-text-secondary)] transition-colors duration-150 ease-out has-data-cell-fill:!h-px has-data-cell-fill:!p-0",
+      size.td,
+      "border-b border-[var(--ads-border-subtle)] bg-[var(--ads-surface-card)] align-middle whitespace-normal text-[var(--ads-text-primary)] transition-colors duration-150 ease-out has-data-cell-fill:!h-px has-data-cell-fill:!p-0",
       grid,
       ADS_TABLE_CELL_TEXT,
       pinnedEdge,
+      PIN_FADE,
     ].join(" "),
     separator: "hidden",
     empty: `py-10 text-center text-[var(--ads-text-secondary)] ${ADS_TABLE_CELL_TEXT}`,
-    loading: "py-10 text-center",
+    // Sem respiro: o conteúdo de carregamento encosta no cabeçalho, como as linhas de dados.
+    loading: "p-0 text-center",
   };
 };
 
@@ -148,6 +169,7 @@ const PIN_WIDTH_CLASS = {
   160: "min-w-40",
   256: "min-w-64",
   360: "min-w-90",
+  380: "min-w-95",
 } as const;
 
 export type AdsTablePinWidth = keyof typeof PIN_WIDTH_CLASS;
@@ -226,7 +248,7 @@ export const adsTableTreeIndent = (depth: number) =>
 // ─── Heavy Table ────────────────────────────────────────────────────────────
 
 /**
- * 8 tipos de célula do `_Table Cell` do Figma.
+ * 9 tipos de célula do `_Table Cell` do Figma.
  * Usados para documentação e para tipar a prop `type` em definições de coluna.
  */
 export type AdsTableCellType =
@@ -237,7 +259,18 @@ export type AdsTableCellType =
   | "link"
   | "meta"
   | "actions"
-  | "combined";
+  | "combined"
+  | "progress";
+
+/** O que AdsTableHeaderCell e AdsHeavyHeaderCell usam da coluna do TanStack. */
+export type AdsTableHeaderColumn = {
+  getCanSort: () => boolean;
+  getIsSorted: () => false | "asc" | "desc";
+  toggleSorting: () => void;
+  getCanPin: () => boolean;
+  getIsPinned: () => false | "left" | "right";
+  pin: (position: false | "left" | "right") => void;
+};
 
 /**
  * Atributos para marcar uma linha de grupo na Heavy Table, em qualquer elemento da linha.
@@ -324,39 +357,24 @@ export const adsHeavyAccountColumn = (width: AdsTablePinWidth = 360) => ({
   },
 });
 
-export interface AdsHeavyTableLook extends AdsTableLook {
-  /** Cabeçalho fixo ganha a sombra que o separa das linhas que rolam por baixo. */
-  stickyHeader?: boolean;
-}
-
 /** md segue o Figma: cabeçalho 48px por nível e linha 56px + 1px de borda. */
 const HEAVY_CELL: Record<AdsTableDensity, { th: string; td: string }> = {
   md: { th: "h-12 py-0", td: "h-[57px] py-0 ps-3 pe-4" },
   sm: { th: "", td: "" },
 };
 
-const HEAVY_PIN_NO_SHADOW = "data-[pinned=left]:shadow-none data-[pinned=right]:shadow-none";
-
-/** No thead inteiro: em cada th a sombra vazaria para os lados e riscaria as colunas. */
-const HEAVY_STICKY_SHADOW = "drop-shadow-[0_2px_3px_rgb(6_25_56/8%)]";
-
-/** Faixa de 8px ao lado da coluna fixa, por cima da coluna que rola. */
-const HEAVY_PIN_FADE = [
-  "data-[pinned=left]:after:pointer-events-none data-[pinned=left]:after:absolute data-[pinned=left]:after:top-0 data-[pinned=left]:after:-bottom-px data-[pinned=left]:after:left-full data-[pinned=left]:after:w-2 data-[pinned=left]:after:bg-linear-to-r data-[pinned=left]:after:from-[rgb(6_25_56/10%)] data-[pinned=left]:after:to-[rgb(6_25_56/0%)]",
-  "data-[pinned=right]:after:pointer-events-none data-[pinned=right]:after:absolute data-[pinned=right]:after:top-0 data-[pinned=right]:after:-bottom-px data-[pinned=right]:after:right-full data-[pinned=right]:after:w-2 data-[pinned=right]:after:bg-linear-to-r data-[pinned=right]:after:from-[rgb(6_25_56/0%)] data-[pinned=right]:after:to-[rgb(6_25_56/10%)]",
-].join(" ");
+/** Altura e respiro da célula da Heavy Table, para o skeleton. */
+export const adsHeavyCellSize = (density: AdsTableDensity) =>
+  HEAVY_CELL[density].td || adsTableCellSize(density);
 
 /**
  * UI da Heavy Table sobre a casca da AdsTable. Cabeçalho branco e centralizado, sombra level 1
  * na moldura, grupo em azul e negrito, itens alternando branco e surface-main.
  * As marcas `data-heavy-group` e `data-heavy-zebra` vêm do AdsHeavyAccountCell.
  */
-export const buildAdsHeavyTableUi = ({
-  stickyHeader = false,
-  ...look
-}: AdsHeavyTableLook = {}): AdsTableUi => {
+export const buildAdsHeavyTableUi = (look: AdsTableLook = {}): AdsTableUi => {
   const { density = "md", framed = true } = look;
-  const base = buildAdsTableUi({ ...look, striped: false, depth: false });
+  const base = buildAdsTableUi({ ...look, striped: false, depth: false, pinnedEdge: false });
   const rows = [
     "[&>tr:has([data-heavy-zebra])>td]:bg-[var(--ads-surface-main)]",
     "[&>tr:has([data-heavy-group])>td]:bg-[var(--ads-button-secondary)]",
@@ -365,21 +383,13 @@ export const buildAdsHeavyTableUi = ({
   return {
     ...base,
     root: `${base.root} ${framed ? "shadow-[var(--ads-shadow-level-1)]" : ""}`.trim(),
-    thead: `${base.thead} bg-[var(--ads-surface-card)] ${stickyHeader ? HEAVY_STICKY_SHADOW : ""}`.trim(),
+    thead: `${base.thead} bg-[var(--ads-surface-card)]`,
     tbody: `${base.tbody} ${rows}`,
     th: [
       base.th,
       HEAVY_CELL[density].th,
-      "bg-[var(--ads-surface-card)] text-center",
-      HEAVY_PIN_NO_SHADOW,
-      HEAVY_PIN_FADE,
+      "border-[var(--ads-border-subtle)] bg-[var(--ads-surface-card)] text-center font-medium",
     ].join(" "),
-    td: [
-      base.td,
-      HEAVY_CELL[density].td,
-      "text-[var(--ads-text-primary)]",
-      HEAVY_PIN_NO_SHADOW,
-      HEAVY_PIN_FADE,
-    ].join(" "),
+    td: [base.td, HEAVY_CELL[density].td].join(" "),
   };
 };

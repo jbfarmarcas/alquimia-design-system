@@ -44,6 +44,8 @@
       <template #default="{ collapsed }">
         <nav aria-label="Documentação">
           <UNavigationMenu
+            :key="menuKey"
+            type="single"
             orientation="vertical"
             color="primary"
             variant="pill"
@@ -112,7 +114,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, onMounted, watch } from "vue";
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import type { NavigationMenuItem } from "@nuxt/ui";
 import { useRoute } from "vue-router";
 
@@ -124,7 +126,6 @@ const props = defineProps<{
 
 import { componentTokenCatalog } from "../../../app/theme/component-tokens";
 import { catalogGroups } from "./design-system/catalog-sections";
-import { hasFigmaNode } from "./design-system/figma-links";
 import { INSTALL_SECTIONS } from "./design-system/install-docs";
 
 const activeId = defineModel<string>("activeId", { default: "" });
@@ -154,6 +155,10 @@ const syncActiveSection = () => {
     if (!element) continue;
     if (element.getBoundingClientRect().top <= line) current = section.id;
   }
+  // No fim da página, a última seção nunca chega à linha: ela vira a ativa.
+  const atBottom = main.scrollTop + main.clientHeight >= main.scrollHeight - 2;
+  const last = props.sections.at(-1);
+  if (atBottom && main.scrollTop > 0 && last && document.getElementById(last.id)) current = last.id;
   if (current !== activeId.value) activeId.value = current;
 };
 
@@ -166,11 +171,21 @@ const scrollToSection = (id: string) => {
 
 const onMainScroll = () => syncActiveSection();
 
+/**
+ * O subgrupo da seção ativa abre por `defaultOpen`, que só vale na montagem. A seção do link
+ * (#hash) só é conhecida no cliente, então o menu remonta uma vez depois disso.
+ */
+const menuKey = ref(0);
+
 onMounted(() => {
   scrollRoot()?.addEventListener("scroll", onMainScroll, { passive: true });
   syncActiveSection();
   const id = route.hash.replace(/^#/, "");
-  if (id) scrollToSection(id);
+  if (id) {
+    selectSection(id);
+    scrollToSection(id);
+  }
+  nextTick(() => menuKey.value++);
 });
 
 onBeforeUnmount(() => {
@@ -185,8 +200,8 @@ watch(
   },
 );
 
-/** Item do menu: um link para a seção ou, com `heading`, o nome do grupo, sem link. */
-type DocsChild = { id: string; label: string; heading?: boolean };
+/** Item do menu: um link para a seção ou, com `children`, um subgrupo que abre e fecha. */
+type DocsChild = { id: string; label: string; children?: readonly DocsChild[] };
 
 type DocsPage = {
   label: string;
@@ -196,24 +211,15 @@ type DocsPage = {
 };
 
 /**
- * Catálogo: seções que não são componente (Cores) abrem a lista sem título; depois vêm dois grupos,
- * "No Figma" e "Sem mapeamento no Figma". A divisão sai de `figma-links.ts`, e dentro de cada grupo
- * vale a ordem do catálogo.
+ * Catálogo: cada `group` de `catalog-sections.ts` vira um subgrupo (Botões, Campos, Cards, Tabelas…).
+ * Grupo com uma seção só, como Cores e Modal, fica como link direto.
  */
 function catalogNavChildren(): DocsChild[] {
-  const sections = catalogGroups.flatMap((group) => group.sections);
-  const toLink = (section: (typeof sections)[number]): DocsChild => ({ id: section.id, label: section.label });
-  const intro = sections.filter((section) => section.components.length === 0).map(toLink);
-  const components = sections.filter((section) => section.components.length > 0);
-  const mapped = components.filter((section) => hasFigmaNode(section.id)).map(toLink);
-  const unmapped = components.filter((section) => !hasFigmaNode(section.id)).map(toLink);
-  return [
-    ...intro,
-    ...(mapped.length ? [{ id: "grupo-no-figma", label: "No Figma", heading: true }, ...mapped] : []),
-    ...(unmapped.length
-      ? [{ id: "grupo-sem-figma", label: "Sem mapeamento no Figma", heading: true }, ...unmapped]
-      : []),
-  ];
+  return catalogGroups.map((group) => {
+    const links = group.sections.map((section) => ({ id: section.id, label: section.label }));
+    if (links.length === 1) return links[0]!;
+    return { id: `grupo-${group.name}`, label: group.name, children: links };
+  });
 }
 
 const pages: readonly DocsPage[] = [
@@ -224,7 +230,7 @@ const pages: readonly DocsPage[] = [
     children: INSTALL_SECTIONS.map((section) => ({ id: section.id, label: section.label })),
   },
   {
-    label: "Catálogo",
+    label: "Componentes",
     to: "/design-system",
     icon: "i-lucide-component",
     children: catalogNavChildren(),
@@ -238,16 +244,6 @@ const pages: readonly DocsPage[] = [
       label: component.label,
     })),
   },
-  {
-    label: "Tabelas",
-    to: "/design-system/tabelas",
-    icon: "i-lucide-table-2",
-    children: [
-      { id: "decisoes", label: "Decisões" },
-      { id: "inventario", label: "Inventário" },
-      { id: "comparacao", label: "Padrão" },
-    ],
-  },
 ];
 
 const menuItemsFor = (collapsed: boolean): NavigationMenuItem[] =>
@@ -259,37 +255,50 @@ const menuItemsFor = (collapsed: boolean): NavigationMenuItem[] =>
       icon: page.icon,
       to: page.to,
       exact: true,
-      defaultOpen: true,
+      defaultOpen: here,
       active: here && !sectionOpen,
       children: page.children.flatMap((child): NavigationMenuItem[] => {
-        if (child.heading) {
-          return collapsed ? [] : [{ label: child.label, type: "label", class: groupHeadingClass }];
-        }
-        const active = here && activeId.value === child.id;
-        const openNotes = openNoteCount(child.id, page.to);
+        if (!child.children) return [sectionLink(page, child, here)];
+        const links = child.children.map((section) => sectionLink(page, section, here));
+        // Recolhido, o popover mostra a lista plana, sem subgrupos.
+        if (collapsed) return links;
+        const hasActive = here && child.children.some((section) => section.id === activeId.value);
+        const openNotes = child.children.reduce((sum, section) => sum + openNoteCount(section.id, page.to), 0);
         return [{
           label: child.label,
-          to: `${page.to}#${child.id}`,
-          active,
+          defaultOpen: hasActive,
+          // Destaca o subgrupo da seção ativa, mesmo fechado.
+          active: hasActive,
           badge: openNotes
             ? { label: String(openNotes), color: "warning", variant: "subtle", size: "sm" }
             : undefined,
-          "aria-current": active ? "location" : undefined,
-          onSelect: () => {
-            selectSection(child.id);
-            if (here) scrollToSection(child.id);
-          },
+          children: links,
         }];
       }),
     };
   });
 
+/** Link para uma seção da página, com o número de anotações abertas. */
+const sectionLink = (page: DocsPage, child: DocsChild, here: boolean): NavigationMenuItem => {
+  const active = here && activeId.value === child.id;
+  const openNotes = openNoteCount(child.id, page.to);
+  return {
+    label: child.label,
+    to: `${page.to}#${child.id}`,
+    active,
+    badge: openNotes
+      ? { label: String(openNotes), color: "warning", variant: "subtle", size: "sm" }
+      : undefined,
+    "aria-current": active ? "location" : undefined,
+    onSelect: () => {
+      selectSection(child.id);
+      if (here) scrollToSection(child.id);
+    },
+  };
+};
+
 const menuItems = computed(() => menuItemsFor(false));
 const collapsedMenuItems = computed(() => menuItemsFor(true));
-
-/** Título de grupo no menu: mesmo tom do sobretítulo da página, sem link. */
-const groupHeadingClass =
-  "mt-2 px-2.5 pt-1.5 pb-0.5 text-[length:var(--ads-font-size-xxxs)] font-bold tracking-[0.14em] text-[var(--ads-text-tertiary)] uppercase";
 
 const menuUi = {
   root: "w-full",

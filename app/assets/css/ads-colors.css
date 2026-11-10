@@ -1,19 +1,22 @@
 /**
  * Classes de cor do ADS. Gerado a partir de ads-color-swatches.ts e dos tokens semânticos do main.css.
- * Paleta:    bg-ads-<grupo>-<passo>, text-ads-…, border-ads-…  (ex.: bg-ads-radar-pricing-500)
+ * Paleta:    bg-ads-<grupo>-<passo>, text-ads-…, border-ads-…  (ex.: bg-ads-radar-500)
  * Semântico: bg-ads-surface-card, text-ads-text-primary, border-ads-border-subtle, bg-ads-status-success-500
  * "static" mantém as variáveis no CSS mesmo sem uso, para consumo por var(--color-ads-*).
+ *
+ * A coleção Figma "color/radar" é o nome canônico (antes "Radar Pricing", removido 09/11/2026).
  */
 @theme static {
-  /* Radar Pricing */
-  --color-ads-radar-pricing-25: #e4f2ff;
-  --color-ads-radar-pricing-50: #c7e4ff;
-  --color-ads-radar-pricing-100: #89c9ff;
-  --color-ads-radar-pricing-200: #50b3ff;
-  --color-ads-radar-pricing-400: #0091ff;
-  --color-ads-radar-pricing-500: #006ff7;
-  --color-ads-radar-pricing-600: #074ac6;
-  --color-ads-radar-pricing-800: #00389e;
+  /* Radar (nome canônico — antes "Radar Pricing") */
+  --color-ads-radar-25: #e4f2ff;
+  --color-ads-radar-50: #c7e4ff;
+  --color-ads-radar-100: #89c9ff;
+  --color-ads-radar-200: #50b3ff;
+  --color-ads-radar-400: #0091ff;
+  --color-ads-radar-500: #006ff7;
+  --color-ads-radar-600: #074ac6;
+  --color-ads-radar-800: #00389e;
+
 
   /* Radar Base */
   --color-ads-radar-base-100: #3f4457;
@@ -75,9 +78,10 @@
   --color-ads-atencao-500: #e9a700;
   --color-ads-atencao-600: #ce9300;
   --color-ads-atencao-700: #ad7b00;
-  --color-ads-atencao-800: #8f6600;
+  --color-ads-atencao-800: #7a5600; /* atualizado em 05/11/2026 */
 
-  /* Innovation */
+  /* Innovation (= charts/data 2) */
+  --color-ads-innovation-50: #f3f0ff; /* primitiva nova: charts/data 2/50 */
   --color-ads-innovation-100: #cabaff;
   --color-ads-innovation-200: #b19aff;
   --color-ads-innovation-300: #9e80ff;
@@ -234,6 +238,7 @@
   --color-ads-chart-data-2-800: var(--ads-chart-data-2-800);
   --color-ads-chart-data-2-500: var(--ads-chart-data-2-500);
   --color-ads-chart-data-2-100: var(--ads-chart-data-2-100);
+  --color-ads-chart-data-2-50: var(--ads-chart-data-2-50);
   --color-ads-chart-data-3-800: var(--ads-chart-data-3-800);
   --color-ads-chart-data-3-400: var(--ads-chart-data-3-400);
   --color-ads-chart-data-3-100: var(--ads-chart-data-3-100);
@@ -243,4 +248,10 @@
   --color-ads-chart-data-5-800: var(--ads-chart-data-5-800);
   --color-ads-chart-data-5-400: var(--ads-chart-data-5-400);
   --color-ads-chart-data-5-100: var(--ads-chart-data-5-100);
+
+  /* Tokens semânticos novos (05/11/2026) — geram text-ads-*, bg-ads-*, border-ads-* */
+  --color-ads-text-brand-strong: var(--ads-text-brand-strong);
+  --color-ads-border-input: var(--ads-border-input);
+  --color-ads-text-ai: var(--ads-text-ai);
+  --color-ads-surface-ai: var(--ads-surface-ai);
 }

@@ -1,6 +1,7 @@
 /**
  * Seções do catálogo (/design-system), uma por componente.
- * `group` é o nome do antigo agrupamento: vira título não clicável no menu lateral e no índice.
+ * `group` é o subgrupo do menu lateral e o título no índice. Seções do mesmo grupo ficam juntas,
+ * mesmo fora de ordem na lista; a ordem dos grupos é a da primeira seção de cada um.
  * A página e o menu lateral leem esta mesma lista, então um id novo entra nos dois lugares.
  */
 export const catalogSections = [
@@ -15,21 +16,21 @@ export const catalogSections = [
   {
     id: "button",
     label: "Botão",
-    group: "Botão",
+    group: "Botões",
     purpose: "Ação de tela. O exemplo segue os parâmetros: tipo, cor, tamanho, conteúdo e estado. Outline e unfilled não têm pressed. No tipo IA, um brilho de gradiente gira em volta da borda. O estado de carregamento da ação também fica aqui.",
     components: ["AdsButton"],
   },
   {
     id: "button-group",
     label: "Grupo de botões",
-    group: "Botão",
+    group: "Botões",
     purpose: "Segmentos unidos. O valor escolhido fica em negrito e com fundo claro.",
     components: ["AdsButtonGroup"],
   },
   {
     id: "button-menu",
     label: "Menu de botão",
-    group: "Botão",
+    group: "Botões",
     purpose: "Painel do button dropdown, com título, subtítulo e ícone opcionais. O gatilho fica fora do componente.",
     components: ["AdsButtonMenu"],
   },
@@ -80,30 +81,37 @@ export const catalogSections = [
   {
     id: "filter-select",
     label: "Select de filtro",
-    group: "Filtro",
+    group: "Filtros",
     purpose: "Select com lista, busca ou calendário de mês. Rótulo longo ganha reticências e tooltip.",
     components: ["AdsFilterSelect"],
   },
   {
     id: "list-dropdown",
     label: "Lista",
-    group: "Filtro",
+    group: "Filtros",
     purpose: "Lista de rádio com busca opcional. É o List Dropdown do Figma.",
     components: ["AdsListDropdown"],
   },
   {
     id: "filter-dropdown",
     label: "Painel de filtro",
-    group: "Filtro",
+    group: "Filtros",
     purpose: "Painel da lista, com busca, selecionar todos e divisores.",
     components: ["AdsFilterDropdown"],
   },
   {
     id: "filter-option",
     label: "Opção de filtro",
-    group: "Filtro",
+    group: "Filtros",
     purpose: "Linha da lista. Checkbox alinha a caixa; rádio selecionado fica em negrito.",
     components: ["AdsFilterOption"],
+  },
+  {
+    id: "dropdown-menu",
+    label: "Dropdown Menu",
+    group: "Filtros",
+    purpose: "Menu suspenso de ações ou de seleção simples/múltipla, com busca opcional, badge e subtítulo. Pode ser usado junto do Painel de filtro.",
+    components: ["AdsDropdownMenu"],
   },
   {
     id: "tabs",
@@ -128,25 +136,11 @@ export const catalogSections = [
     components: ["AdsToast"],
   },
   {
-    id: "file-card",
-    label: "Arquivo",
-    group: "Feedback",
-    purpose: "Arquivo enviado: nome, linha de apoio e, no erro, o problema acima do arquivo.",
-    components: ["AdsFileCard"],
-  },
-  {
     id: "empty-state",
     label: "Empty state",
     group: "Feedback",
     purpose: "Área sem conteúdo: título, texto de apoio e duas ações, no tamanho cheio ou small.",
     components: ["AdsEmptyState"],
-  },
-  {
-    id: "pagination",
-    label: "Paginação",
-    group: "Feedback",
-    purpose: "Página atual e total. Acima de 7 páginas, entram reticências.",
-    components: ["AdsPagination"],
   },
   {
     id: "tooltip",
@@ -179,28 +173,28 @@ export const catalogSections = [
   {
     id: "loading",
     label: "Loading",
-    group: "Carregando",
+    group: "Carregamento",
     purpose: "Espera na tela. Spinner na área vazia, skeleton quando o formato já é conhecido, shimmer quando o conteúdo continua visível. A ação no botão usa o loading do AdsButton.",
     components: ["AdsLoading"],
   },
   {
     id: "overlay-loading",
     label: "Overlay de processo",
-    group: "Carregando",
+    group: "Carregamento",
     purpose: "Cobre a página quando o processo não tem uma área própria.",
     components: ["useOverlayLoading"],
   },
   {
     id: "progress-bar-loading",
     label: "Barra de progresso",
-    group: "Carregando",
+    group: "Carregamento",
     purpose: "Percentual de um trabalho longo, com resultado de sucesso ou erro.",
     components: ["ProgressBarLoading"],
   },
   {
     id: "table-skeleton",
     label: "Skeleton de tabela",
-    group: "Carregando",
+    group: "Carregamento",
     purpose: "Skeleton da tabela de produtos em duas variantes: barras de placeholder ou loader do Radar.",
     components: ["AdsTableSkeleton"],
   },
@@ -213,18 +207,11 @@ export const catalogSections = [
     components: ["AdsBadge"],
   },
   {
-    id: "broadcast",
-    label: "Broadcast",
-    group: "Pills",
-    purpose: "Pílula LIVE, com o ponto e o texto na cor do status.",
-    components: ["AdsBroadcast"],
-  },
-  {
     id: "pill",
     label: "Pill",
     group: "Pills",
-    purpose: "Estado em uma peça compacta, com tom e ícone opcional.",
-    components: ["AdsPill"],
+    purpose: "Estado em uma peça compacta, com tom, tamanho (md / sm) e ícone opcional. A Small Pill do Figma é size=\"sm\" e o Broadcast é variant=\"broadcast\".",
+    components: ["AdsPill", "AdsBroadcast"],
   },
   {
     id: "notability-pill",
@@ -232,20 +219,6 @@ export const catalogSections = [
     group: "Pills",
     purpose: "Notabilidade do produto: imagem, tráfego ou lucro.",
     components: ["AdsNotabilityPill"],
-  },
-  {
-    id: "mini-pill",
-    label: "Mini pill",
-    group: "Pills",
-    purpose: "Estado curto: não iniciado, pausado ou novo.",
-    components: ["AdsMiniPill"],
-  },
-  {
-    id: "farmarcas-pill",
-    label: "Pill Farmarcas",
-    group: "Pills",
-    purpose: "Pill de departamento. Não substitui a pill de notabilidade.",
-    components: ["AdsFarmarcasPill"],
   },
 
   {
@@ -330,31 +303,46 @@ export const catalogSections = [
   },
 
   {
-    id: "feature-card",
-    label: "Feature card",
-    group: "Card",
-    purpose: "Entrada de um fluxo: ícone, título, descrição e seta, com 396px.",
-    components: ["AdsFeatureCard"],
-  },
-  {
     id: "card",
     label: "Card",
-    group: "Card",
-    purpose: "Cartão de conteúdo. Substitui UCard.",
+    group: "Cards",
+    purpose: "Cartão de conteúdo (tipos Container e Detalhes). Substitui UCard.",
     components: ["AdsCard"],
   },
   {
     id: "metric-card",
     label: "Card de métrica",
-    group: "Card",
-    purpose: "Número em destaque, com variação, legenda e estado sem dados.",
+    group: "Cards",
+    purpose: "Número em destaque (tipos KPI e Métrica). Rótulo 16 regular, valor 20 bold.",
     components: ["AdsMetricCard"],
   },
+  {
+    id: "panel-card",
+    label: "Card painel",
+    group: "Cards",
+    purpose: "Card grande para gráfico ou tabela, com cabeçalho de título/subtítulo/ações e slot de conteúdo.",
+    components: ["AdsPanelCard"],
+  },
+  {
+    id: "file-card",
+    label: "Arquivo",
+    group: "Cards",
+    purpose: "Arquivo enviado: nome, linha de apoio e, no erro, o problema acima do arquivo.",
+    components: ["AdsFileCard"],
+  },
+  {
+    id: "feature-card",
+    label: "Feature card",
+    group: "Cards",
+    purpose: "Entrada de um fluxo: ícone, título, descrição e seta, com 396px.",
+    components: ["AdsFeatureCard"],
+  },
+
   {
     id: "table",
     label: "Table",
     group: "Tabelas",
-    purpose: "Tabela operacional: cabeçalho e colunas fixos, linhas zebradas, 8 tipos de célula, carregamento (AdsTableSkeleton) e estado vazio.",
+    purpose: "Tabela operacional: cabeçalho e colunas fixos, linhas zebradas, 9 tipos de célula, carregamento (AdsTableSkeleton) e estado vazio.",
     components: ["AdsTable", "AdsTableToolbar", "AdsTableSkeleton"],
   },
   {
@@ -363,6 +351,13 @@ export const catalogSections = [
     group: "Tabelas",
     purpose: "Tabela financeira: cabeçalho em dois níveis, grupos em accordion (_Fin Group), tons de variação e projeção.",
     components: ["AdsHeavyTable"],
+  },
+  {
+    id: "pagination",
+    label: "Paginação",
+    group: "Tabelas",
+    purpose: "Página atual e total. Acima de 7 páginas, entram reticências.",
+    components: ["AdsPagination"],
   },
 ] as const;
 
@@ -374,10 +369,10 @@ export type CatalogGroup = {
   sections: CatalogSection[];
 };
 
-/** Seções agrupadas pelo nome do antigo grupo, na ordem da lista. */
+/** Seções agrupadas por `group`, na ordem em que cada grupo aparece pela primeira vez. */
 export const catalogGroups: CatalogGroup[] = catalogSections.reduce<CatalogGroup[]>((groups, section) => {
-  const last = groups.at(-1);
-  if (last?.name === section.group) last.sections.push(section);
+  const group = groups.find((item) => item.name === section.group);
+  if (group) group.sections.push(section);
   else groups.push({ name: section.group, sections: [section] });
   return groups;
 }, []);

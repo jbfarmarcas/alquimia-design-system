@@ -115,7 +115,7 @@ const fieldClass = computed(() => {
     return `border-(length:--ads-border-width-slim) border-[var(--ads-search-focus-border)] bg-[var(--ads-search-background)] ${tone}`;
   }
   if (visualState.value === "ai") {
-    return `border border-[var(--ads-button-ia-border)] bg-[var(--ads-button-ia-background)] ${tone} ${focus}`;
+    return `border border-[var(--ads-button-ia-border)] bg-[var(--ads-surface-ai)] text-[var(--ads-text-ai)] ${focus}`;
   }
   return `border border-[var(--ads-search-border)] bg-[var(--ads-search-background)] ${tone} ${focus}`;
 });

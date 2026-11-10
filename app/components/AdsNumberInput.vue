@@ -166,7 +166,7 @@ const fieldClass = computed(() => {
     return "border-(length:--ads-border-width-slim) border-[var(--ads-number-focus-border)] bg-[var(--ads-number-background)] text-[var(--ads-number-text)]";
   }
   if (visualState.value === "ai") {
-    return `border border-[var(--ads-button-ia-border)] bg-[var(--ads-button-ia-background)] text-[var(--ads-number-text)] ${focus}`;
+    return `border border-[var(--ads-button-ia-border)] bg-[var(--ads-surface-ai)] text-[var(--ads-text-ai)] ${focus}`;
   }
   return `border border-[var(--ads-number-border)] bg-[var(--ads-number-background)] text-[var(--ads-number-text)] ${focus}`;
 });

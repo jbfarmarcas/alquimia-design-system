@@ -49,22 +49,14 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-
-type HeavyHeaderColumn = {
-  getCanSort: () => boolean;
-  getIsSorted: () => false | "asc" | "desc";
-  toggleSorting: () => void;
-  getCanPin: () => boolean;
-  getIsPinned: () => false | "left" | "right";
-  pin: (position: false | "left" | "right") => void;
-};
+import type { AdsTableHeaderColumn } from "../utils/ads-table";
 
 const props = defineProps<{
   label: string;
   /** Coluna do TanStack, recebida na função `header`. */
-  column?: HeavyHeaderColumn;
+  column?: AdsTableHeaderColumn;
   /** Coluna que o título ordena, quando não é a própria (grupos). */
-  sortColumn?: HeavyHeaderColumn;
+  sortColumn?: AdsTableHeaderColumn;
 }>();
 
 const sortTarget = computed(() => props.sortColumn ?? props.column);

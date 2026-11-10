@@ -18,17 +18,17 @@ export type AdsColorGroup = {
 /** Classes completas (bg, text, border) para o Tailwind enxergar cada amostra. */
 export const adsColorGroups: AdsColorGroup[] = [
   {
-    name: "Radar Pricing",
-    slug: "radar-pricing",
+    name: "Radar",
+    slug: "radar",
     swatches: [
-      { step: "25", hex: "#e4f2ff", surface: "bg-ads-radar-pricing-25", text: "text-ads-radar-pricing-25", border: "border-ads-radar-pricing-25" },
-      { step: "50", hex: "#c7e4ff", surface: "bg-ads-radar-pricing-50", text: "text-ads-radar-pricing-50", border: "border-ads-radar-pricing-50" },
-      { step: "100", hex: "#89c9ff", surface: "bg-ads-radar-pricing-100", text: "text-ads-radar-pricing-100", border: "border-ads-radar-pricing-100" },
-      { step: "200", hex: "#50b3ff", surface: "bg-ads-radar-pricing-200", text: "text-ads-radar-pricing-200", border: "border-ads-radar-pricing-200" },
-      { step: "400", hex: "#0091ff", surface: "bg-ads-radar-pricing-400", text: "text-ads-radar-pricing-400", border: "border-ads-radar-pricing-400" },
-      { step: "500", hex: "#006ff7", surface: "bg-ads-radar-pricing-500", text: "text-ads-radar-pricing-500", border: "border-ads-radar-pricing-500" },
-      { step: "600", hex: "#074ac6", surface: "bg-ads-radar-pricing-600", text: "text-ads-radar-pricing-600", border: "border-ads-radar-pricing-600" },
-      { step: "800", hex: "#00389e", surface: "bg-ads-radar-pricing-800", text: "text-ads-radar-pricing-800", border: "border-ads-radar-pricing-800" },
+      { step: "25", hex: "#e4f2ff", surface: "bg-ads-radar-25", text: "text-ads-radar-25", border: "border-ads-radar-25" },
+      { step: "50", hex: "#c7e4ff", surface: "bg-ads-radar-50", text: "text-ads-radar-50", border: "border-ads-radar-50" },
+      { step: "100", hex: "#89c9ff", surface: "bg-ads-radar-100", text: "text-ads-radar-100", border: "border-ads-radar-100" },
+      { step: "200", hex: "#50b3ff", surface: "bg-ads-radar-200", text: "text-ads-radar-200", border: "border-ads-radar-200" },
+      { step: "400", hex: "#0091ff", surface: "bg-ads-radar-400", text: "text-ads-radar-400", border: "border-ads-radar-400" },
+      { step: "500", hex: "#006ff7", surface: "bg-ads-radar-500", text: "text-ads-radar-500", border: "border-ads-radar-500" },
+      { step: "600", hex: "#074ac6", surface: "bg-ads-radar-600", text: "text-ads-radar-600", border: "border-ads-radar-600" },
+      { step: "800", hex: "#00389e", surface: "bg-ads-radar-800", text: "text-ads-radar-800", border: "border-ads-radar-800" },
     ],
   },
   {
@@ -118,13 +118,14 @@ export const adsColorGroups: AdsColorGroup[] = [
       { step: "500", hex: "#e9a700", surface: "bg-ads-atencao-500", text: "text-ads-atencao-500", border: "border-ads-atencao-500" },
       { step: "600", hex: "#ce9300", surface: "bg-ads-atencao-600", text: "text-ads-atencao-600", border: "border-ads-atencao-600" },
       { step: "700", hex: "#ad7b00", surface: "bg-ads-atencao-700", text: "text-ads-atencao-700", border: "border-ads-atencao-700" },
-      { step: "800", hex: "#8f6600", surface: "bg-ads-atencao-800", text: "text-ads-atencao-800", border: "border-ads-atencao-800" },
+      { step: "800", hex: "#7a5600", surface: "bg-ads-atencao-800", text: "text-ads-atencao-800", border: "border-ads-atencao-800" },
     ],
   },
   {
     name: "Innovation",
     slug: "innovation",
     swatches: [
+      { step: "50", hex: "#f3f0ff", surface: "bg-ads-innovation-50", text: "text-ads-innovation-50", border: "border-ads-innovation-50" },
       { step: "100", hex: "#cabaff", surface: "bg-ads-innovation-100", text: "text-ads-innovation-100", border: "border-ads-innovation-100" },
       { step: "200", hex: "#b19aff", surface: "bg-ads-innovation-200", text: "text-ads-innovation-200", border: "border-ads-innovation-200" },
       { step: "300", hex: "#9e80ff", surface: "bg-ads-innovation-300", text: "text-ads-innovation-300", border: "border-ads-innovation-300" },

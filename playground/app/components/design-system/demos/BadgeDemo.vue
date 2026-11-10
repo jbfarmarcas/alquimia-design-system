@@ -30,13 +30,13 @@ import AdsSwitch from "../../../../../app/components/AdsSwitch.vue";
 const badgeColor = ref<AdsBadgeColor>("primary");
 const badgeMini = ref(false);
 
+// Nota: "color" é uma prop só no código — o Figma tem só Context (Secondary, Notifications).
 const badgeColorOptions = [
   { value: "primary", label: "Primary" },
   { value: "success", label: "Success" },
   { value: "attention", label: "Attention" },
   { value: "warning", label: "Warning" },
   { value: "new", label: "New" },
-  { value: "innovation", label: "Innovation" },
   { value: "blocked", label: "Blocked" },
 ];
 

@@ -140,7 +140,7 @@ const fieldClass = computed(() => {
     return "border-(length:--ads-border-width-slim) border-[var(--ads-input-focus-border)] bg-[var(--ads-input-background)] text-[var(--ads-input-text)]";
   }
   if (visualState.value === "ai") {
-    return `border border-[var(--ads-button-ia-border)] bg-[var(--ads-button-ia-background)] text-[var(--ads-text-secondary)] ${focus}`;
+    return `border border-[var(--ads-button-ia-border)] bg-[var(--ads-surface-ai)] text-[var(--ads-text-ai)] ${focus}`;
   }
   return `border border-[var(--ads-input-border)] bg-[var(--ads-input-background)] text-[var(--ads-input-text)] ${focus}`;
 });

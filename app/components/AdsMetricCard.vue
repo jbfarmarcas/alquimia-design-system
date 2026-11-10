@@ -3,114 +3,211 @@
     :is="as"
     :type="as === 'button' ? 'button' : undefined"
     :disabled="as === 'button' ? disabled : undefined"
-    class="flex h-full min-w-0 flex-col gap-[var(--ads-metric-gap)] border p-[var(--ads-metric-padding)] text-left font-normal"
-    :class="[radiusClass, surfaceClass]"
+    :aria-busy="loading || undefined"
+    class="flex h-full min-w-0 rounded-[var(--ads-metric-radius)] border p-[var(--ads-metric-padding)] text-left font-normal transition-[background-color,border-color,box-shadow]"
+    :class="[type === 'kpi' ? 'flex-row items-center gap-4' : 'flex-col items-start gap-3', surfaceClass]"
   >
-    <div class="flex flex-col items-start gap-1">
-      <div class="flex min-w-0 items-center gap-2">
-        <p :class="labelClass">{{ title }}</p>
-        <AdsTooltip v-if="hint" :description="hint" :show-title="false" class="shrink-0">
-          <UIcon
-            name="i-lucide-help-circle"
-            size="xs"
-            class="align-middle text-[var(--ads-border-icon-support)]"
-          />
-        </AdsTooltip>
+    <!-- KPI: ícone grande à esquerda, título e valor à direita -->
+    <template v-if="type === 'kpi'">
+      <UIcon v-if="icon" :name="icon" class="size-6 shrink-0" :class="iconClass" aria-hidden="true" />
+      <div class="flex min-w-0 flex-1 flex-col items-start gap-2">
+        <div class="flex min-w-0 items-center gap-2">
+          <p :class="titleClass">{{ title }}</p>
+          <AdsCardHint v-if="hint" :text="hint" />
+        </div>
+        <span v-if="loading" :class="skeletonClass" class="h-5 w-[140px] rounded-[var(--ads-radius-xsm)]" aria-hidden="true" />
+        <div v-else-if="empty" class="flex min-w-0 items-center gap-2">
+          <span class="text-[length:var(--ads-font-size-rg)] font-bold leading-[1.3] text-[var(--ads-text-tertiary)]" aria-hidden="true">—</span>
+          <span :class="emptyMessageClass">{{ emptyMessage }}</span>
+        </div>
+        <div v-else class="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1">
+          <p class="text-[length:var(--ads-font-size-rg)] font-bold leading-[1.3] text-[var(--ads-text-secondary)] tabular-nums">{{ value }}</p>
+          <AdsCardVariation v-if="delta" :value="delta" :direction="deltaDirection" :tone="deltaTone" />
+        </div>
       </div>
-      <slot name="status" />
-    </div>
+    </template>
 
-    <div class="flex min-w-0 items-center gap-2">
-      <p class="min-w-0" :class="empty ? emptyValueClass : valueClass">
-        {{ value }}
+    <!-- Pendência: ícone pequeno e título em negrito; número grande com unidade -->
+    <template v-else-if="type === 'pending'">
+      <div class="flex w-full min-w-0 items-center gap-1">
+        <UIcon v-if="icon" :name="icon" class="size-4 shrink-0" :class="iconClass" aria-hidden="true" />
+        <p class="min-w-0 truncate font-bold" :class="titleClass">{{ title }}</p>
+        <AdsCardHint v-if="hint" :text="hint" />
+      </div>
+      <span v-if="loading" :class="skeletonClass" class="h-7 w-[72px] rounded-[var(--ads-radius-xsm)]" aria-hidden="true" />
+      <div v-else-if="empty" class="flex min-w-0 items-baseline gap-1">
+        <span class="text-[length:var(--ads-font-size-md)] font-bold leading-[1.3] text-[var(--ads-text-tertiary)]" aria-hidden="true">—</span>
+        <span :class="emptyMessageClass">{{ emptyMessage }}</span>
+      </div>
+      <p v-else class="flex min-w-0 flex-wrap items-baseline gap-1">
+        <span :class="bigValueClass">{{ value }}</span>
+        <span v-if="unit" class="text-[length:var(--ads-font-size-xxxs)] font-bold leading-[1.2] text-[var(--ads-text-secondary)]">{{ unit }}</span>
       </p>
-      <span
-        v-if="!empty && slots.delta"
-        class="inline-flex shrink-0 items-center gap-1"
-        :class="deltaClass"
-      >
-        <slot name="delta" />
-      </span>
-    </div>
+    </template>
 
-    <div
-      v-if="caption || slots.footer"
-      class="mt-auto flex items-end justify-between gap-2"
-    >
-      <p v-if="caption" :class="captionClass">{{ caption }}</p>
-      <slot name="footer" />
-    </div>
+    <!-- Métrica: período, valor com variação e comparativo -->
+    <template v-else>
+      <div class="flex w-full min-w-0 items-center gap-2">
+        <p class="min-w-0 flex-1" :class="titleClass">{{ title }}</p>
+        <AdsCardHint v-if="hint" :text="hint" />
+        <slot name="actions" />
+      </div>
 
-    <div v-if="slots.default" class="min-h-0 flex-1">
-      <slot />
-    </div>
+      <AdsCardPeriod v-if="period || (loading && periodLabel)" :label="periodLabel" :value="period" :loading="loading" />
+
+      <div v-if="empty && !loading" class="flex w-full justify-center py-2">
+        <slot name="empty">
+          <AdsEmptyState small :title="emptyMessage" :subtitle="emptyDescription ?? ''" :show-actions="Boolean($slots['empty-actions'])">
+            <slot name="empty-actions" />
+          </AdsEmptyState>
+        </slot>
+      </div>
+
+      <template v-else>
+        <span v-if="loading" :class="skeletonClass" class="h-7 w-[110px] rounded-[var(--ads-radius-xsm)]" aria-hidden="true" />
+        <div v-else class="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1">
+          <UIcon v-if="valueIcon" :name="valueIcon" class="size-6 shrink-0 text-[var(--ads-text-primary)]" aria-hidden="true" />
+          <p :class="bigValueClass">{{ value }}</p>
+          <AdsCardVariation v-if="delta" :value="delta" :direction="deltaDirection" :tone="deltaTone" />
+        </div>
+
+        <template v-if="comparisonLabel">
+          <hr v-if="divider && !comparisonInline" class="h-px w-full border-0 bg-[var(--ads-border-subtle)]" />
+
+          <div v-if="comparisonInline" class="flex w-full flex-wrap items-baseline gap-x-2 gap-y-1 text-[var(--ads-text-secondary)]">
+            <span class="text-[length:var(--ads-font-size-xxxs)] leading-[1.2]">{{ comparisonLabel }}</span>
+            <span v-if="loading" :class="skeletonClass" class="h-4 w-20 rounded-[var(--ads-radius-xsm)]" aria-hidden="true" />
+            <span v-else class="text-[length:var(--ads-font-size-xs)] leading-[1.3] tabular-nums">{{ comparisonValue }}</span>
+          </div>
+
+          <div v-else class="flex w-full flex-col items-start gap-2">
+            <AdsCardPeriod
+              :label="comparisonLabel"
+              :value="comparisonBadge"
+              tone="neutral"
+              :loading="loading && Boolean(comparisonBadge)"
+              :skeleton-width="80"
+            />
+            <span v-if="loading" :class="skeletonClass" class="h-4 w-16 rounded-[var(--ads-radius-xsm)]" aria-hidden="true" />
+            <p v-else class="text-[length:var(--ads-font-size-xs)] leading-[1.3] text-[var(--ads-text-secondary)] tabular-nums">{{ comparisonValue }}</p>
+          </div>
+        </template>
+      </template>
+    </template>
   </component>
 </template>
 
 <script setup lang="ts">
-import { computed, useSlots } from "vue";
-import AdsTooltip from "./AdsTooltip.vue";
+import { computed } from "vue";
+import AdsCardHint from "./AdsCardHint.vue";
+import AdsCardPeriod from "./AdsCardPeriod.vue";
+import AdsCardVariation from "./AdsCardVariation.vue";
+import type { AdsCardVariationDirection, AdsCardVariationTone } from "./AdsCardVariation.vue";
+import AdsEmptyState from "./AdsEmptyState.vue";
 
-/**
- * Número em destaque.
- * Rótulo: 14px, medium. Valor: 20px, bold. Variação: 14px, bold. Legenda: 12px, regular.
- */
-const labelClass =
-  "text-[length:var(--ads-metric-label-size)] font-medium leading-[var(--ads-line-height-sm)] text-[var(--ads-metric-label)]";
-const valueClass =
-  "text-[length:var(--ads-metric-value-size)] font-bold leading-[var(--ads-line-height-sm)] text-[var(--ads-metric-value)] tabular-nums";
-const emptyValueClass =
-  "text-[length:var(--ads-font-size-xs)] font-medium leading-[var(--ads-line-height-sm)] text-[var(--ads-text-tertiary)]";
-const deltaClass =
-  "text-[length:var(--ads-font-size-xxs)] font-bold leading-[var(--ads-line-height-sm)] tabular-nums";
-const captionClass =
-  "text-[length:var(--ads-metric-caption-size)] font-normal leading-[var(--ads-line-height-md)] text-[var(--ads-metric-label)]";
+export type AdsMetricCardType = "kpi" | "pending" | "metric";
 
 const props = withDefaults(
   defineProps<{
-    /** Rótulo acima do número. */
+    /**
+     * kpi: ícone grande, título e valor.
+     * pending: número em destaque com unidade, bom para cards selecionáveis.
+     * metric: período, valor com variação e comparativo.
+     */
+    type?: AdsMetricCardType;
     title: string;
-    /** Número ou frase principal. */
-    value: string;
-    /** Texto do ícone de ajuda ao lado do rótulo. */
+    /** Valor principal. */
+    value?: string;
+    /** Texto do ícone de informação ao lado do título. */
     hint?: string;
-    /** Linha curta abaixo do número, como o valor atual. */
-    caption?: string;
-    /** Valor ausente: 16px medium, cor tertiary. */
+    /** Ícone Lucide: 24px no KPI, 16px na Pendência. */
+    icon?: string;
+    /** Unidade ao lado do número na Pendência, como "pendências". */
+    unit?: string;
+    /** Ícone de 24px antes do valor na Métrica. */
+    valueIcon?: string;
+    /** Variação ao lado do valor (KPI e Métrica), como "1,15%". */
+    delta?: string;
+    deltaDirection?: AdsCardVariationDirection;
+    /** positive quando a variação é boa; negative quando é ruim. */
+    deltaTone?: AdsCardVariationTone;
+    /** Datas do período (Métrica), como "01/12/2023 - 20/12/2023". */
+    period?: string;
+    periodLabel?: string;
+    /** Rótulo do comparativo (Métrica). Sem ele, o comparativo some. */
+    comparisonLabel?: string;
+    comparisonValue?: string;
+    /** Selo cinza ao lado do rótulo do comparativo, como "Set, Out e Nov". */
+    comparisonBadge?: string;
+    /** Rótulo e valor do comparativo na mesma linha, sem divisória. */
+    comparisonInline?: boolean;
+    /** Linha entre o valor e o comparativo empilhado. */
+    divider?: boolean;
+    /** Estado Selecionado: fundo azul claro, borda azul e sombra. */
+    selected?: boolean;
+    /** Estado Carregando: título e rótulos ficam; valores viram skeleton. */
+    loading?: boolean;
+    /** Estado Vazio. KPI e Pendência mostram "—" com a mensagem; Métrica mostra o empty state. */
     empty?: boolean;
+    emptyMessage?: string;
+    /** Texto de apoio do empty state da Métrica. */
+    emptyDescription?: string;
     /** `button` quando o cartão é a própria ação. */
     as?: "div" | "button";
     disabled?: boolean;
-    /** Realce de item escolhido, como um filtro ativo. */
-    selected?: boolean;
+    /** Hover padrão dos cards clicáveis: borda cinza mais escura e sombra leve. false desliga. */
+    hoverable?: boolean;
   }>(),
   {
+    type: "metric",
+    value: undefined,
     hint: undefined,
-    caption: undefined,
+    icon: undefined,
+    unit: undefined,
+    valueIcon: undefined,
+    delta: undefined,
+    deltaDirection: "up",
+    deltaTone: "positive",
+    period: undefined,
+    periodLabel: "Período:",
+    comparisonLabel: undefined,
+    comparisonValue: undefined,
+    comparisonBadge: undefined,
+    comparisonInline: false,
+    divider: true,
+    selected: false,
+    loading: false,
     empty: false,
+    emptyMessage: "Sem dados no período",
+    emptyDescription: undefined,
     as: "div",
     disabled: false,
-    selected: false,
+    hoverable: true,
   },
 );
 
-const slots = useSlots();
+const titleClass = "text-[length:var(--ads-font-size-xs)] leading-[1.3] text-[var(--ads-metric-label)]";
+const bigValueClass = "text-[length:var(--ads-font-size-md)] font-bold leading-[1.3] text-[var(--ads-metric-value)] tabular-nums";
+const emptyMessageClass = "text-[length:var(--ads-font-size-xxxs)] leading-[1.2] text-[var(--ads-text-secondary)]";
+const skeletonClass = "block animate-pulse bg-[var(--ads-loading-skeleton)] motion-reduce:animate-none";
 
-const radiusClass = "rounded-[var(--ads-metric-radius)]";
+const iconClass = computed(() =>
+  props.selected ? "text-[var(--ads-text-brand)]" : "text-[var(--ads-text-secondary)]",
+);
 
 const surfaceClass = computed(() => {
   const classes = [
     props.selected
-      ? "border-[var(--color-neutral-300)] bg-[var(--color-neutral-100)]"
+      ? "border-[var(--ads-card-selected-border)] bg-[var(--ads-card-selected-background)] shadow-[var(--ads-shadow-level-1)]"
       : "border-[var(--ads-metric-border)] bg-[var(--ads-metric-background)]",
   ];
 
   if (props.as === "button") {
     classes.push(
-      "cursor-pointer transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--ads-text-primary)] disabled:cursor-not-allowed disabled:opacity-50",
+      "cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--ads-border-focused)] disabled:cursor-not-allowed disabled:opacity-50",
     );
-    if (!props.selected && !props.disabled) {
-      classes.push("hover:bg-[var(--color-neutral-100)]");
+    if (props.hoverable && !props.selected && !props.disabled) {
+      classes.push("hover:border-[var(--ads-card-hover-border)] hover:shadow-[var(--ads-shadow-level-1)]");
     }
   }
 

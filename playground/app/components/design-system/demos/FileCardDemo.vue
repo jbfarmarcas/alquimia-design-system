@@ -19,6 +19,10 @@
         <AdsSegmentedTabs v-model="status" :items="fileStatusItems" aria-label="Status do arquivo" />
       </DocsParam>
       <AdsSwitch v-model="removable" label="Remover" />
+      <p class="text-sm leading-relaxed text-[var(--ads-text-secondary)]">
+        <strong>icon</strong> (só no código): no Figma, o ícone segue o status e não é trocável.
+        A prop existe para compatibilidade com código existente.
+      </p>
     </template>
   </DocsDemo>
 </template>

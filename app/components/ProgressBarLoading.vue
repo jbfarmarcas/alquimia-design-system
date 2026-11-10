@@ -1,39 +1,32 @@
 <template>
   <div :class="rootClass">
-    <div v-if="hasHeader" class="flex items-start gap-3">
-      <span
+    <div v-if="hasHeader" class="flex items-start gap-2">
+      <UIcon
         v-if="showIcon"
-        class="inline-flex size-10 shrink-0 items-center justify-center rounded-lg border border-primary-200 bg-primary-50"
-      >
-        <UIcon
-          :name="icon"
-          class="size-6 text-primary"
-          :class="{ 'animate-spin': spinIcon }"
-          aria-hidden="true"
-        />
-      </span>
-      <div class="min-w-0 flex-1">
-        <p v-if="title" class="font-semibold text-highlighted">{{ title }}</p>
-        <p
-          v-if="description"
-          class="text-sm text-muted"
-          :class="title ? 'mt-0.5' : ''"
-        >
-          {{ description }}
-        </p>
+        :name="resolvedIcon"
+        class="mt-px size-[18px] shrink-0"
+        :class="[
+          isSuccess ? 'text-[var(--ads-progress-success)]' : 'text-[var(--ads-progress-fill)]',
+          { 'animate-spin motion-reduce:animate-none': spinIcon && !isSuccess },
+        ]"
+        aria-hidden="true"
+      />
+      <div class="flex min-w-0 flex-1 flex-col gap-0.5 text-sm leading-[1.3]">
+        <p v-if="title" class="font-bold text-[var(--ads-text-primary)]">{{ title }}</p>
+        <p v-if="description" class="text-[var(--ads-text-secondary)]">{{ description }}</p>
       </div>
       <span
         v-if="reservePercentSlot"
-        class="shrink-0 text-sm font-medium tabular-nums text-highlighted"
-        :class="{ invisible: !isPercentVisible }"
-        :aria-hidden="!isPercentVisible"
+        class="shrink-0 text-sm leading-[1.3] font-medium tabular-nums text-[var(--ads-text-primary)]"
+        :class="{ invisible: !showPercent }"
+        :aria-hidden="!showPercent"
       >
-        {{ percentClamped }}%
+        {{ indeterminate ? "—" : `${percentClamped}%` }}
       </span>
     </div>
 
     <div
-      class="h-[var(--ads-progress-height)] w-full overflow-hidden rounded-[var(--ads-progress-radius)] bg-[var(--ads-progress-track)]"
+      class="relative h-[var(--ads-progress-height)] w-full overflow-hidden rounded-[var(--ads-progress-radius)] bg-[var(--ads-progress-track)]"
       role="progressbar"
       :aria-valuenow="indeterminate ? undefined : percentClamped"
       aria-valuemin="0"
@@ -43,54 +36,47 @@
     >
       <div
         v-if="indeterminate"
-        class="progress-bar-loading__indeterminate h-full rounded-full"
+        class="progress-bar-loading__indeterminate absolute inset-y-0 rounded-[var(--ads-progress-radius)]"
         :class="fillClass"
       />
       <div
         v-else
-        class="h-full rounded-full transition-[width] duration-300 ease-out"
+        class="h-full rounded-[var(--ads-progress-radius)] transition-[width] duration-300 ease-out"
         :class="fillClass"
         :style="{ width: `${percentClamped}%` }"
       />
     </div>
 
-    <div
+    <p
       v-if="reserveElapsedTimeSlot"
-      class="flex justify-end"
+      class="text-xs leading-[1.2] tabular-nums text-[var(--ads-text-secondary)]"
+      :class="{ invisible: !showElapsedTime }"
+      role="timer"
+      aria-live="off"
+      :aria-hidden="!showElapsedTime"
     >
-      <span
-        class="inline-flex items-center gap-1 font-mono text-xs tabular-nums text-muted"
-        :class="{ invisible: !showElapsedTime }"
-        role="timer"
-        aria-live="off"
-        :aria-hidden="!showElapsedTime"
-        :aria-label="`Tempo decorrido: ${elapsedDisplay}`"
-      >
-        <UIcon
-          name="i-lucide-timer"
-          class="size-3.5 text-muted"
-          aria-hidden="true"
-        />
-        {{ elapsedDisplay }}
-      </span>
-    </div>
+      Tempo decorrido: {{ elapsedDisplay }}
+    </p>
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 
-type ProgressBarLoadingVariant = "primary" | "success" | "error";
+type ProgressBarLoadingVariant = "primary" | "success";
 
 interface Props {
   title?: string;
   description?: string;
+  /** Ícone do andamento. No sucesso vira o check verde. */
   icon?: string;
   showIcon?: boolean;
   spinIcon?: boolean;
+  /** Sem percentual conhecido: mostra "—" e um trecho da barra que atravessa a trilha. */
   indeterminate?: boolean;
   percent?: number;
   showPercent?: boolean;
+  /** "Tempo decorrido: 00:42", abaixo da barra. */
   showElapsedTime?: boolean;
   ariaLabel?: string;
   variant?: ProgressBarLoadingVariant;
@@ -109,40 +95,36 @@ const props = withDefaults(defineProps<Props>(), {
   showElapsedTime: true,
   ariaLabel: "",
   variant: "primary",
-  rootClass: "flex flex-col gap-3",
+  rootClass: "flex w-full flex-col gap-3",
 });
 
 const percentClamped = computed(() =>
   Math.max(0, Math.min(100, Math.round(props.percent ?? 0))),
 );
 
-const fillClass = computed(() => {
-  if (props.variant === "success") return "bg-success-500";
-  if (props.variant === "error") return "bg-error-500";
-  return "bg-[var(--ads-progress-fill)]";
-});
+const isSuccess = computed(() => props.variant === "success");
+
+/** Em andamento: ícone de carregamento azul. Sucesso: check verde, como no Figma. */
+const resolvedIcon = computed(() => (isSuccess.value ? "i-lucide-circle-check" : props.icon));
+
+const fillClass = computed(() =>
+  isSuccess.value ? "bg-[var(--ads-progress-success)]" : "bg-[var(--ads-progress-fill)]",
+);
 
 const effectiveAriaLabel = computed(
   () => props.ariaLabel || props.title || "Carregando",
 );
 
-const isPercentVisible = computed(
-  () => Boolean(props.showPercent) && !props.indeterminate,
-);
-
 /**
- * Slots reservados de forma "sticky-true": uma vez que o slot é necessário (header,
- * timer ou percent), mantemos o nó renderizado para sempre. Isso evita que mudanças
- * de status (ex.: pipeline `uploading` → `success`, `indeterminate` → determinado,
- * `showElapsedTime` true → false) movam outros elementos no eixo Y.
- *
- * A alternância visual é feita apenas via `invisible` (mantém o espaço reservado).
+ * Slots reservados de forma "sticky-true": uma vez necessário (cabeçalho, tempo ou
+ * percentual), o nó fica renderizado. Assim a troca de estado não move nada no eixo Y;
+ * a alternância visual usa só `invisible`.
  */
 const computedHasHeader = () =>
   Boolean(props.showIcon) ||
   Boolean(props.title) ||
   Boolean(props.description) ||
-  (!props.indeterminate && Boolean(props.showPercent));
+  Boolean(props.showPercent);
 
 const hasHeader = ref(computedHasHeader());
 const reserveElapsedTimeSlot = ref(Boolean(props.showElapsedTime));
@@ -228,29 +210,26 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
+/* Indeterminado: trecho de 30% da trilha (no Figma, parado no meio) que atravessa a barra. */
 .progress-bar-loading__indeterminate {
-  width: 35%;
+  width: 30%;
   animation: progress-bar-loading-indeterminate 1.4s ease-in-out infinite;
-  transform-origin: left;
 }
 
 @keyframes progress-bar-loading-indeterminate {
   0% {
-    margin-inline-start: -35%;
+    left: -30%;
   }
-  60% {
-    margin-inline-start: 100%;
-  }
+
   100% {
-    margin-inline-start: 100%;
+    left: 100%;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .progress-bar-loading__indeterminate {
-    width: 100%;
+    left: 35%;
     animation: none;
-    opacity: 0.6;
   }
 }
 </style>

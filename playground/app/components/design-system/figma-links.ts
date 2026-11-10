@@ -60,7 +60,12 @@ export const figmaLinks = {
   ],
   input: [{ component: "AdsInput", figma: node("Input / Form", "5148:1338") }],
   "number-input": [
-    absent("AdsNumberInput", "Não há campo numérico no inventário. O visual parte do Input / Form.", true),
+    {
+      component: "AdsNumberInput",
+      figma: node("Input Number", "8947:322"),
+      related: [node("Input / Form", "5148:1338")],
+      note: "Figma: 🔄 Atualizado: Inputs. 6 estados: Default, Actived, Focus, Error, Disable, AI Mode.",
+    },
   ],
   "search-input": [{ component: "AdsSearchInput", figma: node("Input Search", "5148:1414") }],
   textarea: [
@@ -99,19 +104,25 @@ export const figmaLinks = {
       related: [node("_Itens Radio", "6507:8696")],
     },
   ],
-  tabs: [{ component: "AdsTabs", figma: node("Tabs", "3658:2419"), note: "A página Tabs está marcada com 🔴 no Figma." }],
+  tabs: [{ component: "AdsTabs", figma: node("Tabs", "3658:2419"), note: "Figma: 🔄 Atualizado: Tabs." }],
   "segmented-tabs": [
-    { component: "AdsSegmentedTabs", figma: node("Switch Tabs", "3611:5505"), note: "A página Tabs está marcada com 🔴 no Figma." },
+    { component: "AdsSegmentedTabs", figma: node("Switch Tabs", "3611:5505"), note: "Figma: 🔄 Atualizado: Tabs." },
   ],
   toast: [
     {
       component: "AdsToast",
-      figma: node("Toast", "3943:2086"),
-      related: [node("Status Toast", "3644:1955")],
-      note: "A aparência Reporte segue o Status Toast.",
+      figma: node("Toast Header", "3943:2086"),
+      related: [node("Toast Alert", "3644:1955")],
+      note: "A aparência faixa clara segue o Toast Header; reporte escuro segue o Toast Alert.",
     },
   ],
-  "file-card": [absent("AdsFileCard", "Não há card de arquivo no inventário.")],
+  "file-card": [
+    {
+      component: "AdsFileCard",
+      figma: node("File Card", "8949:116"),
+      note: "Figma: 🆕 Novo: Cards. O ícone segue o status e não é trocável no Figma.",
+    },
+  ],
   "empty-state": [{ component: "AdsEmptyState", figma: node("Empty State", "3645:2513") }],
   pagination: [
     { component: "AdsPagination", figma: node("Pagination", "5263:41719"), related: [node("_numbers", "5263:41696")] },
@@ -122,9 +133,21 @@ export const figmaLinks = {
     { component: "AdsCharttip", figma: node("Charttip", "6471:852"), related: [node("_Charttip", "3482:2533")] },
   ],
   smalltip: [{ component: "AdsSmalltip", figma: node("Smalltips", "4107:1816") }],
-  loading: [absent("AdsLoading", "Não há loading, skeleton nem shimmer no inventário.")],
+  loading: [
+    {
+      component: "AdsLoading",
+      figma: node("Loading", "8949:183"),
+      note: "Figma: 🆕 Novo: Loading. Variante Logo incluída. Props region e lines não existem no Figma: skeleton tem 3 linhas fixas.",
+    },
+  ],
   "overlay-loading": [absent("useOverlayLoading", "Não há overlay de processo no inventário.")],
-  "progress-bar-loading": [absent("ProgressBarLoading", "Não há barra de progresso no inventário.")],
+  "progress-bar-loading": [
+    {
+      component: "ProgressBarLoading",
+      figma: node("Progress Bar", "8950:310"),
+      note: "Figma: 🆕 Novo: Loading. Sem estado Erro. Estados: 0%, 25%, 50%, 75%, Indeterminado e Sucesso (100%).",
+    },
+  ],
   "table-skeleton": [
     {
       component: "AdsTableSkeleton",
@@ -140,8 +163,14 @@ export const figmaLinks = {
       note: "A prop mini segue o Mini_Badge.",
     },
   ],
-  broadcast: [{ component: "AdsBroadcast", figma: node("Broadcast", "3333:1973") }],
-  pill: [{ component: "AdsPill", figma: node("Pill", "3334:2006") }],
+  pill: [
+    {
+      component: "AdsPill",
+      figma: node("Pill", "3334:2006"),
+      related: [node("Small Pill", "6184:62"), node("Broadcast", "3333:1973")],
+      note: "Pill normal (size=md). A Small Pill do Figma (size=sm) é o mesmo componente em tamanho compacto.",
+    },
+  ],
   "notability-pill": [
     absent(
       "AdsNotabilityPill",
@@ -149,8 +178,6 @@ export const figmaLinks = {
       true,
     ),
   ],
-  "mini-pill": [{ component: "AdsMiniPill", figma: node("Mini Pill", "6184:62") }],
-  "farmarcas-pill": [{ component: "AdsFarmarcasPill", figma: node("Farmarcas Pill", "5307:479") }],
   switch: [{ component: "AdsSwitch", figma: node("Switch", "3249:814") }],
   checkbox: [{ component: "AdsCheckbox", figma: node("Checkbox", "5142:4992") }],
   radio: [{ component: "AdsRadio", figma: node("Radio", "5142:5104") }],
@@ -183,9 +210,36 @@ export const figmaLinks = {
       note: "Figma: 🆕 Novo: Stepper. Simples (barras) ou Visual (círculos com ícone ou número).",
     },
   ],
-  "feature-card": [absent("AdsFeatureCard", "Não há card no inventário.")],
-  card: [absent("AdsCard", "Não há card no inventário.")],
-  "metric-card": [absent("AdsMetricCard", "Não há card de métrica no inventário.")],
+  "feature-card": [absent("AdsFeatureCard", "Sem mapeamento no Figma: continua sem nó.")],
+  card: [
+    {
+      component: "AdsCard",
+      figma: node("Card Big Number", "8905:357"),
+      note: "Figma: 🆕 Novo: Cards. Tipos Container e Detalhes. Estados: Padrão, Selecionado, Carregando e Vazio.",
+    },
+  ],
+  "metric-card": [
+    {
+      component: "AdsMetricCard",
+      figma: node("Card Big Number", "8905:357"),
+      note: "Figma: 🆕 Novo: Cards. Tipos KPI e Métrica. Rótulo Body 16 Regular. Estados: Carregando e Vazio.",
+    },
+  ],
+  "panel-card": [
+    {
+      component: "AdsPanelCard",
+      figma: node("Card Painel", "8907:1080"),
+      note: "Figma: 🆕 Novo: Cards.",
+    },
+  ],
+  "dropdown-menu": [
+    {
+      component: "AdsDropdownMenu",
+      figma: node("Super dropdown", "8890:904"),
+      related: [node("_Dropdown Item", "8890:780")],
+      note: "Figma: 🔄 Atualizado: Select / Filter. Nó 8890:904 'Super dropdown' — componente Set que agrupa as variantes Simples e Checkbox. Não existe nó separado 'Dropdown Menu' neste arquivo.",
+    },
+  ],
   table: [
     {
       component: "AdsTable",
@@ -194,7 +248,7 @@ export const figmaLinks = {
         node("_Table Cell", "8869:2535"),
         node("_Table Header Cell", "8869:2327"),
       ],
-      note: "Figma: 🆕 Novo: Table. 8 tipos de célula em _Table Cell. Cabeçalho fixo × Colunas fixas.",
+      note: "Figma: 🆕 Novo: Table. 9 tipos de célula em _Table Cell. Cabeçalho fixo × Colunas fixas.",
     },
   ],
   "heavy-table": [

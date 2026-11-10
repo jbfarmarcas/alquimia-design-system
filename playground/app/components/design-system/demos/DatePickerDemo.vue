@@ -9,9 +9,14 @@
 
     <template #params>
       <div class="flex flex-wrap items-center gap-x-8 gap-y-4">
-        <AdsSwitch v-model="rangeOn" label="Período" />
-        <AdsSwitch v-model="aiOn" label="Sugestão de IA" />
+        <AdsSwitch v-model="rangeOn" label="Período (Day + Range)" />
+        <AdsSwitch v-model="aiOn" label="Sugestão de IA (só no código)" />
       </div>
+      <p class="text-xs leading-relaxed text-[var(--ads-text-secondary)]">
+        Modos suportados: <strong>Day</strong> (data única, padrão) e <strong>Day + Range</strong>
+        (período via <code>range</code>). O modo <strong>Year</strong> do Figma não está implementado
+        — apenas reporte.
+      </p>
     </template>
   </DocsDemo>
 </template>

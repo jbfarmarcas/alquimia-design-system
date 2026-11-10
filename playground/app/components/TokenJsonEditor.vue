@@ -119,7 +119,7 @@ const onKeydown = (event: KeyboardEvent) => {
 }
 
 .token-json-layer :deep(.tok-keyword) {
-  color: var(--ads-status-innovation-300);
+  color: var(--ads-text-ai);
 }
 
 .token-json-layer :deep(.tok-number) {

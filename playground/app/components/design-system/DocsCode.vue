@@ -84,7 +84,7 @@ onBeforeUnmount(() => {
 }
 
 .docs-code :deep(.tok-keyword) {
-  color: var(--ads-status-innovation-300);
+  color: var(--ads-text-ai);
 }
 
 .docs-code :deep(.tok-number) {

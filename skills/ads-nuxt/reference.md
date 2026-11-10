@@ -3,7 +3,7 @@
 > Gerado por `pnpm skill:reference` a partir de `app/components`. Não edite à mão.
 > Para o comportamento exato, leia o `.vue` em `node_modules/ads-nuxt/app/components/`.
 
-48 componentes. Todos são auto-importados pelo Nuxt.
+56 componentes. Todos são auto-importados pelo Nuxt.
 
 ## AdsBadge
 
@@ -20,7 +20,7 @@ Props:
 
 Tipos:
 ```ts
-type AdsBadgeColor = "primary" | "success" | "attention" | "warning" | "new" | "innovation" | "blocked";
+type AdsBadgeColor = "primary" | "success" | "attention" | "warning" | "new" | "blocked";
 ```
 
 ## AdsBroadcast
@@ -77,7 +77,7 @@ type AdsButtonSize = "md" | "sm";
 
 type AdsButtonState = "active" | "hover" | "pressed" | "disabled";
 
-type AdsButtonColor = "primary" | "success" | "attention" | "warning" | "new" | "innovation" | "blocked" | "neutral";
+type AdsButtonColor = "primary" | "success" | "attention" | "warning" | "new" | "blocked" | "neutral";
 ```
 
 Slots: `default`
@@ -135,23 +135,100 @@ Eventos:
 Props:
 ```ts
 {
-  /** Título em negrito. O slot header substitui. */
+  /**
+   * container: título, período e conteúdo livre no slot padrão.
+   * details: título maior e lista de informações (rows).
+   */
+  type?: AdsCardType;
+  /** O slot header substitui. */
   title?: string;
-  /** Texto de apoio. O slot padrão substitui. */
+  /** Texto do ícone de informação ao lado do título. */
+  hint?: string;
+  /** Datas do período, como "01/12/2023 - 20/12/2023". */
+  period?: string;
+  periodLabel?: string;
+  /** Linhas do card Detalhes. */
+  rows?: AdsCardRow[];
+  /** Texto de apoio abaixo do cabeçalho. Só no código: o Figma não tem. */
   description?: string;
-  /** Linha curta no rodapé. O slot footer substitui. */
+  /** Linha curta no rodapé. O slot footer substitui. Só no código: o Figma não tem. */
   footerText?: string;
-  /** `button` quando o cartão é a própria ação. */
-  as?: "div" | "button";
+  /**
+   * `button` quando o cartão é a própria ação. Também aceita um componente de link
+   * (como NuxtLink, com `to` passado direto no card): fica clicável como o botão.
+   */
+  as?: "div" | "button" | Component;
   disabled?: boolean;
-  /** Realce de item escolhido, como um filtro ativo. */
+  /** Hover padrão dos cards clicáveis: borda cinza mais escura e sombra leve. false desliga. */
+  hoverable?: boolean;
+  /** Estado Selecionado: fundo azul claro, borda azul e sombra. */
   selected?: boolean;
-  /** `sm` (8px) em cartões grandes; `md` (12px) é o padrão. */
+  /** `md` (12px) é o do Figma; `sm` (8px) é só no código. */
   radius?: "sm" | "md";
+  /** Estado Carregando: no container, o loader do Radar; no details, skeleton nas linhas. */
+  loading?: boolean;
+  /** Estado Vazio: mantém o cabeçalho e mostra o empty state. */
+  empty?: boolean;
+  emptyMessage?: string;
+  emptyDescription?: string;
 }
 ```
 
-Slots: `header`, `hint`, `actions`, `default`, `footer`
+Tipos:
+```ts
+type AdsCardType = "container" | "details";
+
+interface AdsCardRow {
+  /** Ícone Lucide de 16px. */
+  icon?: string;
+  /** Rótulo em negrito, como "Criado em:". */
+  label: string;
+  value: string;
+}
+```
+
+Slots: `header`, `actions`, `empty`, `empty-actions`, `default`, `footer`
+
+## AdsCardHint
+
+Props:
+```ts
+{
+  text: string;
+}
+```
+
+## AdsCardPeriod
+
+Props:
+```ts
+{
+  label: string;
+  value?: string;
+  tone?: "brand" | "neutral";
+  loading?: boolean;
+  /** Largura do skeleton do selo, em px. */
+  skeletonWidth?: number;
+}
+```
+
+## AdsCardVariation
+
+Props:
+```ts
+{
+  value: string;
+  direction?: AdsCardVariationDirection;
+  tone?: AdsCardVariationTone;
+}
+```
+
+Tipos:
+```ts
+type AdsCardVariationDirection = "up" | "down";
+
+type AdsCardVariationTone = "positive" | "negative";
+```
 
 ## AdsCharttip
 
@@ -219,12 +296,62 @@ Models: `v-model: string`, `v-model:start: string`, `v-model:end: string`
 Props:
 ```ts
 {
-  items: DropdownMenuItem[] | DropdownMenuItem[][];
+  /**
+   * Modo de operação.
+   * - `undefined` (padrão): wrapper de UDropdownMenu com DropdownMenuItems (API original).
+   * - `'simple'`: seleção única (radio).
+   * - `'checkbox'`: seleção múltipla.
+   */
+  mode?: "simple" | "checkbox";
+  /** Opções. Obrigatório quando mode está definido. */
+  options?: AdsDropdownMenuOption[];
+  /** Items do menu (API original). Obrigatório quando mode é undefined. */
+  items?: DropdownMenuItem[] | DropdownMenuItem[][];
+  /** Configuração do popover. */
   content?: {
     side?: "top" | "right" | "bottom" | "left";
     align?: "start" | "center" | "end";
     sideOffset?: number;
   };
+  /** Exibe campo de busca. */
+  searchable?: boolean;
+  /** Placeholder do campo de busca. */
+  searchPlaceholder?: string;
+  /** Mensagem quando nenhum resultado é encontrado. */
+  emptyLabel?: string;
+  /** Rótulo acessível da lista (aria-label). */
+  listLabel?: string;
+  /** Largura mínima do painel. */
+  minWidth?: string;
+}
+```
+
+Tipos:
+```ts
+interface AdsDropdownMenuOption {
+  value: string;
+  label: string;
+  /** Texto de apoio abaixo do rótulo. */
+  subtitle?: string;
+  /** Badge à direita da opção. */
+  badge?: AdsDropdownMenuBadge;
+  disabled?: boolean;
+}
+
+interface AdsDropdownMenuBadge {
+  label: string;
+  /** Estilo inline para a badge (ex.: { background: 'var(--ads-status-success-100)', color: 'var(--ads-status-success-800)' }). */
+  style?: Record<string, string>;
+}
+```
+
+Models: `v-model: string | string[]`
+
+Eventos:
+```ts
+{
+  /** Emitido quando o usuário confirma uma seleção (modo simple fecha o popover). */
+  pick: [value: string | string[]];
 }
 ```
 
@@ -247,41 +374,6 @@ Props:
 
 Slots: `default`
 
-## AdsFarmarcasPill
-
-Props:
-```ts
-{
-  department?: AdsFarmarcasDepartment;
-  label?: string;
-}
-```
-
-Tipos:
-```ts
-type AdsFarmarcasDepartment =
-| "expansao"
-| "eventos"
-| "adm-digital"
-| "sucesso"
-| "trade"
-| "dev"
-| "ti"
-| "padronizacao"
-| "diretoria"
-| "comercial"
-| "inovacao"
-| "patrimonio"
-| "presidencia"
-| "marketing"
-| "gg"
-| "bi"
-| "financeiro"
-| "juridico"
-| "capacitacao"
-| "produto";
-```
-
 ## AdsFeatureCard
 
 Props:
@@ -290,11 +382,13 @@ Props:
   title: string;
   description: string;
   icon: string;
-  /** Cor do ícone, da seta e da borda. Sem valor, fica na cor da marca. */
+  /** Cor da caixa do ícone. O hover é o padrão dos cards, igual para todas as cores. */
   color?: AdsFeatureCardColor;
   /** Vira link. Sem valor, continua botão. */
   to?: RouteLocationRaw;
   disabled?: boolean;
+  /** Hover padrão dos cards (borda e sombra neutras; a seta escurece). false desliga. */
+  hoverable?: boolean;
   badges?: AdsFeatureCardBadge[];
   footerIcon?: string;
   footerText?: string;
@@ -316,7 +410,7 @@ type AdsFeatureCardColor =
 | "warning"
 | "new"
 | "blocked"
-| "innovation";
+| "ai";
 ```
 
 Eventos:
@@ -336,8 +430,9 @@ Props:
   /** Linha de apoio, como o tamanho. */
   detail?: string;
   status?: AdsFileCardStatus;
-  /** Texto do problema, acima do arquivo. */
+  /** Texto do problema, acima do arquivo. Só aparece no erro. */
   message?: string;
+  /** Ícone Lucide. Padrão: planilha no sucesso, arquivo com X no erro. */
   icon?: string;
   removable?: boolean;
   removeLabel?: string;
@@ -444,9 +539,49 @@ Props:
 }
 ```
 
-## AdsHeavyTable
+## AdsHeavyAccountCell
 
-Na primeira coluna use `AdsHeavyAccountCell` (`row`, `label`) com `adsHeavyAccountColumn()`. Nos títulos use `AdsHeavyHeaderCell` (`label`, `column`, `sortColumn`). As subcolunas usam `adsHeavyColumn.value`, `.valueEnd` e `.projected`, e os grupos `adsHeavyColumn.period`. O botão de fixar pede `v-model:column-pinning`. `adsHeavyVariationClass(valor, { inverted, projected })` dá o tom da célula; `inverted` é para despesas.
+Props:
+```ts
+{
+  /** Linha do TanStack, recebida no slot da célula. */
+  row: {
+    depth: number;
+    index: number;
+    subRows: unknown[];
+    getIsExpanded: () => boolean;
+    toggleExpanded: () => void;
+  };
+  label: string;
+}
+```
+
+## AdsHeavyHeaderCell
+
+Props:
+```ts
+{
+  label: string;
+  /** Coluna do TanStack, recebida na função `header`. */
+  column?: AdsTableHeaderColumn;
+  /** Coluna que o título ordena, quando não é a própria (grupos). */
+  sortColumn?: AdsTableHeaderColumn;
+}
+```
+
+Tipos:
+```ts
+type AdsTableHeaderColumn = {
+  getCanSort: () => boolean;
+  getIsSorted: () => false | "asc" | "desc";
+  toggleSorting: () => void;
+  getCanPin: () => boolean;
+  getIsPinned: () => false | "left" | "right";
+  pin: (position: false | "left" | "right") => void;
+};
+```
+
+## AdsHeavyTable
 
 Props:
 ```ts
@@ -580,27 +715,31 @@ Props:
   /**
    * spinner: área ainda vazia.
    * skeleton: o formato da tela já é conhecido.
-   * shimmer: o conteúdo continua visível, por baixo.
+   * shimmer: bloco cinza com brilho; com `overlay`, brilho sobre o conteúdo.
+   * logo: símbolo do Radar, para a página ou uma seção inteira.
    */
   variant?: AdsLoadingVariant;
   /** sm na tabela, md na seção, lg no modal. */
   size?: AdsLoadingSize;
-  /** primary no dado da tela, muted numa tabela secundária. */
+  /** primary no dado principal, muted em áreas secundárias. */
   tone?: AdsLoadingTone;
-  /** Centraliza o spinner numa seção vazia. */
+  /** Centraliza o spinner ou o logo numa seção vazia. Só no código: o Figma não tem esse eixo. */
   region?: boolean;
+  /** Rótulo: à direita do spinner, acima do logo. */
   label?: string;
   /**
-   * Linhas do skeleton. Zero desenha um bloco só;
-   * altura e largura vêm da class.
+   * Linhas do skeleton. Zero desenha um bloco só; altura e largura vêm da class.
+   * Só no código: o Figma define 3 linhas fixas.
    */
   lines?: number;
+  /** Shimmer só com o brilho, por cima do conteúdo do pai. Só no código. */
+  overlay?: boolean;
 }
 ```
 
 Tipos:
 ```ts
-type AdsLoadingVariant = "spinner" | "skeleton" | "shimmer";
+type AdsLoadingVariant = "spinner" | "skeleton" | "shimmer" | "logo";
 
 type AdsLoadingSize = "sm" | "md" | "lg";
 
@@ -645,40 +784,63 @@ Eventos:
 Props:
 ```ts
 {
-  /** Rótulo acima do número. */
+  /**
+   * kpi: ícone grande, título e valor.
+   * pending: número em destaque com unidade, bom para cards selecionáveis.
+   * metric: período, valor com variação e comparativo.
+   */
+  type?: AdsMetricCardType;
   title: string;
-  /** Número ou frase principal. */
-  value: string;
-  /** Texto do ícone de ajuda ao lado do rótulo. */
+  /** Valor principal. */
+  value?: string;
+  /** Texto do ícone de informação ao lado do título. */
   hint?: string;
-  /** Linha curta abaixo do número, como o valor atual. */
-  caption?: string;
-  /** Valor ausente: 16px medium, cor tertiary. */
+  /** Ícone Lucide: 24px no KPI, 16px na Pendência. */
+  icon?: string;
+  /** Unidade ao lado do número na Pendência, como "pendências". */
+  unit?: string;
+  /** Ícone de 24px antes do valor na Métrica. */
+  valueIcon?: string;
+  /** Variação ao lado do valor (KPI e Métrica), como "1,15%". */
+  delta?: string;
+  deltaDirection?: AdsCardVariationDirection;
+  /** positive quando a variação é boa; negative quando é ruim. */
+  deltaTone?: AdsCardVariationTone;
+  /** Datas do período (Métrica), como "01/12/2023 - 20/12/2023". */
+  period?: string;
+  periodLabel?: string;
+  /** Rótulo do comparativo (Métrica). Sem ele, o comparativo some. */
+  comparisonLabel?: string;
+  comparisonValue?: string;
+  /** Selo cinza ao lado do rótulo do comparativo, como "Set, Out e Nov". */
+  comparisonBadge?: string;
+  /** Rótulo e valor do comparativo na mesma linha, sem divisória. */
+  comparisonInline?: boolean;
+  /** Linha entre o valor e o comparativo empilhado. */
+  divider?: boolean;
+  /** Estado Selecionado: fundo azul claro, borda azul e sombra. */
+  selected?: boolean;
+  /** Estado Carregando: título e rótulos ficam; valores viram skeleton. */
+  loading?: boolean;
+  /** Estado Vazio. KPI e Pendência mostram "—" com a mensagem; Métrica mostra o empty state. */
   empty?: boolean;
+  emptyMessage?: string;
+  /** Texto de apoio do empty state da Métrica. */
+  emptyDescription?: string;
   /** `button` quando o cartão é a própria ação. */
   as?: "div" | "button";
   disabled?: boolean;
-  /** Realce de item escolhido, como um filtro ativo. */
-  selected?: boolean;
-}
-```
-
-Slots: `status`, `delta`, `footer`, `default`
-
-## AdsMiniPill
-
-Props:
-```ts
-{
-  type?: AdsMiniPillType;
-  label?: string;
+  /** Hover padrão dos cards clicáveis: borda cinza mais escura e sombra leve. false desliga. */
+  hoverable?: boolean;
 }
 ```
 
 Tipos:
 ```ts
-type AdsMiniPillType = "nao-iniciado" | "pausado" | "novo";
+type AdsMetricCardType = "kpi" | "pending" | "metric";
 ```
+
+Slots: `actions`, `empty`, `empty-actions`
 
 ## AdsModal
 
@@ -856,25 +1018,68 @@ Eventos:
 }
 ```
 
+## AdsPanelCard
+
+Props:
+```ts
+{
+  /** O slot header substitui título e subtítulo. */
+  title?: string;
+  /** Texto do ícone de informação ao lado do título. */
+  hint?: string;
+  subtitle?: string;
+  /** Mostra os botões Gráfico e Tabela. Use com v-model:view. */
+  viewToggle?: boolean;
+  /** Estado Carregando: shimmer sobre o painel. Só no código: o Figma não tem. */
+  loading?: boolean;
+  /** `sm` (8px) é o do Figma; `md` (12px) é só no código. */
+  radius?: "sm" | "md";
+}
+```
+
+Models: `v-model:view: AdsPanelCardView`
+
+Slots: `header`, `actions`, `default`
+
 ## AdsPill
 
 Props:
 ```ts
 {
+  /**
+   * broadcast: a pílula de transmissão (LIVE), com borda e ponto. Só tem as cores
+   * warning e success; os outros status usam warning. Ignora tone e size.
+   */
+  variant?: AdsPillVariant;
   status?: AdsPillStatus;
   tone?: AdsPillTone;
+  /** `md` = Pill normal (24px). `sm` = Small Pill (18px). Default `md`. */
+  size?: AdsPillSize;
   label?: string;
+  /** Ícone à esquerda (Lucide). */
   icon?: string;
-  /** Classes do ícone, como o giro do carregamento. */
+  /** Classes do ícone à esquerda, como o giro do carregamento. */
   iconClass?: string;
+  /** Ícone opcional à direita (Lucide). */
+  trailingIcon?: string;
+  /**
+   * Override avançado de fundo e texto (classes Tailwind).
+   * Uso interno do atalho de domínio AdsNotabilityPill.
+   * Em produção, prefira esses atalhos em vez desta prop.
+   */
+  customSurface?: string;
 }
 ```
 
 Tipos:
 ```ts
-type AdsPillStatus = "default" | "success" | "attention" | "warning" | "new" | "blocked" | "innovation" | "neutral";
+type AdsPillStatus = "default" | "success" | "attention" | "warning" | "new" | "blocked";
 
 type AdsPillTone = "primary" | "secondary";
+
+type AdsPillSize = "md" | "sm";
+
+type AdsPillVariant = "default" | "broadcast";
 ```
 
 ## AdsProductTag
@@ -955,8 +1160,16 @@ Models: `v-model: string`
 Props:
 ```ts
 {
-  items: TabsItem[];
+  items: AdsSegmentedTabsItem[];
   ariaLabel?: string;
+}
+```
+
+Tipos:
+```ts
+interface AdsSegmentedTabsItem extends Omit<TabsItem, "slot"> {
+  /** Linha secundária abaixo do rótulo, em 12px regular. */
+  subtitle?: string;
 }
 ```
 
@@ -1126,8 +1339,12 @@ Props:
    * Passado para AdsTableSkeleton; ignorado quando #loading é passado via slot.
    */
   skeletonVariant?: AdsTableSkeletonVariant;
+  /** Altura e respiro da linha do skeleton, quando a tabela foge do padrão da densidade. */
+  skeletonCellSize?: string;
   /** Cabeçalho (e rodapé) fixos quando a tabela tem altura máxima. */
   sticky?: boolean | "header" | "footer";
+  /** Linha de 1px na borda da coluna fixa. */
+  pinnedEdge?: boolean;
   emptyLabel?: string;
   emptyIcon?: string;
   loadingLabel?: string;
@@ -1159,6 +1376,37 @@ type AdsTableUi = {
 
 Slots: `default`
 
+## AdsTableHeaderCell
+
+Props:
+```ts
+{
+  label: string;
+  /** Coluna do TanStack, recebida na função `header`. */
+  column?: AdsTableHeaderColumn;
+  /** Acompanha o conteúdo: pills ao centro, ações à direita. */
+  align?: keyof typeof JUSTIFY;
+  sortable?: boolean;
+  pinnable?: boolean;
+  /** Lado em que o botão fixa a coluna: left no início, right no final da tabela. */
+  pinSide?: "left" | "right";
+  /** Mantém o título só para leitor de tela, como na coluna de ações. */
+  hideLabel?: boolean;
+}
+```
+
+Tipos:
+```ts
+type AdsTableHeaderColumn = {
+  getCanSort: () => boolean;
+  getIsSorted: () => false | "asc" | "desc";
+  toggleSorting: () => void;
+  getCanPin: () => boolean;
+  getIsPinned: () => false | "left" | "right";
+  pin: (position: false | "left" | "right") => void;
+};
+```
+
 ## AdsTableSkeleton
 
 Props:
@@ -1174,12 +1422,18 @@ Props:
    * logo: loader do Radar centralizado na área da tabela.
    */
   variant?: AdsTableSkeletonVariant;
+  /** Alinhamento de cada coluna da tabela real. Sem cabeçalho próprio quando informado. */
+  columns?: AdsTableSkeletonAlign[];
+  /** Altura e respiro das células, iguais aos da linha de dados. Só com `columns`. */
+  cellClass?: string;
 }
 ```
 
 Tipos:
 ```ts
 type AdsTableSkeletonVariant = "skeleton" | "logo";
+
+type AdsTableSkeletonAlign = "left" | "center" | "right";
 ```
 
 ## AdsTableToolbar
@@ -1248,26 +1502,26 @@ Props:
 ```ts
 {
   status?: AdsToastStatus;
-  /** `banner` é a faixa clara. `status` é o reporte escuro (Figma Status Toast). */
+  /** `banner` é a faixa clara (Toast Header). `status` é o reporte escuro (Toast Alert). */
   appearance?: AdsToastAppearance;
   /** Faixa estreita de 331px, a variação `App` do ADS. */
   app?: boolean;
   message?: string;
+  /** Descrição complementar exibida abaixo da mensagem na faixa (banner). */
+  description?: string;
   title?: string;
   subtitle?: string;
   icon?: string;
   /** Quando falso, o aviso permanece sem a ação de fechar. */
   closable?: boolean;
-  /** Recuperação na própria faixa, como tentar de novo. */
+  /** Rótulo da ação em link. Sem valor, esconde o link. */
   actionLabel?: string;
-  /** Ícone da ação. Vazio esconde o ícone. */
-  actionIcon?: string;
 }
 ```
 
 Tipos:
 ```ts
-type AdsToastStatus = "primary" | "success" | "error" | "warning" | "neutral" | "loading";
+type AdsToastStatus = "success" | "error" | "warning" | "attention" | "neutral" | "loading";
 
 type AdsToastAppearance = "banner" | "status";
 ```
@@ -1328,12 +1582,15 @@ Props:
 {
   title?: string;
   description?: string;
+  /** Ícone do andamento. No sucesso vira o check verde. */
   icon?: string;
   showIcon?: boolean;
   spinIcon?: boolean;
+  /** Sem percentual conhecido: mostra "—" e um trecho da barra que atravessa a trilha. */
   indeterminate?: boolean;
   percent?: number;
   showPercent?: boolean;
+  /** "Tempo decorrido: 00:42", abaixo da barra. */
   showElapsedTime?: boolean;
   ariaLabel?: string;
   variant?: ProgressBarLoadingVariant;
@@ -1343,5 +1600,5 @@ Props:
 
 Tipos:
 ```ts
-type ProgressBarLoadingVariant = "primary" | "success" | "error";
+type ProgressBarLoadingVariant = "primary" | "success";
 ```

@@ -101,11 +101,14 @@ export const adsAttention = {
   500: "#e9a700",
   600: "#ce9300",
   700: "#ad7b00",
-  800: "#8f6600",
+  /** Atualizado em 05/11/2026: #8f6600 → #7a5600 (contraste 5,50:1 sobre attention-100). */
+  800: "#7a5600",
 } as const;
 
 /** Escala que era Gráfico C2. Cor principal Innovation. */
 export const adsInnovation = {
+  /** Primitiva nova: charts/data 2/50 = #F3F0FF (também surface/ai). */
+  50: "#f3f0ff",
   100: "#cabaff",
   200: "#b19aff",
   300: "#9e80ff",
@@ -309,20 +312,29 @@ export const adsSemantic = {
     main: adsNeutralLight[10],
     card: adsNeutralLight[0],
     brand: adsRadarPricing[500],
+    /** Novo em 05/11/2026: charts/data 2/50 = innovation/50 (#f3f0ff). */
+    ai: adsInnovation[50],
   },
   text: {
     primary: adsNeutralDark[900],
     secondary: adsNeutralMid[400],
-    tertiary: adsNeutralMid[70],
+    /** Alias de neutrals/mid/300 (#5e6c84). Uso: placeholder e texto terciário. */
+    tertiary: adsNeutralMid[300],
     brand: adsRadarPricing[500],
+    /** Novo em 05/11/2026: color/radar/600 (#074ac6). */
+    brandStrong: adsRadarPricing[600],
     disabled: adsRadarPricing[100],
     contrast: adsNeutralLight[0],
+    /** Novo em 05/11/2026: charts/data 2/600 = innovation/600 (#613dda). */
+    ai: adsInnovation[600],
   },
   border: {
     subtle: adsNeutralLight[50],
     focused: adsNeutralMid[200],
     icon: adsNeutralDark[500],
     iconSupport: adsNeutralMid[100],
+    /** Novo em 05/11/2026: color/neutrals/mid/100 (#7a869a). */
+    input: adsNeutralMid[100],
   },
   button: {
     primary: {
@@ -348,7 +360,7 @@ export const adsSemantic = {
   },
   chart: {
     data1: { 800: adsChart.c1[800], 400: adsChart.c1[400], 100: adsChart.c1[100] },
-    data2: { 800: adsChart.c2[800], 500: adsChart.c2[500], 100: adsChart.c2[100] },
+    data2: { 50: adsChart.c2[50], 800: adsChart.c2[800], 500: adsChart.c2[500], 100: adsChart.c2[100] },
     data3: { 800: adsChart.c3[800], 400: adsChart.c3[400], 100: adsChart.c3[100] },
     data4: { 800: adsChart.c4[800], 500: adsChart.c4[500], 100: adsChart.c4[100] },
     data5: { 800: adsChart.c5[800], 400: adsChart.c5[400], 100: adsChart.c5[100] },

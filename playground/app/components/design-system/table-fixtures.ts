@@ -217,7 +217,27 @@ export const demoHeavy: DemoHeavyRow[] = [
 
 // ─── Tipos de célula (_Table Cell) ──────────────────────────────────────────
 
-/** Linha de demo para os 8 tipos de célula do Figma. */
+/** Linha da tabela de exemplo do Figma (Lojas). */
+export type DemoMappedStoreRow = {
+  id: string;
+  store: string;
+  address: string;
+  mapped: boolean;
+  origin?: "Importado" | "Manual";
+};
+
+export const demoMappedStores: DemoMappedStoreRow[] = [
+  { id: "matriz", store: "Loja Matriz", address: "Rua Principal, 100 - Centro — Volta Redonda", mapped: true, origin: "Importado" },
+  { id: "centro", store: "Filial Centro", address: "Av. Central, 250 - Centro — Volta Redonda", mapped: true, origin: "Manual" },
+  { id: "aterrado", store: "Loja Aterrado", address: "Av. Lucas Evangelista, 500 - Aterrado — Volta Redonda", mapped: false },
+  { id: "shopping", store: "Loja Shopping", address: "Shopping Center - Loja 120 — Volta Redonda", mapped: false },
+  { id: "barra", store: "Loja Barra Mansa", address: "Rua Comercial, 78 - Centro — Barra Mansa", mapped: false },
+  { id: "vila", store: "Loja Vila Santa Cecília", address: "Rua 33, 410 - Vila — Volta Redonda", mapped: true, origin: "Importado" },
+  { id: "retiro", store: "Loja Retiro", address: "Av. Sávio Gama, 1200 - Retiro — Volta Redonda", mapped: false },
+  { id: "resende", store: "Loja Resende", address: "Av. Albino de Almeida, 55 - Campos Elíseos — Resende", mapped: true, origin: "Manual" },
+];
+
+/** Linha de demo para os 9 tipos de célula do Figma. */
 export type DemoCellTypeRow = {
   id: number;
   /** Tipo Texto */
@@ -234,6 +254,8 @@ export type DemoCellTypeRow = {
   /** Tipo Meta — primária + secundária */
   metaPrimary: string;
   metaSecondary: string;
+  /** Tipo Progresso, de 0 a 100 */
+  progress: number;
 };
 
 export const demoCellTypes: DemoCellTypeRow[] = [
@@ -247,6 +269,7 @@ export const demoCellTypes: DemoCellTypeRow[] = [
     linkLabel: "Ver detalhes",
     metaPrimary: "Dor e febre",
     metaSecondary: "Analgésico",
+    progress: 55,
   },
   {
     id: 2,
@@ -258,6 +281,7 @@ export const demoCellTypes: DemoCellTypeRow[] = [
     linkLabel: "Ver detalhes",
     metaPrimary: "Proteção solar",
     metaSecondary: "Dermocosméticos",
+    progress: 80,
   },
   {
     id: 3,
@@ -269,5 +293,6 @@ export const demoCellTypes: DemoCellTypeRow[] = [
     linkLabel: "Ver detalhes",
     metaPrimary: "Fraldas",
     metaSecondary: "Infantil",
+    progress: 20,
   },
 ];

@@ -169,12 +169,16 @@ export const adsLinkTabsUi = {
  * Trilha 37px em neutral-100 (Neutral Light 20, #F0F3F6), raio 4px, respiro 4px.
  * Item ativo com 30px.
  * Inativo: Inter 12 regular, #061938. Ativo: bold, preto, pill branca com sombra nível 1.
+ * Ícone opcional de 24px à esquerda; subtítulo opcional em 12 regular secundário, abaixo do rótulo.
  */
 export const adsSegmentedTabsUi = {
   root: "!w-auto shrink-0",
-  list: "!h-[var(--ads-segmented-height)] !w-auto !self-start !items-center !gap-1 !rounded-[var(--ads-segmented-radius)] !border-0 !bg-[var(--ads-segmented-track)] !p-1",
+  // Altura mínima do Figma; com ícone ou subtítulo, a aba cresce (8px em cima e embaixo).
+  list: "!h-auto !min-h-[var(--ads-segmented-height)] !w-auto !self-start !items-stretch !gap-1 !rounded-[var(--ads-segmented-radius)] !border-0 !bg-[var(--ads-segmented-track)] !p-1",
+  leadingIcon: "!size-6 shrink-0",
+  label: "flex flex-col items-start gap-0.5 text-left whitespace-nowrap",
   trigger:
-    "!h-[var(--ads-segmented-item-height)] !grow-0 !gap-3 !rounded-[var(--ads-segmented-radius)] !px-[var(--ads-segmented-padding-x)] !py-0 !text-[length:var(--ads-segmented-font-size)] !font-normal !leading-[var(--ads-line-height-sm)] !text-[var(--ads-segmented-text)] data-[state=inactive]:!text-[var(--ads-segmented-text)] data-[state=active]:!font-bold data-[state=active]:!text-[var(--ads-segmented-active-text)]",
+    "!h-auto !min-h-[var(--ads-segmented-item-height)] !grow-0 !gap-3 !rounded-[var(--ads-segmented-radius)] !px-[var(--ads-segmented-padding-x)] !py-2 !text-[length:var(--ads-segmented-font-size)] !font-normal !leading-[var(--ads-line-height-sm)] !text-[var(--ads-segmented-text)] data-[state=inactive]:!text-[var(--ads-segmented-text)] data-[state=active]:!font-bold data-[state=active]:!text-[var(--ads-segmented-active-text)]",
   indicator:
     "!rounded-[var(--ads-segmented-radius)] !bg-[var(--ads-segmented-active-bg)] !shadow-[var(--ads-shadow-level-1)]",
 } as const;

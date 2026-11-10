@@ -7,6 +7,7 @@
         icon="i-lucide-calculator"
         :color="featureColor"
         :disabled="disabled"
+        :hoverable="hoverable"
         :badges="badgesOn ? badges : undefined"
         :footer-text="footerOn ? 'Atualizada hoje' : undefined"
       />
@@ -23,6 +24,7 @@
       />
       <div class="flex flex-wrap items-center gap-x-8 gap-y-4">
         <AdsSwitch v-model="disabled" label="Em breve" />
+        <AdsSwitch v-model="hoverable" label="Hover" />
         <AdsSwitch v-model="badgesOn" label="Badges" />
         <AdsSwitch v-model="footerOn" label="Rodapé" />
       </div>
@@ -41,6 +43,7 @@ import AdsSwitch from "../../../../../app/components/AdsSwitch.vue";
 
 const featureColor = ref<AdsFeatureCardColor>("success");
 const disabled = ref(false);
+const hoverable = ref(true);
 const badgesOn = ref(true);
 const footerOn = ref(true);
 
@@ -56,7 +59,7 @@ const featureColorOptions = [
   { value: "warning", label: "Warning" },
   { value: "new", label: "New" },
   { value: "blocked", label: "Blocked" },
-  { value: "innovation", label: "Innovation" },
+  { value: "ai", label: "IA" },
 ];
 
 const code = computed(() =>
@@ -66,6 +69,7 @@ const code = computed(() =>
     attr(true, "icon", "i-lucide-calculator"),
     attr(featureColor.value !== "primary", "color", featureColor.value),
     attr(disabled.value, "disabled"),
+    attr(!hoverable.value, ":hoverable", "false"),
     attr(
       badgesOn.value,
       ":badges",

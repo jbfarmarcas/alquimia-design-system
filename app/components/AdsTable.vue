@@ -7,7 +7,12 @@
     :ui="tableUi"
   >
     <template v-if="!$slots.loading" #loading>
-      <AdsTableSkeleton :rows="skeletonRows" :variant="skeletonVariant" />
+      <AdsTableSkeleton
+        :rows="skeletonRows"
+        :variant="skeletonVariant"
+        :columns="skeletonColumns"
+        :cell-class="skeletonCellSize ?? adsTableCellSize(density)"
+      />
     </template>
 
     <template v-if="!$slots.empty" #empty>
@@ -28,10 +33,14 @@
 </template>
 
 <script setup lang="ts" generic="T extends TableData">
-import { computed, useSlots } from "vue";
+import { computed, useAttrs, useSlots } from "vue";
 import type { TableColumn, TableData } from "@nuxt/ui";
-import AdsTableSkeleton, { type AdsTableSkeletonVariant } from "./AdsTableSkeleton.vue";
+import AdsTableSkeleton, {
+  type AdsTableSkeletonAlign,
+  type AdsTableSkeletonVariant,
+} from "./AdsTableSkeleton.vue";
 import {
+  adsTableCellSize,
   buildAdsTableUi,
   type AdsTableBorders,
   type AdsTableDensity,
@@ -64,8 +73,12 @@ const props = withDefaults(
      * Passado para AdsTableSkeleton; ignorado quando #loading é passado via slot.
      */
     skeletonVariant?: AdsTableSkeletonVariant;
+    /** Altura e respiro da linha do skeleton, quando a tabela foge do padrão da densidade. */
+    skeletonCellSize?: string;
     /** Cabeçalho (e rodapé) fixos quando a tabela tem altura máxima. */
     sticky?: boolean | "header" | "footer";
+    /** Linha de 1px na borda da coluna fixa. */
+    pinnedEdge?: boolean;
     emptyLabel?: string;
     emptyIcon?: string;
     loadingLabel?: string;
@@ -81,7 +94,9 @@ const props = withDefaults(
     loading: false,
     skeletonRows: 5,
     skeletonVariant: "skeleton",
+    skeletonCellSize: undefined,
     sticky: false,
+    pinnedEdge: true,
     emptyLabel: "Nenhum registro encontrado",
     emptyIcon: "i-lucide-inbox",
     loadingLabel: undefined,
@@ -90,6 +105,28 @@ const props = withDefaults(
 );
 
 const slots = useSlots();
+const attrs = useAttrs();
+
+const leafColumns = (columns: TableColumn<T>[]): TableColumn<T>[] =>
+  columns.flatMap((column) =>
+    "columns" in column && column.columns?.length ? leafColumns(column.columns) : [column],
+  );
+
+const columnKey = (column: TableColumn<T>) =>
+  column.id ?? ("accessorKey" in column ? String(column.accessorKey) : "");
+
+/** Alinhamento das colunas visíveis, lido da mesma classe que alinha o dado. */
+const skeletonColumns = computed((): AdsTableSkeletonAlign[] => {
+  const hidden = (attrs.columnVisibility ?? attrs["column-visibility"] ?? {}) as Record<string, boolean>;
+  return leafColumns(props.columns)
+    .filter((column) => hidden[columnKey(column)] !== false)
+    .map((column) => {
+      const td = column.meta?.class?.td;
+      if (typeof td !== "string") return "left";
+      if (/\btext-right\b/.test(td)) return "right";
+      return /\btext-center\b/.test(td) ? "center" : "left";
+    });
+});
 
 const tableUi = computed(() => {
   const base = buildAdsTableUi({
@@ -98,10 +135,21 @@ const tableUi = computed(() => {
     framed: props.framed,
     borders: props.borders,
     depth: props.depth,
+    stickyHeader: props.sticky === true || props.sticky === "header",
+    pinnedEdge: props.pinnedEdge,
   });
   if (!slots.expanded) {
     // Árvore via getSubRows: o UTable sempre desenha a linha de detalhe da linha aberta.
     base.tbody = `${base.tbody} [&>tr[data-slot=tr]:not([data-selectable])]:hidden`;
+  }
+  if (props.loading && !props.data.length) {
+    // O skeleton já indica a carga; a barra do UTable é para recarga com dados na tela.
+    base.thead = `${base.thead} after:hidden`;
+    if (!slots.loading && props.skeletonVariant === "skeleton") {
+      // Tira a linha e a célula do caminho para as linhas do skeleton entrarem na grade.
+      base.tbody = `${base.tbody} [&>tr:has(>[data-slot=loading])]:contents`;
+      base.loading = "contents";
+    }
   }
   if (!props.ui) return base;
   const merged = { ...base };

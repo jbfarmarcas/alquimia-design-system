@@ -11,6 +11,7 @@
           :app="app"
           :closable="closable"
           :subtitle="appearance === 'status' ? 'Explicação opcional' : undefined"
+          :description="appearance === 'banner' && descriptionOn ? messages[status]?.description : undefined"
           :action-label="appearance === 'banner' && actionOn ? 'Tentar novamente' : undefined"
         />
       </div>
@@ -21,12 +22,13 @@
         <AdsSegmentedTabs v-model="appearance" :items="appearanceItems" aria-label="Aparência do toast" />
       </DocsParam>
       <DocsParam label="Status">
-        <AdsSegmentedTabs v-model="status" :items="statusItems" aria-label="Status do aviso" />
+        <AdsSegmentedTabs v-model="status" :items="statusItems(appearance)" aria-label="Status do aviso" />
       </DocsParam>
       <div v-if="appearance !== 'flutuante'" class="flex flex-wrap items-center gap-x-8 gap-y-4">
         <AdsSwitch v-if="appearance === 'banner'" v-model="app" label="Variação App" />
         <AdsSwitch v-model="closable" label="Fechar" />
-        <AdsSwitch v-if="appearance === 'banner'" v-model="actionOn" label="Ação" />
+        <AdsSwitch v-if="appearance === 'banner'" v-model="descriptionOn" label="Descrição" />
+        <AdsSwitch v-if="appearance === 'banner'" v-model="actionOn" label="Ação em link" />
       </div>
       <p v-else class="text-sm leading-relaxed text-[var(--ads-text-secondary)]">
         O toast flutuante usa useToast do Nuxt UI, com as cores de status do ADS.
@@ -36,7 +38,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import DocsDemo from "../DocsDemo.vue";
 import DocsParam from "../DocsParam.vue";
 import { docsApis } from "../catalog-docs";
@@ -53,6 +55,7 @@ const status = ref<AdsToastStatus>("error");
 const app = ref(false);
 const closable = ref(true);
 const actionOn = ref(false);
+const descriptionOn = ref(false);
 
 const appearanceItems = [
   { label: "Toast", value: "banner" },
@@ -60,32 +63,51 @@ const appearanceItems = [
   { label: "Flutuante", value: "flutuante" },
 ];
 
-const statusItems = [
-  { label: "Primário", value: "primary" },
+/** Status disponíveis por aparência. Banner não tem primary nem loading. */
+const bannerStatusItems = [
   { label: "Sucesso", value: "success" },
   { label: "Erro", value: "error" },
   { label: "Alerta", value: "warning" },
+  { label: "Atenção", value: "attention" },
   { label: "Neutro", value: "neutral" },
+];
+
+const statusStatusItems = [
+  { label: "Sucesso", value: "success" },
+  { label: "Erro", value: "error" },
+  { label: "Atenção", value: "warning" },
   { label: "Carga", value: "loading" },
 ];
 
+const statusItems = (ap: ToastAppearance) => {
+  if (ap === "status") return statusStatusItems;
+  if (ap === "flutuante") return bannerStatusItems;
+  return bannerStatusItems;
+};
+
+// Ajusta status quando aparência muda e o status atual não é compatível
+watch(appearance, (ap) => {
+  const allowed = statusItems(ap).map((i) => i.value);
+  if (!allowed.includes(status.value)) status.value = "error";
+});
+
 const messages: Record<AdsToastStatus, { title: string; description: string }> = {
-  primary: { title: "Pesquisa importada", description: "A conferência segue disponível no histórico." },
   success: { title: "Alteração salva", description: "O preço foi atualizado nesta praça." },
   error: { title: "Não foi possível salvar", description: "Tente novamente ou contate o suporte." },
   warning: { title: "Revise os dados", description: "Alguns produtos ficaram sem preço." },
+  attention: { title: "Atenção necessária", description: "Verifique os dados antes de prosseguir." },
   neutral: { title: "Lembrete", description: "A pesquisa vence em 3 dias." },
   loading: { title: "Carregando", description: "O reporte está em andamento." },
 };
 
 const toastColor = computed(() => (status.value === "loading" ? "primary" : status.value));
 
-/** Mesmo mapeamento do `AdsToast`: o botão usa as cores de status do ADS. */
+/** Mapeamento para AdsButton: warning/attention → attention; error → warning (vermelho). */
 const buttonColor = computed((): AdsButtonColor => {
   if (status.value === "loading") return "primary";
   if (status.value === "error") return "warning";
-  if (status.value === "warning") return "attention";
-  return status.value;
+  if (status.value === "warning" || status.value === "attention") return "attention";
+  return status.value as AdsButtonColor;
 });
 
 const language = computed(() => (appearance.value === "flutuante" ? "ts" : "vue"));
@@ -117,6 +139,7 @@ const code = computed(() => {
     attr(appearance.value === "status", "appearance", "status"),
     attr(true, "status", status.value),
     attr(appearance.value === "status", "subtitle", "Explicação opcional"),
+    attr(appearance.value === "banner" && descriptionOn.value, "description", messages[status.value]?.description),
     attr(appearance.value === "banner" && app.value, "app"),
     attr(!closable.value, ":closable", "false"),
     attr(appearance.value === "banner" && actionOn.value, "action-label", "Tentar novamente"),

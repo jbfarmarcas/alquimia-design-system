@@ -89,11 +89,11 @@
   <div v-else-if="id === 'broadcast'" class="flex flex-wrap gap-3">
     <div class="flex flex-col items-start gap-1.5">
       <span class="text-xs font-medium text-[var(--ads-text-secondary)]">warning</span>
-      <AdsBroadcast status="warning" label="ALERTA" />
+      <AdsPill variant="broadcast" status="warning" label="ALERTA" />
     </div>
     <div class="flex flex-col items-start gap-1.5">
       <span class="text-xs font-medium text-[var(--ads-text-secondary)]">success</span>
-      <AdsBroadcast status="success" label="AO VIVO" />
+      <AdsPill variant="broadcast" status="success" label="AO VIVO" />
     </div>
   </div>
 
@@ -106,9 +106,9 @@
   </div>
 
   <div v-else-if="id === 'mini'" class="flex flex-wrap gap-2">
-    <AdsMiniPill type="nao-iniciado" />
-    <AdsMiniPill type="pausado" />
-    <AdsMiniPill type="novo" />
+    <AdsPill size="sm" tone="secondary" status="default" label="Não iniciado" />
+    <AdsPill size="sm" tone="secondary" status="warning" label="Pausado" />
+    <AdsPill size="sm" tone="secondary" status="new" label="Novo" />
   </div>
 
   <div v-else-if="id === 'switch'" class="flex flex-col items-start gap-3">
@@ -189,16 +189,13 @@
     <span class="size-8 rounded-full bg-[var(--ads-funcional-warning-200)]" />
     <span class="size-8 rounded-full bg-[var(--ads-funcional-opportunity-200)]" />
   </div>
-  <div v-else-if="id === 'farmarcas'" class="flex flex-wrap justify-center gap-2">
-    <AdsFarmarcasPill department="expansao" />
-    <AdsFarmarcasPill department="marketing" />
-    <AdsFarmarcasPill department="ti" />
-  </div>
   <div v-else-if="id === 'metric'" class="w-full">
     <AdsMetricCard
       title="Receita simulada"
       value="R$ 7.392"
-      caption="Atual: R$ 7.570"
+      comparison-label="Atual:"
+      comparison-value="R$ 7.570"
+      comparison-inline
     />
   </div>
 </template>

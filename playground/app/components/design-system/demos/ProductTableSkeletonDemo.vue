@@ -1,8 +1,8 @@
 <template>
   <DocsDemo language="vue" :code="code" :apis="docsApis['table-skeleton']">
     <template #preview>
-      <div class="max-h-64 w-full overflow-hidden rounded-[var(--ads-radius-md)] border border-[var(--ads-border-subtle)] bg-white">
-        <AdsTableSkeleton :rows="rows" :variant="tableVariant" />
+      <div class="w-full overflow-x-auto">
+        <AdsTableSkeleton :rows="rows" :variant="tableVariant" class="min-w-[838px]" />
       </div>
     </template>
 

@@ -74,9 +74,9 @@
   --color-warning-500: #e9a700;
   --color-warning-600: #ce9300;
   --color-warning-700: #ad7b00;
-  --color-warning-800: #8f6600;
-  --color-warning-900: #8f6600;
-  --color-warning-950: #8f6600;
+  --color-warning-800: #7a5600;
+  --color-warning-900: #7a5600;
+  --color-warning-950: #7a5600;
 
   /* Error WA. 500 = WA-300 #ff507a, borda de input. */
   --color-error: #ff507a;
@@ -174,11 +174,11 @@
   --ads-surface-brand: #006ff7;
   --ads-text-primary: #061938;
   --ads-text-secondary: #505f79;
-  --ads-text-tertiary: #a5adba;
+  --ads-text-tertiary: #5e6c84; /* neutrals/mid/300; uso: placeholder e texto terciário */
   --ads-text-brand: #006ff7;
   --ads-text-disabled: #89c9ff;
   --ads-text-contrast: #ffffff;
-  --ads-border-subtle: #e5e8eb;
+  --ads-border-subtle: #e5e8eb; /* Figma borders/subtle (neutrals/light/30); atualizado em 10/11/2026 */
   --ads-border-focused: #6b778c;
   --ads-border-icon: #42526e;
   --ads-border-icon-support: #7a869a;
@@ -188,7 +188,7 @@
   --ads-status-warning-800: #840221;
   --ads-status-warning-500: #dc0034;
   --ads-status-warning-100: #ffbdcd;
-  --ads-status-attention-800: #8f6600;
+  --ads-status-attention-800: #7a5600; /* atualizado em 05/11/2026; contraste 5,50:1 sobre attention-100 */
   --ads-status-attention-500: #e9a700;
   --ads-status-attention-100: #ffe7b9;
   --ads-status-new-800: #006478;
@@ -237,6 +237,7 @@
   --ads-chart-data-2-800: #3c287c;
   --ads-chart-data-2-500: #7349ff;
   --ads-chart-data-2-100: #cabaff;
+  --ads-chart-data-2-50: #f3f0ff; /* primitiva nova: charts/data 2/50 */
   --ads-chart-data-3-800: #983a3a;
   --ads-chart-data-3-400: #f76565;
   --ads-chart-data-3-100: #ffb0b0;
@@ -246,6 +247,12 @@
   --ads-chart-data-5-800: #252c41;
   --ads-chart-data-5-400: #677bb6;
   --ads-chart-data-5-100: #a2baff;
+  /* Tokens semânticos novos (05/11/2026). */
+  --ads-text-brand-strong: #074ac6; /* radar/600 */
+  --ads-border-input: #7a869a; /* neutrals/mid/100 */
+  --ads-text-ai: #613dda; /* charts/data 2/600 */
+  --ads-surface-ai: #f3f0ff; /* charts/data 2/50 */
+
   /* MI-60. Borda do select desabilitado; o arquivo semântico não nomeia esse passo. */
   --ads-neutral-mid-60: #b3bac5;
 
@@ -273,8 +280,8 @@
   --color-info-950: #006478;
   --color-warning-200: #ffdc82;
   --color-warning-300: #ffca43;
-  --color-warning-900: #8f6600;
-  --color-warning-950: #8f6600;
+  --color-warning-900: #7a5600;
+  --color-warning-950: #7a5600;
   --color-error-300: #ff507a;
   --color-error-400: #ff507a;
   --color-error-900: #9e062a;
@@ -521,7 +528,7 @@
   .ads-date-range-panel .ads-date-picker [data-slot="gridRow"] > [data-slot="cell"] [data-slot="cellTrigger"]:not([data-selected]):not([data-highlighted]):not([data-disabled]):not([data-unavailable]):not(
       [data-outside-view]
     ):hover {
-    background-color: var(--color-ads-radar-pricing-25);
+    background-color: var(--color-ads-radar-25);
   }
 
   .ads-date-range-panel .ads-date-picker [data-slot="gridRow"] > [data-slot="cell"] [data-slot="cellTrigger"][data-selection-start]:not([data-outside-view]),

@@ -5,7 +5,7 @@
       <AdsProductTag v-if="product" :product="product" :label="productLabel" />
     </div>
     <div class="flex items-center gap-2">
-      <AdsBroadcast v-if="showBroadcast" />
+      <AdsPill v-if="showBroadcast" variant="broadcast" status="warning" />
       <button
         v-for="action in actions"
         :key="action.id"
@@ -26,7 +26,7 @@
 
 <script setup lang="ts">
 import radarUrl from "../assets/brand/radar.svg?url";
-import AdsBroadcast from "./AdsBroadcast.vue";
+import AdsPill from "./AdsPill.vue";
 import AdsProductTag, { type AdsProductTagName } from "./AdsProductTag.vue";
 
 export type AdsNavbarDeskAction = {

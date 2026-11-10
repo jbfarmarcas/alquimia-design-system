@@ -1,6 +1,6 @@
 <!--
   Demo do catálogo para AdsTable.
-  Cobre: cabeçalho fixo, colunas fixas, linhas zebradas, 8 tipos de célula,
+  Cobre: cabeçalho fixo, colunas fixas, linhas zebradas, 9 tipos de célula,
   carregamento com AdsTableSkeleton e estado vazio.
   Cascas Lista/Grade e depth/árvore existem no código mas não são documentadas aqui.
 -->
@@ -11,10 +11,15 @@
       <DocsParam label="Variante">
         <AdsSegmentedTabs v-model="variant" :items="variantItems" aria-label="Variante" />
       </DocsParam>
+      <DocsParam v-if="variant === 'loading'" label="Estilo">
+        <AdsSegmentedTabs v-model="skeletonVariant" :items="skeletonItems" aria-label="Estilo do carregamento" />
+      </DocsParam>
+      <DocsParam v-if="variant === 'standard'" label="Colunas fixas">
+        <AdsSegmentedTabs v-model="pinMode" :items="pinItems" aria-label="Colunas fixas" />
+      </DocsParam>
       <DocsParam v-if="variant === 'standard'" label="Opções">
         <div class="flex flex-wrap gap-4">
           <AdsSwitch v-model="sticky" label="Cabeçalho fixo" />
-          <AdsSwitch v-model="pinned" label="Coluna fixa" />
           <AdsSwitch v-model="striped" label="Zebrado" />
         </div>
       </DocsParam>
@@ -22,24 +27,76 @@
 
     <!-- Preview: tabela padrão -->
     <div v-if="variant === 'standard'">
-      <p class="mb-2 text-sm font-bold text-[var(--ads-text-primary)]">Tabela padrão</p>
       <AdsTable
-        :data="specimenRows"
-        :columns="specimenColumns"
+        v-model:column-pinning="pinning"
+        :data="demoMappedStores"
+        :columns="columns"
         :sticky="sticky ? 'header' : false"
-        :column-pinning="pinned ? { left: ['store'] } : undefined"
         :striped="striped"
-        class="max-h-48"
+        :class="sticky ? 'max-h-[370px]' : ''"
       >
         <template #store-cell="{ row }">
-          <span class="font-bold text-[var(--ads-text-primary)]">{{ row.original.store }}</span>
+          <span class="flex items-center gap-3">
+            <span class="flex size-8 shrink-0 items-center justify-center rounded-[var(--ads-radius-sm)] bg-[var(--ads-button-secondary)]">
+              <UIcon name="i-lucide-store" class="size-[18px] text-[var(--ads-text-brand)]" aria-hidden="true" />
+            </span>
+            <span class="flex min-w-0 flex-1 flex-col gap-0.5 text-[var(--ads-text-secondary)]">
+              <span class="truncate font-bold">{{ row.original.store }}</span>
+              <span :class="[SUBTEXT, 'truncate']">{{ row.original.address }}</span>
+            </span>
+          </span>
+        </template>
+
+        <template #status-cell="{ row }">
+          <AdsPill
+            tone="secondary"
+            :status="row.original.mapped ? 'success' : 'attention'"
+            :label="row.original.mapped ? '4 Concorrentes mapeados' : 'Pendente'"
+          />
+        </template>
+
+        <template #origin-cell="{ row }">
+          <AdsPill
+            v-if="row.original.origin"
+            tone="secondary"
+            :status="row.original.origin === 'Manual' ? 'warning' : 'default'"
+            :label="row.original.origin"
+          />
+        </template>
+
+        <template #updated-cell="{ row }">
+          <span v-if="row.original.mapped" class="inline-flex items-center gap-1 whitespace-nowrap" :class="SUBTEXT">
+            <UIcon name="i-lucide-clock" class="size-4" aria-hidden="true" />
+            Atualizado há 2 dias
+          </span>
+        </template>
+
+        <template #action-cell="{ row }">
+          <a
+            v-if="row.original.mapped"
+            href="#"
+            class="inline-flex items-center gap-1 whitespace-nowrap text-[length:var(--ads-font-size-xxxs)] leading-[var(--ads-line-height-sm)] font-bold text-[var(--ads-text-brand)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            :aria-label="`Ver detalhes de ${row.original.store}`"
+            @click.prevent
+          >
+            Ver detalhes
+            <UIcon name="i-lucide-chevron-right" class="size-4" aria-hidden="true" />
+          </a>
+          <AdsButton
+            v-else
+            type="secondary"
+            leading
+            icon="i-lucide-sparkle"
+            label="Mapear"
+            :aria-label="`Mapear ${row.original.store}`"
+          />
         </template>
       </AdsTable>
     </div>
 
-    <!-- Preview: 8 tipos de célula -->
+    <!-- Preview: tipos de célula -->
     <div v-else-if="variant === 'cell-types'">
-      <p class="mb-2 text-sm font-bold text-[var(--ads-text-primary)]">8 tipos de célula</p>
+      <p class="mb-2 text-sm font-bold text-[var(--ads-text-primary)]">9 tipos de célula</p>
       <div class="overflow-x-auto">
         <TableCellTypesPane />
       </div>
@@ -48,7 +105,7 @@
     <!-- Preview: loading -->
     <div v-else-if="variant === 'loading'">
       <p class="mb-2 text-sm font-bold text-[var(--ads-text-primary)]">Carregamento com AdsTableSkeleton</p>
-      <AdsTable :data="[]" :columns="specimenColumns" loading :skeleton-rows="4" />
+      <AdsTable :data="[]" :columns="columns" loading :skeleton-rows="4" :skeleton-variant="skeletonVariant" />
       <p class="mt-3 text-sm text-[var(--ads-text-secondary)]">
         Passe <code class="rounded bg-neutral-100 px-1 font-mono text-xs">:loading="true"</code>
         e <code class="rounded bg-neutral-100 px-1 font-mono text-xs">:skeleton-rows="n"</code>.
@@ -59,7 +116,7 @@
     <!-- Preview: estado vazio -->
     <div v-else-if="variant === 'empty'">
       <p class="mb-2 text-sm font-bold text-[var(--ads-text-primary)]">Estado vazio</p>
-      <AdsTable :data="[]" :columns="specimenColumns" />
+      <AdsTable :data="[]" :columns="columns" />
     </div>
 
     <!-- Referência -->
@@ -68,22 +125,34 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, h, ref, watch } from "vue";
 import type { TableColumn } from "@nuxt/ui";
 import DocsParam from "../DocsParam.vue";
 import DocsReference from "../DocsReference.vue";
 import { docsApis } from "../catalog-docs";
 import TableCellTypesPane from "../TableCellTypesPane.vue";
+import { demoMappedStores, type DemoMappedStoreRow } from "../table-fixtures";
+import AdsButton from "../../../../../app/components/AdsButton.vue";
+import AdsPill from "../../../../../app/components/AdsPill.vue";
 import AdsSegmentedTabs from "../../../../../app/components/AdsSegmentedTabs.vue";
 import AdsSwitch from "../../../../../app/components/AdsSwitch.vue";
 import AdsTable from "../../../../../app/components/AdsTable.vue";
+import AdsTableHeaderCell from "../../../../../app/components/AdsTableHeaderCell.vue";
+import { adsTablePinned } from "../../../../../app/utils/ads-table";
 
-type DemoRow = { store: string; q1: string; q2: string; q3: string; total: string };
+const SUBTEXT =
+  "text-[length:var(--ads-font-size-xxxs)] leading-[var(--ads-line-height-sm)] text-[var(--ads-text-secondary)]";
 
 const variant = ref<"standard" | "cell-types" | "loading" | "empty">("standard");
-const sticky = ref(true);
-const pinned = ref(true);
-const striped = ref(false);
+const pinMode = ref<"none" | "first" | "both">("first");
+const sticky = ref(false);
+const striped = ref(true);
+const skeletonVariant = ref<"skeleton" | "logo">("skeleton");
+
+const skeletonItems = [
+  { label: "Skeleton", value: "skeleton" },
+  { label: "Logo", value: "logo" },
+];
 
 const variantItems = [
   { label: "Padrão", value: "standard" },
@@ -92,22 +161,52 @@ const variantItems = [
   { label: "Vazio", value: "empty" },
 ];
 
-const fmtPct = (n: number) => (n % 1 === 0 ? String(n) : String(n).replace(".", ","));
+const pinItems = [
+  { label: "Nenhuma", value: "none" },
+  { label: "Primeira", value: "first" },
+  { label: "Primeira e última", value: "both" },
+];
 
-const specimenRows: DemoRow[] = Array.from({ length: 8 }, (_, i) => ({
-  store: `Loja ${String.fromCharCode(65 + i)}`,
-  q1: `${fmtPct(90 + i * 2)}%`,
-  q2: `${fmtPct(88 + i * 1.5)}%`,
-  q3: `${fmtPct(92 + i * 1.8)}%`,
-  total: `${fmtPct(91 + i * 1.5)}%`,
-}));
+const pinningFor = (mode: typeof pinMode.value) => ({
+  left: mode === "none" ? [] : ["store"],
+  right: mode === "both" ? ["action"] : [],
+});
 
-const specimenColumns: TableColumn<DemoRow>[] = [
-  { id: "store", accessorKey: "store", header: "Loja", meta: { class: { th: "min-w-40", td: "min-w-40" } } },
-  { accessorKey: "q1", header: "Q1 (%)", meta: { class: { th: "min-w-28 text-right", td: "min-w-28 text-right tabular-nums" } } },
-  { accessorKey: "q2", header: "Q2 (%)", meta: { class: { th: "min-w-28 text-right", td: "min-w-28 text-right tabular-nums" } } },
-  { accessorKey: "q3", header: "Q3 (%)", meta: { class: { th: "min-w-28 text-right", td: "min-w-28 text-right tabular-nums" } } },
-  { accessorKey: "total", header: "Total (%)", meta: { class: { th: "min-w-28 text-right", td: "min-w-28 text-right tabular-nums" } } },
+const pinning = ref(pinningFor(pinMode.value));
+watch(pinMode, (mode) => {
+  pinning.value = pinningFor(mode);
+});
+
+const pinnedStore = adsTablePinned(380);
+const pinnedAction = adsTablePinned(160, { class: { td: "text-right" } });
+
+const columns: TableColumn<DemoMappedStoreRow>[] = [
+  {
+    id: "store",
+    header: ({ column }) => h(AdsTableHeaderCell, { column, label: "Loja Própria", pinnable: true }),
+    ...pinnedStore,
+  },
+  {
+    id: "status",
+    header: ({ column }) => h(AdsTableHeaderCell, { column, label: "Status de Mapeamento", align: "center" }),
+    meta: { class: { th: "min-w-55", td: "min-w-55 text-center" } },
+  },
+  {
+    id: "origin",
+    header: ({ column }) => h(AdsTableHeaderCell, { column, label: "Origem", align: "center" }),
+    meta: { class: { th: "min-w-40", td: "min-w-40 text-center" } },
+  },
+  {
+    id: "updated",
+    header: ({ column }) => h(AdsTableHeaderCell, { column, label: "Última Atualização" }),
+    meta: { class: { th: "min-w-50", td: "min-w-50" } },
+  },
+  {
+    id: "action",
+    header: ({ column }) =>
+      h(AdsTableHeaderCell, { column, label: "Ação", hideLabel: true, align: "right", pinnable: true, pinSide: "right" }),
+    ...pinnedAction,
+  },
 ];
 
 const code = computed(() => {
@@ -119,8 +218,7 @@ const code = computed(() => {
   }
   if (variant.value === "cell-types") {
     return `<!-- Tipos de célula são definidos nos slots da coluna: -->
-<!-- 1.Texto (accessorKey) · 2.Ícone+Texto · 3.Pill · 4.Botão -->
-<!-- 5.Link · 6.Meta · 7.Ações (adsTableColumn.action) · 8.Combinado -->
+<!-- Texto · Ícone + Texto · Pill · Botão · Link · Meta · Ações · Combinado · Progresso -->
 <AdsTable :data="rows" :columns="cols">
   <template #status-cell="{ row }">
     <AdsPill tone="secondary" :status="row.original.status" />
@@ -132,8 +230,15 @@ const code = computed(() => {
   }
   const attrs: string[] = [];
   if (sticky.value) attrs.push('sticky="header"');
-  if (pinned.value) attrs.push(':column-pinning="{ left: [\'store\'] }"');
+  if (pinMode.value !== "none") attrs.push('v-model:column-pinning="pinning"');
   if (striped.value) attrs.push("striped");
-  return `<AdsTable :data="rows" :columns="cols"${attrs.length ? "\n  " + attrs.join("\n  ") : ""} />`;
+  return `<AdsTable :data="rows" :columns="cols"${attrs.length ? "\n  " + attrs.join("\n  ") : ""} />
+
+// Título com ordenar e fixar, ligados por coluna
+{
+  id: "store",
+  header: ({ column }) => h(AdsTableHeaderCell, { column, label: "Loja", pinnable: true }),
+  ...adsTablePinned(380),
+}`;
 });
 </script>

@@ -21,7 +21,7 @@
           class="size-[var(--ads-side-badge)] shrink-0 rounded-full bg-[var(--ads-funcional-opportunity-200)]"
           aria-hidden="true"
         />
-        <AdsMiniPill v-if="item.pill" type="novo" :label="item.pill" />
+        <AdsPill v-if="item.pill" size="sm" tone="secondary" status="new" :label="item.pill" />
         <UIcon
           v-if="item.children?.length"
           name="i-lucide-chevron-down"
@@ -40,7 +40,7 @@
       >
         <UIcon :name="child.icon || 'i-lucide-sun'" class="size-4 shrink-0 text-ads-neutro-escuro-500" />
         <span class="line-clamp-2 min-w-0 flex-1 text-xs font-bold leading-[1.2] text-[var(--ads-text-secondary)]">{{ child.label }}</span>
-        <AdsMiniPill v-if="child.pill" type="novo" :label="child.pill" />
+        <AdsPill v-if="child.pill" size="sm" tone="secondary" status="new" :label="child.pill" />
       </component>
     </template>
   </nav>
@@ -50,7 +50,7 @@
 import { ref } from "vue";
 import type { RouteLocationRaw } from "vue-router";
 import { NuxtLink } from "#components";
-import AdsMiniPill from "./AdsMiniPill.vue";
+import AdsPill from "./AdsPill.vue";
 
 export type AdsSideMenuItem = {
   id: string;

@@ -72,7 +72,7 @@ import { computed, ref, watch } from "vue";
 import DocsDemo from "../DocsDemo.vue";
 import DocsParam from "../DocsParam.vue";
 import { docsApis } from "../catalog-docs";
-import { attr, buildTag } from "../../../utils/code-builder";
+import { attr, buildSfc, buildTag, toLiteral } from "../../../utils/code-builder";
 import AdsStepper from "../../../../../app/components/AdsStepper.vue";
 import AdsSegmentedTabs from "../../../../../app/components/AdsSegmentedTabs.vue";
 import AdsSwitch from "../../../../../app/components/AdsSwitch.vue";
@@ -140,6 +140,20 @@ watch(stepCount, () => {
 });
 
 const code = computed(() =>
+  buildSfc(
+    `import { ref } from "vue";\n\nconst currentStep = ref(${currentStep.value});\nconst steps = ${toLiteral(
+      // O rótulo sempre entra: sem showLabels, ele vira o nome acessível do passo.
+      steps.value.map((step) => ({
+        label: step.label,
+        description: variant.value === "visual" ? step.description : undefined,
+        icon: variant.value === "visual" && indicator.value === "icon" ? step.icon : undefined,
+      })),
+    )};`,
+    stepperTag.value,
+  ),
+);
+
+const stepperTag = computed(() =>
   buildTag("AdsStepper", [
     attr(true, "v-model", "currentStep"),
     attr(true, ":steps", "steps"),

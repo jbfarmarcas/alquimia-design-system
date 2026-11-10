@@ -39,12 +39,14 @@
     :loading="loading"
     :skeleton-rows="skeletonRows"
     :skeleton-variant="skeletonVariant"
+    :skeleton-cell-size="adsHeavyCellSize(density)"
     :sticky="sticky"
     :framed="framed"
     :density="density"
     :striped="false"
     :borders="borders"
     :depth="false"
+    :pinned-edge="false"
     :empty-label="emptyLabel"
     :empty-icon="emptyIcon"
     :loading-label="loadingLabel"
@@ -63,6 +65,7 @@ import type { TableColumn, TableData } from "@nuxt/ui";
 import AdsTable from "./AdsTable.vue";
 import type { AdsTableSkeletonVariant } from "./AdsTableSkeleton.vue";
 import {
+  adsHeavyCellSize,
   buildAdsHeavyTableUi,
   type AdsTableBorders,
   type AdsTableDensity,

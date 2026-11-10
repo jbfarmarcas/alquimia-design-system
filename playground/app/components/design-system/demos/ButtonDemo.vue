@@ -94,13 +94,14 @@ const typeItems = [
   { label: "IA", value: "ia" },
 ];
 
+// Nota: "color" é uma prop só no código — o Figma não tem eixo de cor.
+// O tipo IA usa text/ai e surface/ai (sem color).
 const colorOptions = [
   { value: "primary", label: "Primary" },
   { value: "success", label: "Success" },
   { value: "attention", label: "Attention" },
   { value: "warning", label: "Warning" },
   { value: "new", label: "New" },
-  { value: "innovation", label: "Innovation" },
   { value: "blocked", label: "Blocked" },
   { value: "neutral", label: "Neutral" },
 ];
