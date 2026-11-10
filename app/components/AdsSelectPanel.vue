@@ -6,10 +6,10 @@
 -->
 <template>
   <div
-    class="flex flex-col overflow-hidden rounded-[var(--ads-radius-sm)] border border-[var(--ads-border-subtle)] bg-[var(--ads-surface-card)] shadow-[var(--ads-shadow-level-1)]"
+    class="flex flex-col overflow-hidden rounded-[var(--ads-radius-sm)] border border-[var(--ads-select-panel-border)] bg-[var(--ads-surface-card)] shadow-[var(--ads-shadow-level-1)]"
     :class="widthClass"
   >
-    <div v-if="searchable" class="border-b border-[var(--ads-border-subtle)] px-4 pt-4 pb-3">
+    <div v-if="searchable" class="border-b border-[var(--ads-select-divider)] px-4 pt-4 pb-3">
       <UInput
         v-model="query"
         :placeholder="searchPlaceholder"
@@ -43,7 +43,7 @@
 
     <div
       v-else
-      class="max-h-[var(--ads-dropdown-max-height,320px)] overflow-y-auto overscroll-contain [scrollbar-color:var(--color-ads-neutro-claro-50)_transparent] [scrollbar-width:thin]"
+      class="max-h-[var(--ads-select-panel-max-height)] overflow-y-auto overscroll-contain [scrollbar-color:var(--color-ads-neutro-claro-50)_transparent] [scrollbar-width:thin]"
       :role="type === 'radio' ? 'listbox' : 'group'"
       :aria-label="listLabel"
     >
@@ -96,7 +96,7 @@ const props = withDefaults(
     emptyLabel?: string;
     searchPlaceholder?: string;
     listLabel?: string;
-    /** Largura do painel. O Figma usa 320px. */
+    /** Largura do painel. Padrão: --ads-select-panel-width (320px). */
     widthClass?: string;
   }>(),
   {
@@ -106,7 +106,7 @@ const props = withDefaults(
     emptyLabel: "Nenhum resultado",
     searchPlaceholder: "Pesquisar",
     listLabel: "Opções",
-    widthClass: "w-[320px] max-w-full",
+    widthClass: "w-[var(--ads-select-panel-width)] max-w-full",
   },
 );
 

@@ -139,7 +139,7 @@ const props = withDefaults(
     aiSuggestion?: boolean;
     /** Mostra só a lista, sem gatilho nem popover. */
     inline?: boolean;
-    /** Largura da lista. O Figma usa 320px. */
+    /** Largura da lista. Padrão: --ads-select-panel-width (320px). */
     panelWidthClass?: string;
   }>(),
   {
@@ -155,7 +155,7 @@ const props = withDefaults(
     block: false,
     aiSuggestion: false,
     inline: false,
-    panelWidthClass: "w-[320px] max-w-full",
+    panelWidthClass: "w-[var(--ads-select-panel-width)] max-w-full",
   },
 );
 

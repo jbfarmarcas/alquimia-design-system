@@ -6,7 +6,7 @@
 <template>
   <button
     type="button"
-    class="relative flex min-h-12 w-full items-center gap-3 p-4 text-left transition-colors focus-visible:outline-none"
+    class="relative flex min-h-12 w-full items-center gap-3 p-[var(--ads-select-item-padding)] text-left transition-colors focus-visible:outline-none"
     :class="[surfaceClass, divider ? dividerClass : '']"
     :disabled="disabled"
     :role="mode === 'checkbox' ? 'checkbox' : 'option'"
@@ -104,12 +104,12 @@ const checkedState = computed(() => {
 });
 
 const dividerClass =
-  "after:pointer-events-none after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-[var(--ads-border-subtle)]";
+  "after:pointer-events-none after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-[var(--ads-select-divider)]";
 
 const surfaceClass = computed(() => {
   if (props.disabled) return "cursor-not-allowed bg-[var(--ads-surface-card)]";
-  if (props.mode === "radio" && props.selected) return "bg-[var(--ads-button-secondary)]";
-  return "bg-[var(--ads-surface-card)] hover:bg-ads-neutro-claro-20 focus-visible:bg-ads-neutro-claro-20";
+  if (props.mode === "radio" && props.selected) return "bg-[var(--ads-select-item-selected)]";
+  return "bg-[var(--ads-surface-card)] hover:bg-[var(--ads-select-item-hover)] focus-visible:bg-[var(--ads-select-item-hover)]";
 });
 
 const titleClass = computed(() => {
@@ -120,7 +120,7 @@ const titleClass = computed(() => {
 
 const badgeClass = computed(() => {
   if (props.disabled) return "text-[var(--ads-text-tertiary)]";
-  return props.badge?.tone === "ai" ? "text-[var(--ads-text-ai)]" : "text-[var(--ads-text-brand)]";
+  return props.badge?.tone === "ai" ? "text-[var(--ads-select-badge-ai)]" : "text-[var(--ads-select-badge)]";
 });
 
 /** Selo de IA usa sparkles quando não vem ícone. */

@@ -12,6 +12,8 @@ export type TokenComponent = {
   id: string;
   /** Id da seção na página de tokens e no menu. */
   section: string;
+  /** Id da seção do catálogo (catalog-sections.ts). O menu de tokens segue os grupos do catálogo. */
+  catalog: string;
   label: string;
   note?: string;
   fields: readonly TokenField[];
@@ -53,6 +55,7 @@ export const componentTokenCatalog: readonly TokenComponent[] = [
   {
     id: "button",
     section: "botao",
+    catalog: "button",
     label: "Botão",
     note: "Outline, unfilled e as cores de status continuam nos tokens semânticos. O tipo IA usa fundo, borda e brilho próprios; o texto usa --ads-text-ai.",
     fields: [
@@ -93,8 +96,9 @@ export const componentTokenCatalog: readonly TokenComponent[] = [
   {
     id: "input",
     section: "campo",
-    label: "Campo",
-    note: "Vale para o AdsInput. O estado de IA usa os tokens do botão IA (--ads-button-ia-background e --ads-button-ia-border), também nos campos de busca e filtro.",
+    catalog: "input",
+    label: "Input",
+    note: "Vale para o AdsInput. O estado de IA usa os tokens do botão IA (--ads-button-ia-background e --ads-button-ia-border), também nos campos de busca e no AdsSelect.",
     fields: [
       length("--ads-input-height", "Altura", "Medida", "40px"),
       length("--ads-input-padding-x", "Padding horizontal", "Medida", "12px"),
@@ -116,6 +120,7 @@ export const componentTokenCatalog: readonly TokenComponent[] = [
   {
     id: "number",
     section: "numero",
+    catalog: "number-input",
     label: "Número",
     fields: [
       length("--ads-number-height", "Altura", "Medida", "40px"),
@@ -138,6 +143,7 @@ export const componentTokenCatalog: readonly TokenComponent[] = [
   {
     id: "search",
     section: "busca",
+    catalog: "search-input",
     label: "Busca",
     fields: [
       length("--ads-search-sm-height", "Altura SM", "Medida", "40px"),
@@ -159,6 +165,7 @@ export const componentTokenCatalog: readonly TokenComponent[] = [
   {
     id: "textarea",
     section: "texto",
+    catalog: "textarea",
     label: "Texto longo",
     fields: [
       length("--ads-textarea-min-height", "Altura mínima", "Medida", "153px"),
@@ -180,6 +187,7 @@ export const componentTokenCatalog: readonly TokenComponent[] = [
   {
     id: "date",
     section: "data",
+    catalog: "date-picker",
     label: "Data",
     fields: [
       length("--ads-date-height", "Altura", "Medida", "40px"),
@@ -200,9 +208,11 @@ export const componentTokenCatalog: readonly TokenComponent[] = [
     ],
   },
   {
-    id: "filter",
-    section: "filtro",
-    label: "Filtro",
+    id: "select",
+    section: "select",
+    catalog: "select",
+    label: "Select",
+    note: "Campo (Select), lista (Super dropdown) e itens (_Dropdown Item) do AdsSelect. Os tokens do campo mantêm o prefixo --ads-filter.",
     fields: [
       length("--ads-filter-height", "Altura", "Medida", "40px"),
       length("--ads-filter-padding-x", "Padding horizontal", "Medida", "12px"),
@@ -218,11 +228,21 @@ export const componentTokenCatalog: readonly TokenComponent[] = [
       color("--ads-filter-disabled-border", "Borda desabilitada", "Cores", "#b3bac5"),
       color("--ads-filter-disabled-background", "Fundo desabilitado", "Cores", "#f0f3f6"),
       color("--ads-filter-disabled-text", "Texto desabilitado", "Cores", "#a5adba"),
+      length("--ads-select-panel-width", "Largura da lista", "Lista", "320px"),
+      length("--ads-select-panel-max-height", "Altura máxima da lista", "Lista", "320px"),
+      length("--ads-select-item-padding", "Padding do item", "Lista", "16px"),
+      color("--ads-select-panel-border", "Borda da lista", "Lista", "#e5e8eb"),
+      color("--ads-select-divider", "Divisória", "Lista", "#e5e8eb"),
+      color("--ads-select-item-hover", "Item no hover", "Lista", "#f0f3f6"),
+      color("--ads-select-item-selected", "Item selecionado (simples)", "Lista", "#e4f2ff"),
+      color("--ads-select-badge", "Selo", "Lista", "#006ff7"),
+      color("--ads-select-badge-ai", "Selo de IA", "Lista", "#613dda"),
     ],
   },
   {
     id: "tabs",
     section: "abas",
+    catalog: "tabs",
     label: "Abas",
     fields: [
       length("--ads-tabs-height", "Altura", "Medida", "39px"),
@@ -239,7 +259,8 @@ export const componentTokenCatalog: readonly TokenComponent[] = [
   {
     id: "segmented",
     section: "segmentadas",
-    label: "Abas segmentadas",
+    catalog: "segmented-tabs",
+    label: "Segmented",
     fields: [
       length("--ads-segmented-height", "Altura da trilha", "Medida", "37px"),
       length("--ads-segmented-item-height", "Altura do item", "Medida", "30px"),
@@ -255,7 +276,8 @@ export const componentTokenCatalog: readonly TokenComponent[] = [
   {
     id: "toast",
     section: "aviso",
-    label: "Aviso",
+    catalog: "toast",
+    label: "Toast",
     fields: [
       length("--ads-toast-radius", "Raio", "Medida", "8px"),
       length("--ads-toast-padding", "Padding", "Medida", "12px"),
@@ -288,6 +310,7 @@ export const componentTokenCatalog: readonly TokenComponent[] = [
   {
     id: "file",
     section: "arquivo",
+    catalog: "file-card",
     label: "Arquivo",
     fields: [
       length("--ads-file-min-height", "Altura mínima", "Medida", "64px"),
@@ -302,6 +325,7 @@ export const componentTokenCatalog: readonly TokenComponent[] = [
   {
     id: "tooltip",
     section: "tooltip",
+    catalog: "tooltip",
     label: "Tooltip",
     fields: [
       length("--ads-tooltip-radius", "Raio", "Medida", "12px"),
@@ -323,7 +347,8 @@ export const componentTokenCatalog: readonly TokenComponent[] = [
   {
     id: "loading",
     section: "carregando",
-    label: "Carregando",
+    catalog: "loading",
+    label: "Loading",
     fields: [
       length("--ads-loading-radius", "Raio do skeleton", "Medida", "4px"),
       length("--ads-loading-bar", "Linha do skeleton médio", "Medida", "12px"),
@@ -338,7 +363,8 @@ export const componentTokenCatalog: readonly TokenComponent[] = [
   {
     id: "progress",
     section: "progresso",
-    label: "Progresso",
+    catalog: "progress-bar-loading",
+    label: "Barra de progresso",
     fields: [
       length("--ads-progress-height", "Altura", "Medida", "8px"),
       length("--ads-progress-radius", "Raio", "Medida", "4px"),
@@ -350,6 +376,7 @@ export const componentTokenCatalog: readonly TokenComponent[] = [
   {
     id: "badge",
     section: "badge",
+    catalog: "badge",
     label: "Badge",
     note: "O fundo de cada cor continua na escala de status. Aqui ficam a medida e o texto.",
     fields: [
@@ -361,23 +388,9 @@ export const componentTokenCatalog: readonly TokenComponent[] = [
     ],
   },
   {
-    id: "broadcast",
-    section: "broadcast",
-    label: "Broadcast",
-    fields: [
-      length("--ads-broadcast-height", "Altura", "Medida", "24px"),
-      length("--ads-broadcast-padding-x", "Padding horizontal", "Medida", "8px"),
-      length("--ads-broadcast-font-size", "Fonte", "Medida", "12px"),
-      length("--ads-broadcast-mark", "Marca", "Medida", "8px"),
-      color("--ads-broadcast-warning-bg", "Fundo de alerta", "Cores", "#ffbdcd"),
-      color("--ads-broadcast-warning", "Alerta", "Cores", "#dc0034"),
-      color("--ads-broadcast-success-bg", "Fundo de sucesso", "Cores", "#c3ffe6"),
-      color("--ads-broadcast-success", "Sucesso", "Cores", "#15c57e"),
-    ],
-  },
-  {
     id: "pill",
     section: "pill",
+    catalog: "pill",
     label: "Pill",
     note: "Os outros status continuam no mapa de cor da pill. O editor muda a medida e o primário.",
     fields: [
@@ -393,7 +406,8 @@ export const componentTokenCatalog: readonly TokenComponent[] = [
   {
     id: "notability",
     section: "notabilidade",
-    label: "Notabilidade",
+    catalog: "notability-pill",
+    label: "Pill de notabilidade",
     note: "As cores seguem o status. Aqui ficam a medida e o tipo.",
     fields: [
       length("--ads-notability-height", "Altura", "Medida", "24px"),
@@ -404,8 +418,26 @@ export const componentTokenCatalog: readonly TokenComponent[] = [
     ],
   },
   {
+    id: "broadcast",
+    section: "broadcast",
+    catalog: "pill",
+    label: "Pill broadcast",
+    note: "Variante broadcast do AdsPill (variant=\"broadcast\"). O AdsBroadcast é um atalho para ela.",
+    fields: [
+      length("--ads-broadcast-height", "Altura", "Medida", "24px"),
+      length("--ads-broadcast-padding-x", "Padding horizontal", "Medida", "8px"),
+      length("--ads-broadcast-font-size", "Fonte", "Medida", "12px"),
+      length("--ads-broadcast-mark", "Marca", "Medida", "8px"),
+      color("--ads-broadcast-warning-bg", "Fundo de alerta", "Cores", "#ffbdcd"),
+      color("--ads-broadcast-warning", "Alerta", "Cores", "#dc0034"),
+      color("--ads-broadcast-success-bg", "Fundo de sucesso", "Cores", "#c3ffe6"),
+      color("--ads-broadcast-success", "Sucesso", "Cores", "#15c57e"),
+    ],
+  },
+  {
     id: "mini",
     section: "mini",
+    catalog: "pill",
     label: "Mini pill",
     fields: [
       length("--ads-mini-height", "Altura", "Medida", "18px"),
@@ -423,6 +455,7 @@ export const componentTokenCatalog: readonly TokenComponent[] = [
   {
     id: "switch",
     section: "switch",
+    catalog: "switch",
     label: "Switch",
     fields: [
       length("--ads-switch-width", "Largura", "Medida", "32px"),
@@ -443,6 +476,7 @@ export const componentTokenCatalog: readonly TokenComponent[] = [
   {
     id: "checkbox",
     section: "checkbox",
+    catalog: "checkbox",
     label: "Checkbox",
     fields: [
       length("--ads-checkbox-size", "Tamanho", "Medida", "16px"),
@@ -460,6 +494,7 @@ export const componentTokenCatalog: readonly TokenComponent[] = [
   {
     id: "radio",
     section: "radio",
+    catalog: "radio",
     label: "Radio",
     fields: [
       length("--ads-radio-size", "Tamanho", "Medida", "16px"),
@@ -477,6 +512,7 @@ export const componentTokenCatalog: readonly TokenComponent[] = [
   {
     id: "modal",
     section: "modal",
+    catalog: "modal",
     label: "Modal",
     fields: [
       length("--ads-modal-radius", "Raio", "Medida", "8px"),
@@ -492,6 +528,7 @@ export const componentTokenCatalog: readonly TokenComponent[] = [
   {
     id: "feature",
     section: "feature",
+    catalog: "feature-card",
     label: "Feature card",
     fields: [
       length("--ads-feature-width", "Largura", "Medida", "396px"),
@@ -506,6 +543,7 @@ export const componentTokenCatalog: readonly TokenComponent[] = [
   {
     id: "card",
     section: "card",
+    catalog: "card",
     label: "Card",
     fields: [
       length("--ads-card-padding", "Padding", "Medida", "16px"),
@@ -524,7 +562,8 @@ export const componentTokenCatalog: readonly TokenComponent[] = [
   {
     id: "metric",
     section: "metric",
-    label: "Métrica",
+    catalog: "metric-card",
+    label: "Card de métrica",
     fields: [
       length("--ads-metric-padding", "Padding", "Medida", "16px"),
       length("--ads-metric-radius", "Raio", "Medida", "12px"),
@@ -541,6 +580,7 @@ export const componentTokenCatalog: readonly TokenComponent[] = [
   {
     id: "menu",
     section: "menu",
+    catalog: "menu-bar",
     label: "Menu bar",
     fields: [
       length("--ads-menu-width", "Largura", "Medida", "100px"),
@@ -555,6 +595,7 @@ export const componentTokenCatalog: readonly TokenComponent[] = [
   {
     id: "navbar-app",
     section: "navbar-app",
+    catalog: "navbar-app",
     label: "Navbar app",
     fields: [
       length("--ads-navbar-app-height", "Altura", "Medida", "88px"),
@@ -568,6 +609,7 @@ export const componentTokenCatalog: readonly TokenComponent[] = [
   {
     id: "navbar-desk",
     section: "navbar-desk",
+    catalog: "navbar-desk",
     label: "Navbar desk",
     fields: [
       length("--ads-navbar-desk-height", "Altura", "Medida", "64px"),
@@ -580,6 +622,7 @@ export const componentTokenCatalog: readonly TokenComponent[] = [
   {
     id: "side",
     section: "menu-lateral",
+    catalog: "side-menu",
     label: "Menu lateral",
     fields: [
       length("--ads-side-width", "Largura", "Medida", "224px"),
@@ -593,6 +636,7 @@ export const componentTokenCatalog: readonly TokenComponent[] = [
   {
     id: "footer",
     section: "footer",
+    catalog: "footer",
     label: "Footer",
     fields: [
       length("--ads-footer-min-height", "Altura mínima", "Medida", "32px"),
@@ -603,6 +647,7 @@ export const componentTokenCatalog: readonly TokenComponent[] = [
   {
     id: "product-tag",
     section: "product-tag",
+    catalog: "product-tag",
     label: "Tag de produto",
     fields: [
       length("--ads-product-tag-height", "Altura", "Medida", "16px"),
@@ -612,6 +657,7 @@ export const componentTokenCatalog: readonly TokenComponent[] = [
   {
     id: "button-group",
     section: "grupo",
+    catalog: "button-group",
     label: "Grupo de botões",
     fields: [
       length("--ads-button-group-height", "Altura", "Medida", "30px"),
@@ -623,7 +669,8 @@ export const componentTokenCatalog: readonly TokenComponent[] = [
   {
     id: "button-menu",
     section: "menu-botao",
-    label: "Menu do botão",
+    catalog: "button-menu",
+    label: "Menu de botão",
     fields: [
       length("--ads-button-menu-width", "Largura", "Medida", "264px"),
       length("--ads-button-menu-title-size", "Fonte do título", "Medida", "16px"),
@@ -636,6 +683,7 @@ export const componentTokenCatalog: readonly TokenComponent[] = [
   {
     id: "pagination",
     section: "paginacao",
+    catalog: "pagination",
     label: "Paginação",
     fields: [
       length("--ads-pagination-cell", "Célula", "Medida", "24px"),
@@ -648,6 +696,7 @@ export const componentTokenCatalog: readonly TokenComponent[] = [
   {
     id: "empty",
     section: "vazio",
+    catalog: "empty-state",
     label: "Empty state",
     fields: [
       length("--ads-empty-icon", "Ícone", "Medida", "90px"),
@@ -664,8 +713,9 @@ export const componentTokenCatalog: readonly TokenComponent[] = [
   {
     id: "funcional",
     section: "funcional",
-    label: "Funcional",
-    note: "Cores do arquivo de componentes sem degrau na escala publicada. O badge do menu lateral usa opportunity 200. A borda de erro do filtro repete warning 200.",
+    catalog: "cores",
+    label: "Cores funcionais",
+    note: "Cores do arquivo de componentes sem degrau na escala publicada. O badge do menu lateral usa opportunity 200. A borda de erro do AdsSelect repete warning 200.",
     fields: [
       color("--ads-funcional-warning-200", "Warning 200", "Cores", "#ff6783"),
       color("--ads-funcional-opportunity-200", "Opportunity 200", "Cores", "#0ebbda"),

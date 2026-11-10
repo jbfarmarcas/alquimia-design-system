@@ -100,19 +100,19 @@ import DesignSystemFrame from "../../components/DesignSystemFrame.vue";
 import {
   PREVIEW_STYLE_ID,
   allTokenFields,
-  componentTokenCatalog,
   componentTokenDefaults,
   componentTokensCss,
   tokenValueValid,
   type TokenComponent,
 } from "../../../../app/theme/component-tokens";
+import { orderedTokenComponents } from "../../components/design-system/token-sections";
 
 definePageMeta({
   name: "design-system-tokens",
   layout: "design-system",
 });
 
-const sections = componentTokenCatalog.map((component) => ({
+const sections = orderedTokenComponents.map((component) => ({
   id: component.section,
   label: component.label,
 }));
@@ -120,14 +120,14 @@ const sections = componentTokenCatalog.map((component) => ({
 const route = useRoute();
 const sectionFromHash = () => {
   const id = route.hash.replace(/^#/, "");
-  return sections.some((section) => section.id === id) ? id : "botao";
+  return sections.some((section) => section.id === id) ? id : sections[0]!.id;
 };
 
 const activeId = ref(sectionFromHash());
 const shownId = ref(activeId.value);
 const current = computed(() =>
-  componentTokenCatalog.find((component) => component.section === shownId.value)
-  ?? componentTokenCatalog[0],
+  orderedTokenComponents.find((component) => component.section === shownId.value)
+  ?? orderedTokenComponents[0]!,
 );
 
 watch(activeId, (value, previous) => {

@@ -230,7 +230,7 @@ export const docsApis = {
   "month-picker": [
     {
       name: "AdsMonthPicker",
-      summary: "Grade de meses, 290×284. O filtro de mês embute esta peça.",
+      summary: "Grade de meses, 290×284. O AdsSelect com type month embute esta peça.",
       props: [
         prop("v-model", "string", '""', "Mês no formato AAAA-MM."),
       ],

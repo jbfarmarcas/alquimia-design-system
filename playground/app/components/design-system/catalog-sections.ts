@@ -81,7 +81,7 @@ export const catalogSections = [
     id: "month-picker",
     label: "Mês",
     group: "Campos",
-    purpose: "Grade de meses, 290×284. O filtro de mês embute esta peça.",
+    purpose: "Grade de meses, 290×284. O AdsSelect com type month embute esta peça.",
     components: ["AdsMonthPicker"],
   },
   {

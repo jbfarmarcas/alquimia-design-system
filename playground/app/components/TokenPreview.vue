@@ -33,7 +33,7 @@
     <AdsMonthPicker v-model="month" />
   </div>
 
-  <div v-else-if="id === 'filter'">
+  <div v-else-if="id === 'select'" class="flex w-full flex-col items-start gap-4">
     <AdsSelect
       v-model="filter"
       type="checkbox"
@@ -41,6 +41,7 @@
       placeholder="Selecione"
       :options="filterOptions"
     />
+    <AdsSelect v-model="listValue" type="radio" :options="filterOptions" searchable inline />
   </div>
 
   <div v-else-if="id === 'tabs'" class="w-full">
@@ -176,9 +177,6 @@
   <div v-else-if="id === 'button-menu'">
     <AdsButtonMenu :options="menuOptions" />
   </div>
-  <div v-else-if="id === 'list'" class="w-full">
-    <AdsSelect v-model="listValue" type="radio" :options="filterOptions" searchable inline />
-  </div>
   <div v-else-if="id === 'pagination'">
     <AdsPagination v-model:page="page" :total-pages="8" />
   </div>
@@ -234,8 +232,10 @@ const sideItems = [
 ];
 
 const filterOptions = [
-  { label: "Rede Norte", value: "norte" },
-  { label: "Rede Sul", value: "sul" },
+  { label: "Rede Norte", value: "norte", subtitle: "12 lojas", badge: { label: "Novo!" } },
+  { label: "Rede Sul", value: "sul", subtitle: "8 lojas" },
+  { label: "Rede Leste", value: "leste", subtitle: "5 lojas", badge: { label: "Sugestão Inteligente", tone: "ai" as const } },
+  { label: "Rede Oeste", value: "oeste", subtitle: "Sem lojas ativas", disabled: true },
 ];
 
 const tabItems = [

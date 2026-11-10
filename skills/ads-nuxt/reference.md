@@ -1041,7 +1041,7 @@ Props:
   aiSuggestion?: boolean;
   /** Mostra só a lista, sem gatilho nem popover. */
   inline?: boolean;
-  /** Largura da lista. O Figma usa 320px. */
+  /** Largura da lista. Padrão: --ads-select-panel-width (320px). */
   panelWidthClass?: string;
 }
 ```
@@ -1132,7 +1132,7 @@ Props:
   emptyLabel?: string;
   searchPlaceholder?: string;
   listLabel?: string;
-  /** Largura do painel. O Figma usa 320px. */
+  /** Largura do painel. Padrão: --ads-select-panel-width (320px). */
   widthClass?: string;
 }
 ```

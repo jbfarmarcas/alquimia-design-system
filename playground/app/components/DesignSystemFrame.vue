@@ -124,7 +124,7 @@ const props = defineProps<{
   sections: readonly { id: string; label: string }[];
 }>();
 
-import { componentTokenCatalog } from "../../../app/theme/component-tokens";
+import { tokenGroups } from "./design-system/token-sections";
 import { catalogGroups } from "./design-system/catalog-sections";
 import { INSTALL_SECTIONS } from "./design-system/install-docs";
 
@@ -222,6 +222,15 @@ function catalogNavChildren(): DocsChild[] {
   });
 }
 
+/** Tokens: mesmos grupos do catálogo. Só fica como link direto o que também é link direto no catálogo (Cores, Modal). */
+function tokenNavChildren(): DocsChild[] {
+  return tokenGroups.map((group) => {
+    const links = group.components.map((component) => ({ id: component.section, label: component.label }));
+    if (!group.nested && links.length === 1) return links[0]!;
+    return { id: `tokens-${group.name}`, label: group.name, children: links };
+  });
+}
+
 const pages: readonly DocsPage[] = [
   {
     label: "Instalação",
@@ -239,10 +248,7 @@ const pages: readonly DocsPage[] = [
     label: "Tokens",
     to: "/design-system/tokens",
     icon: "i-lucide-palette",
-    children: componentTokenCatalog.map((component) => ({
-      id: component.section,
-      label: component.label,
-    })),
+    children: tokenNavChildren(),
   },
 ];
 
