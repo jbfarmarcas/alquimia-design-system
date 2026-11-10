@@ -1,4 +1,13 @@
-/** Lista: sem zebra. Grade: a mesma casca, com zebra para seguir a linha. */
+/**
+ * Catálogo da página Tabelas.
+ *
+ * Figma: duas variantes documentadas (Table e Heavy Table).
+ * As cascas Lista/Grade continuam funcionando mas não são o foco.
+ */
+
+// ─── Legacy (mantido para backward compat do inventário) ───────────────────
+
+/** Lista e Grade: cascas antigas, continuam no código (só no código, sem seção no catálogo). */
 export type TableVariantId = "lista" | "grade";
 
 export type TableInventoryRow = {
@@ -19,17 +28,47 @@ export const TABLE_VARIANT_LABEL: Record<TableVariantId, string> = {
   grade: "Grade",
 };
 
+// ─── Chrome / especificação visual ─────────────────────────────────────────
+
+/**
+ * Especificação visual das tabelas ADS conforme o Figma (nov/2026).
+ */
 export const TABLE_CHROME = [
-  { part: "Cabeçalho", value: "Fundo neutral-100 (#F0F3F6). Texto secondary, 14px bold — o mesmo --ads-font-size-xxs da célula, com --ads-font-weight-bold." },
-  { part: "Célula", value: "Fundo surface-card. Texto secondary, 14px regular (--ads-font-size-xxs, --ads-line-height-md). O nome da linha é bold em text-primary, no mesmo tamanho." },
-  { part: "Coluna fixa", value: "column-pinning do UTable, com a largura igual ao size. Primeira coluna à esquerda e ação ou total à direita, conforme a tabela." },
-  { part: "Célula preenchida", value: "O fundo ocupa o td inteiro (data-cell-fill), com os tokens de faixa: button-secondary ou warning-100. Não é um chip dentro da célula." },
-  { part: "Borda", value: "1px em border-subtle em todo lugar, inclusive entre células e no topo do rodapé. borders: lines (só horizontal) ou grid (horizontal e vertical)." },
-  { part: "Nível", value: "Propriedade depth. Ligada, a linha vai de neutral-200 a neutral-100 e surface-main. Desligada, fica surface-card." },
-  { part: "Busca", value: "AdsTableToolbar: título à esquerda, AdsSearchInput e o slot de AdsFilterSelect à direita." },
-  { part: "Raio", value: "radius-md (12px). Dentro de AdsCard, framed false: o card já é a moldura." },
-  { part: "Zebra", value: "Só na Grade. Linha par em surface-main. A Lista não listra." },
+  {
+    part: "Cabeçalho",
+    value: "Fundo surface/main (#FAFBFC). Texto text-secondary, Body 14 Medium (--ads-font-size-xxs, --ads-font-weight-medium).",
+  },
+  {
+    part: "Célula",
+    value: "Fundo surface-card. Texto text-secondary, 14px regular. O nome da linha é bold em text-primary, no mesmo tamanho.",
+  },
+  {
+    part: "Coluna fixa",
+    value: "column-pinning do UTable, com a largura igual ao size. Primeira coluna à esquerda e ação ou total à direita.",
+  },
+  {
+    part: "Célula preenchida",
+    value: "O fundo ocupa o td inteiro (data-cell-fill), com os tokens de faixa: button-secondary ou warning-100. Não é um chip dentro da célula.",
+  },
+  {
+    part: "Borda",
+    value: "1px em borders/subtle (#E5E8EB, via --ads-border-subtle) em todo lugar. borders: lines (só horizontal) ou grid (horizontal e vertical).",
+  },
+  {
+    part: "Raio",
+    value: "radius-md (12px). Dentro de AdsCard, framed false: o card já é a moldura.",
+  },
+  {
+    part: "Busca",
+    value: "AdsTableToolbar: título à esquerda, AdsSearchInput e o slot de AdsFilterSelect à direita.",
+  },
+  {
+    part: "Carregamento",
+    value: "AdsTableSkeleton (estilos Skeleton e Logo) quando disponível; fallback para AdsLoading. Passe :skeleton-rows para controlar as linhas.",
+  },
 ] as const;
+
+// ─── Inventário de tabelas em produção ─────────────────────────────────────
 
 export const TABLE_INVENTORY: TableInventoryRow[] = [
   {
@@ -177,7 +216,15 @@ export const TABLE_INVENTORY: TableInventoryRow[] = [
   },
 ];
 
-export type TableSectionId = "decisoes" | "inventario" | "comparacao";
+// ─── Seções da página ───────────────────────────────────────────────────────
+
+export type TableSectionId =
+  | "table"
+  | "heavy-table"
+  | "cell-types"
+  | "loading"
+  | "inventario"
+  | "comparacao";
 
 export type TableSection = {
   id: TableSectionId;
@@ -188,15 +235,33 @@ export type TableSection = {
 
 export const TABLE_SECTIONS: readonly TableSection[] = [
   {
-    id: "decisoes",
-    label: "Decisões",
-    purpose: "Duas variantes, a mesma casca. Muda a zebra. Cor, borda, raio e fonte não mudam de uma tabela para outra.",
-    components: ["AdsTable", "AdsFilterSelect"],
+    id: "table",
+    label: "Table",
+    purpose: "Tabela operacional com cabeçalho fixo e colunas fixas configuráveis. Usa AdsTable sobre UTable.",
+    components: ["AdsTable", "AdsTableToolbar"],
+  },
+  {
+    id: "cell-types",
+    label: "Tipos de célula",
+    purpose: "Os 8 tipos de célula do _Table Cell do Figma: Texto, Ícone + Texto, Pill, Botão, Link, Meta, Ações e Combinado.",
+    components: ["AdsTable"],
+  },
+  {
+    id: "heavy-table",
+    label: "Heavy Table",
+    purpose: "Tabela financeira com cabeçalho em dois níveis (grupos de colunas), grupos de linhas em accordion e tons de variação.",
+    components: ["AdsHeavyTable"],
+  },
+  {
+    id: "loading",
+    label: "Carregamento",
+    purpose: "Integração com AdsTableSkeleton (estilos Skeleton e Logo). Enquanto não estiver disponível, cai para AdsLoading.",
+    components: ["AdsTableSkeleton", "AdsLoading"],
   },
   {
     id: "inventario",
     label: "Inventário",
-    purpose: "As treze tabelas em produção e a variante que cada uma passa a usar. O AdsTable implementa as duas.",
+    purpose: "As treze tabelas em produção e a variante que cada uma passa a usar. O AdsTable implementa as duas cascas anteriores (Lista e Grade).",
     components: ["AdsTable"],
   },
   {

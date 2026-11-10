@@ -125,8 +125,12 @@ export const figmaLinks = {
   loading: [absent("AdsLoading", "Não há loading, skeleton nem shimmer no inventário.")],
   "overlay-loading": [absent("useOverlayLoading", "Não há overlay de processo no inventário.")],
   "progress-bar-loading": [absent("ProgressBarLoading", "Não há barra de progresso no inventário.")],
-  "product-table-skeleton": [
-    absent("ProductTableSkeleton", "A página Tabela (🛠️) tem células e colunas, mas nenhum skeleton."),
+  "table-skeleton": [
+    {
+      component: "AdsTableSkeleton",
+      figma: node("Table Skeleton", "8984:134"),
+      note: "Figma: 🆕 Novo: Loading. rows corresponde a Linha 1 a 8; variante Logo disponível.",
+    },
   ],
   badge: [
     {
@@ -174,6 +178,25 @@ export const figmaLinks = {
   "feature-card": [absent("AdsFeatureCard", "Não há card no inventário.")],
   card: [absent("AdsCard", "Não há card no inventário.")],
   "metric-card": [absent("AdsMetricCard", "Não há card de métrica no inventário.")],
+  table: [
+    {
+      component: "AdsTable",
+      figma: node("Table", "8870:1960"),
+      related: [
+        node("_Table Cell", "8869:2535"),
+        node("_Table Header Cell", "8869:2327"),
+      ],
+      note: "Figma: 🆕 Novo: Table. 8 tipos de célula em _Table Cell. Cabeçalho fixo × Colunas fixas.",
+    },
+  ],
+  "heavy-table": [
+    {
+      component: "AdsHeavyTable",
+      figma: node("Heavy Table", "8879:3558"),
+      related: [node("_Fin Group", "8879:763"), node("_Fin Header Cell", "8878:70")],
+      note: "Figma: 🆕 Novo: Heavy Table. Cabeçalho em dois níveis, grupos em accordion, tons de variação.",
+    },
+  ],
 } as const satisfies Record<FigmaSectionId, readonly FigmaComponentLink[]>;
 
 export const figmaLinksFor = (id: CatalogSectionId): readonly FigmaComponentLink[] =>

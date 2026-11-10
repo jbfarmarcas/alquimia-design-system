@@ -156,3 +156,118 @@ export const demoPreviewRows: Record<string, string>[] = [
   { c0: "7896004703398", c1: "Protetor solar FPS 50 200ml", c2: "Raia Centro", c3: "62,90", c4: "21/10/2026", c5: "" },
   { c0: "7891721201035", c1: "Vitamina C 1g efervescente 10 unidades", c2: "Pague Menos Portão", c3: "22,60", c4: "22/10/2026", c5: "Promoção leve 3 pague 2" },
 ];
+
+// ─── Heavy Table (financeira) ────────────────────────────────────────────────
+
+/** Previsto e Realizado de um período fechado. */
+export type DemoHeavyPeriod = readonly [forecast: number, actual: number];
+
+/** Linha de conta para a demo da Heavy Table (Figma: DRE mensal). */
+export type DemoHeavyRow = {
+  id: string;
+  name: string;
+  /** Despesa: alta é desfavorável. */
+  inverted?: boolean;
+  jul: DemoHeavyPeriod;
+  ago: DemoHeavyPeriod;
+  set: DemoHeavyPeriod;
+  out: number;
+  nov: number;
+  dez: number;
+  children?: DemoHeavyRow[];
+};
+
+/** Grupos de conta com os valores do Figma. */
+export const demoHeavy: DemoHeavyRow[] = [
+  {
+    id: "receitas",
+    name: "RECEITAS",
+    jul: [1290991, 1328393],
+    ago: [1265678, 1277913],
+    set: [1265678, 505691],
+    out: 1265678,
+    nov: 1290991,
+    dez: 1455530,
+    children: [
+      { id: "rec-debito", name: "Receita Débito", jul: [387297, 398449], ago: [379703, 383308], set: [379703, 151577], out: 379703, nov: 387297, dez: 436658 },
+      { id: "rec-credito", name: "Receita Crédito", jul: [542217, 560788], ago: [531585, 539478], set: [531585, 217844], out: 531585, nov: 542217, dez: 611323 },
+      { id: "rec-pix", name: "Receita Pix", jul: [232378, 236941], ago: [227822, 227937], set: [227822, 86891], out: 227822, nov: 232378, dez: 261995 },
+      { id: "rec-dinheiro", name: "Receita Dinheiro", jul: [90369, 92413], ago: [88597, 88901], set: [88597, 34305], out: 88597, nov: 90369, dez: 101887 },
+      { id: "rec-cartoes", name: "Antecipação de Cartões", jul: [38730, 39802], ago: [37971, 38289], set: [37971, 15074], out: 37971, nov: 38730, dez: 43667 },
+    ],
+  },
+  {
+    id: "mercadorias",
+    name: "DESPESA COM MERCADORIAS",
+    inverted: true,
+    jul: [920745, 970987],
+    ago: [902817, 934695],
+    set: [902817, 367822],
+    out: 902817,
+    nov: 920745,
+    dez: 1037280,
+    children: [
+      { id: "mer-verba", name: "Recomposição de Verba Comercial", inverted: true, jul: [3500, 3458], ago: [3500, 3459], set: [3500, 0], out: 3500, nov: 3500, dez: 3500 },
+      { id: "mer-pagto", name: "Despesas com Pagto de Mercadorias", inverted: true, jul: [895577, 945427], ago: [878017, 909854], set: [878017, 360514], out: 878017, nov: 895577, dez: 1009720 },
+      { id: "mer-cartao", name: "Taxas de Cartão de Crédito", inverted: true, jul: [18768, 19165], ago: [18400, 18445], set: [18400, 7308], out: 18400, nov: 18768, dez: 21160 },
+      { id: "mer-convenio", name: "Taxas de Convênio Terceirizados", inverted: true, jul: [2900, 2937], ago: [2900, 2937], set: [2900, 0], out: 2900, nov: 2900, dez: 2900 },
+    ],
+  },
+];
+
+// ─── Tipos de célula (_Table Cell) ──────────────────────────────────────────
+
+/** Linha de demo para os 8 tipos de célula do Figma. */
+export type DemoCellTypeRow = {
+  id: number;
+  /** Tipo Texto */
+  productName: string;
+  /** Tipo Ícone + Texto */
+  department: string;
+  departmentIcon: string;
+  /** Tipo Pill */
+  status: "pending" | "done" | "blocked";
+  /** Tipo Botão */
+  hasAction: boolean;
+  /** Tipo Link */
+  linkLabel: string;
+  /** Tipo Meta — primária + secundária */
+  metaPrimary: string;
+  metaSecondary: string;
+};
+
+export const demoCellTypes: DemoCellTypeRow[] = [
+  {
+    id: 1,
+    productName: "Dipirona 500mg 10 comprimidos",
+    department: "Medicamentos",
+    departmentIcon: "i-lucide-pill",
+    status: "done",
+    hasAction: true,
+    linkLabel: "Ver detalhes",
+    metaPrimary: "Dor e febre",
+    metaSecondary: "Analgésico",
+  },
+  {
+    id: 2,
+    productName: "Protetor solar FPS 50 200ml",
+    department: "Perfumaria",
+    departmentIcon: "i-lucide-sun",
+    status: "pending",
+    hasAction: true,
+    linkLabel: "Ver detalhes",
+    metaPrimary: "Proteção solar",
+    metaSecondary: "Dermocosméticos",
+  },
+  {
+    id: 3,
+    productName: "Fralda infantil G 36 unidades",
+    department: "Infantil",
+    departmentIcon: "i-lucide-baby",
+    status: "blocked",
+    hasAction: false,
+    linkLabel: "Ver detalhes",
+    metaPrimary: "Fraldas",
+    metaSecondary: "Infantil",
+  },
+];

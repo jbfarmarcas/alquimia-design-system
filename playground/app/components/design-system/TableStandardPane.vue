@@ -17,7 +17,7 @@
       <AdsPill
         v-if="row.original.origin"
         tone="secondary"
-        :status="row.original.origin === 'manual' ? 'innovation' : 'default'"
+        :status="row.original.origin === 'manual' ? 'new' : 'default'"
         :label="row.original.origin === 'manual' ? 'Manual' : 'Importado'"
       />
       <span v-else class="text-[var(--ads-text-tertiary)]">—</span>
@@ -464,7 +464,7 @@ const researchColumns: TableColumn<(typeof demoResearch)[number]>[] = [
   {
     id: "market",
     header: "Dados de mercado",
-    meta: adsTableGroup("innovation"),
+    meta: adsTableGroup("ai"),
     columns: [
       { accessorKey: "iqvia", header: "IQVIA", meta: researchMin, cell: ({ row }) => brl(row.original.iqvia) },
       { accessorKey: "closeUp", header: "Farmarcas", meta: researchMin, cell: ({ row }) => brl(row.original.closeUp) },

@@ -90,7 +90,9 @@ import NumberInputDemo from "../../components/design-system/demos/NumberInputDem
 import OverlayLoadingDemo from "../../components/design-system/demos/OverlayLoadingDemo.vue";
 import PaginationDemo from "../../components/design-system/demos/PaginationDemo.vue";
 import PillDemo from "../../components/design-system/demos/PillDemo.vue";
-import ProductTableSkeletonDemo from "../../components/design-system/demos/ProductTableSkeletonDemo.vue";
+import TableSkeletonDemo from "../../components/design-system/demos/ProductTableSkeletonDemo.vue";
+import TableDemo from "../../components/design-system/demos/TableDemo.vue";
+import HeavyTableDemo from "../../components/design-system/demos/HeavyTableDemo.vue";
 import ProductTagDemo from "../../components/design-system/demos/ProductTagDemo.vue";
 import ProgressBarLoadingDemo from "../../components/design-system/demos/ProgressBarLoadingDemo.vue";
 import RadioDemo from "../../components/design-system/demos/RadioDemo.vue";
@@ -141,7 +143,7 @@ const demos = {
   loading: LoadingDemo,
   "overlay-loading": OverlayLoadingDemo,
   "progress-bar-loading": ProgressBarLoadingDemo,
-  "product-table-skeleton": ProductTableSkeletonDemo,
+  "table-skeleton": TableSkeletonDemo,
   badge: BadgeDemo,
   broadcast: BroadcastDemo,
   pill: PillDemo,
@@ -161,6 +163,8 @@ const demos = {
   "feature-card": FeatureCardDemo,
   card: CardDemo,
   "metric-card": MetricCardDemo,
+  table: TableDemo,
+  "heavy-table": HeavyTableDemo,
 } as const satisfies Record<CatalogSectionId, Component>;
 
 const activeId = ref<(typeof sections)[number]["id"] | "">("");

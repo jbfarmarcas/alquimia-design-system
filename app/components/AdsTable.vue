@@ -7,7 +7,7 @@
     :ui="tableUi"
   >
     <template v-if="!$slots.loading" #loading>
-      <AdsLoading size="sm" :label="loadingLabel" />
+      <AdsTableSkeleton :rows="skeletonRows" :variant="skeletonVariant" />
     </template>
 
     <template v-if="!$slots.empty" #empty>
@@ -30,7 +30,7 @@
 <script setup lang="ts" generic="T extends TableData">
 import { computed, useSlots } from "vue";
 import type { TableColumn, TableData } from "@nuxt/ui";
-import AdsLoading from "./AdsLoading.vue";
+import AdsTableSkeleton, { type AdsTableSkeletonVariant } from "./AdsTableSkeleton.vue";
 import {
   buildAdsTableUi,
   type AdsTableBorders,
@@ -53,6 +53,17 @@ const props = withDefaults(
     /** Degradê por nível. A célula marca `data-depth` de 0 a 2. */
     depth?: boolean;
     loading?: boolean;
+    /**
+     * Número de linhas do skeleton de carregamento (1–8).
+     * Passado para o AdsTableSkeleton no slot #loading padrão.
+     */
+    skeletonRows?: number;
+    /**
+     * Estilo do skeleton padrão.
+     * skeleton: barras de placeholder. logo: loader do Radar.
+     * Passado para AdsTableSkeleton; ignorado quando #loading é passado via slot.
+     */
+    skeletonVariant?: AdsTableSkeletonVariant;
     /** Cabeçalho (e rodapé) fixos quando a tabela tem altura máxima. */
     sticky?: boolean | "header" | "footer";
     emptyLabel?: string;
@@ -68,6 +79,8 @@ const props = withDefaults(
     borders: "lines",
     depth: false,
     loading: false,
+    skeletonRows: 5,
+    skeletonVariant: "skeleton",
     sticky: false,
     emptyLabel: "Nenhum registro encontrado",
     emptyIcon: "i-lucide-inbox",

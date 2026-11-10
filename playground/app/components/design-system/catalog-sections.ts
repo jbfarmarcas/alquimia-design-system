@@ -198,11 +198,11 @@ export const catalogSections = [
     components: ["ProgressBarLoading"],
   },
   {
-    id: "product-table-skeleton",
+    id: "table-skeleton",
     label: "Skeleton de tabela",
     group: "Carregando",
-    purpose: "Esqueleto que segue as colunas da tabela de produtos. Mock local do playground.",
-    components: ["ProductTableSkeleton"],
+    purpose: "Skeleton da tabela de produtos em duas variantes: barras de placeholder ou loader do Radar.",
+    components: ["AdsTableSkeleton"],
   },
 
   {
@@ -341,6 +341,20 @@ export const catalogSections = [
     group: "Card",
     purpose: "Número em destaque, com variação, legenda e estado sem dados.",
     components: ["AdsMetricCard"],
+  },
+  {
+    id: "table",
+    label: "Table",
+    group: "Tabelas",
+    purpose: "Tabela operacional: cabeçalho e colunas fixos, linhas zebradas, 8 tipos de célula, carregamento (AdsTableSkeleton) e estado vazio.",
+    components: ["AdsTable", "AdsTableToolbar", "AdsTableSkeleton"],
+  },
+  {
+    id: "heavy-table",
+    label: "Heavy Table",
+    group: "Tabelas",
+    purpose: "Tabela financeira: cabeçalho em dois níveis, grupos em accordion (_Fin Group), tons de variação e projeção.",
+    components: ["AdsHeavyTable"],
   },
 ] as const;
 

@@ -44,6 +44,8 @@ A layer já registra `@nuxt/ui`, `@nuxt/fonts`, `@nuxt/icon` e `@vueuse/nuxt`, o
 - Valor preenchido por IA: `AdsInput`, `AdsNumberInput`, `AdsTextarea`, `AdsSearchInput`, `AdsDatePicker` e `AdsFilterSelect` têm a prop `ai-suggestion`. Ela não se desliga sozinha: ponha `false` quando a pessoa editar. Erro e desabilitado têm prioridade.
 - `state` nos componentes congela hover, focus etc. para documentação. Não use em telas reais.
 - Toast flutuante: `useToast()` do Nuxt UI. O plugin da layer aplica cores e ícones do ADS.
+- `AdsTableSkeleton`: prop de estilo é `variant` (não `style`). Dois valores: `skeleton` e `logo`.
+- `AdsTable`/`AdsHeavyTable`: o slot `#loading` padrão usa `AdsTableSkeleton`. Para trocar o estilo, passe `:skeleton-variant="'logo'"`. Para conteúdo personalizado, use o slot `#loading`.
 
 ## Componentes
 
@@ -52,8 +54,8 @@ A layer já registra `@nuxt/ui`, `@nuxt/fonts`, `@nuxt/icon` e `@vueuse/nuxt`, o
 | Ações | `AdsButton`, `AdsButtonGroup`, `AdsButtonMenu` |
 | Formulário | `AdsInput`, `AdsNumberInput`, `AdsTextarea`, `AdsSearchInput`, `AdsCheckbox`, `AdsRadio`, `AdsSwitch`, `AdsDatePicker`, `AdsMonthPicker`, `AdsFilterSelect`, `AdsFilterDropdown`, `AdsFilterOption` |
 | Navegação | `AdsNavbarDesk`, `AdsNavbarApp`, `AdsSideMenu`, `AdsMenuBar`, `AdsTabs`, `AdsSegmentedTabs`, `AdsPagination`, `AdsDropdownMenu`, `AdsListDropdown`, `AdsFooter` |
-| Dados | `AdsTable`, `AdsTableToolbar`, `AdsCard`, `AdsMetricCard`, `AdsFeatureCard`, `AdsFileCard`, `AdsEmptyState` |
 | Status | `AdsBadge`, `AdsPill`, `AdsMiniPill`, `AdsNotabilityPill`, `AdsFarmarcasPill`, `AdsProductTag` |
+| Dados | `AdsTable`, `AdsHeavyTable`, `AdsHeavyAccountCell`, `AdsHeavyHeaderCell`, `AdsTableSkeleton`, `AdsTableToolbar`, `AdsCard`, `AdsMetricCard`, `AdsPanelCard`, `AdsFeatureCard`, `AdsFileCard`, `AdsEmptyState` |
 | Feedback | `AdsModal`, `AdsToast`, `AdsBroadcast`, `AdsTooltip`, `AdsSmalltip`, `AdsSteptip`, `AdsCharttip`, `AdsLoading`, `ProgressBarLoading`, `OverlayLoading` |
 
 A lista completa e atual, com props, eventos e slots, está em [reference.md](reference.md).
@@ -95,7 +97,7 @@ Auto-importados, de `app/utils`:
 | `percentage.ts` | `formatPercentage`, `formatPercentageWithDecimals`, `formatPercentagePtBr` |
 | `parser.ts` | datas e percentuais: `formatDateOnlyToPtBr`, `formatDateToPtBr`, `daysBetweenDateOnly`, `parseToPercentage`… |
 | `calendar-date.ts` | conversão `string` ↔ `CalendarDate` e dos valores emitidos pelo Nuxt UI (`toCalendarModel`, `toCalendarDateRange`) |
-| `ads-table.ts` | helpers de coluna do `AdsTable` (`adsTableColumn`, `adsTablePinned`, `adsTableGroup`…) |
+| `ads-table.ts` | helpers de coluna do `AdsTable` e `AdsHeavyTable`: `adsTableGroup`, `adsTableCellFill`, `adsTableTreeIndent`, `adsHeavyGroupTdAttrs`, `adsHeavyGroupContentClass`, `adsHeavyVariationClass`, `adsHeavyColumn`, `adsHeavyAccountColumn`, `buildAdsTableUi`, `buildAdsHeavyTableUi`; tipos: `AdsTableCellType`, `AdsTableGroupTone` (inclui `"ai"`) |
 | `ads-filter-select.ts` | helpers do `AdsFilterSelect` |
 
 `useOverlayLoading()`: overlay de tela cheia com `show`, `update`, `close`, `isOpen`, `getCurrentId`.

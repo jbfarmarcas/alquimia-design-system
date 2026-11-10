@@ -1,17 +1,26 @@
 /**
  * Padrão visual das tabelas ADS sobre o UTable.
- * Duas variantes (lista e grade) com a mesma casca: cabeçalho neutral-100,
- * célula surface-card, borda subtle, raio md. A grade só acrescenta a zebra.
- * Cabeçalho e célula usam o mesmo tamanho: --ads-font-size-xxs. O cabeçalho é bold.
- * As células têm fundo próprio para a coluna fixa e a zebra não vazarem no scroll.
+ *
+ * Figma: cabeçalho com fundo surface/main (#FAFBFC), texto Body 14 Medium em text/secondary.
+ * Borda: borders/subtle (#E5E8EB, via --ads-border-subtle).
+ * Raio: radius-md (12px). Dentro de AdsCard, framed false.
+ *
+ * Variantes documentadas no Figma:
+ *   - **Table** (operacional): cabeçalho fixo × colunas fixas, 8 tipos de célula.
+ *   - **Heavy Table** (financeira): cabeçalho em dois níveis, grupos em accordion.
+ *
+ * Variantes Lista/Grade continuam funcionar mas não são o foco da documentação.
  */
 
-/** 14px, entrelinha de leitura. Igual no cabeçalho e na célula; o negrito não muda o tamanho. */
+/** 14px, entrelinha de leitura. Igual no cabeçalho e na célula. */
 export const ADS_TABLE_CELL_TEXT =
   "text-[length:var(--ads-font-size-xxs)] leading-[var(--ads-line-height-md)]";
 
-/** O mesmo 14px da célula. O bold separa o cabeçalho. */
-export const ADS_TABLE_HEADER_TEXT = `${ADS_TABLE_CELL_TEXT} font-bold`;
+/**
+ * Cabeçalho: mesmo 14px, peso medium (500) — Figma: Body 14 Medium.
+ * Antes de nov/2026 era font-bold; atualizado para font-medium em alinhamento com o Figma.
+ */
+export const ADS_TABLE_HEADER_TEXT = `${ADS_TABLE_CELL_TEXT} font-medium`;
 
 export type AdsTableDensity = "md" | "sm";
 
@@ -75,7 +84,8 @@ export const buildAdsTableUi = ({
       framed ? "rounded-[var(--ads-radius-md)] border border-[var(--ads-border-subtle)]" : "",
     ].join(" "),
     base: "min-w-full border-separate border-spacing-0",
-    thead: "z-[2] bg-neutral-100 backdrop-blur-none",
+    // Cabeçalho: surface/main (#FAFBFC) — Figma: fundo surface/main, não neutral-100.
+    thead: "z-[2] bg-[var(--ads-surface-main)] backdrop-blur-none",
     tbody: [
       "divide-y-0 [&>tr:last-child>td]:border-b-0",
       striped ? "[&>tr:nth-child(even)>td:not(:has([data-cell-fill]))]:bg-[var(--ads-surface-main)]" : "",
@@ -86,14 +96,15 @@ export const buildAdsTableUi = ({
         : "",
     ].join(" "),
     tfoot: [
-      "z-[2] bg-neutral-100 backdrop-blur-none [&>tr[data-slot=tr]~tr[data-slot=tr]]:hidden",
+      "z-[2] bg-[var(--ads-surface-main)] backdrop-blur-none [&>tr[data-slot=tr]~tr[data-slot=tr]]:hidden",
       "[&_th]:border-t [&_th]:border-b-0 [&_th]:border-[var(--ads-border-subtle)] [&_th]:text-[var(--ads-text-primary)]",
       "[&_td]:border-t [&_td]:border-b-0 [&_td]:border-[var(--ads-border-subtle)]",
     ].join(" "),
     tr: "",
     th: [
       padding,
-      "border-b border-[var(--ads-border-subtle)] bg-neutral-100 text-left align-middle whitespace-normal text-[var(--ads-text-secondary)] has-data-cell-fill:!h-px has-data-cell-fill:!p-0",
+      // Figma: surface/main no fundo, text-secondary na cor, font-medium no peso.
+      "border-b border-[var(--ads-border-subtle)] bg-[var(--ads-surface-main)] text-left align-middle whitespace-normal text-[var(--ads-text-secondary)] has-data-cell-fill:!h-px has-data-cell-fill:!p-0",
       grid,
       ADS_TABLE_HEADER_TEXT,
       "[&[colspan]]:text-center [&[colspan]]:text-[var(--ads-text-primary)]",
@@ -136,6 +147,7 @@ const PIN_WIDTH_CLASS = {
   120: "min-w-30",
   160: "min-w-40",
   256: "min-w-64",
+  360: "min-w-90",
 } as const;
 
 export type AdsTablePinWidth = keyof typeof PIN_WIDTH_CLASS;
@@ -154,12 +166,20 @@ export const adsTablePinned = (width: AdsTablePinWidth, meta: AdsTableColumnMeta
   },
 });
 
-export type AdsTableGroupTone = "brand" | "success" | "innovation" | "neutral";
+/**
+ * Tom do risco de 2px nos grupos de colunas.
+ * - brand: azul primário
+ * - success: verde
+ * - ai: roxo (tokens de IA: --ads-text-ai, adicionado pelo agente de tokens)
+ * - neutral: sem decoração
+ */
+export type AdsTableGroupTone = "brand" | "success" | "ai" | "neutral";
 
 const GROUP_UNDERLINE: Record<AdsTableGroupTone, string> = {
   brand: "border-b-2 border-b-[var(--ads-button-primary)]",
   success: "border-b-2 border-b-[var(--ads-status-success-500)]",
-  innovation: "border-b-2 border-b-[var(--ads-status-innovation-500)]",
+  // ai usa o token de texto de IA (--ads-text-ai).
+  ai: "border-b-2 border-b-[var(--ads-text-ai)]",
   neutral: "",
 };
 
@@ -202,3 +222,164 @@ export const ADS_TABLE_TREE_INDENT = ["ps-0", "ps-5", "ps-10", "ps-15", "ps-20"]
 
 export const adsTableTreeIndent = (depth: number) =>
   ADS_TABLE_TREE_INDENT[Math.min(depth, ADS_TABLE_TREE_INDENT.length - 1)];
+
+// ─── Heavy Table ────────────────────────────────────────────────────────────
+
+/**
+ * 8 tipos de célula do `_Table Cell` do Figma.
+ * Usados para documentação e para tipar a prop `type` em definições de coluna.
+ */
+export type AdsTableCellType =
+  | "text"
+  | "icon-text"
+  | "pill"
+  | "button"
+  | "link"
+  | "meta"
+  | "actions"
+  | "combined";
+
+/**
+ * Atributos para marcar uma linha de grupo na Heavy Table, em qualquer elemento da linha.
+ * Permite o CSS `[&>tr:has([data-heavy-group])>td]` estilizar a linha inteira.
+ * O AdsHeavyAccountCell já aplica esta marca.
+ *
+ * @example
+ * ```vue
+ * <template #name-cell="{ row }">
+ *   <span v-bind="row.subRows.length ? adsHeavyGroupTdAttrs() : {}">
+ *     {{ row.original.name }}
+ *   </span>
+ * </template>
+ * ```
+ */
+export const adsHeavyGroupTdAttrs = () => ({ "data-heavy-group": "" } as const);
+
+/** Classe do conteúdo textual de uma linha de grupo (name-cell). */
+export const adsHeavyGroupContentClass =
+  "font-bold text-[var(--ads-text-primary)] flex items-center gap-3";
+
+/**
+ * Tom do `_Fin Value Cell`: favorável (success-800), desfavorável (warning-500) ou projeção
+ * de mês futuro (success-800). Zero e nulo ficam no tom neutro.
+ * `inverted` é para despesas e impostos, onde alta é desfavorável.
+ * O peso vem da linha: negrito no grupo, regular nos itens.
+ */
+export const adsHeavyVariationClass = (
+  value: number | null | undefined,
+  options?: { projected?: boolean; inverted?: boolean },
+): string => {
+  if (options?.projected) return "tabular-nums text-[var(--ads-status-success-800)]";
+  if (value == null || value === 0) return "tabular-nums text-[var(--ads-text-primary)]";
+  const favorable = options?.inverted ? value < 0 : value > 0;
+  return favorable
+    ? "tabular-nums text-[var(--ads-status-success-800)]"
+    : "tabular-nums text-[var(--ads-status-warning-500)]";
+};
+
+/**
+ * Colunas da Heavy Table, com as larguras do Figma. O `size` acompanha a largura para a
+ * coluna fixa deslocar certo. A divisória só fecha período, não separa toda célula.
+ */
+export const adsHeavyColumn = {
+  /** Grupo do cabeçalho (o período). */
+  period: { meta: { class: { th: GRID_BORDER } } },
+  /** Previsto e Realizado. */
+  value: { size: 120, meta: { class: { th: "min-w-30", td: "min-w-30 text-right tabular-nums" } } },
+  /** Última subcoluna do período (Var.). */
+  valueEnd: {
+    size: 96,
+    meta: {
+      class: {
+        th: `min-w-24 ${GRID_BORDER}`,
+        td: `min-w-24 text-right tabular-nums ${GRID_BORDER}`,
+      },
+    },
+  },
+  /** Período de mês futuro, só com Previsto. */
+  projected: {
+    size: 136,
+    meta: {
+      class: {
+        th: `min-w-34 ${GRID_BORDER}`,
+        td: `min-w-34 text-right tabular-nums ${GRID_BORDER}`,
+      },
+    },
+  },
+} as const;
+
+/**
+ * Primeira coluna (Descrição de Contas). No Figma o título ocupa as duas linhas do cabeçalho:
+ * o TanStack não dá rowspan para coluna sem grupo, então a célula vazia de cima perde a borda
+ * e o título sobe meia linha. Use com AdsHeavyAccountCell e AdsHeavyHeaderCell.
+ */
+export const adsHeavyAccountColumn = (width: AdsTablePinWidth = 360) => ({
+  size: width,
+  meta: {
+    class: {
+      th: (header: { isPlaceholder: boolean }) =>
+        `${PIN_WIDTH_CLASS[width]} ${GRID_BORDER} ${header.isPlaceholder ? "border-b-0" : "[&>*]:-translate-y-6"}`,
+      td: `${PIN_WIDTH_CLASS[width]} ${GRID_BORDER} p-0`,
+    },
+  },
+});
+
+export interface AdsHeavyTableLook extends AdsTableLook {
+  /** Cabeçalho fixo ganha a sombra que o separa das linhas que rolam por baixo. */
+  stickyHeader?: boolean;
+}
+
+/** md segue o Figma: cabeçalho 48px por nível e linha 56px + 1px de borda. */
+const HEAVY_CELL: Record<AdsTableDensity, { th: string; td: string }> = {
+  md: { th: "h-12 py-0", td: "h-[57px] py-0 ps-3 pe-4" },
+  sm: { th: "", td: "" },
+};
+
+const HEAVY_PIN_NO_SHADOW = "data-[pinned=left]:shadow-none data-[pinned=right]:shadow-none";
+
+/** No thead inteiro: em cada th a sombra vazaria para os lados e riscaria as colunas. */
+const HEAVY_STICKY_SHADOW = "drop-shadow-[0_2px_3px_rgb(6_25_56/8%)]";
+
+/** Faixa de 8px ao lado da coluna fixa, por cima da coluna que rola. */
+const HEAVY_PIN_FADE = [
+  "data-[pinned=left]:after:pointer-events-none data-[pinned=left]:after:absolute data-[pinned=left]:after:top-0 data-[pinned=left]:after:-bottom-px data-[pinned=left]:after:left-full data-[pinned=left]:after:w-2 data-[pinned=left]:after:bg-linear-to-r data-[pinned=left]:after:from-[rgb(6_25_56/10%)] data-[pinned=left]:after:to-[rgb(6_25_56/0%)]",
+  "data-[pinned=right]:after:pointer-events-none data-[pinned=right]:after:absolute data-[pinned=right]:after:top-0 data-[pinned=right]:after:-bottom-px data-[pinned=right]:after:right-full data-[pinned=right]:after:w-2 data-[pinned=right]:after:bg-linear-to-r data-[pinned=right]:after:from-[rgb(6_25_56/0%)] data-[pinned=right]:after:to-[rgb(6_25_56/10%)]",
+].join(" ");
+
+/**
+ * UI da Heavy Table sobre a casca da AdsTable. Cabeçalho branco e centralizado, sombra level 1
+ * na moldura, grupo em azul e negrito, itens alternando branco e surface-main.
+ * As marcas `data-heavy-group` e `data-heavy-zebra` vêm do AdsHeavyAccountCell.
+ */
+export const buildAdsHeavyTableUi = ({
+  stickyHeader = false,
+  ...look
+}: AdsHeavyTableLook = {}): AdsTableUi => {
+  const { density = "md", framed = true } = look;
+  const base = buildAdsTableUi({ ...look, striped: false, depth: false });
+  const rows = [
+    "[&>tr:has([data-heavy-zebra])>td]:bg-[var(--ads-surface-main)]",
+    "[&>tr:has([data-heavy-group])>td]:bg-[var(--ads-button-secondary)]",
+    "[&>tr:has([data-heavy-group])>td]:font-bold",
+  ].join(" ");
+  return {
+    ...base,
+    root: `${base.root} ${framed ? "shadow-[var(--ads-shadow-level-1)]" : ""}`.trim(),
+    thead: `${base.thead} bg-[var(--ads-surface-card)] ${stickyHeader ? HEAVY_STICKY_SHADOW : ""}`.trim(),
+    tbody: `${base.tbody} ${rows}`,
+    th: [
+      base.th,
+      HEAVY_CELL[density].th,
+      "bg-[var(--ads-surface-card)] text-center",
+      HEAVY_PIN_NO_SHADOW,
+      HEAVY_PIN_FADE,
+    ].join(" "),
+    td: [
+      base.td,
+      HEAVY_CELL[density].td,
+      "text-[var(--ads-text-primary)]",
+      HEAVY_PIN_NO_SHADOW,
+      HEAVY_PIN_FADE,
+    ].join(" "),
+  };
+};

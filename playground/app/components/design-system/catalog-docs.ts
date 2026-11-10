@@ -503,11 +503,14 @@ export const docsApis = {
       ],
     },
   ],
-  "product-table-skeleton": [
+  "table-skeleton": [
     {
-      name: "ProductTableSkeleton",
-      summary: "Mock local do playground. O bloco genérico continua AdsLoading.",
-      props: [prop("rows", "number", "4", "Quantidade de linhas do esqueleto.")],
+      name: "AdsTableSkeleton",
+      summary: "Skeleton da tabela de produtos. Promovido a componente da biblioteca.",
+      props: [
+        prop("rows", "number", "4", "Linhas do skeleton, de 1 a 8. Corresponde a Linha 1–8 do Figma."),
+        prop("variant", "skeleton | logo", "skeleton", "skeleton exibe barras de placeholder; logo exibe o loader do Radar centralizado na área da tabela."),
+      ],
     },
   ],
   badge: [
@@ -753,6 +756,67 @@ export const docsApis = {
         { name: "delta", description: "Variação ao lado do valor. Some quando empty." },
         { name: "footer", description: "Conteúdo à direita da legenda." },
         { name: "default", description: "Corpo extra abaixo da legenda." },
+      ],
+    },
+  ],
+  table: [
+    {
+      name: "AdsTable",
+      summary: "Tabela operacional sobre o UTable (TanStack Table). Cabeçalho e colunas fixos, linhas zebradas, 8 tipos de célula e carregamento com AdsTableSkeleton.",
+      props: [
+        prop("data", "T[]", "obrigatória", "Linhas da tabela."),
+        prop("columns", "TableColumn<T>[]", "obrigatória", "Definição das colunas (TanStack Table). Use os helpers de adsTableColumn para metadados de estilo."),
+        prop("sticky", "boolean | 'header' | 'all'", "false", "Fixa o cabeçalho (header) ou cabeçalho e colunas ao mesmo tempo (all). true = header."),
+        prop("column-pinning", "{ left?: string[]; right?: string[] }", "—", "IDs das colunas a fixar à esquerda ou direita."),
+        prop("striped", "boolean", "false", "Linhas alternadas (zebra)."),
+        prop("borders", "none | lines | grid", "lines", "Bordas horizontais (lines) ou completa (grid)."),
+        prop("density", "sm | md", "md", "Altura das linhas: sm compacto, md padrão."),
+        prop("loading", "boolean", "false", "Exibe o skeleton de carregamento."),
+        prop("skeleton-rows", "number", "4", "Linhas do AdsTableSkeleton. 1–8."),
+        prop("skeleton-variant", "skeleton | logo", "skeleton", "Variante do AdsTableSkeleton."),
+        prop("get-sub-rows", "(row: T) => T[] | undefined", "—", "Função de sub-linhas para árvore/depth."),
+        prop("get-row-id", "(row: T) => string", "—", "ID único da linha, obrigatório com sub-linhas."),
+        prop("v-model:expanded", "Record<string, boolean>", "—", "Estado de abertura das linhas pai."),
+        prop("framed", "boolean", "true", "Borda e raio externos da tabela. Desative dentro de AdsCard."),
+      ],
+      slots: [
+        { name: "#<colId>-header", description: "Cabeçalho customizado da coluna." },
+        { name: "#<colId>-cell", description: "Célula customizada da coluna. Recebe { row }." },
+        { name: "#<colId>-footer", description: "Rodapé customizado da coluna." },
+        { name: "#loading", description: "Substitui o AdsTableSkeleton padrão." },
+        { name: "#empty", description: "Substitui o estado vazio padrão." },
+      ],
+    },
+  ],
+  "heavy-table": [
+    {
+      name: "AdsHeavyTable",
+      summary: "Tabela financeira (DRE, orçado × realizado). Estende AdsTable com cabeçalho em dois níveis e grupos de linhas em accordion (_Fin Group).",
+      props: [
+        prop("data", "T[]", "obrigatória", "Linhas raiz da tabela."),
+        prop("columns", "TableColumn<T>[]", "obrigatória", "Colunas aninhadas por período. Use adsHeavyAccountColumn() e adsHeavyColumn."),
+        prop("get-sub-rows", "(row: T) => T[] | undefined", "obrigatória para accordion", "Sub-linhas do _Fin Group."),
+        prop("get-row-id", "(row: T) => string", "obrigatória para accordion", "ID da linha pai."),
+        prop("v-model:expanded", "Record<string, boolean>", "—", "Estado de abertura dos grupos."),
+        prop("v-model:column-pinning", "{ left?: string[]; right?: string[] }", "—", "Colunas fixas. O botão de fixar do cabeçalho depende do v-model."),
+        prop("sticky", "boolean | 'header' | 'all'", "header", "Cabeçalho fixo por padrão."),
+      ],
+    },
+    {
+      name: "AdsHeavyAccountCell",
+      summary: "Primeira coluna (_Fin Account Cell). Traz o botão de expandir, o recuo por nível e marca a linha para o fundo do grupo e a zebra.",
+      props: [
+        prop("row", "TableRow<T>", "obrigatória", "Linha recebida no slot da célula."),
+        prop("label", "string", "obrigatória", "Nome da conta."),
+      ],
+    },
+    {
+      name: "AdsHeavyHeaderCell",
+      summary: "Título de coluna (_Fin Header Cell), com ordenar e fixar. Grupos ordenam pela coluna indicada em sort-column.",
+      props: [
+        prop("label", "string", "obrigatória", "Título."),
+        prop("column", "Column<T>", "—", "Coluna recebida na função header."),
+        prop("sort-column", "Column<T>", "—", "Subcoluna que o título ordena."),
       ],
     },
   ],

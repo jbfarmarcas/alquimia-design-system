@@ -444,6 +444,65 @@ Props:
 }
 ```
 
+## AdsHeavyTable
+
+Na primeira coluna use `AdsHeavyAccountCell` (`row`, `label`) com `adsHeavyAccountColumn()`. Nos títulos use `AdsHeavyHeaderCell` (`label`, `column`, `sortColumn`). As subcolunas usam `adsHeavyColumn.value`, `.valueEnd` e `.projected`, e os grupos `adsHeavyColumn.period`. O botão de fixar pede `v-model:column-pinning`. `adsHeavyVariationClass(valor, { inverted, projected })` dá o tom da célula; `inverted` é para despesas.
+
+Props:
+```ts
+{
+  data: T[];
+  columns: TableColumn<T>[];
+  /** md: padrão financeiro. sm: tabela compacta. */
+  density?: AdsTableDensity;
+  /** Borda e raio próprios. Dentro de AdsCard, false. */
+  framed?: boolean;
+  /** lines: só horizontal. grid: horizontal e vertical. */
+  borders?: AdsTableBorders;
+  loading?: boolean;
+  /** Número de linhas do skeleton de carregamento (1–8). */
+  skeletonRows?: number;
+  /**
+   * Estilo do skeleton padrão.
+   * skeleton: barras de placeholder. logo: loader do Radar.
+   */
+  skeletonVariant?: AdsTableSkeletonVariant;
+  /**
+   * Cabeçalho fixo quando a tabela tem altura máxima.
+   * Padrão: "header" — cabeçalho fica no topo ao rolar horizontalmente.
+   */
+  sticky?: boolean | "header" | "footer";
+  emptyLabel?: string;
+  emptyIcon?: string;
+  loadingLabel?: string;
+  /** Ajuste pontual de um slot; soma ao padrão. */
+  ui?: Partial<AdsTableUi>;
+}
+```
+
+Tipos:
+```ts
+type AdsTableDensity = "md" | "sm";
+
+type AdsTableBorders = "lines" | "grid";
+
+type AdsTableUi = {
+  root: string;
+  base: string;
+  thead: string;
+  tbody: string;
+  tfoot: string;
+  tr: string;
+  th: string;
+  td: string;
+  separator: string;
+  empty: string;
+  loading: string;
+};
+```
+
+Slots: `default`
+
 ## AdsInput
 
 Props:
@@ -1011,6 +1070,17 @@ Props:
   /** Degradê por nível. A célula marca `data-depth` de 0 a 2. */
   depth?: boolean;
   loading?: boolean;
+  /**
+   * Número de linhas do skeleton de carregamento (1–8).
+   * Passado para o AdsTableSkeleton no slot #loading padrão.
+   */
+  skeletonRows?: number;
+  /**
+   * Estilo do skeleton padrão.
+   * skeleton: barras de placeholder. logo: loader do Radar.
+   * Passado para AdsTableSkeleton; ignorado quando #loading é passado via slot.
+   */
+  skeletonVariant?: AdsTableSkeletonVariant;
   /** Cabeçalho (e rodapé) fixos quando a tabela tem altura máxima. */
   sticky?: boolean | "header" | "footer";
   emptyLabel?: string;
@@ -1043,6 +1113,29 @@ type AdsTableUi = {
 ```
 
 Slots: `default`
+
+## AdsTableSkeleton
+
+Props:
+```ts
+{
+  /**
+   * Número de linhas do skeleton. Mínimo 1, máximo 8.
+   * Corresponde a Linha 1 a Linha 8 do Figma.
+   */
+  rows?: number;
+  /**
+   * skeleton: barras de placeholder na grade da tabela.
+   * logo: loader do Radar centralizado na área da tabela.
+   */
+  variant?: AdsTableSkeletonVariant;
+}
+```
+
+Tipos:
+```ts
+type AdsTableSkeletonVariant = "skeleton" | "logo";
+```
 
 ## AdsTableToolbar
 
