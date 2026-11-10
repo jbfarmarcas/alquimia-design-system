@@ -322,6 +322,14 @@ export const catalogSections = [
   },
 
   {
+    id: "stepper",
+    label: "Stepper",
+    group: "Navegação",
+    purpose: "Progresso em fluxo de múltiplos passos. Simples (barras) ou Visual (círculos), até 6 passos, com troca de passo.",
+    components: ["AdsStepper"],
+  },
+
+  {
     id: "feature-card",
     label: "Feature card",
     group: "Card",

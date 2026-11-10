@@ -105,6 +105,7 @@ import SwitchDemo from "../../components/design-system/demos/SwitchDemo.vue";
 import TabsDemo from "../../components/design-system/demos/TabsDemo.vue";
 import TextareaDemo from "../../components/design-system/demos/TextareaDemo.vue";
 import ToastDemo from "../../components/design-system/demos/ToastDemo.vue";
+import StepperDemo from "../../components/design-system/demos/StepperDemo.vue";
 import TooltipDemo from "../../components/design-system/demos/TooltipDemo.vue";
 
 definePageMeta({
@@ -137,6 +138,7 @@ const demos = {
   "empty-state": EmptyStateDemo,
   pagination: PaginationDemo,
   tooltip: TooltipDemo,
+  stepper: StepperDemo,
   steptip: SteptipDemo,
   charttip: CharttipDemo,
   smalltip: SmalltipDemo,

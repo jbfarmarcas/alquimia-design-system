@@ -1007,6 +1007,51 @@ Props:
 
 Slots: `default`
 
+## AdsStepper
+
+Props:
+```ts
+{
+  /** Lista de passos. Mínimo 2, máximo 6. */
+  steps: AdsStepperStep[];
+  /** Estilo visual do stepper. */
+  variant?: "simple" | "visual";
+  /** Direção do Stepper Visual. O Stepper Simples é sempre horizontal. */
+  orientation?: "horizontal" | "vertical";
+  /** O que aparece no círculo do Stepper Visual (passos pendentes). Concluídos sempre mostram check. */
+  indicator?: "icon" | "number";
+  /** Exibe os rótulos dos passos. */
+  showLabels?: boolean;
+  /** Permite navegar clicando nos passos. */
+  clickable?: boolean;
+  /** Permite avançar clicando em passos futuros (só válido quando clickable=true). */
+  allowForward?: boolean;
+  /** Rótulo acessível da navegação. */
+  ariaLabel?: string;
+}
+```
+
+Tipos:
+```ts
+interface AdsStepperStep {
+  /** Rótulo exibido abaixo da barra (Stepper Simples) ou do círculo (Stepper Visual). */
+  label?: string;
+  /** Texto abaixo do título. Só aparece no Stepper Visual. */
+  description?: string;
+  /** Ícone Lucide. Só usado quando indicator="icon" e passo não está concluído. */
+  icon?: string;
+}
+```
+
+Models: `v-model: number`
+
+Eventos:
+```ts
+{
+  "update:modelValue": [step: number];
+}
+```
+
 ## AdsSteptip
 
 Props:

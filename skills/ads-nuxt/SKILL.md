@@ -53,7 +53,7 @@ A layer já registra `@nuxt/ui`, `@nuxt/fonts`, `@nuxt/icon` e `@vueuse/nuxt`, o
 | ----- | ----------- |
 | Ações | `AdsButton`, `AdsButtonGroup`, `AdsButtonMenu` |
 | Formulário | `AdsInput`, `AdsNumberInput`, `AdsTextarea`, `AdsSearchInput`, `AdsCheckbox`, `AdsRadio`, `AdsSwitch`, `AdsDatePicker`, `AdsMonthPicker`, `AdsFilterSelect`, `AdsFilterDropdown`, `AdsFilterOption` |
-| Navegação | `AdsNavbarDesk`, `AdsNavbarApp`, `AdsSideMenu`, `AdsMenuBar`, `AdsTabs`, `AdsSegmentedTabs`, `AdsPagination`, `AdsDropdownMenu`, `AdsListDropdown`, `AdsFooter` |
+| Navegação | `AdsNavbarDesk`, `AdsNavbarApp`, `AdsSideMenu`, `AdsMenuBar`, `AdsTabs`, `AdsSegmentedTabs`, `AdsPagination`, `AdsDropdownMenu`, `AdsListDropdown`, `AdsFooter`, `AdsStepper` |
 | Status | `AdsBadge`, `AdsPill`, `AdsMiniPill`, `AdsNotabilityPill`, `AdsFarmarcasPill`, `AdsProductTag` |
 | Dados | `AdsTable`, `AdsHeavyTable`, `AdsHeavyAccountCell`, `AdsHeavyHeaderCell`, `AdsTableSkeleton`, `AdsTableToolbar`, `AdsCard`, `AdsMetricCard`, `AdsPanelCard`, `AdsFeatureCard`, `AdsFileCard`, `AdsEmptyState` |
 | Feedback | `AdsModal`, `AdsToast`, `AdsBroadcast`, `AdsTooltip`, `AdsSmalltip`, `AdsSteptip`, `AdsCharttip`, `AdsLoading`, `ProgressBarLoading`, `OverlayLoading` |

@@ -759,6 +759,25 @@ export const docsApis = {
       ],
     },
   ],
+  stepper: [
+    {
+      name: "AdsStepper",
+      summary: "Indica o progresso em um fluxo de múltiplos passos. Variante simples usa barras; visual usa círculos com ícone ou número. Passos concluídos mostram check; atual fica destacado; pendentes em cor terciária.",
+      props: [
+        prop("steps", "AdsStepperStep[]", "obrigatória", "Lista de passos (mín. 2, máx. 6). Cada passo aceita label, icon e description (só no Stepper Visual)."),
+        prop("orientation", "'horizontal' | 'vertical'", "'horizontal'", "Direção do Stepper Visual. Na horizontal, título e descrição ficam abaixo do círculo, com pelo menos 120px por passo. Na vertical, o círculo fica à esquerda, com título e descrição à direita."),
+        prop("variant", "'simple' | 'visual'", "'simple'", "Estilo visual. simple: barras horizontais; visual: círculos conectados."),
+        prop("indicator", "'icon' | 'number'", "'number'", "O que exibir no círculo de passos pendentes/atuais (Stepper Visual). Concluídos sempre mostram check."),
+        prop("showLabels", "boolean", "true", "Exibe os rótulos: abaixo da barra no simples, junto do círculo no visual."),
+        prop("clickable", "boolean", "false", "Permite navegar clicando nos passos."),
+        prop("allowForward", "boolean", "false", "Permite clicar em passos futuros (só válido quando clickable=true)."),
+        prop("ariaLabel", "string", "'Progresso'", "Rótulo acessível do elemento nav."),
+      ],
+      events: [
+        { name: "update:modelValue", payload: "number", description: "Índice do novo passo atual (v-model)." },
+      ],
+    },
+  ],
   table: [
     {
       name: "AdsTable",

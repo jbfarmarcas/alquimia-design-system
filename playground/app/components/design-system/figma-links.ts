@@ -175,6 +175,14 @@ export const figmaLinks = {
       note: "O _Tags ativo, da página RADAR. O _Tags 3647:3834 está arquivado.",
     },
   ],
+  stepper: [
+    {
+      component: "AdsStepper",
+      figma: node("Stepper Simples", "8941:144"),
+      related: [node("Stepper Visual", "8942:978")],
+      note: "Figma: 🆕 Novo: Stepper. Simples (barras) ou Visual (círculos com ícone ou número).",
+    },
+  ],
   "feature-card": [absent("AdsFeatureCard", "Não há card no inventário.")],
   card: [absent("AdsCard", "Não há card no inventário.")],
   "metric-card": [absent("AdsMetricCard", "Não há card de métrica no inventário.")],
