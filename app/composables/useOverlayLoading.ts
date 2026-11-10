@@ -12,27 +12,46 @@ export const useOverlayLoading = () => {
     close: () => void;
     patch: (props: Record<string, unknown>) => void;
   } | null = null;
+  /**
+   * O overlay é destruído ao fechar (destroyOnClose). Fechar pelo X ou pela ação emite `close`
+   * direto no useOverlay, sem passar por aqui; chamar close/patch depois disso lança
+   * "Overlay not found". Por isso a referência é limpa quando o overlay fecha, por qualquer caminho.
+   */
+  const safely = (action: () => void) => {
+    try {
+      action();
+    } catch {
+      currentOverlay = null;
+    }
+  };
+
   const show = (options: OverlayLoadingOptions) => {
     if (currentOverlay) {
-      currentOverlay.close();
+      const previous = currentOverlay;
+      safely(() => previous.close());
     }
-    currentOverlay = overlay.create(OverlayLoadingComponent, {
+    const created = overlay.create(OverlayLoadingComponent, {
       destroyOnClose: true,
       props: {
         isVisible: true,
         ...options,
       },
     });
+    currentOverlay = created;
 
-    currentOverlay?.open();
+    const opened = created.open();
+    void Promise.resolve(opened).then(() => {
+      if (currentOverlay?.id === created.id) currentOverlay = null;
+    });
 
-    return currentOverlay?.id ?? null;
+    return created.id;
   };
 
   const close = () => {
     if (currentOverlay) {
-      currentOverlay.close();
+      const target = currentOverlay;
       currentOverlay = null;
+      safely(() => target.close());
     }
   };
 
@@ -42,10 +61,13 @@ export const useOverlayLoading = () => {
    */
   const update = (options: Partial<OverlayLoadingOptions>) => {
     if (currentOverlay) {
-      currentOverlay.patch({
-        isVisible: true,
-        ...options,
-      });
+      const target = currentOverlay;
+      safely(() =>
+        target.patch({
+          isVisible: true,
+          ...options,
+        }),
+      );
     }
   };
 
