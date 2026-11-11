@@ -479,6 +479,8 @@ Props:
    * Padrão: "header" — cabeçalho fica no topo ao rolar horizontalmente.
    */
   sticky?: boolean | "header" | "footer";
+  /** Lista virtual para muitas linhas. Repassa ao AdsTable. */
+  virtualize?: boolean;
   emptyLabel?: string;
   emptyIcon?: string;
   loadingLabel?: string;
@@ -1047,6 +1049,11 @@ Props:
   inline?: boolean;
   /** Largura da lista. Padrão: --ads-select-panel-width (320px). */
   panelWidthClass?: string;
+  /**
+   * Ação de cadastrar no rodapé da lista, com ícone de adicionar. `{query}` vira a busca atual,
+   * ex.: "Cadastrar {query}". Sem valor, a ação não aparece.
+   */
+  addLabel?: string;
 }
 ```
 
@@ -1079,6 +1086,8 @@ Eventos:
 {
   /** Escolha feita: no radio e no month o popover fecha. */
   pick: [value: string | string[]];
+  /** Ação de cadastrar. Recebe a busca atual. No popover, a lista fecha antes do evento. */
+  add: [query: string];
 }
 ```
 
@@ -1138,6 +1147,11 @@ Props:
   listLabel?: string;
   /** Largura do painel. Padrão: --ads-select-panel-width (320px). */
   widthClass?: string;
+  /**
+   * Ação de cadastrar no rodapé, com ícone de adicionar. `{query}` vira a busca atual.
+   * Sem valor, a ação não aparece.
+   */
+  addLabel?: string;
 }
 ```
 
@@ -1145,7 +1159,11 @@ Models: `v-model: string | string[]`, `v-model:query: string`
 
 Eventos:
 ```ts
-{ pick: [] }
+{
+  pick: [];
+  /** Ação de cadastrar. Recebe a busca atual, sem espaços nas pontas. */
+  add: [query: string];
+}
 ```
 
 ## AdsSideMenu
@@ -1314,8 +1332,13 @@ Props:
   skeletonVariant?: AdsTableSkeletonVariant;
   /** Altura e respiro da linha do skeleton, quando a tabela foge do padrão da densidade. */
   skeletonCellSize?: string;
-  /** Cabeçalho (e rodapé) fixos quando a tabela tem altura máxima. */
+  /** Cabeçalho (e rodapé) fixos. A tabela ganha altura máxima de 70vh; max-h na classe sobrescreve. */
   sticky?: boolean | "header" | "footer";
+  /**
+   * Lista virtual: só as linhas visíveis são montadas. Use com muitas linhas (centenas ou mais).
+   * Precisa de rolagem própria (sticky ou max-h), senão a tabela inteira é montada.
+   */
+  virtualize?: boolean;
   /** Linha de 1px na borda da coluna fixa. */
   pinnedEdge?: boolean;
   emptyLabel?: string;

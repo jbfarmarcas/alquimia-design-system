@@ -1,9 +1,11 @@
 <template>
   <UTable
+    :key="virtualize ? 'virtual' : 'static'"
     :data="data"
     :columns="columns"
     :loading="loading"
     :sticky="sticky"
+    :virtualize="virtualizeOptions"
     :ui="tableUi"
   >
     <template v-if="!$slots.loading" #loading>
@@ -75,8 +77,13 @@ const props = withDefaults(
     skeletonVariant?: AdsTableSkeletonVariant;
     /** Altura e respiro da linha do skeleton, quando a tabela foge do padrão da densidade. */
     skeletonCellSize?: string;
-    /** Cabeçalho (e rodapé) fixos quando a tabela tem altura máxima. */
+    /** Cabeçalho (e rodapé) fixos. A tabela ganha altura máxima de 70vh; max-h na classe sobrescreve. */
     sticky?: boolean | "header" | "footer";
+    /**
+     * Lista virtual: só as linhas visíveis são montadas. Use com muitas linhas (centenas ou mais).
+     * Precisa de rolagem própria (sticky ou max-h), senão a tabela inteira é montada.
+     */
+    virtualize?: boolean;
     /** Linha de 1px na borda da coluna fixa. */
     pinnedEdge?: boolean;
     emptyLabel?: string;
@@ -96,6 +103,7 @@ const props = withDefaults(
     skeletonVariant: "skeleton",
     skeletonCellSize: undefined,
     sticky: false,
+    virtualize: false,
     pinnedEdge: true,
     emptyLabel: "Nenhum registro encontrado",
     emptyIcon: "i-lucide-inbox",
@@ -127,6 +135,13 @@ const skeletonColumns = computed((): AdsTableSkeletonAlign[] => {
       return /\btext-center\b/.test(td) ? "center" : "left";
     });
 });
+
+/** Altura estimada da linha pela densidade; a medida real corrige linhas com conteúdo maior. */
+const virtualizeOptions = computed(() =>
+  props.virtualize
+    ? { estimateSize: props.density === "md" ? 64 : 40, overscan: 12 }
+    : false,
+);
 
 const tableUi = computed(() => {
   const base = buildAdsTableUi({

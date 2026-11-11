@@ -98,6 +98,9 @@ export const buildAdsTableUi = ({
   return {
     root: [
       "relative overflow-auto bg-[var(--ads-surface-card)]",
+      // O cabeçalho gruda na rolagem da própria tabela: sem altura máxima ela não rola e o
+      // cabeçalho sai junto com a página. Uma classe max-h do consumidor sobrescreve esta.
+      stickyHeader ? "max-h-[70vh]" : "",
       "[scrollbar-color:var(--ads-border-subtle)_transparent] [scrollbar-width:thin]",
       framed ? "rounded-[var(--ads-radius-md)] border border-[var(--ads-border-subtle)]" : "",
     ].join(" "),

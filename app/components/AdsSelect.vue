@@ -21,7 +21,9 @@
       :search-placeholder="searchPlaceholder"
       :list-label="label || 'Opções'"
       :width-class="panelWidthClass"
+      :add-label="addLabel"
       @pick="emit('pick', model)"
+      @add="onAdd"
     />
   </template>
 
@@ -90,7 +92,9 @@
           :search-placeholder="searchPlaceholder"
           :list-label="label || 'Opções'"
           :width-class="panelWidthClass"
+          :add-label="addLabel"
           @pick="onPick"
+          @add="onAdd"
         />
       </template>
     </UPopover>
@@ -141,6 +145,11 @@ const props = withDefaults(
     inline?: boolean;
     /** Largura da lista. Padrão: --ads-select-panel-width (320px). */
     panelWidthClass?: string;
+    /**
+     * Ação de cadastrar no rodapé da lista, com ícone de adicionar. `{query}` vira a busca atual,
+     * ex.: "Cadastrar {query}". Sem valor, a ação não aparece.
+     */
+    addLabel?: string;
   }>(),
   {
     placeholder: "Selecione",
@@ -164,6 +173,8 @@ const model = defineModel<string | string[]>({ required: true });
 const emit = defineEmits<{
   /** Escolha feita: no radio e no month o popover fecha. */
   pick: [value: string | string[]];
+  /** Ação de cadastrar. Recebe a busca atual. No popover, a lista fecha antes do evento. */
+  add: [query: string];
 }>();
 
 defineSlots<{
@@ -247,6 +258,12 @@ const monthModel = computed({
 const onPick = () => {
   isOpen.value = false;
   emit("pick", model.value);
+};
+
+const onAdd = (text: string) => {
+  // No popover, a lista fecha: o cadastro costuma abrir um formulário ou modal por cima.
+  if (!props.inline) isOpen.value = false;
+  emit("add", text);
 };
 
 watch(isOpen, (open) => {

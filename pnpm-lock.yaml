@@ -11,6 +11,9 @@ importers:
       '@iconify-json/lucide':
         specifier: ^1.2.104
         version: 1.2.148
+      '@tanstack/vue-virtual':
+        specifier: ^3.13.49
+        version: 3.13.49(vue@3.5.44(typescript@5.9.3))
     devDependencies:
       '@internationalized/date':
         specifier: ^3.12.4

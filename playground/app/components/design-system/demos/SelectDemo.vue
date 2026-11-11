@@ -37,6 +37,8 @@
           :disabled="fieldState === 'desabilitado'"
           :ai-suggestion="fieldState === 'ia'"
           :options="options"
+          :add-label="addOn ? 'Cadastrar {query}' : undefined"
+          @add="onAdd"
           :searchable="searchOn"
           :select-all="selectAllOn"
         />
@@ -57,6 +59,8 @@
         <AdsSwitch v-model="searchOn" label="Busca" />
         <AdsSwitch v-if="kind === 'checkbox'" v-model="selectAllOn" label="Selecionar todos" />
         <AdsSwitch v-model="richOn" label="Subtítulo e selo" />
+        <AdsSwitch v-model="manyOn" label="3 000 opções" />
+        <AdsSwitch v-if="trigger === 'field'" v-model="addOn" label="Cadastrar novo" />
         <AdsSwitch v-if="trigger === 'field'" v-model="hintOn" label="Orientação" />
       </div>
     </template>
@@ -86,6 +90,8 @@ const fieldState = ref<FieldState>("vazio");
 const searchOn = ref(true);
 const selectAllOn = ref(true);
 const richOn = ref(true);
+const manyOn = ref(false);
+const addOn = ref(false);
 const hintOn = ref(true);
 const selection = ref<string | string[]>([]);
 
@@ -123,9 +129,24 @@ const stores: AdsSelectOption[] = [
   { value: "ultrafarma", label: "Ultrafarma", subtitle: "Av. Washington Luís, 4200" },
 ];
 
-const options = computed<AdsSelectOption[]>(() =>
-  richOn.value ? stores : stores.map(({ value, label, disabled }) => ({ value, label, disabled })),
-);
+/** Volume para testar a lista virtual: as lojas repetidas com nomes e valores únicos. */
+const manyStores: AdsSelectOption[] = Array.from({ length: 3000 }, (_, index) => {
+  const base = stores[index % stores.length]!;
+  return { ...base, value: `${base.value}-${index}`, label: `${base.label} ${index + 1}` };
+});
+
+/** Lojas cadastradas pela ação do rodapé nesta sessão. */
+const added = ref<AdsSelectOption[]>([]);
+
+const onAdd = (name: string) => {
+  if (!name) return;
+  added.value.push({ value: `nova-${added.value.length + 1}`, label: name, subtitle: "Cadastrada agora" });
+};
+
+const options = computed<AdsSelectOption[]>(() => {
+  const source = [...(manyOn.value ? manyStores : stores), ...added.value];
+  return richOn.value ? source : source.map(({ value, label, disabled }) => ({ value, label, disabled }));
+});
 
 const supportHint = computed(() => (hintOn.value && fieldState.value !== "erro" ? HINT : ""));
 
@@ -165,6 +186,8 @@ const code = computed(() => {
     attr(supportHint.value !== "", "hint", HINT),
     attr(fieldState.value === "desabilitado", "disabled"),
     attr(fieldState.value === "ia", "ai-suggestion"),
+    attr(addOn.value, "add-label", "Cadastrar {query}"),
+    attr(addOn.value, "@add", "onAdd"),
   ]);
 });
 </script>

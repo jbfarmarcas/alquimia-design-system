@@ -17,10 +17,14 @@
       <DocsParam v-if="variant === 'standard'" label="Colunas fixas">
         <AdsSegmentedTabs v-model="pinMode" :items="pinItems" aria-label="Colunas fixas" />
       </DocsParam>
+      <DocsParam v-if="variant === 'standard'" label="Linhas">
+        <AdsSegmentedTabs v-model="volume" :items="volumeItems" aria-label="Quantidade de linhas" />
+      </DocsParam>
       <DocsParam v-if="variant === 'standard'" label="Opções">
         <div class="flex flex-wrap gap-4">
           <AdsSwitch v-model="sticky" label="Cabeçalho fixo" />
           <AdsSwitch v-model="striped" label="Zebrado" />
+          <AdsSwitch v-model="virtualOn" label="Lista virtual" />
         </div>
       </DocsParam>
     </div>
@@ -29,11 +33,11 @@
     <div v-if="variant === 'standard'">
       <AdsTable
         v-model:column-pinning="pinning"
-        :data="demoMappedStores"
+        :data="tableRows"
         :columns="columns"
         :sticky="sticky ? 'header' : false"
         :striped="striped"
-        :class="sticky ? 'max-h-[370px]' : ''"
+        :virtualize="virtualOn"
       >
         <template #store-cell="{ row }">
           <span class="flex items-center gap-3">
@@ -147,6 +151,20 @@ const variant = ref<"standard" | "cell-types" | "loading" | "empty">("standard")
 const pinMode = ref<"none" | "first" | "both">("first");
 const sticky = ref(false);
 const striped = ref(true);
+const virtualOn = ref(false);
+const volume = ref<"few" | "many">("few");
+
+const volumeItems = [
+  { label: "Poucas (8)", value: "few" },
+  { label: "Muitas (2 000)", value: "many" },
+];
+
+/** Volume para testar a lista virtual: as lojas de exemplo repetidas com nomes únicos. */
+const manyRows: DemoMappedStoreRow[] = Array.from({ length: 2000 }, (_, index) => {
+  const base = demoMappedStores[index % demoMappedStores.length]!;
+  return { ...base, id: `${base.id}-${index}`, store: `${base.store} ${index + 1}` };
+});
+const tableRows = computed(() => (volume.value === "many" ? manyRows : demoMappedStores));
 const skeletonVariant = ref<"skeleton" | "logo">("skeleton");
 
 const skeletonItems = [
@@ -232,6 +250,7 @@ const code = computed(() => {
   if (sticky.value) attrs.push('sticky="header"');
   if (pinMode.value !== "none") attrs.push('v-model:column-pinning="pinning"');
   if (striped.value) attrs.push("striped");
+  if (virtualOn.value) attrs.push("virtualize");
   return `<AdsTable :data="rows" :columns="cols"${attrs.length ? "\n  " + attrs.join("\n  ") : ""} />
 
 // Título com ordenar e fixar, ligados por coluna

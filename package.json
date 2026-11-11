@@ -26,7 +26,8 @@
     "skill:check": "node scripts/generate-skill-reference.mjs --check"
   },
   "dependencies": {
-    "@iconify-json/lucide": "^1.2.104"
+    "@iconify-json/lucide": "^1.2.104",
+    "@tanstack/vue-virtual": "^3.13.49"
   },
   "peerDependencies": {
     "@internationalized/date": "^3.12.4",

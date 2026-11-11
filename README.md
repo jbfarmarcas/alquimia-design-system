@@ -186,7 +186,7 @@ const nome = ref("");
 
 | Componente        | Descrição |
 | ----------------- | --------- |
-| `AdsTable`        | Tabela baseada no `UTable`, com densidade, zebra, bordas, degradê por nível, `sticky`, loading e estado vazio. |
+| `AdsTable`        | Tabela baseada no `UTable`, com densidade, zebra, bordas, degradê por nível, `sticky` (cabeçalho fixo), `virtualize` (lista virtual para muitas linhas), loading e estado vazio. |
 | `AdsTableToolbar` | Barra de ferramentas da tabela. |
 | `AdsCard`         | Cartão genérico. |
 | `AdsMetricCard`   | Cartão de métrica/indicador. |

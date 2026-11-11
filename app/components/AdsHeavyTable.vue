@@ -41,6 +41,7 @@
     :skeleton-variant="skeletonVariant"
     :skeleton-cell-size="adsHeavyCellSize(density)"
     :sticky="sticky"
+    :virtualize="virtualize"
     :framed="framed"
     :density="density"
     :striped="false"
@@ -97,6 +98,8 @@ const props = withDefaults(
      * Padrão: "header" — cabeçalho fica no topo ao rolar horizontalmente.
      */
     sticky?: boolean | "header" | "footer";
+    /** Lista virtual para muitas linhas. Repassa ao AdsTable. */
+    virtualize?: boolean;
     emptyLabel?: string;
     emptyIcon?: string;
     loadingLabel?: string;
@@ -111,6 +114,7 @@ const props = withDefaults(
     skeletonRows: 5,
     skeletonVariant: "skeleton",
     sticky: "header",
+    virtualize: false,
     emptyLabel: "Nenhum registro encontrado",
     emptyIcon: "i-lucide-inbox",
     loadingLabel: undefined,
