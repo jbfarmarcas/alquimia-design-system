@@ -68,6 +68,7 @@ import type { AdsTableSkeletonVariant } from "./AdsTableSkeleton.vue";
 import {
   adsHeavyCellSize,
   buildAdsHeavyTableUi,
+  mergeAdsTableUi,
   type AdsTableBorders,
   type AdsTableDensity,
   type AdsTableUi,
@@ -129,11 +130,6 @@ const mergedUi = computed((): AdsTableUi => {
     borders: props.borders,
     stickyHeader: props.sticky === true || props.sticky === "header",
   });
-  if (!props.ui) return base;
-  const merged = { ...base };
-  for (const key of Object.keys(props.ui) as (keyof AdsTableUi)[]) {
-    merged[key] = `${base[key]} ${props.ui[key] ?? ""}`.trim();
-  }
-  return merged;
+  return mergeAdsTableUi(base, props.ui);
 });
 </script>

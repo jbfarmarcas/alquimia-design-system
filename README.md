@@ -468,8 +468,7 @@ Opções (`OverlayLoadingOptions`):
 | `actionLabel`, `onAction` | rótulo e callback de ação |
 | `actionIcon`      | ícone Lucide da ação (padrão: `i-lucide-refresh-cw` só no erro) |
 | `secondaryActionLabel`, `secondaryActionIcon`, `onSecondaryAction` | segunda ação (unfilled); sem callback, fecha o overlay |
-| `onUserClose`     | callback ao usuário fechar |
-| `closableVariants`| `("info" \| "success" \| "error" \| "warning")[]` — variantes que o usuário pode fechar |
+| `onUserClose`     | callback quando uma ação de fechar é acionada |
 
 ## Utilitários
 

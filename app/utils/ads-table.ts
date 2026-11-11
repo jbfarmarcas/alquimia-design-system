@@ -13,6 +13,8 @@
  * Variantes Lista/Grade continuam funcionar mas não são o foco da documentação.
  */
 
+import { twMerge } from "tailwind-merge";
+
 /** 14px, entrelinha de leitura. Igual no cabeçalho e na célula. */
 export const ADS_TABLE_CELL_TEXT =
   "text-[length:var(--ads-font-size-xxs)] leading-[var(--ads-line-height-md)]";
@@ -43,6 +45,22 @@ export interface AdsTableLook {
   /** Linha de 1px na borda da coluna fixa. A Heavy Table desenha a sua por divisória de período. */
   pinnedEdge?: boolean;
 }
+
+/**
+ * Junta o ajuste do consumidor ao padrão. A classe do consumidor vence quando as duas
+ * definem a mesma propriedade: sem isso, `max-h` e `overflow` do padrão anulam os dele.
+ */
+export const mergeAdsTableUi = (
+  base: AdsTableUi,
+  override?: Partial<AdsTableUi>,
+): AdsTableUi => {
+  if (!override) return base;
+  const merged = { ...base };
+  for (const key of Object.keys(override) as (keyof AdsTableUi)[]) {
+    merged[key] = twMerge(base[key], override[key] ?? "");
+  }
+  return merged;
+};
 
 export type AdsTableUi = {
   root: string;

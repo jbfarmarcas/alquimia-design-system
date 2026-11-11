@@ -194,8 +194,20 @@ Slots: `header`, `actions`, `empty`, `empty-actions`, `default`, `footer`
 Props:
 ```ts
 {
+  /** Texto do balão. Também nomeia o ícone para leitor de tela. */
   text: string;
+  /** Ícone Lucide. Padrão: informação. */
+  icon?: string;
+  color?: AdsCardHintColor;
+  align?: AdsCardHintAlign;
 }
+```
+
+Tipos:
+```ts
+type AdsCardHintColor = "secondary" | "primary" | "brand" | "success" | "attention" | "warning" | "new" | "ai";
+
+type AdsCardHintAlign = "start" | "end";
 ```
 
 ## AdsCardPeriod
@@ -333,13 +345,15 @@ Props:
   title: string;
   description: string;
   icon: string;
-  /** Cor da caixa do ícone. O hover é o padrão dos cards, igual para todas as cores. */
+  /** Cor da pílula. No hover, título e seta usam essa cor e o fundo da pílula escurece. */
   color?: AdsFeatureCardColor;
   /** Vira link. Sem valor, continua botão. */
   to?: RouteLocationRaw;
   disabled?: boolean;
-  /** Hover padrão dos cards (borda e sombra neutras; a seta escurece). false desliga. */
+  /** Hover colore título e seta e escurece a pílula. false desliga. */
   hoverable?: boolean;
+  /** Ações do rodapé, cada uma com o próprio clique. A casca deixa de ser o botão. */
+  actions?: AdsFeatureCardAction[];
   badges?: AdsFeatureCardBadge[];
   footerIcon?: string;
   footerText?: string;
@@ -348,6 +362,12 @@ Props:
 
 Tipos:
 ```ts
+interface AdsFeatureCardAction {
+  label: string;
+  icon?: string;
+  to?: RouteLocationRaw;
+}
+
 interface AdsFeatureCardBadge {
   label: string;
   tone?: AdsPillTone;
@@ -368,6 +388,7 @@ Eventos:
 ```ts
 {
   click: [event: MouseEvent];
+  action: [action: AdsFeatureCardAction, event: MouseEvent];
 }
 ```
 
@@ -638,8 +659,14 @@ Props:
   title: string;
   /** Valor principal. */
   value?: string;
-  /** Texto do ícone de informação ao lado do título. */
+  /** Texto do balão do ícone ao lado do título. Sem ele, o ícone some. */
   hint?: string;
+  /** Ícone Lucide do balão. Padrão: informação. */
+  hintIcon?: string;
+  /** Cor do ícone do balão. */
+  hintColor?: AdsCardHintColor;
+  /** `end` encosta o ícone no fim do card, à direita. */
+  hintAlign?: AdsCardHintAlign;
   /** Ícone Lucide: 24px no KPI, 16px na Pendência. */
   icon?: string;
   /** Unidade ao lado do número na Pendência, como "pendências". */

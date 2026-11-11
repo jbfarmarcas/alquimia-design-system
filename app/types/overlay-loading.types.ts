@@ -6,9 +6,6 @@ export type OverlayVariant =
   | "info"
   | "warning";
 
-/** loading e search bloqueiam a tela até o processo terminar; os demais podem ser fechados. */
-export type OverlayClosableVariant = "info" | "success" | "error" | "warning";
-
 export interface OverlayLoadingOptions {
   title?: string;
   description?: string;
@@ -26,8 +23,8 @@ export interface OverlayLoadingOptions {
   secondaryActionIcon?: string;
   /** Sem valor, a ação secundária fecha o overlay. */
   onSecondaryAction?: () => void;
+  /** Disparado quando uma ação de fechar é acionada. */
   onUserClose?: () => void;
-  closableVariants?: OverlayClosableVariant[];
 }
 
 export interface OverlayLoadingProps extends OverlayLoadingOptions {

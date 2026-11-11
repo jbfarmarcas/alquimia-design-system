@@ -20,17 +20,7 @@
     </template>
 
     <template #content>
-      <div class="relative px-10 pt-2 text-center">
-        <!-- O slot #content substitui o cabeçalho do UModal, então o X fica aqui. -->
-        <button
-          v-if="isClosable"
-          type="button"
-          class="absolute top-0 right-0 flex size-8 items-center justify-center rounded-[var(--ads-radius-xsm)] text-[var(--ads-text-secondary)] hover:bg-black/5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--ads-text-brand)]"
-          aria-label="Fechar"
-          @click="handleClose"
-        >
-          <UIcon name="i-lucide-x" class="size-5" />
-        </button>
+      <div class="px-10 text-center">
         <div class="mb-4 flex justify-center">
           <div
             class="flex aspect-square h-20 items-center justify-center rounded-full"
@@ -107,7 +97,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import type { OverlayLoadingProps, OverlayVariant } from "../types/overlay-loading.types";
+import type { OverlayLoadingProps } from "../types/overlay-loading.types";
 import AdsButton from "./AdsButton.vue";
 
 const emit = defineEmits<{
@@ -129,12 +119,7 @@ const props = withDefaults(defineProps<OverlayLoadingProps>(), {
   secondaryActionIcon: undefined,
   onSecondaryAction: undefined,
   onUserClose: undefined,
-  closableVariants: () => ["info", "success", "error", "warning"],
 });
-
-const isClosable = computed(() =>
-  (props.closableVariants as OverlayVariant[]).includes(props.variant),
-);
 
 type Feedback = {
   icon: string;

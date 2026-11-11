@@ -312,7 +312,7 @@ export const catalogSections = [
     id: "feature-card",
     label: "Feature card",
     group: "Cards",
-    purpose: "Entrada de um fluxo: ícone, título, descrição e seta, com 396px.",
+    purpose: "Entrada de um fluxo: pílula de ícone, título, descrição, seta e ações, com 390px.",
     components: ["AdsFeatureCard"],
   },
 

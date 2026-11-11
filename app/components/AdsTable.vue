@@ -44,6 +44,7 @@ import AdsTableSkeleton, {
 import {
   adsTableCellSize,
   buildAdsTableUi,
+  mergeAdsTableUi,
   type AdsTableBorders,
   type AdsTableDensity,
   type AdsTableUi,
@@ -166,11 +167,6 @@ const tableUi = computed(() => {
       base.loading = "contents";
     }
   }
-  if (!props.ui) return base;
-  const merged = { ...base };
-  for (const key of Object.keys(props.ui) as (keyof AdsTableUi)[]) {
-    merged[key] = `${base[key]} ${props.ui[key] ?? ""}`.trim();
-  }
-  return merged;
+  return mergeAdsTableUi(base, props.ui);
 });
 </script>

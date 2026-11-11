@@ -1,23 +1,33 @@
 <template>
   <DocsDemo language="vue" :code="code" :apis="docsApis['feature-card']">
     <template #preview>
-      <AdsFeatureCard
-        title="Simulação"
-        description="Simulações de preços e cenários."
-        icon="i-lucide-calculator"
-        :color="featureColor"
-        :disabled="disabled"
-        :hoverable="hoverable"
-        :badges="badgesOn ? badges : undefined"
-        :footer-text="footerOn ? 'Atualizada hoje' : undefined"
-      />
+      <div class="flex w-full flex-wrap items-stretch gap-6">
+        <AdsFeatureCard
+          title="Pesquisa"
+          description="Pesquisas de preços e análises competitivas"
+          icon="i-lucide-search"
+          color="primary"
+          :disabled="disabled"
+          :hoverable="hoverable"
+          :actions="pesquisaActions"
+        />
+        <AdsFeatureCard
+          title="Simulação"
+          description="Simulações de preços e cenários"
+          icon="i-lucide-calculator"
+          :color="featureColor"
+          :disabled="disabled"
+          :hoverable="hoverable"
+          :actions="simulacaoActions"
+        />
+      </div>
     </template>
 
     <template #params>
       <AdsSelect
         v-model="featureColor"
         type="radio"
-        label="Cor do ícone"
+        label="Cor da pílula (Simulação)"
         block
         :searchable="false"
         :options="featureColorOptions"
@@ -25,8 +35,6 @@
       <div class="flex flex-wrap items-center gap-x-8 gap-y-4">
         <AdsSwitch v-model="disabled" label="Em breve" />
         <AdsSwitch v-model="hoverable" label="Hover" />
-        <AdsSwitch v-model="badgesOn" label="Badges" />
-        <AdsSwitch v-model="footerOn" label="Rodapé" />
       </div>
     </template>
   </DocsDemo>
@@ -36,20 +44,24 @@
 import { computed, ref } from "vue";
 import DocsDemo from "../DocsDemo.vue";
 import { docsApis } from "../catalog-docs";
-import { attr, buildTag } from "../../../utils/code-builder";
-import AdsFeatureCard, { type AdsFeatureCardBadge, type AdsFeatureCardColor } from "../../../../../app/components/AdsFeatureCard.vue";
+import { attr, buildTag, joinBlocks } from "../../../utils/code-builder";
+import AdsFeatureCard, { type AdsFeatureCardAction, type AdsFeatureCardColor } from "../../../../../app/components/AdsFeatureCard.vue";
 import AdsSelect from "../../../../../app/components/AdsSelect.vue";
 import AdsSwitch from "../../../../../app/components/AdsSwitch.vue";
 
 const featureColor = ref<AdsFeatureCardColor>("success");
 const disabled = ref(false);
 const hoverable = ref(true);
-const badgesOn = ref(true);
-const footerOn = ref(true);
 
-const badges: AdsFeatureCardBadge[] = [
-  { label: "Novo", status: "new" },
-  { label: "Preços", status: "default" },
+const pesquisaActions: AdsFeatureCardAction[] = [
+  { label: "Histórico", icon: "i-lucide-clock" },
+  { label: "Criar", icon: "i-lucide-plus" },
+  { label: "Análise", icon: "i-lucide-chart-column" },
+];
+
+const simulacaoActions: AdsFeatureCardAction[] = [
+  { label: "Histórico", icon: "i-lucide-clock" },
+  { label: "Criar", icon: "i-lucide-plus" },
 ];
 
 const featureColorOptions = [
@@ -62,20 +74,36 @@ const featureColorOptions = [
   { value: "ai", label: "IA" },
 ];
 
-const code = computed(() =>
+const pesquisaCode = computed(() =>
+  buildTag("AdsFeatureCard", [
+    attr(true, "title", "Pesquisa"),
+    attr(true, "description", "Pesquisas de preços e análises competitivas"),
+    attr(true, "icon", "i-lucide-search"),
+    attr(disabled.value, "disabled"),
+    attr(!hoverable.value, ":hoverable", "false"),
+    attr(
+      true,
+      ":actions",
+      "[{ label: 'Histórico', icon: 'i-lucide-clock' }, { label: 'Criar', icon: 'i-lucide-plus' }, { label: 'Análise', icon: 'i-lucide-chart-column' }]",
+    ),
+  ]),
+);
+
+const simulacaoCode = computed(() =>
   buildTag("AdsFeatureCard", [
     attr(true, "title", "Simulação"),
-    attr(true, "description", "Simulações de preços e cenários."),
+    attr(true, "description", "Simulações de preços e cenários"),
     attr(true, "icon", "i-lucide-calculator"),
     attr(featureColor.value !== "primary", "color", featureColor.value),
     attr(disabled.value, "disabled"),
     attr(!hoverable.value, ":hoverable", "false"),
     attr(
-      badgesOn.value,
-      ":badges",
-      "[{ label: 'Novo', status: 'new' }, { label: 'Preços', status: 'default' }]",
+      true,
+      ":actions",
+      "[{ label: 'Histórico', icon: 'i-lucide-clock' }, { label: 'Criar', icon: 'i-lucide-plus' }]",
     ),
-    attr(footerOn.value, "footer-text", "Atualizada hoje"),
   ]),
 );
+
+const code = computed(() => joinBlocks(pesquisaCode.value, simulacaoCode.value));
 </script>

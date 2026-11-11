@@ -13,7 +13,7 @@ export const useOverlayLoading = () => {
     patch: (props: Record<string, unknown>) => void;
   } | null = null;
   /**
-   * O overlay é destruído ao fechar (destroyOnClose). Fechar pelo X ou pela ação emite `close`
+   * O overlay é destruído ao fechar (destroyOnClose). Fechar pela ação emite `close`
    * direto no useOverlay, sem passar por aqui; chamar close/patch depois disso lança
    * "Overlay not found". Por isso a referência é limpa quando o overlay fecha, por qualquer caminho.
    */

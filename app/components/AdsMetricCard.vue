@@ -11,9 +11,9 @@
     <template v-if="type === 'kpi'">
       <UIcon v-if="icon" :name="icon" class="size-6 shrink-0" :class="iconClass" aria-hidden="true" />
       <div class="flex min-w-0 flex-1 flex-col items-start gap-2">
-        <div class="flex min-w-0 items-center gap-2">
+        <div class="flex w-full min-w-0 items-center gap-2">
           <p :class="titleClass">{{ title }}</p>
-          <AdsCardHint v-if="hint" :text="hint" />
+          <AdsCardHint v-if="hint" :text="hint" :icon="hintIcon" :color="hintColor" :align="hintAlign" />
         </div>
         <span v-if="loading" :class="skeletonClass" class="h-5 w-[140px] rounded-[var(--ads-radius-xsm)]" aria-hidden="true" />
         <div v-else-if="empty" class="flex min-w-0 items-center gap-2">
@@ -32,7 +32,7 @@
       <div class="flex w-full min-w-0 items-center gap-1">
         <UIcon v-if="icon" :name="icon" class="size-4 shrink-0" :class="iconClass" aria-hidden="true" />
         <p class="min-w-0 truncate font-bold" :class="titleClass">{{ title }}</p>
-        <AdsCardHint v-if="hint" :text="hint" />
+        <AdsCardHint v-if="hint" :text="hint" :icon="hintIcon" :color="hintColor" :align="hintAlign" />
       </div>
       <span v-if="loading" :class="skeletonClass" class="h-7 w-[72px] rounded-[var(--ads-radius-xsm)]" aria-hidden="true" />
       <div v-else-if="empty" class="flex min-w-0 items-baseline gap-1">
@@ -49,7 +49,7 @@
     <template v-else>
       <div class="flex w-full min-w-0 items-center gap-2">
         <p class="min-w-0 flex-1" :class="titleClass">{{ title }}</p>
-        <AdsCardHint v-if="hint" :text="hint" />
+        <AdsCardHint v-if="hint" :text="hint" :icon="hintIcon" :color="hintColor" :align="hintAlign" />
         <slot name="actions" />
       </div>
 
@@ -102,6 +102,7 @@ import { computed } from "vue";
 import AdsCardHint from "./AdsCardHint.vue";
 import AdsCardPeriod from "./AdsCardPeriod.vue";
 import AdsCardVariation from "./AdsCardVariation.vue";
+import type { AdsCardHintAlign, AdsCardHintColor } from "./AdsCardHint.vue";
 import type { AdsCardVariationDirection, AdsCardVariationTone } from "./AdsCardVariation.vue";
 import AdsEmptyState from "./AdsEmptyState.vue";
 
@@ -118,8 +119,14 @@ const props = withDefaults(
     title: string;
     /** Valor principal. */
     value?: string;
-    /** Texto do ícone de informação ao lado do título. */
+    /** Texto do balão do ícone ao lado do título. Sem ele, o ícone some. */
     hint?: string;
+    /** Ícone Lucide do balão. Padrão: informação. */
+    hintIcon?: string;
+    /** Cor do ícone do balão. */
+    hintColor?: AdsCardHintColor;
+    /** `end` encosta o ícone no fim do card, à direita. */
+    hintAlign?: AdsCardHintAlign;
     /** Ícone Lucide: 24px no KPI, 16px na Pendência. */
     icon?: string;
     /** Unidade ao lado do número na Pendência, como "pendências". */
@@ -162,6 +169,9 @@ const props = withDefaults(
     type: "metric",
     value: undefined,
     hint: undefined,
+    hintIcon: "i-lucide-info",
+    hintColor: "secondary",
+    hintAlign: "start",
     icon: undefined,
     unit: undefined,
     valueIcon: undefined,
