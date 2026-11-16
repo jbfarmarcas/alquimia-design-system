@@ -17,7 +17,7 @@ export const catalogSections = [
     id: "button",
     label: "Botão",
     group: "Botões",
-    purpose: "Ação de tela. O exemplo segue os parâmetros: tipo, cor, tamanho, conteúdo e estado. Outline e unfilled não têm pressed. No tipo IA, um brilho de gradiente gira em volta da borda. O estado de carregamento da ação também fica aqui.",
+    purpose: "Ação de tela. O exemplo segue os parâmetros: tipo, tamanho, conteúdo e estado. As variações são primary (filled, outline, unfilled), secondary e IA. Outline e unfilled não têm pressed. No tipo IA, um brilho de gradiente gira em volta da borda. O estado de carregamento da ação também fica aqui.",
     components: ["AdsButton"],
   },
   {

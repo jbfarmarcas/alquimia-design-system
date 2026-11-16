@@ -38,13 +38,11 @@ import { NuxtLink } from "#components";
 export type AdsButtonType = "filled" | "outline" | "unfilled" | "secondary" | "ia";
 export type AdsButtonSize = "md" | "sm";
 export type AdsButtonState = "active" | "hover" | "pressed" | "disabled";
-export type AdsButtonColor = "primary" | "success" | "attention" | "warning" | "new" | "blocked" | "neutral";
 
 const props = withDefaults(
   defineProps<{
+    /** Filled, outline e unfilled são o primary do Figma. Secondary e IA são os outros visuais. */
     type?: AdsButtonType;
-    /** Mesmas cores do badge, mais neutral para ação sem status. */
-    color?: AdsButtonColor;
     size?: AdsButtonSize;
     label?: string;
     /** Ícone à esquerda. No Figma, o exemplo é sparkles. Sem rótulo, o ícone ocupa o botão sozinho. */
@@ -68,7 +66,6 @@ const props = withDefaults(
   }>(),
   {
     type: "filled",
-    color: "primary",
     size: "md",
     label: "",
     leading: false,
@@ -133,9 +130,11 @@ const iconClass = computed(() =>
     : "size-[var(--ads-button-md-icon)] shrink-0 text-[length:var(--ads-button-md-icon)]",
 );
 
-const faceClass = computed(() => faceFor(props.type, props.color, visualState()));
+const faceClass = computed(() => faceFor(props.type, visualState()));
 const focusClass = computed(() =>
-  props.type === "ia" ? "focus-visible:outline-[var(--ads-button-ia-border)]" : focusFor[props.color],
+  props.type === "ia"
+    ? "focus-visible:outline-[var(--ads-button-ia-border)]"
+    : "focus-visible:outline-[var(--ads-text-brand)]",
 );
 /** Um brilho de gradiente gira em volta da borda do tipo IA. Hover, pressed e disabled seguram a borda fechada. */
 const iaMotion = computed(() => {
@@ -174,20 +173,8 @@ const visualState = (): AdsButtonState => {
   return "active";
 };
 
-const contrast = "text-[var(--ads-text-contrast)]";
-const ink = "text-[var(--ads-text-primary)]";
 const filledPrimaryText = "text-[var(--ads-button-primary-text)]";
 const secondaryText = "text-[var(--ads-button-secondary-text)]";
-
-const focusFor: Record<AdsButtonColor, string> = {
-  primary: "focus-visible:outline-[var(--ads-text-brand)]",
-  success: "focus-visible:outline-[var(--ads-status-success-700)]",
-  attention: "focus-visible:outline-[var(--ads-status-attention-800)]",
-  warning: "focus-visible:outline-[var(--ads-status-warning-600)]",
-  new: "focus-visible:outline-[var(--ads-status-new-700)]",
-  blocked: "focus-visible:outline-[var(--ads-status-void-800)]",
-  neutral: "focus-visible:outline-[var(--ads-text-primary)]",
-};
 
 /** Fundo e cor da borda ficam em `.ads-button-ia-face`: a borda é pintada pelo fundo, na mesma espessura em todos os estados. */
 const iaFace = (state: AdsButtonState) => {
@@ -202,13 +189,9 @@ const iaFace = (state: AdsButtonState) => {
   return base;
 };
 
-const faceFor = (type: AdsButtonType, color: AdsButtonColor, state: AdsButtonState) => {
+const faceFor = (type: AdsButtonType, state: AdsButtonState) => {
   if (type === "ia") return iaFace(state);
-  if (color === "primary") return primaryFace(type, state);
-  if (type === "filled") return filledStatus(color, state);
-  if (type === "outline") return outlineStatus(color, state);
-  if (type === "unfilled") return unfilledStatus(color, state);
-  return secondaryStatus(color, state);
+  return primaryFace(type, state);
 };
 
 const primaryFace = (type: AdsButtonType, state: AdsButtonState) => {
@@ -252,202 +235,6 @@ const secondaryPrimary = (state: AdsButtonState) => {
   return `bg-[var(--ads-button-secondary)] ${secondaryText} hover:bg-[var(--ads-button-secondary-hover)] active:bg-[var(--ads-button-secondary-pressed)]`;
 };
 
-/**
- * Sucesso, atenção e new usam texto primary no sólido 500: branco não chega no AA.
- * Warning e blocked seguram branco. Pressed escuro volta para o texto de contraste.
- */
-const filledStatus = (color: AdsButtonColor, state: AdsButtonState) => {
-  if (color === "success") {
-    if (state === "hover") return `bg-[var(--ads-status-success-600)] ${ink}`;
-    if (state === "pressed") return `bg-[var(--ads-status-success-800)] ${contrast}`;
-    if (state === "disabled") return "bg-[var(--ads-status-success-100)] text-[var(--ads-status-success-700)]";
-    return `bg-[var(--ads-status-success-500)] ${ink} hover:bg-[var(--ads-status-success-600)] active:bg-[var(--ads-status-success-800)] active:text-[var(--ads-text-contrast)]`;
-  }
-  if (color === "attention") {
-    if (state === "hover") return `bg-[var(--ads-status-attention-600)] ${ink}`;
-    if (state === "pressed") return `bg-[var(--ads-status-attention-800)] ${contrast}`;
-    if (state === "disabled") return "bg-[var(--ads-status-attention-100)] text-[var(--ads-status-attention-800)]";
-    return `bg-[var(--ads-status-attention-500)] ${ink} hover:bg-[var(--ads-status-attention-600)] active:bg-[var(--ads-status-attention-800)] active:text-[var(--ads-text-contrast)]`;
-  }
-  if (color === "warning") {
-    if (state === "hover") return `bg-[var(--ads-status-warning-600)] ${contrast}`;
-    if (state === "pressed") return `bg-[var(--ads-status-warning-800)] ${contrast}`;
-    if (state === "disabled") return "bg-[var(--ads-status-warning-100)] text-[var(--ads-status-warning-800)]";
-    return `bg-[var(--ads-status-warning-500)] ${contrast} hover:bg-[var(--ads-status-warning-600)] active:bg-[var(--ads-status-warning-800)]`;
-  }
-  if (color === "new") {
-    if (state === "hover") return `bg-[var(--ads-status-new-600)] ${ink}`;
-    if (state === "pressed") return `bg-[var(--ads-status-new-800)] ${contrast}`;
-    if (state === "disabled") return "bg-[var(--ads-status-new-100)] text-[var(--ads-status-new-800)]";
-    return `bg-[var(--ads-status-new-500)] ${ink} hover:bg-[var(--ads-status-new-600)] active:bg-[var(--ads-status-new-800)] active:text-[var(--ads-text-contrast)]`;
-  }
-  if (color === "neutral") {
-    if (state === "hover") return `bg-[var(--color-neutral-800)] ${contrast}`;
-    if (state === "pressed") return `bg-[var(--color-neutral-900)] ${contrast}`;
-    if (state === "disabled") return "bg-[var(--color-neutral-100)] text-[var(--ads-text-tertiary)]";
-    return `bg-[var(--color-neutral-700)] ${contrast} hover:bg-[var(--color-neutral-800)] active:bg-[var(--color-neutral-900)]`;
-  }
-  if (state === "hover") return `bg-[color-mix(in_srgb,var(--ads-status-void-800)_78%,white)] ${contrast}`;
-  if (state === "pressed") return `bg-[color-mix(in_srgb,var(--ads-status-void-800)_70%,black)] ${contrast}`;
-  if (state === "disabled") return "bg-[var(--ads-status-void-100)] text-[var(--ads-status-void-600)]";
-  return `bg-[var(--ads-status-void-800)] ${contrast} hover:bg-[color-mix(in_srgb,var(--ads-status-void-800)_78%,white)] active:bg-[color-mix(in_srgb,var(--ads-status-void-800)_70%,black)]`;
-};
-
-const outlineStatus = (color: AdsButtonColor, state: AdsButtonState) => {
-  const faces: Record<Exclude<AdsButtonColor, "primary">, Record<AdsButtonState, string>> = {
-    success: {
-      active:
-        "border border-[var(--ads-status-success-700)] text-[var(--ads-status-success-700)] hover:bg-[var(--ads-status-success-100)] hover:shadow-[inset_0_0_0_1px_var(--ads-status-success-700)]",
-      hover:
-        "border border-[var(--ads-status-success-700)] bg-[var(--ads-status-success-100)] text-[var(--ads-status-success-700)] shadow-[inset_0_0_0_1px_var(--ads-status-success-700)]",
-      pressed:
-        "border border-[var(--ads-status-success-700)] bg-[var(--ads-status-success-100)] text-[var(--ads-status-success-700)] shadow-[inset_0_0_0_1px_var(--ads-status-success-700)]",
-      disabled:
-        "border border-[var(--ads-status-success-300)] bg-[color-mix(in_srgb,var(--ads-status-success-100)_50%,transparent)] text-[var(--ads-status-success-300)]",
-    },
-    attention: {
-      active:
-        "border border-[var(--ads-status-attention-800)] text-[var(--ads-status-attention-800)] hover:bg-[var(--ads-status-attention-100)] hover:shadow-[inset_0_0_0_1px_var(--ads-status-attention-800)]",
-      hover:
-        "border border-[var(--ads-status-attention-800)] bg-[var(--ads-status-attention-100)] text-[var(--ads-status-attention-800)] shadow-[inset_0_0_0_1px_var(--ads-status-attention-800)]",
-      pressed:
-        "border border-[var(--ads-status-attention-800)] bg-[var(--ads-status-attention-100)] text-[var(--ads-status-attention-800)] shadow-[inset_0_0_0_1px_var(--ads-status-attention-800)]",
-      disabled:
-        "border border-[var(--ads-status-attention-300)] bg-[color-mix(in_srgb,var(--ads-status-attention-100)_50%,transparent)] text-[var(--ads-status-attention-300)]",
-    },
-    warning: {
-      active:
-        "border border-[var(--ads-status-warning-600)] text-[var(--ads-status-warning-600)] hover:bg-[var(--ads-status-warning-100)] hover:shadow-[inset_0_0_0_1px_var(--ads-status-warning-600)]",
-      hover:
-        "border border-[var(--ads-status-warning-600)] bg-[var(--ads-status-warning-100)] text-[var(--ads-status-warning-600)] shadow-[inset_0_0_0_1px_var(--ads-status-warning-600)]",
-      pressed:
-        "border border-[var(--ads-status-warning-600)] bg-[var(--ads-status-warning-100)] text-[var(--ads-status-warning-600)] shadow-[inset_0_0_0_1px_var(--ads-status-warning-600)]",
-      disabled:
-        "border border-[var(--ads-status-warning-300)] bg-[color-mix(in_srgb,var(--ads-status-warning-100)_50%,transparent)] text-[var(--ads-status-warning-300)]",
-    },
-    new: {
-      active:
-        "border border-[var(--ads-status-new-700)] text-[var(--ads-status-new-700)] hover:bg-[var(--ads-status-new-100)] hover:shadow-[inset_0_0_0_1px_var(--ads-status-new-700)]",
-      hover:
-        "border border-[var(--ads-status-new-700)] bg-[var(--ads-status-new-100)] text-[var(--ads-status-new-700)] shadow-[inset_0_0_0_1px_var(--ads-status-new-700)]",
-      pressed:
-        "border border-[var(--ads-status-new-700)] bg-[var(--ads-status-new-100)] text-[var(--ads-status-new-700)] shadow-[inset_0_0_0_1px_var(--ads-status-new-700)]",
-      disabled:
-        "border border-[var(--ads-status-new-300)] bg-[color-mix(in_srgb,var(--ads-status-new-100)_50%,transparent)] text-[var(--ads-status-new-300)]",
-    },
-    blocked: {
-      active:
-        "border border-[var(--ads-status-void-800)] text-[var(--ads-status-void-800)] hover:bg-[var(--ads-status-void-100)] hover:shadow-[inset_0_0_0_1px_var(--ads-status-void-800)]",
-      hover:
-        "border border-[var(--ads-status-void-800)] bg-[var(--ads-status-void-100)] text-[var(--ads-status-void-800)] shadow-[inset_0_0_0_1px_var(--ads-status-void-800)]",
-      pressed:
-        "border border-[var(--ads-status-void-800)] bg-[var(--ads-status-void-100)] text-[var(--ads-status-void-800)] shadow-[inset_0_0_0_1px_var(--ads-status-void-800)]",
-      disabled:
-        "border border-[var(--ads-status-void-300)] bg-[color-mix(in_srgb,var(--ads-status-void-100)_50%,transparent)] text-[var(--ads-status-void-300)]",
-    },
-    neutral: {
-      active:
-        "border border-[var(--color-neutral-300)] text-[var(--ads-text-primary)] hover:bg-[var(--color-neutral-100)] hover:shadow-[inset_0_0_0_1px_var(--color-neutral-300)]",
-      hover:
-        "border border-[var(--color-neutral-300)] bg-[var(--color-neutral-100)] text-[var(--ads-text-primary)] shadow-[inset_0_0_0_1px_var(--color-neutral-300)]",
-      pressed:
-        "border border-[var(--color-neutral-300)] bg-[var(--color-neutral-100)] text-[var(--ads-text-primary)] shadow-[inset_0_0_0_1px_var(--color-neutral-300)]",
-      disabled:
-        "border border-[var(--color-neutral-300)] bg-[color-mix(in_srgb,var(--color-neutral-100)_50%,transparent)] text-[var(--ads-text-tertiary)]",
-    },
-  };
-  return faces[color === "primary" ? "success" : color][state];
-};
-
-const unfilledStatus = (color: AdsButtonColor, state: AdsButtonState) => {
-  const faces: Record<Exclude<AdsButtonColor, "primary">, Record<AdsButtonState, string>> = {
-    success: {
-      active: "text-[var(--ads-status-success-700)] hover:bg-[var(--ads-status-success-100)]",
-      hover: "bg-[var(--ads-status-success-100)] text-[var(--ads-status-success-700)]",
-      pressed: "bg-[var(--ads-status-success-100)] text-[var(--ads-status-success-700)]",
-      disabled: "text-[var(--ads-status-success-300)]",
-    },
-    attention: {
-      active: "text-[var(--ads-status-attention-800)] hover:bg-[var(--ads-status-attention-100)]",
-      hover: "bg-[var(--ads-status-attention-100)] text-[var(--ads-status-attention-800)]",
-      pressed: "bg-[var(--ads-status-attention-100)] text-[var(--ads-status-attention-800)]",
-      disabled: "text-[var(--ads-status-attention-300)]",
-    },
-    warning: {
-      active: "text-[var(--ads-status-warning-600)] hover:bg-[var(--ads-status-warning-100)]",
-      hover: "bg-[var(--ads-status-warning-100)] text-[var(--ads-status-warning-600)]",
-      pressed: "bg-[var(--ads-status-warning-100)] text-[var(--ads-status-warning-600)]",
-      disabled: "text-[var(--ads-status-warning-300)]",
-    },
-    new: {
-      active: "text-[var(--ads-status-new-700)] hover:bg-[var(--ads-status-new-100)]",
-      hover: "bg-[var(--ads-status-new-100)] text-[var(--ads-status-new-700)]",
-      pressed: "bg-[var(--ads-status-new-100)] text-[var(--ads-status-new-700)]",
-      disabled: "text-[var(--ads-status-new-300)]",
-    },
-    blocked: {
-      active: "text-[var(--ads-status-void-800)] hover:bg-[var(--ads-status-void-100)]",
-      hover: "bg-[var(--ads-status-void-100)] text-[var(--ads-status-void-800)]",
-      pressed: "bg-[var(--ads-status-void-100)] text-[var(--ads-status-void-800)]",
-      disabled: "text-[var(--ads-status-void-300)]",
-    },
-    neutral: {
-      active: "text-[var(--ads-text-primary)] hover:bg-[var(--color-neutral-100)]",
-      hover: "bg-[var(--color-neutral-100)] text-[var(--ads-text-primary)]",
-      pressed: "bg-[var(--color-neutral-100)] text-[var(--ads-text-primary)]",
-      disabled: "text-[var(--ads-text-tertiary)]",
-    },
-  };
-  return faces[color === "primary" ? "success" : color][state];
-};
-
-const secondaryStatus = (color: AdsButtonColor, state: AdsButtonState) => {
-  const faces: Record<Exclude<AdsButtonColor, "primary">, Record<AdsButtonState, string>> = {
-    success: {
-      active:
-        "bg-[var(--ads-status-success-100)] text-[var(--ads-status-success-800)] hover:bg-[var(--ads-status-success-200)] active:bg-[var(--ads-status-success-300)]",
-      hover: "bg-[var(--ads-status-success-200)] text-[var(--ads-status-success-800)]",
-      pressed: "bg-[var(--ads-status-success-300)] text-[var(--ads-status-success-800)]",
-      disabled: secondaryDisabled,
-    },
-    attention: {
-      active:
-        "bg-[var(--ads-status-attention-100)] text-[var(--ads-text-primary)] hover:bg-[var(--ads-status-attention-200)] active:bg-[var(--ads-status-attention-300)]",
-      hover: "bg-[var(--ads-status-attention-200)] text-[var(--ads-text-primary)]",
-      pressed: "bg-[var(--ads-status-attention-300)] text-[var(--ads-text-primary)]",
-      disabled: secondaryDisabled,
-    },
-    warning: {
-      active:
-        "bg-[var(--ads-status-warning-100)] text-[var(--ads-status-warning-800)] hover:bg-[var(--ads-status-warning-200)] active:bg-[var(--ads-status-warning-300)]",
-      hover: "bg-[var(--ads-status-warning-200)] text-[var(--ads-status-warning-800)]",
-      pressed: "bg-[var(--ads-status-warning-300)] text-[var(--ads-status-warning-800)]",
-      disabled: secondaryDisabled,
-    },
-    new: {
-      active:
-        "bg-[var(--ads-status-new-100)] text-[var(--ads-status-new-800)] hover:bg-[var(--ads-status-new-200)] active:bg-[var(--ads-status-new-300)]",
-      hover: "bg-[var(--ads-status-new-200)] text-[var(--ads-status-new-800)]",
-      pressed: "bg-[var(--ads-status-new-300)] text-[var(--ads-status-new-800)]",
-      disabled: secondaryDisabled,
-    },
-    blocked: {
-      active:
-        "bg-[var(--ads-status-void-100)] text-[var(--ads-status-void-800)] hover:bg-[var(--ads-status-void-200)] active:bg-[var(--ads-status-void-300)]",
-      hover: "bg-[var(--ads-status-void-200)] text-[var(--ads-status-void-800)]",
-      pressed: "bg-[var(--ads-status-void-300)] text-[var(--ads-status-void-800)]",
-      disabled: secondaryDisabled,
-    },
-    neutral: {
-      active:
-        "bg-[var(--color-neutral-100)] text-[var(--ads-text-primary)] hover:bg-[var(--color-neutral-200)] active:bg-[var(--color-neutral-300)]",
-      hover: "bg-[var(--color-neutral-200)] text-[var(--ads-text-primary)]",
-      pressed: "bg-[var(--color-neutral-300)] text-[var(--ads-text-primary)]",
-      disabled: secondaryDisabled,
-    },
-  };
-  return faces[color === "primary" ? "success" : color][state];
-};
 </script>
 
 <style>

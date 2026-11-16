@@ -2,7 +2,7 @@
   <DocsDemo :language="language" :code="code" :apis="docsApis.toast">
     <template #preview>
       <div v-if="appearance === 'flutuante'">
-        <AdsButton :color="buttonColor" label="Mostrar toast" @click="showFloatingToast" />
+        <AdsButton label="Mostrar toast" @click="showFloatingToast" />
       </div>
       <div v-else class="w-full max-w-xl">
         <AdsToast
@@ -43,7 +43,7 @@ import DocsDemo from "../DocsDemo.vue";
 import DocsParam from "../DocsParam.vue";
 import { docsApis } from "../catalog-docs";
 import { attr, buildTag } from "../../../utils/code-builder";
-import AdsButton, { type AdsButtonColor } from "../../../../../app/components/AdsButton.vue";
+import AdsButton from "../../../../../app/components/AdsButton.vue";
 import AdsSegmentedTabs from "../../../../../app/components/AdsSegmentedTabs.vue";
 import AdsSwitch from "../../../../../app/components/AdsSwitch.vue";
 import AdsToast, { type AdsToastStatus } from "../../../../../app/components/AdsToast.vue";
@@ -101,14 +101,6 @@ const messages: Record<AdsToastStatus, { title: string; description: string }> =
 };
 
 const toastColor = computed(() => (status.value === "loading" ? "primary" : status.value));
-
-/** Mapeamento para AdsButton: warning/attention → attention; error → warning (vermelho). */
-const buttonColor = computed((): AdsButtonColor => {
-  if (status.value === "loading") return "primary";
-  if (status.value === "error") return "warning";
-  if (status.value === "warning" || status.value === "attention") return "attention";
-  return status.value as AdsButtonColor;
-});
 
 const language = computed(() => (appearance.value === "flutuante" ? "ts" : "vue"));
 

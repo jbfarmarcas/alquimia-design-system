@@ -50,7 +50,6 @@ const prop = (
   description: string,
 ): DocsProp => ({ name, type, defaultValue, description });
 
-const buttonColors = "primary | success | attention | warning | new | blocked | neutral";
 const pillStatuses = "default | success | attention | warning | new | blocked";
 
 /** Propriedades, eventos e slots de cada seção, uma por componente. As chaves são os ids de `catalog-sections.ts`. O código vem dos parâmetros de cada demonstração. */
@@ -87,8 +86,7 @@ export const docsApis = {
       name: "AdsButton",
       summary: "Ação de tela. Sem rótulo, o botão fica quadrado e mostra só o ícone.",
       props: [
-        prop("type", "filled | outline | unfilled | secondary | ia", "filled", "Visual do botão. Outline e unfilled não têm pressed. IA ignora a cor: um brilho de gradiente gira em volta da borda e usa text/ai."),
-        prop("color", buttonColors, "primary", "Cor do status. Neutral é ação sem status. ⚠️ Só no código: o Figma não tem eixo de cor."),
+        prop("type", "filled | outline | unfilled | secondary | ia", "filled", "Visual do botão. Filled, outline e unfilled são o primary do Figma. Secondary e IA são as outras variações. Outline e unfilled não têm pressed. No IA, um brilho de gradiente gira em volta da borda e usa text/ai."),
         prop("size", "md | sm", "md", "md no desktop, sm no mobile."),
         prop("label", "string", '""', "Rótulo. Vazio deixa o botão só com ícone."),
         prop("leading", "boolean", "false", "Ícone à esquerda. No exemplo, sparkles."),

@@ -3,7 +3,6 @@
     <template #preview>
       <AdsButton
         :type="buttonType"
-        :color="buttonColor"
         :size="buttonSize"
         :state="previewState"
         :disabled="buttonState === 'disabled'"
@@ -20,16 +19,7 @@
         <AdsSegmentedTabs v-model="buttonType" :items="typeItems" aria-label="Tipo do botão" />
       </DocsParam>
 
-      <div class="grid items-end gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        <AdsSelect
-          v-if="buttonType !== 'ia'"
-          v-model="buttonColor"
-          type="radio"
-          label="Cor"
-          block
-          :searchable="false"
-          :options="colorOptions"
-        />
+      <div class="grid items-end gap-6 sm:grid-cols-2">
         <DocsParam label="Tamanho">
           <AdsSegmentedTabs v-model="buttonSize" :items="sizeItems" aria-label="Tamanho do botão" />
         </DocsParam>
@@ -47,7 +37,7 @@
           Outline e unfilled não têm pressed.
         </p>
         <p v-else-if="buttonType === 'ia'" class="mt-2 text-xs leading-relaxed text-[var(--ads-text-secondary)]">
-          Um brilho de gradiente gira em volta da borda a cada 3s, do brilho à borda de IA, sobre um trilho com 20% da cor da borda. A sombra puxa para o lado do brilho e cresce de 2px a 16px durante a volta. Hover e pressed fecham a borda em 100% com brilho. A cor de status não entra nesse tipo.
+          Um brilho de gradiente gira em volta da borda a cada 3s, do brilho à borda de IA, sobre um trilho com 20% da cor da borda. A sombra puxa para o lado do brilho e cresce de 2px a 16px durante a volta. Hover e pressed fecham a borda em 100% com brilho.
         </p>
       </DocsParam>
 
@@ -67,18 +57,15 @@ import DocsParam from "../DocsParam.vue";
 import { docsApis } from "../catalog-docs";
 import { attr, buildTag } from "../../../utils/code-builder";
 import AdsButton, {
-  type AdsButtonColor,
   type AdsButtonSize,
   type AdsButtonType,
 } from "../../../../../app/components/AdsButton.vue";
-import AdsSelect from "../../../../../app/components/AdsSelect.vue";
 import AdsSegmentedTabs from "../../../../../app/components/AdsSegmentedTabs.vue";
 import AdsSwitch from "../../../../../app/components/AdsSwitch.vue";
 
 type ButtonState = "active" | "hover" | "pressed" | "disabled";
 
 const buttonType = ref<AdsButtonType>("filled");
-const buttonColor = ref<AdsButtonColor>("primary");
 const buttonSize = ref<AdsButtonSize>("md");
 const buttonContent = ref<"label" | "icon">("label");
 const buttonState = ref<ButtonState>("active");
@@ -92,18 +79,6 @@ const typeItems = [
   { label: "Unfilled", value: "unfilled" },
   { label: "Secondary", value: "secondary" },
   { label: "IA", value: "ia" },
-];
-
-// Nota: "color" é uma prop só no código — o Figma não tem eixo de cor.
-// O tipo IA usa text/ai e surface/ai (sem color).
-const colorOptions = [
-  { value: "primary", label: "Primary" },
-  { value: "success", label: "Success" },
-  { value: "attention", label: "Attention" },
-  { value: "warning", label: "Warning" },
-  { value: "new", label: "New" },
-  { value: "blocked", label: "Blocked" },
-  { value: "neutral", label: "Neutral" },
 ];
 
 const sizeItems = [
@@ -143,7 +118,6 @@ watch(buttonType, (type) => {
 const code = computed(() => {
   return buildTag("AdsButton", [
     attr(buttonType.value !== "filled", "type", buttonType.value),
-    attr(buttonColor.value !== "primary", "color", buttonColor.value),
     attr(buttonSize.value !== "md", "size", buttonSize.value),
     attr(buttonContent.value === "icon", "aria-label", "Ação"),
     attr(buttonContent.value === "label", "label", buttonType.value === "ia" ? "Ajude a IA" : "Button Test"),

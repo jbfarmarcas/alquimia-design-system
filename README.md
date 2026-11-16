@@ -222,7 +222,7 @@ const nome = ref("");
 
 ```vue
 <AdsButton type="filled" label="Salvar" />
-<AdsButton type="outline" color="success" label="Aprovar" />
+<AdsButton type="outline" label="Aprovar" />
 <AdsButton type="unfilled" size="sm" label="Cancelar" />
 <AdsButton type="ia" label="Gerar com IA" leading icon="i-lucide-sparkles" />
 <AdsButton type="filled" label="Enviando" loading />
@@ -232,7 +232,6 @@ const nome = ref("");
 | Prop         | Valores |
 | ------------ | ------- |
 | `type`       | `filled` \| `outline` \| `unfilled` \| `secondary` \| `ia` |
-| `color`      | `primary` \| `success` \| `attention` \| `warning` \| `new` \| `innovation` \| `blocked` \| `neutral` |
 | `size`       | `md` \| `sm` |
 | `nativeType` | `button` \| `submit` \| `reset` (a prop `type` é o visual do ADS) |
 
@@ -255,7 +254,7 @@ Estados disponíveis via `state` (útil para documentação): `default`, `active
 
 ```vue
 <template>
-  <AdsButton label="Excluir" color="warning" @click="aberto = true" />
+  <AdsButton label="Excluir" @click="aberto = true" />
 
   <AdsModal
     v-model:open="aberto"

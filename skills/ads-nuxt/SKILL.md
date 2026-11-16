@@ -37,7 +37,7 @@ A layer já registra `@nuxt/ui`, `@nuxt/fonts`, `@nuxt/icon` e `@vueuse/nuxt`, o
 
 ## Armadilhas conhecidas
 
-- `AdsButton`: a prop `type` é o **visual** (`filled`, `outline`, `unfilled`, `secondary`, `ia`). O `type` do `<button>` é `nativeType`. Com `to`, vira link. Prop `color` **só no código** (o Figma não tem eixo de cor). Status `innovation` foi **removido** — use `primary` ou os tokens de IA.
+- `AdsButton`: a prop `type` é o **visual** (`filled`, `outline`, `unfilled`, `secondary`, `ia`). Filled, outline e unfilled são o primary do Figma; secondary e `ia` são as outras variações. O `type` do `<button>` é `nativeType`. Com `to`, vira link. Não existe prop `color`.
 - `AdsCard`: prop `type` (`container` | `details`). No `details`, as linhas vêm de `rows` (`{ icon?, label, value }`). `loading` agora mostra o loader do Radar (container) ou skeleton (details), não shimmer. `empty` mantém o cabeçalho e mostra o `AdsEmptyState` pequeno (`emptyMessage`, `emptyDescription`). Slot `hint` foi **removido** — use a prop `hint` (ícone de info) ou o slot `actions`. `description` e `footerText` são **só no código**. `as` aceita `"div"`, `"button"` ou um componente de link (como `NuxtLink`, com `to` no card); o hover é padrão nos cards clicáveis (`AdsCard`, `AdsMetricCard`): neutro, borda `--ads-card-hover-border` (#c1c7d0) e sombra nível 1; `:hoverable="false"` desliga. `AdsFeatureCard` não usa esse hover.
 - `AdsModal`: abre com `v-model:open`. Eventos `confirm`, `cancel` e `dismiss`. Prop `size` **só no código**.
 - `AdsDatePicker` e `AdsMonthPicker` trafegam datas como string `YYYY-MM-DD`. Intervalo: `range` com `v-model:start` e `v-model:end`.

@@ -43,9 +43,8 @@ type AdsBroadcastStatus = "warning" | "success";
 Props:
 ```ts
 {
+  /** Filled, outline e unfilled são o primary do Figma. Secondary e IA são os outros visuais. */
   type?: AdsButtonType;
-  /** Mesmas cores do badge, mais neutral para ação sem status. */
-  color?: AdsButtonColor;
   size?: AdsButtonSize;
   label?: string;
   /** Ícone à esquerda. No Figma, o exemplo é sparkles. Sem rótulo, o ícone ocupa o botão sozinho. */
@@ -76,8 +75,6 @@ type AdsButtonType = "filled" | "outline" | "unfilled" | "secondary" | "ia";
 type AdsButtonSize = "md" | "sm";
 
 type AdsButtonState = "active" | "hover" | "pressed" | "disabled";
-
-type AdsButtonColor = "primary" | "success" | "attention" | "warning" | "new" | "blocked" | "neutral";
 ```
 
 Slots: `default`
