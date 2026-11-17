@@ -4,7 +4,7 @@
     arrow
     :delay-duration="delayDuration"
     :disabled="disabled"
-    :content="{ side, align, sideOffset: 8 }"
+    :content="{ side, align, sideOffset: 8, arrowPadding }"
     :ui="tooltipUi"
   >
     <slot />
@@ -64,6 +64,9 @@ const side = computed(() => {
   if (props.wing === "right") return "right" as const;
   return "top" as const;
 });
+
+/** Igual a `--ads-tooltip-radius`. Sem isso, a seta no canto fica sobre a curva e solta do balão. */
+const arrowPadding = 12;
 
 const tooltipUi = {
   content:

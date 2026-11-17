@@ -3,7 +3,7 @@
     v-if="hasTrigger"
     arrow
     :delay-duration="delayDuration"
-    :content="{ side: 'top', align: 'center', sideOffset: 4 }"
+    :content="{ side: 'top', align: 'center', sideOffset: 4, arrowPadding }"
     :ui="tooltipUi"
   >
     <slot />
@@ -35,6 +35,9 @@ withDefaults(
 
 const slots = useSlots();
 const hasTrigger = computed(() => Boolean(slots.default));
+
+/** Igual a `--ads-tooltip-radius`. Sem isso, a seta no canto fica sobre a curva e solta do balão. */
+const arrowPadding = 12;
 
 const tooltipUi = {
   content:
