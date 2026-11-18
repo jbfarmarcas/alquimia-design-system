@@ -3,6 +3,28 @@
     <template #preview>
       <AdsButton label="Abrir modal" @click="open = true" />
       <AdsModal
+        v-if="scrollable"
+        v-model:open="open"
+        :variant="variant"
+        :size="size"
+        scrollable
+        :icon="icon ? 'i-lucide-align-center' : undefined"
+        title="Mapa de concorrentes"
+        :description="description ? DESCRIPTION : undefined"
+        :closable="closable"
+      >
+        <div class="flex flex-col gap-3">
+          <p v-for="line in 12" :key="line" class="text-[length:var(--ads-font-size-xxs)] text-[var(--ads-text-secondary)]">
+            Linha {{ line }} do mapa. Só esta área rola; o título e os botões ficam visíveis.
+          </p>
+        </div>
+        <template #footer>
+          <AdsButton type="unfilled" size="sm" label="Cancelar" @click="open = false" />
+          <AdsButton size="sm" label="Continuar" @click="open = false" />
+        </template>
+      </AdsModal>
+      <AdsModal
+        v-else
         v-model:open="open"
         :variant="variant"
         :size="size"
@@ -27,6 +49,7 @@
         <AdsSwitch v-model="icon" label="Ícone" />
         <AdsSwitch v-model="description" label="Texto de apoio" />
         <AdsSwitch v-model="closable" label="Fechar (X)" />
+        <AdsSwitch v-model="scrollable" label="Miolo com rolagem" />
       </div>
     </template>
   </DocsDemo>
@@ -51,6 +74,7 @@ const size = ref<AdsModalSize>("md");
 const icon = ref(true);
 const description = ref(true);
 const closable = ref(true);
+const scrollable = ref(false);
 
 const variantItems = [
   { label: "Dialog", value: "dialog" },
@@ -63,6 +87,7 @@ const sizeItems = [
   { label: "XL", value: "xl" },
   { label: "2XL", value: "2xl" },
   { label: "3XL", value: "3xl" },
+  { label: "4XL", value: "4xl" },
 ];
 
 const code = computed(() =>
@@ -74,6 +99,7 @@ const code = computed(() =>
     attr(true, "title", "Confirmar alteração"),
     attr(description.value, "description", DESCRIPTION),
     attr(!closable.value, ":closable", "false"),
+    attr(scrollable.value, "scrollable"),
   ]),
 );
 </script>

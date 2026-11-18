@@ -5,23 +5,17 @@
         class="mx-auto flex w-full min-w-0 flex-col gap-8"
         :class="previewWidthClass"
       >
-        <!-- Só o stepper rola; os botões ficam fixos -->
-        <div
-          class="overflow-x-auto p-1"
-          :class="scrollerClass"
-        >
-          <AdsStepper
-            v-model="currentStep"
-            :steps="steps"
-            :variant="variant"
-            :orientation="orientation"
-            :indicator="indicator"
-            :show-labels="showLabels"
-            :clickable="clickable"
-            :allow-forward="allowForward"
-            aria-label="Progresso do pedido"
-          />
-        </div>
+        <AdsStepper
+          v-model="currentStep"
+          :steps="steps"
+          :variant="variant"
+          :orientation="orientation"
+          :indicator="indicator"
+          :show-labels="showLabels"
+          :clickable="clickable"
+          :allow-forward="allowForward"
+          aria-label="Progresso do pedido"
+        />
 
         <div class="flex items-center justify-center gap-3">
           <UButton
@@ -119,13 +113,6 @@ const allSteps = [
 ];
 
 const steps = computed(() => allSteps.slice(0, Number(stepCount.value)));
-
-// A barra de rolagem fica abaixo dos passos, sem cobrir a descrição.
-const scrollerClass = computed(() => {
-  if (variant.value !== "visual") return "";
-  if (orientation.value === "vertical") return "mx-auto w-fit max-w-full";
-  return "pb-4";
-});
 
 const previewWidthClass = computed(() => {
   if (variant.value === "simple") return "max-w-3xl";

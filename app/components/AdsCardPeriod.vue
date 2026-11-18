@@ -1,36 +1,38 @@
 <template>
-  <div class="flex w-full flex-wrap items-center gap-x-2 gap-y-1">
-    <span class="text-[length:var(--ads-font-size-xxxs)] leading-[1.2] text-[var(--ads-text-secondary)]">{{ label }}</span>
+  <div class="inline-flex max-w-full flex-wrap items-center gap-x-2 gap-y-1">
+    <span class="text-[length:var(--ads-font-size-xxs)] font-normal leading-[1.3] text-[var(--ads-text-secondary)]">{{ label }}</span>
     <span
       v-if="loading"
-      class="block h-[18px] animate-pulse rounded-[var(--ads-radius-pill)] bg-[var(--ads-loading-skeleton)] motion-reduce:animate-none"
+      class="block h-[var(--ads-pill-height)] animate-pulse rounded-[var(--ads-radius-pill)] bg-[var(--ads-loading-skeleton)] motion-reduce:animate-none"
       :style="{ width: `${skeletonWidth}px` }"
       aria-hidden="true"
     />
-    <span
+    <AdsPill
       v-else-if="value"
-      class="inline-flex h-[18px] items-center rounded-[var(--ads-radius-pill)] px-2 text-[length:var(--ads-font-size-minimal)] font-bold leading-[1.1] whitespace-nowrap"
-      :class="tone === 'neutral'
-        ? 'bg-[var(--ads-status-void-100)] text-[var(--ads-status-void-800)]'
-        : 'bg-ads-radar-25 text-ads-radar-800'"
-    >
-      {{ value }}
-    </span>
+      :label="value"
+      variant="soft"
+      color="default"
+      :custom-surface="tone === 'neutral' ? neutralSurface : undefined"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
+import AdsPill from "./AdsPill.vue";
+
 /**
- * Rótulo com selo, usado no período e no comparativo dos cards.
- * brand é o selo de datas (azul); neutral é o selo do comparativo (cinza).
+ * Rótulo de 14px com o valor numa pill. Serve no card e fora dele.
+ * brand é a pill secundária padrão (período). neutral é o selo cinza do comparativo.
  */
+const neutralSurface = "bg-[var(--ads-status-void-100)] text-[var(--ads-status-void-800)]";
+
 withDefaults(
   defineProps<{
     label: string;
     value?: string;
     tone?: "brand" | "neutral";
     loading?: boolean;
-    /** Largura do skeleton do selo, em px. */
+    /** Largura do skeleton da pill, em px. */
     skeletonWidth?: number;
   }>(),
   {

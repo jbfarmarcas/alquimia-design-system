@@ -1,7 +1,12 @@
 <template>
-  <nav :aria-label="ariaLabel">
-    <!-- Stepper Simples: barras horizontais -->
-    <div v-if="variant === 'simple'" class="flex items-start gap-4" role="list">
+  <nav :aria-label="ariaLabel" class="w-full min-w-0 max-w-full">
+    <!-- Stepper Simples: barras horizontais. A faixa rola se os rótulos não cabem. -->
+    <div
+      v-if="variant === 'simple'"
+      ref="scroller"
+      class="overflow-x-auto overscroll-x-contain p-1 [scrollbar-width:thin] [scrollbar-color:var(--ads-border-subtle)_transparent]"
+    >
+      <div class="flex w-max min-w-full items-start gap-4" role="list">
       <component
         :is="clickable ? 'button' : 'div'"
         v-for="(step, index) in steps"
@@ -11,7 +16,7 @@
         :aria-current="index === modelValue ? 'step' : undefined"
         :aria-label="step.label ? `${step.label} — ${stepAriaState(index)}` : `Passo ${index + 1} — ${stepAriaState(index)}`"
         :disabled="clickable ? index > modelValue && !allowForward : undefined"
-        class="flex min-w-0 flex-1 flex-col items-start gap-2 rounded-[var(--ads-radius-sm)] text-left enabled:cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ads-border-focused)] focus-visible:ring-offset-2"
+        class="flex min-w-max flex-1 flex-col items-start gap-2 rounded-[var(--ads-radius-sm)] text-left enabled:cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ads-border-focused)] focus-visible:ring-offset-2"
         @click="onStepClick(index)"
       >
         <span
@@ -20,16 +25,17 @@
         />
         <span
           v-if="showLabels && step.label"
-          class="w-full truncate text-[length:var(--ads-font-size-xxs)] leading-[1.3] transition-colors"
+          class="whitespace-nowrap text-[length:var(--ads-font-size-xxs)] leading-[1.3] transition-colors"
           :class="simpleLabelClass(index)"
         >
           {{ step.label }}
         </span>
       </component>
+      </div>
     </div>
 
     <!-- Stepper Visual vertical: círculo à esquerda, título e descrição à direita -->
-    <div v-else-if="orientation === 'vertical'" class="flex flex-col items-start" role="list">
+    <div v-else-if="orientation === 'vertical'" class="flex w-full min-w-0 flex-col items-start" role="list">
       <component
         :is="clickable ? 'button' : 'div'"
         v-for="(step, index) in steps"
@@ -61,7 +67,7 @@
 
         <span
           v-if="showLabels && (step.label || step.description)"
-          class="flex min-w-0 flex-1 flex-col gap-0.5 leading-[1.3]"
+          class="flex min-w-0 flex-1 flex-col gap-0.5 break-words leading-[1.3]"
           :class="{ 'pt-9': index > 0 }"
         >
           <span
@@ -82,8 +88,13 @@
       </component>
     </div>
 
-    <!-- Stepper Visual: círculos com ícone ou número -->
-    <div v-else class="flex items-start gap-2" role="list">
+    <!-- Stepper Visual: círculos com ícone ou número. A faixa rola se os passos não cabem. -->
+    <div
+      v-else
+      ref="scroller"
+      class="overflow-x-auto overscroll-x-contain p-1 [scrollbar-width:thin] [scrollbar-color:var(--ads-border-subtle)_transparent]"
+    >
+    <div class="flex w-max min-w-full items-start gap-2" role="list">
       <template v-for="(step, index) in steps" :key="index">
         <!-- Conector: centrado no círculo de 48px -->
         <span
@@ -139,10 +150,14 @@
         </component>
       </template>
     </div>
+    </div>
   </nav>
 </template>
 
 <script setup lang="ts">
+import { nextTick, onBeforeUnmount, onMounted, useTemplateRef, watch } from "vue";
+import { bindTabWheel } from "./ads-tab-scroll";
+
 export interface AdsStepperStep {
   /** Rótulo exibido abaixo da barra (Stepper Simples) ou do círculo (Stepper Visual). */
   label?: string;
@@ -183,6 +198,46 @@ const props = withDefaults(
 );
 
 const modelValue = defineModel<number>({ default: 0 });
+
+const scroller = useTemplateRef<HTMLElement>("scroller");
+let unbindWheel: (() => void) | undefined;
+
+function bindWheel() {
+  unbindWheel?.();
+  unbindWheel = scroller.value ? bindTabWheel(scroller.value) : undefined;
+}
+
+/** Traz o passo atual para a área visível quando a faixa está rolando. */
+function revealCurrent() {
+  nextTick(() => {
+    const el = scroller.value;
+    const current = el?.querySelector<HTMLElement>('[aria-current="step"]');
+    if (!el || !current) return;
+    const box = el.getBoundingClientRect();
+    const step = current.getBoundingClientRect();
+    const styles = getComputedStyle(el);
+    const left = box.left + (Number.parseFloat(styles.paddingLeft) || 0);
+    const right = box.right - (Number.parseFloat(styles.paddingRight) || 0);
+    if (step.left < left) el.scrollLeft -= left - step.left;
+    else if (step.right > right) el.scrollLeft += step.right - right;
+  });
+}
+
+onMounted(() => {
+  bindWheel();
+  revealCurrent();
+});
+
+onBeforeUnmount(() => unbindWheel?.());
+
+watch(modelValue, revealCurrent);
+watch(
+  () => [props.variant, props.orientation, props.steps.length] as const,
+  () => nextTick(() => {
+    bindWheel();
+    revealCurrent();
+  }),
+);
 
 const emit = defineEmits<{
   "update:modelValue": [step: number];

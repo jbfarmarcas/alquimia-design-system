@@ -29,13 +29,13 @@ Props:
 ```ts
 {
   label?: string;
-  status?: AdsBroadcastStatus;
+  color?: AdsBroadcastColor;
 }
 ```
 
 Tipos:
 ```ts
-type AdsBroadcastStatus = "warning" | "success";
+type AdsBroadcastColor = "warning" | "success";
 ```
 
 ## AdsButton
@@ -146,7 +146,7 @@ Props:
   periodLabel?: string;
   /** Linhas do card Detalhes. */
   rows?: AdsCardRow[];
-  /** Texto de apoio abaixo do cabeçalho. Só no código: o Figma não tem. */
+  /** Texto de apoio. No selected, 14px em text/secondary. Fora disso, só no código. */
   description?: string;
   /** Linha curta no rodapé. O slot footer substitui. Só no código: o Figma não tem. */
   footerText?: string;
@@ -158,9 +158,13 @@ Props:
   disabled?: boolean;
   /** Hover padrão dos cards clicáveis: borda cinza mais escura e sombra leve. false desliga. */
   hoverable?: boolean;
-  /** Estado Selecionado: fundo azul claro, borda azul e sombra. */
+  /** Estado Selecionado: fundo azul claro, borda azul e sombra. Título 14 bold e descrição 14. */
   selected?: boolean;
-  /** `md` (12px) é o do Figma; `sm` (8px) é só no código. */
+  /** box é o cartão. line é só a borda inferior, sem raio. */
+  variant?: AdsCardVariant;
+  /** default (16px) é o padrão. compact (8px) é o respiro menor. relaxed (24px) é o respiro maior (estratégia, histórico, notabilidade). */
+  padding?: AdsCardPadding;
+  /** `md` (12px) é o do Figma; `sm` (8px) é só no código. Ignorado em line. */
   radius?: "sm" | "md";
   /** Estado Carregando: no container, o loader do Radar; no details, skeleton nas linhas. */
   loading?: boolean;
@@ -174,6 +178,10 @@ Props:
 Tipos:
 ```ts
 type AdsCardType = "container" | "details";
+
+type AdsCardVariant = "box" | "line";
+
+type AdsCardPadding = "default" | "compact" | "relaxed";
 
 interface AdsCardRow {
   /** Ícone Lucide de 16px. */
@@ -216,7 +224,7 @@ Props:
   value?: string;
   tone?: "brand" | "neutral";
   loading?: boolean;
-  /** Largura do skeleton do selo, em px. */
+  /** Largura do skeleton da pill, em px. */
   skeletonWidth?: number;
 }
 ```
@@ -367,8 +375,9 @@ interface AdsFeatureCardAction {
 
 interface AdsFeatureCardBadge {
   label: string;
-  tone?: AdsPillTone;
-  status?: AdsPillStatus;
+  /** default é a pill sólida. soft (padrão do rodapé) é a clara. text é só o texto. */
+  variant?: AdsPillVariant;
+  color?: AdsPillColor;
 }
 
 type AdsFeatureCardColor =
@@ -738,7 +747,7 @@ type AdsModalDismissReason = "esc" | "outside";
 
 type AdsModalVariant = "dialog" | "sheet";
 
-type AdsModalSize = "md" | "lg" | "xl" | "2xl" | "3xl";
+type AdsModalSize = "md" | "lg" | "xl" | "2xl" | "3xl" | "4xl";
 ```
 
 Models: `v-model:open: boolean`
@@ -918,12 +927,18 @@ Props:
 ```ts
 {
   /**
-   * broadcast: a pílula de transmissão (LIVE), com borda e ponto. Só tem as cores
-   * warning e success; os outros status usam warning. Ignora tone e size.
+   * default é a pill sólida. soft é a variação clara.
+   * text: sem fundo, sem largura mínima, 14px regular.
+   * A cor é a do texto da `color`. Ignora size. O ícone, se houver, tem 16px.
    */
   variant?: AdsPillVariant;
-  status?: AdsPillStatus;
-  tone?: AdsPillTone;
+  /**
+   * Pílula de transmissão (LIVE): borda, ponto e texto na cor da `color`.
+   * Só warning e success; as outras cores usam warning. Ignora variant e size.
+   */
+  broadcast?: boolean;
+  /** Cor do estado: default, success, attention, warning, new ou blocked. */
+  color?: AdsPillColor;
   /** `md` = Pill normal (24px). `sm` = Small Pill (18px). Default `md`. */
   size?: AdsPillSize;
   label?: string;
@@ -944,13 +959,11 @@ Props:
 
 Tipos:
 ```ts
-type AdsPillStatus = "default" | "success" | "attention" | "warning" | "new" | "blocked";
-
-type AdsPillTone = "primary" | "secondary";
+type AdsPillColor = "default" | "success" | "attention" | "warning" | "new" | "blocked";
 
 type AdsPillSize = "md" | "sm";
 
-type AdsPillVariant = "default" | "broadcast";
+type AdsPillVariant = "default" | "soft" | "text";
 ```
 
 ## AdsProductTag
@@ -1531,11 +1544,17 @@ Props:
   description?: string;
   title?: string;
   subtitle?: string;
-  icon?: string;
+  /**
+   * Ícone Lucide. Sem valor, segue o status.
+   * `false` tira o ícone do DOM, sem o vão do token.
+   */
+  icon?: string | false;
   /** Quando falso, o aviso permanece sem a ação de fechar. */
   closable?: boolean;
-  /** Rótulo da ação em link. Sem valor, esconde o link. */
+  /** Rótulo da ação no fim da frase. Sem valor, esconde a ação. */
   actionLabel?: string;
+  /** Ícone Lucide da ação, como `i-lucide-arrow-up-right`. Sem valor, a ação é só texto. */
+  actionIcon?: string;
 }
 ```
 

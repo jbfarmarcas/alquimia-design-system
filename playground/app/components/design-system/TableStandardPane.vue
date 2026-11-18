@@ -11,13 +11,13 @@
       </span>
     </template>
     <template #status-cell="{ row }">
-      <AdsPill tone="secondary" :status="row.original.status === 'done' ? 'success' : 'attention'" :label="row.original.status === 'done' ? 'Concluída' : 'Pendente'" />
+      <AdsPill variant="soft" :color="row.original.status === 'done' ? 'success' : 'attention'" :label="row.original.status === 'done' ? 'Concluída' : 'Pendente'" />
     </template>
     <template #origin-cell="{ row }">
       <AdsPill
         v-if="row.original.origin"
-        tone="secondary"
-        :status="row.original.origin === 'manual' ? 'new' : 'default'"
+        variant="soft"
+        :color="row.original.origin === 'manual' ? 'new' : 'default'"
         :label="row.original.origin === 'manual' ? 'Manual' : 'Importado'"
       />
       <span v-else class="text-[var(--ads-text-tertiary)]">—</span>
@@ -45,7 +45,7 @@
     :columns="sessionColumns"
   >
     <template #status-cell="{ row }">
-      <AdsPill tone="secondary" :status="row.original.status === 'Concluída' ? 'success' : 'attention'" :label="row.original.status" />
+      <AdsPill variant="soft" :color="row.original.status === 'Concluída' ? 'success' : 'attention'" :label="row.original.status" />
     </template>
     <template #action-cell>
       <AdsButton type="unfilled" size="sm" icon="i-lucide-trash-2" aria-label="Remover" />
@@ -96,7 +96,7 @@
       <span class="text-[var(--ads-text-primary)]">{{ row.original.rede }}</span>
     </template>
     <template #status-cell="{ row }">
-      <AdsPill tone="secondary" :status="row.original.status === 'Vinculado' ? 'success' : 'attention'" :label="row.original.status" />
+      <AdsPill variant="soft" :color="row.original.status === 'Vinculado' ? 'success' : 'attention'" :label="row.original.status" />
     </template>
   </AdsTable>
 
@@ -268,8 +268,8 @@
     </template>
     <template #origin-cell="{ row }">
       <AdsPill
-        tone="secondary"
-        :status="row.original.origin === 'overridden' ? 'attention' : 'default'"
+        variant="soft"
+        :color="row.original.origin === 'overridden' ? 'attention' : 'default'"
         :label="row.original.origin === 'overridden' ? 'Alterado' : 'Calculado'"
       />
     </template>
@@ -291,7 +291,7 @@
     striped
   >
     <template #field-cell="{ row }">
-      <AdsPill tone="secondary" status="warning" :label="row.original.field" />
+      <AdsPill variant="soft" color="warning" :label="row.original.field" />
     </template>
     <template #action-cell>
       <AdsButton type="unfilled" size="sm" label="Corrigir" />

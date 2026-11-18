@@ -15,8 +15,8 @@
         <AdsSwitch v-model="showSubtitles" label="Subtítulos" />
       </div>
       <p class="text-xs leading-relaxed text-[var(--ads-text-secondary)]">
-        Limite: 8 abas. Acima desse número o componente avisa no console (dev) e o layout pode
-        ficar ilegível em telas menores.
+        Limite: 8 abas. Acima desse número o componente avisa no console (dev). Se não couberem,
+        a faixa rola na horizontal.
         Ícone (24px, à esquerda) e subtítulo são opcionais por aba: <code>items[n].icon</code> e <code>items[n].subtitle</code>.
       </p>
     </template>

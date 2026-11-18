@@ -1,7 +1,7 @@
 <!--
   AdsSelectItem — item da lista (Figma: _Dropdown Item). Peça interna do AdsSelect.
-  Seleção simples: selecionado ganha fundo azul claro e título em negrito.
-  Checkbox: caixa azul à esquerda; selecionado deixa o título em negrito.
+  Selecionado (simples e checkbox): título 14 bold em text/primary. O Figma pede esse negrito.
+  O texto não muda de caixa: marcar não deixa o rótulo em maiúscula.
 -->
 <template>
   <button
@@ -43,7 +43,7 @@
         wing="down"
         align="start"
       >
-        <span class="block min-w-0 truncate text-sm leading-[1.3]" :class="titleClass">
+        <span class="block min-w-0 truncate text-sm leading-[1.3] normal-case" :class="titleClass" style="text-transform: none">
           {{ displayLabel }}
         </span>
       </AdsTooltip>

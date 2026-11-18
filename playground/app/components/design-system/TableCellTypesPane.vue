@@ -37,7 +37,7 @@
 
     <!-- 3. Pill -->
     <template #status-cell="{ row }">
-      <AdsPill tone="secondary" :status="PILL_STATUS[row.original.status]" :label="PILL_LABEL[row.original.status]" />
+      <AdsPill variant="soft" :color="PILL_COLOR[row.original.status]" :label="PILL_LABEL[row.original.status]" />
     </template>
 
     <!-- 4. Botão -->
@@ -91,7 +91,7 @@
           <span class="font-bold">{{ row.original.department }}</span>
           <span :class="SUBTEXT">{{ row.original.metaSecondary }}</span>
         </span>
-        <AdsPill tone="secondary" :status="PILL_STATUS[row.original.status]" :label="PILL_LABEL[row.original.status]" />
+        <AdsPill variant="soft" :color="PILL_COLOR[row.original.status]" :label="PILL_LABEL[row.original.status]" />
         <AdsButton type="secondary" label="Ação" :aria-label="`Ação em ${row.original.department}`" />
       </span>
     </template>
@@ -117,7 +117,7 @@
 <script setup lang="ts">
 import type { TableColumn } from "@nuxt/ui";
 import AdsButton from "../../../../app/components/AdsButton.vue";
-import AdsPill, { type AdsPillStatus } from "../../../../app/components/AdsPill.vue";
+import AdsPill, { type AdsPillColor } from "../../../../app/components/AdsPill.vue";
 import AdsTable from "../../../../app/components/AdsTable.vue";
 import ProgressBarLoading from "../../../../app/components/ProgressBarLoading.vue";
 import { adsTableColumn } from "../../../../app/utils/ads-table";
@@ -134,7 +134,7 @@ const ACTIONS = [
   { name: "Mais opções de", icon: "i-lucide-ellipsis-vertical" },
 ];
 
-const PILL_STATUS: Record<DemoCellTypeRow["status"], AdsPillStatus> = {
+const PILL_COLOR: Record<DemoCellTypeRow["status"], AdsPillColor> = {
   done: "success",
   pending: "attention",
   blocked: "blocked",

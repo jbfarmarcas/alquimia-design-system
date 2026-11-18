@@ -4,14 +4,15 @@
     :type="as === 'button' ? 'button' : undefined"
     :disabled="as === 'button' ? disabled : undefined"
     :aria-busy="loading || undefined"
-    class="flex h-full min-w-0 flex-col items-start gap-3 border p-[var(--ads-card-padding)] text-left transition-[background-color,border-color,box-shadow]"
+    class="ads-card flex h-full min-w-0 flex-col items-start gap-3 p-[var(--ads-card-padding)] text-left transition-[background-color,border-color,box-shadow]"
     :class="[radiusClass, surfaceClass]"
+    :style="paddingStyle"
   >
     <!-- Cabeçalho -->
     <div v-if="showHeader" class="flex w-full min-w-0 items-center gap-2">
       <div class="min-w-0 flex-1">
         <slot name="header">
-          <p :class="type === 'details' ? detailsTitleClass : containerTitleClass">{{ title }}</p>
+          <p :class="titleClass">{{ title }}</p>
         </slot>
       </div>
       <AdsCardHint v-if="hint" :text="hint" />
@@ -20,7 +21,7 @@
 
     <AdsCardPeriod v-if="period || (loading && periodLabel && type === 'container')" :label="periodLabel" :value="period" :loading="loading" :skeleton-width="110" />
 
-    <p v-if="description && !loading && !empty" class="text-[length:var(--ads-card-body-size)] leading-[1.4] text-[var(--ads-card-body)]">
+    <p v-if="description && !loading && !empty" :class="descriptionClass">
       {{ description }}
     </p>
 
@@ -79,6 +80,16 @@ import AdsEmptyState from "./AdsEmptyState.vue";
 import AdsLoading from "./AdsLoading.vue";
 
 export type AdsCardType = "container" | "details";
+/** box: cartão com borda e raio. line: só a divisória de baixo, para uma linha de lista. */
+export type AdsCardVariant = "box" | "line";
+/** default: 16px (padrão). compact: 8px. relaxed: 24px (estratégia, histórico, notabilidade). */
+export type AdsCardPadding = "default" | "compact" | "relaxed";
+
+const CARD_PADDING: Record<AdsCardPadding, string> = {
+  default: "16px",
+  compact: "8px",
+  relaxed: "24px",
+};
 
 export interface AdsCardRow {
   /** Ícone Lucide de 16px. */
@@ -104,7 +115,7 @@ const props = withDefaults(
     periodLabel?: string;
     /** Linhas do card Detalhes. */
     rows?: AdsCardRow[];
-    /** Texto de apoio abaixo do cabeçalho. Só no código: o Figma não tem. */
+    /** Texto de apoio. No selected, 14px em text/secondary. Fora disso, só no código. */
     description?: string;
     /** Linha curta no rodapé. O slot footer substitui. Só no código: o Figma não tem. */
     footerText?: string;
@@ -116,9 +127,13 @@ const props = withDefaults(
     disabled?: boolean;
     /** Hover padrão dos cards clicáveis: borda cinza mais escura e sombra leve. false desliga. */
     hoverable?: boolean;
-    /** Estado Selecionado: fundo azul claro, borda azul e sombra. */
+    /** Estado Selecionado: fundo azul claro, borda azul e sombra. Título 14 bold e descrição 14. */
     selected?: boolean;
-    /** `md` (12px) é o do Figma; `sm` (8px) é só no código. */
+    /** box é o cartão. line é só a borda inferior, sem raio. */
+    variant?: AdsCardVariant;
+    /** default (16px) é o padrão. compact (8px) é o respiro menor. relaxed (24px) é o respiro maior (estratégia, histórico, notabilidade). */
+    padding?: AdsCardPadding;
+    /** `md` (12px) é o do Figma; `sm` (8px) é só no código. Ignorado em line. */
     radius?: "sm" | "md";
     /** Estado Carregando: no container, o loader do Radar; no details, skeleton nas linhas. */
     loading?: boolean;
@@ -140,6 +155,8 @@ const props = withDefaults(
     disabled: false,
     hoverable: true,
     selected: false,
+    variant: "box",
+    padding: "default",
     radius: "md",
     loading: false,
     empty: false,
@@ -150,8 +167,26 @@ const props = withDefaults(
 
 const slots = useSlots();
 
-const containerTitleClass = "text-[length:var(--ads-font-size-xs)] leading-[1.3] text-[var(--ads-card-title)]";
+const containerTitleClass = "text-[length:var(--ads-font-size-xs)] font-bold leading-[1.3] text-[var(--ads-card-title)]";
 const detailsTitleClass = "text-[length:var(--ads-font-size-rg)] font-bold leading-[1.3] text-[var(--ads-card-title)]";
+const selectedTitleClass = "text-[length:var(--ads-font-size-xxs)] font-bold leading-[1.3] text-[var(--ads-text-primary)]";
+
+const titleClass = computed(() => {
+  if (props.selected) return selectedTitleClass;
+  return props.type === "details" ? detailsTitleClass : containerTitleClass;
+});
+
+const descriptionClass = computed(() =>
+  props.selected
+    ? "text-[length:var(--ads-font-size-xxs)] font-normal leading-[1.3] text-[var(--ads-text-secondary)]"
+    : "text-[length:var(--ads-card-body-size)] leading-[1.4] text-[var(--ads-card-body)]",
+);
+
+/** O valor local vence o token global, e a tabela dentro do card usa o mesmo respiro. */
+const paddingStyle = computed(() => ({
+  "--ads-card-padding": CARD_PADDING[props.padding],
+  "--ads-card-bleed": "var(--ads-card-padding)",
+}));
 
 /** Larguras do skeleton do Figma; uma barra por linha. */
 const SKELETON_WIDTHS = [200, 240, 160, 180, 260];
@@ -162,24 +197,30 @@ const detailSkeletonWidths = computed(() => {
 
 const showHeader = computed(() => Boolean(props.title || props.hint || slots.header || slots.actions));
 
-const radiusClass = computed(() =>
-  props.radius === "sm" ? "rounded-[var(--ads-card-radius-sm)]" : "rounded-[var(--ads-card-radius)]",
-);
+const radiusClass = computed(() => {
+  if (props.variant === "line") return "rounded-none";
+  return props.radius === "sm" ? "rounded-[var(--ads-card-radius-sm)]" : "rounded-[var(--ads-card-radius)]";
+});
 
 const surfaceClass = computed(() => {
+  const line = props.variant === "line";
   const classes = [
     props.selected
-      ? "border-[var(--ads-card-selected-border)] bg-[var(--ads-card-selected-background)] shadow-[var(--ads-shadow-level-1)]"
-      : "border-[var(--ads-card-border)] bg-[var(--ads-card-background)]",
+      ? line
+        ? "[border-width:0_0_1px] border-[var(--ads-card-selected-border)] bg-[var(--ads-card-selected-background)]"
+        : "border border-[var(--ads-card-selected-border)] bg-[var(--ads-card-selected-background)] shadow-[var(--ads-shadow-level-1)]"
+      : line
+        ? "[border-width:0_0_1px] border-[var(--ads-card-border)] bg-[var(--ads-card-background)]"
+        : "border border-[var(--ads-card-border)] bg-[var(--ads-card-background)]",
   ];
 
   if (props.as !== "div") {
     classes.push(
       "cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--ads-border-focused)] disabled:cursor-not-allowed disabled:opacity-[var(--ads-card-disabled-opacity,0.5)] aria-disabled:cursor-not-allowed",
     );
-    // Hover padrão de todos os cards clicáveis: neutro, borda cinza mais escura e sombra leve.
+    // Hover padrão dos cards clicáveis. Na linha, só a divisória escurece: sombra viraria caixa.
     if (props.hoverable && !props.selected && !props.disabled) {
-      classes.push("hover:border-[var(--ads-card-hover-border)] hover:shadow-[var(--ads-shadow-level-1)]");
+      classes.push(line ? "hover:border-[var(--ads-card-hover-border)]" : "hover:border-[var(--ads-card-hover-border)] hover:shadow-[var(--ads-shadow-level-1)]");
     }
   }
 

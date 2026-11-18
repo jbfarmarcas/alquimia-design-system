@@ -583,3 +583,37 @@
     background-color: rgba(255, 255, 255, 0.35);
   }
 }
+
+/*
+ * O CSS do Iconify (`.iconify { width: 1em; height: 1em }`) fica fora de @layer
+ * e vence o utilitário Tailwind. Esta regra também está fora de camada e é mais
+ * específica: o ícone do toast ocupa --ads-toast-icon-size (18px na faixa, 24px no reporte).
+ */
+.iconify.ads-toast-icon {
+  width: var(--ads-toast-icon-size);
+  height: var(--ads-toast-icon-size);
+}
+
+/* Ícone de 16px (pill em texto, ação do toast). O 1em do Iconify cederia para 14px. */
+.iconify.ads-icon-xxs {
+  width: var(--ads-space-xxs);
+  height: var(--ads-space-xxs);
+}
+
+/*
+ * Tabela dentro do AdsCard: encosta nas laterais e a primeira coluna
+ * usa o mesmo padding do card, alinhada ao título. Fora do card, não vale.
+ * Fica fora de @layer para vencer o px da célula sem !important.
+ */
+.ads-card .ads-table {
+  width: calc(100% + 2 * var(--ads-card-bleed, 0px));
+  margin-inline: calc(var(--ads-card-bleed, 0px) * -1);
+}
+
+.ads-card .ads-table :is(th, td):first-child:not(.p-0) {
+  padding-inline-start: var(--ads-card-padding);
+}
+
+.ads-card .ads-table :is(th, td):last-child:not(.p-0) {
+  padding-inline-end: var(--ads-card-padding);
+}

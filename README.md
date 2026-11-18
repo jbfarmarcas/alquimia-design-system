@@ -199,7 +199,7 @@ const nome = ref("");
 | Componente           | Descrição |
 | -------------------- | --------- |
 | `AdsBadge`           | Contador ou ponto (`mini`) em 7 cores. |
-| `AdsPill`            | Pílula de status em tom `primary` ou `secondary` e tamanho `md` (Pill) ou `sm` (Small Pill). |
+| `AdsPill`            | Pílula de cor (`color`): `default`, `soft` ou `text`, tamanho `md` ou `sm`. `broadcast` liga a pílula de transmissão. |
 | `AdsNotabilityPill`  | Pílula de notabilidade. |
 | `AdsProductTag`      | Tag de produto. |
 
@@ -303,8 +303,8 @@ toast.add({
 ### Pílulas e badges
 
 ```vue
-<AdsPill status="success" label="Ativo" />
-<AdsPill status="warning" tone="secondary" label="Atrasado" icon="i-lucide-alert-triangle" />
+<AdsPill color="success" label="Ativo" />
+<AdsPill variant="soft" color="warning" label="Atrasado" icon="i-lucide-alert-triangle" />
 <AdsBadge color="primary" :value="5" />
 <AdsBadge color="warning" mini />
 ```

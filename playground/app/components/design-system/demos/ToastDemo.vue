@@ -12,7 +12,9 @@
           :closable="closable"
           :subtitle="appearance === 'status' ? 'Explicação opcional' : undefined"
           :description="appearance === 'banner' && descriptionOn ? messages[status]?.description : undefined"
-          :action-label="appearance === 'banner' && actionOn ? 'Tentar novamente' : undefined"
+          :icon="iconOn ? undefined : false"
+          :action-label="appearance === 'banner' && actionOn ? 'Veja mais' : undefined"
+          :action-icon="appearance === 'banner' && actionOn && actionIconOn ? 'i-lucide-arrow-up-right' : undefined"
         />
       </div>
     </template>
@@ -26,9 +28,11 @@
       </DocsParam>
       <div v-if="appearance !== 'flutuante'" class="flex flex-wrap items-center gap-x-8 gap-y-4">
         <AdsSwitch v-if="appearance === 'banner'" v-model="app" label="Variação App" />
+        <AdsSwitch v-model="iconOn" label="Ícone" />
         <AdsSwitch v-model="closable" label="Fechar" />
         <AdsSwitch v-if="appearance === 'banner'" v-model="descriptionOn" label="Descrição" />
-        <AdsSwitch v-if="appearance === 'banner'" v-model="actionOn" label="Ação em link" />
+        <AdsSwitch v-if="appearance === 'banner'" v-model="actionOn" label="Ação na frase" />
+        <AdsSwitch v-if="appearance === 'banner' && actionOn" v-model="actionIconOn" label="Ícone da ação" />
       </div>
       <p v-else class="text-sm leading-relaxed text-[var(--ads-text-secondary)]">
         O toast flutuante usa useToast do Nuxt UI, com as cores de status do ADS.
@@ -55,6 +59,8 @@ const status = ref<AdsToastStatus>("error");
 const app = ref(false);
 const closable = ref(true);
 const actionOn = ref(false);
+const actionIconOn = ref(true);
+const iconOn = ref(true);
 const descriptionOn = ref(false);
 
 const appearanceItems = [
@@ -133,8 +139,10 @@ const code = computed(() => {
     attr(appearance.value === "status", "subtitle", "Explicação opcional"),
     attr(appearance.value === "banner" && descriptionOn.value, "description", messages[status.value]?.description),
     attr(appearance.value === "banner" && app.value, "app"),
+    attr(!iconOn.value, ":icon", "false"),
     attr(!closable.value, ":closable", "false"),
-    attr(appearance.value === "banner" && actionOn.value, "action-label", "Tentar novamente"),
+    attr(appearance.value === "banner" && actionOn.value, "action-label", "Veja mais"),
+    attr(appearance.value === "banner" && actionOn.value && actionIconOn.value, "action-icon", "i-lucide-arrow-up-right"),
   ]);
 });
 </script>

@@ -1,5 +1,6 @@
 <template>
   <UTabs
+    ref="tabs"
     v-model="model"
     variant="link"
     color="primary"
@@ -19,8 +20,9 @@
 
 <script setup lang="ts" generic="T extends string | number">
 import type { TabsItem } from "@nuxt/ui";
-import { computed, useSlots } from "vue";
+import { computed, nextTick, onBeforeUnmount, onMounted, useSlots, useTemplateRef, watch } from "vue";
 import { adsLinkTabsUi } from "../theme/ads-theme";
+import { bindTabWheel, revealActiveTab } from "./ads-tab-scroll";
 
 const props = withDefaults(
   defineProps<{
@@ -48,4 +50,22 @@ const ui = computed(() => ({
     .join(" "),
   list: [adsLinkTabsUi.list, props.listClass].filter(Boolean).join(" "),
 }));
+
+const tabs = useTemplateRef<{ $el?: HTMLElement }>("tabs");
+let unbindWheel: (() => void) | undefined;
+
+function reveal() {
+  nextTick(() => revealActiveTab(tabs.value?.$el));
+}
+
+onMounted(() => {
+  const list = tabs.value?.$el?.querySelector<HTMLElement>('[role="tablist"]');
+  if (list) unbindWheel = bindTabWheel(list);
+  reveal();
+});
+
+onBeforeUnmount(() => unbindWheel?.());
+
+watch(model, reveal);
+watch(() => props.items, reveal);
 </script>

@@ -52,7 +52,7 @@
       <button
         v-else
         type="button"
-        class="flex h-[var(--ads-filter-height)] max-w-full items-center gap-0.5 rounded-[var(--ads-filter-radius)] px-[var(--ads-filter-padding-x)] text-[length:var(--ads-filter-font-size)] leading-[1.3] transition-colors focus-visible:border-(length:--ads-border-width-slim) focus-visible:border-[var(--ads-filter-focus-border)] focus-visible:outline-none disabled:cursor-not-allowed"
+        class="flex h-[var(--ads-filter-height)] max-w-full items-center gap-0.5 rounded-[var(--ads-filter-radius)] px-[var(--ads-filter-padding-x)] text-[length:var(--ads-filter-font-size)] font-normal leading-[1.3] normal-case transition-colors focus-visible:border-(length:--ads-border-width-slim) focus-visible:border-[var(--ads-filter-focus-border)] focus-visible:outline-none disabled:cursor-not-allowed"
         :class="[fieldClass, block ? 'w-full justify-between' : 'w-fit']"
         :disabled="disabled"
         :data-state="fieldState"
@@ -68,7 +68,7 @@
           :disabled="!triggerHasTooltip"
           align="start"
         >
-          <span class="min-w-0 truncate text-left">{{ triggerLabel }}</span>
+          <span class="min-w-0 truncate text-left font-normal normal-case" style="text-transform: none">{{ triggerLabel }}</span>
         </AdsTooltip>
         <UIcon name="i-lucide-chevron-down" class="size-4 shrink-0 text-base" :class="chevronClass" />
       </button>

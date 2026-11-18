@@ -1,24 +1,24 @@
 <!--
-  AdsBroadcast — atalho de compatibilidade. O Broadcast agora é uma variante da Pill:
-  prefira <AdsPill variant="broadcast" />.
+  AdsBroadcast — atalho de compatibilidade. O Broadcast é a prop da Pill:
+  prefira <AdsPill broadcast />.
 -->
 <template>
-  <AdsPill variant="broadcast" :status="status" :label="label" />
+  <AdsPill broadcast :color="color" :label="label" />
 </template>
 
 <script setup lang="ts">
 import AdsPill from "./AdsPill.vue";
 
-export type AdsBroadcastStatus = "warning" | "success";
+export type AdsBroadcastColor = "warning" | "success";
 
 withDefaults(
   defineProps<{
     label?: string;
-    status?: AdsBroadcastStatus;
+    color?: AdsBroadcastColor;
   }>(),
   {
     label: "",
-    status: "warning",
+    color: "warning",
   },
 );
 </script>

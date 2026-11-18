@@ -422,7 +422,7 @@ export const componentTokenCatalog: readonly TokenComponent[] = [
     section: "broadcast",
     catalog: "pill",
     label: "Pill broadcast",
-    note: "Variante broadcast do AdsPill (variant=\"broadcast\"). O AdsBroadcast é um atalho para ela.",
+    note: "AdsPill com broadcast. O AdsBroadcast é um atalho para ela.",
     fields: [
       length("--ads-broadcast-height", "Altura", "Medida", "24px"),
       length("--ads-broadcast-padding-x", "Padding horizontal", "Medida", "8px"),

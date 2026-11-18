@@ -53,8 +53,8 @@
 
         <template #status-cell="{ row }">
           <AdsPill
-            tone="secondary"
-            :status="row.original.mapped ? 'success' : 'attention'"
+            variant="soft"
+            :color="row.original.mapped ? 'success' : 'attention'"
             :label="row.original.mapped ? '4 Concorrentes mapeados' : 'Pendente'"
           />
         </template>
@@ -62,8 +62,8 @@
         <template #origin-cell="{ row }">
           <AdsPill
             v-if="row.original.origin"
-            tone="secondary"
-            :status="row.original.origin === 'Manual' ? 'warning' : 'default'"
+            variant="soft"
+            :color="row.original.origin === 'Manual' ? 'warning' : 'default'"
             :label="row.original.origin"
           />
         </template>
@@ -239,7 +239,7 @@ const code = computed(() => {
 <!-- Texto · Ícone + Texto · Pill · Botão · Link · Meta · Ações · Combinado · Progresso -->
 <AdsTable :data="rows" :columns="cols">
   <template #status-cell="{ row }">
-    <AdsPill tone="secondary" :status="row.original.status" />
+    <AdsPill variant="soft" :color="row.original.status" />
   </template>
   <template #actions-cell="{ row }">
     <AdsButton type="unfilled" size="sm" icon="i-lucide-pencil" />

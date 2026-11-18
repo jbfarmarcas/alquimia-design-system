@@ -59,8 +59,8 @@
       <AdsPill
         v-if="disabled"
         class="mt-auto self-start"
-        tone="secondary"
-        status="blocked"
+        variant="soft"
+        color="blocked"
         label="Em breve"
       />
       <span v-else-if="hasActions" class="mt-auto flex flex-wrap items-center gap-x-[var(--ads-space-xs)] gap-y-2">
@@ -81,8 +81,8 @@
         <AdsPill
           v-for="badge in badges"
           :key="badge.label"
-          :tone="badge.tone ?? 'secondary'"
-          :status="badge.status ?? 'default'"
+          :variant="badge.variant ?? 'soft'"
+          :color="badge.color ?? 'default'"
           :label="badge.label"
         />
         <span
@@ -104,13 +104,14 @@ import { useResizeObserver } from "@vueuse/core";
 import { NuxtLink } from "#components";
 import AdsCard from "./AdsCard.vue";
 import AdsPill from "./AdsPill.vue";
-import type { AdsPillStatus, AdsPillTone } from "./AdsPill.vue";
+import type { AdsPillColor, AdsPillVariant } from "./AdsPill.vue";
 import AdsTooltip from "./AdsTooltip.vue";
 
 export interface AdsFeatureCardBadge {
   label: string;
-  tone?: AdsPillTone;
-  status?: AdsPillStatus;
+  /** default é a pill sólida. soft (padrão do rodapé) é a clara. text é só o texto. */
+  variant?: AdsPillVariant;
+  color?: AdsPillColor;
 }
 
 /** Ação do rodapé. Com `to`, vira link; sem ele, continua botão. */

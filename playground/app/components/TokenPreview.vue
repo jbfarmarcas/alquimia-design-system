@@ -90,11 +90,11 @@
   <div v-else-if="id === 'broadcast'" class="flex flex-wrap gap-3">
     <div class="flex flex-col items-start gap-1.5">
       <span class="text-xs font-medium text-[var(--ads-text-secondary)]">warning</span>
-      <AdsPill variant="broadcast" status="warning" label="ALERTA" />
+      <AdsPill broadcast color="warning" label="ALERTA" />
     </div>
     <div class="flex flex-col items-start gap-1.5">
       <span class="text-xs font-medium text-[var(--ads-text-secondary)]">success</span>
-      <AdsPill variant="broadcast" status="success" label="AO VIVO" />
+      <AdsPill broadcast color="success" label="AO VIVO" />
     </div>
   </div>
 
@@ -107,9 +107,9 @@
   </div>
 
   <div v-else-if="id === 'mini'" class="flex flex-wrap gap-2">
-    <AdsPill size="sm" tone="secondary" status="default" label="Não iniciado" />
-    <AdsPill size="sm" tone="secondary" status="warning" label="Pausado" />
-    <AdsPill size="sm" tone="secondary" status="new" label="Novo" />
+    <AdsPill size="sm" variant="soft" color="default" label="Não iniciado" />
+    <AdsPill size="sm" variant="soft" color="warning" label="Pausado" />
+    <AdsPill size="sm" variant="soft" color="new" label="Novo" />
   </div>
 
   <div v-else-if="id === 'switch'" class="flex flex-col items-start gap-3">
@@ -141,7 +141,7 @@
       title="Simulação"
       description="Simulações de preços e cenários."
       icon="i-lucide-calculator"
-      :badges="[{ label: 'Novo', status: 'new' }]"
+      :badges="[{ label: 'Novo', color: 'new' }]"
       footer-text="Atualizada hoje"
     />
   </div>

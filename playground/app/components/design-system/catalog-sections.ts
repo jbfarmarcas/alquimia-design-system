@@ -181,7 +181,7 @@ export const catalogSections = [
     id: "pill",
     label: "Pill",
     group: "Pills",
-    purpose: "Estado em uma peça compacta, com tom, tamanho (md / sm) e ícone opcional. A Small Pill do Figma é size=\"sm\" e o Broadcast é variant=\"broadcast\".",
+    purpose: "Estado em uma peça compacta. variant é default, soft ou text. A Small Pill do Figma é size=\"sm\". Broadcast é a prop boolean.",
     components: ["AdsPill", "AdsBroadcast"],
   },
   {

@@ -5,7 +5,7 @@
       <AdsProductTag v-if="product" :product="product" :label="productLabel" />
     </div>
     <div class="flex items-center gap-4">
-      <AdsPill v-if="showBroadcast && broadcastLabel" variant="broadcast" status="warning" :label="broadcastLabel" />
+      <AdsPill v-if="showBroadcast && broadcastLabel" broadcast color="warning" :label="broadcastLabel" />
       <div class="flex items-center gap-3">
       <template v-for="(action, index) in actions" :key="action.id">
       <span v-if="index === actions.length - 1" class="flex size-[var(--ads-navbar-desk-avatar)] items-center justify-center overflow-hidden rounded-full bg-ads-neutro-claro-30" aria-hidden="true">

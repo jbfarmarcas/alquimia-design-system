@@ -12,8 +12,8 @@
     }"
   >
     <template #content="{ close }">
-      <div class="flex min-h-0 w-full flex-col gap-[var(--ads-space-xxs)]">
-        <div class="flex items-start gap-[var(--ads-space-quark)]">
+      <div class="flex w-full flex-col gap-[var(--ads-space-xxs)]" :class="scrollable ? 'max-h-full min-h-0 overflow-hidden' : ''">
+        <div class="flex shrink-0 items-start gap-[var(--ads-space-quark)]">
           <span
             v-if="icon"
             class="flex size-[var(--ads-space-xs)] shrink-0 items-center justify-center text-[var(--ads-text-primary)]"
@@ -39,18 +39,18 @@
           </button>
         </div>
 
-        <p v-if="description" class="text-[length:var(--ads-modal-body-size)] leading-[var(--ads-line-height-md)] text-[var(--ads-modal-body)]">
+        <p v-if="description" class="shrink-0 text-[length:var(--ads-modal-body-size)] leading-[var(--ads-line-height-md)] text-[var(--ads-modal-body)]">
           {{ description }}
         </p>
 
-        <div v-if="slots.default" class="min-h-0 overflow-y-auto">
+        <div v-if="slots.default" :class="scrollable ? 'min-h-0 flex-1 overflow-y-auto overscroll-contain' : ''">
           <slot />
         </div>
 
         <div v-if="slots.footer" class="flex w-full shrink-0 items-center justify-end gap-[var(--ads-space-quark)] bg-white">
           <slot name="footer" />
         </div>
-        <div v-else-if="showDefaultActions" class="flex w-full items-center justify-end gap-[var(--ads-space-quark)]">
+        <div v-else-if="showDefaultActions" class="flex w-full shrink-0 items-center justify-end gap-[var(--ads-space-quark)]">
           <AdsButton
             v-if="cancelLabel"
             type="unfilled"
@@ -88,7 +88,7 @@ import AdsButton from "./AdsButton.vue";
  * - título: 20px bold, line-height 130% (Subtitle 20 do Figma)
  */
 export type AdsModalVariant = "dialog" | "sheet";
-export type AdsModalSize = "md" | "lg" | "xl" | "2xl" | "3xl";
+export type AdsModalSize = "md" | "lg" | "xl" | "2xl" | "3xl" | "4xl";
 export type AdsModalDismissReason = "esc" | "outside";
 
 const props = withDefaults(
@@ -131,14 +131,23 @@ const widths: Record<AdsModalSize, string> = {
   xl: "!w-[min(48rem,calc(100%-2rem))]",
   "2xl": "!w-[min(56rem,calc(100%-2rem))]",
   "3xl": "!w-[min(64rem,calc(100%-2rem))]",
+  /** Mapa de concorrentes. O app não precisa forçar a largura. */
+  "4xl": "!w-[min(80rem,calc(100%-2rem))]",
 };
 
+/**
+ * Com scrollable, o painel trava na altura da tela e só o miolo rola.
+ * Cabeçalho, descrição e rodapé ficam visíveis.
+ */
+const scrollShell = " !flex !max-h-[calc(100dvh-2rem)] !flex-col !overflow-hidden";
+
 const contentClass = computed(() => {
-  const scroll = props.scrollable ? " !max-h-[calc(100dvh-2rem)] !overflow-y-auto" : "";
   if (props.variant === "sheet") {
-    return `!inset-x-0 !bottom-0 !top-auto !left-0 !translate-x-0 !translate-y-0 !w-full !max-w-none !max-h-[calc(100dvh-2rem)] !divide-y-0 !overflow-y-auto !bg-[var(--ads-modal-background)] !p-[var(--ads-modal-padding)] !shadow-[var(--ads-shadow-level-2)] !ring-1 !ring-[var(--ads-modal-border)] !rounded-t-[var(--ads-modal-radius)] !rounded-b-none${scroll}`;
+    const sheetScroll = props.scrollable ? scrollShell : " !max-h-[calc(100dvh-2rem)] !overflow-y-auto";
+    return `!inset-x-0 !bottom-0 !top-auto !left-0 !translate-x-0 !translate-y-0 !w-full !max-w-none !divide-y-0 !bg-[var(--ads-modal-background)] !p-[var(--ads-modal-padding)] !shadow-[var(--ads-shadow-level-2)] !ring-1 !ring-[var(--ads-modal-border)] !rounded-t-[var(--ads-modal-radius)] !rounded-b-none${sheetScroll}`;
   }
-  return `${widths[props.size]} !max-w-none !divide-y-0 !rounded-[var(--ads-modal-radius)] !border !border-[var(--ads-modal-border)] !bg-[var(--ads-modal-background)] !p-[var(--ads-modal-padding)] !shadow-[var(--ads-shadow-level-3)] !ring-0${scroll}`;
+  const dialogScroll = props.scrollable ? scrollShell : "";
+  return `${widths[props.size]} !max-w-none !divide-y-0 !rounded-[var(--ads-modal-radius)] !border !border-[var(--ads-modal-border)] !bg-[var(--ads-modal-background)] !p-[var(--ads-modal-padding)] !shadow-[var(--ads-shadow-level-3)] !ring-0${dialogScroll}`;
 });
 
 const emit = defineEmits<{

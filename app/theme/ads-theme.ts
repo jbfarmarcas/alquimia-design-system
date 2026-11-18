@@ -155,13 +155,14 @@ export const adsInputDateTheme = {
  * Tabs link ADS.
  * Lista 39px, itens no tamanho do texto, faixa inferior 1px #C1C7D0.
  * Inativo: Inter 14 medium, #505F79. Ativo: bold, #061938, risco 4px #006FF7.
+ * A linha é sombra interna: a lista rola na horizontal e o risco de 4px fica dentro dela.
  */
 export const adsLinkTabsUi = {
-  root: "items-start",
-  list: "h-[var(--ads-tabs-height)] w-full items-start self-stretch border-b border-[var(--ads-tabs-border)] py-0 px-0",
+  root: "w-full min-w-0 items-start",
+  list: "h-[var(--ads-tabs-height)] w-full min-w-0 items-start self-stretch overflow-x-auto overscroll-x-contain !mb-0 !border-0 py-0 px-0 shadow-[inset_0_-1px_0_var(--ads-tabs-border)] [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden",
   trigger:
-    "h-[var(--ads-tabs-height)] grow-0 px-[var(--ads-tabs-padding-x)] py-0 text-[length:var(--ads-tabs-font-size)] [font-weight:var(--ads-tabs-weight)] leading-[1.3] text-[var(--ads-tabs-inactive)] data-[state=inactive]:text-[var(--ads-tabs-inactive)] data-[state=active]:font-bold data-[state=active]:text-[var(--ads-tabs-active)]",
-  indicator: "-bottom-px h-[var(--ads-tabs-indicator)] rounded-none bg-[var(--ads-tabs-indicator-color)]",
+    "h-[var(--ads-tabs-height)] shrink-0 grow-0 px-[var(--ads-tabs-padding-x)] py-0 text-[length:var(--ads-tabs-font-size)] [font-weight:var(--ads-tabs-weight)] leading-[1.3] text-[var(--ads-tabs-inactive)] data-[state=inactive]:text-[var(--ads-tabs-inactive)] data-[state=active]:font-bold data-[state=active]:text-[var(--ads-tabs-active)] focus-visible:-outline-offset-3",
+  indicator: "!bottom-0 h-[var(--ads-tabs-indicator)] rounded-none bg-[var(--ads-tabs-indicator-color)]",
 } as const;
 
 /**
@@ -172,13 +173,13 @@ export const adsLinkTabsUi = {
  * Ícone opcional de 24px à esquerda; subtítulo opcional em 12 regular secundário, abaixo do rótulo.
  */
 export const adsSegmentedTabsUi = {
-  root: "!w-auto shrink-0",
+  root: "w-max max-w-none shrink-0",
   // Altura mínima do Figma; com ícone ou subtítulo, a aba cresce (8px em cima e embaixo).
-  list: "!h-auto !min-h-[var(--ads-segmented-height)] !w-auto !self-start !items-stretch !gap-1 !rounded-[var(--ads-segmented-radius)] !border-0 !bg-[var(--ads-segmented-track)] !p-1",
+  list: "!h-auto !min-h-[var(--ads-segmented-height)] !w-max !self-start !items-stretch !gap-1 !rounded-[var(--ads-segmented-radius)] !border-0 !bg-[var(--ads-segmented-track)] !p-1",
   leadingIcon: "!size-6 shrink-0",
   label: "flex flex-col items-start gap-0.5 text-left whitespace-nowrap",
   trigger:
-    "!h-auto !min-h-[var(--ads-segmented-item-height)] !grow-0 !gap-3 !rounded-[var(--ads-segmented-radius)] !px-[var(--ads-segmented-padding-x)] !py-2 !text-[length:var(--ads-segmented-font-size)] !font-normal !leading-[var(--ads-line-height-sm)] !text-[var(--ads-segmented-text)] data-[state=inactive]:!text-[var(--ads-segmented-text)] data-[state=active]:!font-bold data-[state=active]:!text-[var(--ads-segmented-active-text)]",
+    "!h-auto !min-h-[var(--ads-segmented-item-height)] !shrink-0 !grow-0 !gap-3 !rounded-[var(--ads-segmented-radius)] !px-[var(--ads-segmented-padding-x)] !py-2 !text-[length:var(--ads-segmented-font-size)] !font-normal !leading-[var(--ads-line-height-sm)] !text-[var(--ads-segmented-text)] data-[state=inactive]:!text-[var(--ads-segmented-text)] data-[state=active]:!font-bold data-[state=active]:!text-[var(--ads-segmented-active-text)]",
   indicator:
     "!rounded-[var(--ads-segmented-radius)] !bg-[var(--ads-segmented-active-bg)] !shadow-[var(--ads-shadow-level-1)]",
 } as const;

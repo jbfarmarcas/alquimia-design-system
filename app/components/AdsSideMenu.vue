@@ -21,7 +21,7 @@
           class="size-[var(--ads-side-badge)] shrink-0 rounded-full bg-[var(--ads-funcional-opportunity-200)]"
           aria-hidden="true"
         />
-        <AdsPill v-if="item.pill" size="sm" tone="secondary" status="new" :label="item.pill" />
+        <AdsPill v-if="item.pill" size="sm" variant="soft" color="new" :label="item.pill" />
         <UIcon
           v-if="item.children?.length"
           name="i-lucide-chevron-down"
@@ -40,7 +40,7 @@
       >
         <UIcon :name="child.icon || 'i-lucide-sun'" class="size-4 shrink-0 text-ads-neutro-escuro-500" />
         <span class="line-clamp-2 min-w-0 flex-1 text-xs font-bold leading-[1.2] text-[var(--ads-text-secondary)]">{{ child.label }}</span>
-        <AdsPill v-if="child.pill" size="sm" tone="secondary" status="new" :label="child.pill" />
+        <AdsPill v-if="child.pill" size="sm" variant="soft" color="new" :label="child.pill" />
       </component>
     </template>
   </nav>

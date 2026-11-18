@@ -5,12 +5,18 @@
     role="status"
   >
     <div class="flex min-w-0 items-center gap-3">
-      <UIcon
-        :name="statusIcon"
-        class="size-[var(--ads-toast-status-icon)] shrink-0"
-        :class="[statusIconClass, status === 'loading' ? 'animate-spin' : '']"
-        aria-hidden="true"
-      />
+      <span
+        v-if="showIcon"
+        class="inline-flex shrink-0 items-center justify-center"
+        :style="statusIconBox"
+      >
+        <UIcon
+          :name="statusIcon"
+          class="ads-toast-icon size-full"
+          :class="[statusIconClass, status === 'loading' ? 'animate-spin' : '']"
+          aria-hidden="true"
+        />
+      </span>
       <div class="min-w-0">
         <p class="text-[length:var(--ads-toast-status-title-size)] leading-[1.3] font-bold">{{ title || resolvedMessage }}</p>
         <p v-if="subtitle" class="text-[length:var(--ads-toast-status-subtitle-size)] leading-[1.1]">{{ subtitle }}</p>
@@ -33,16 +39,35 @@
     role="status"
   >
     <div class="flex min-w-0 flex-1 basis-full items-start gap-2 sm:basis-auto">
-      <UIcon
-        :name="resolvedIcon"
-        class="size-[var(--ads-toast-icon)] shrink-0"
-        :class="iconClass"
-        aria-hidden="true"
-      />
+      <span
+        v-if="showIcon"
+        class="inline-flex shrink-0 items-center justify-center"
+        :style="bannerIconBox"
+      >
+        <UIcon
+          :name="resolvedIcon"
+          class="ads-toast-icon size-full"
+          :class="iconClass"
+          aria-hidden="true"
+        />
+      </span>
       <div class="min-w-0 flex-1">
         <slot>
           <p class="text-[length:var(--ads-toast-font-size)] [font-weight:var(--ads-toast-weight)] leading-[1.3] text-[var(--ads-toast-text)]">
-            {{ resolvedMessage }}
+            {{ resolvedMessage }}<button
+              v-if="actionLabel"
+              type="button"
+              class="ms-1 inline-flex items-baseline gap-1 font-normal text-[var(--ads-text-brand)] underline underline-offset-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--ads-text-brand)]"
+              @click="emit('action')"
+            >
+              {{ actionLabel }}
+              <UIcon
+                v-if="actionIcon"
+                :name="actionIcon"
+                class="ads-icon-xxs size-[var(--ads-space-xxs)] shrink-0 self-center"
+                aria-hidden="true"
+              />
+            </button>
           </p>
           <p
             v-if="description"
@@ -54,21 +79,8 @@
         </slot>
       </div>
     </div>
-    <div
-      v-if="actionLabel || closable"
-      class="ml-auto flex shrink-0 items-center gap-[var(--ads-toast-gap)]"
-    >
+    <div v-if="closable" class="ml-auto flex shrink-0 items-center">
       <button
-        v-if="actionLabel"
-        type="button"
-        class="text-[length:var(--ads-toast-font-size)] leading-[1.3] font-bold underline-offset-2 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2"
-        :class="actionTextClass"
-        @click="emit('action')"
-      >
-        {{ actionLabel }}
-      </button>
-      <button
-        v-if="closable"
         type="button"
         class="flex size-[18px] shrink-0 items-center justify-center rounded-[var(--ads-radius-xsm)] text-[var(--ads-text-primary)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--ads-text-primary)]"
         aria-label="Fechar"
@@ -98,11 +110,17 @@ const props = withDefaults(
     description?: string;
     title?: string;
     subtitle?: string;
-    icon?: string;
+    /**
+     * Ícone Lucide. Sem valor, segue o status.
+     * `false` tira o ícone do DOM, sem o vão do token.
+     */
+    icon?: string | false;
     /** Quando falso, o aviso permanece sem a ação de fechar. */
     closable?: boolean;
-    /** Rótulo da ação em link. Sem valor, esconde o link. */
+    /** Rótulo da ação no fim da frase. Sem valor, esconde a ação. */
     actionLabel?: string;
+    /** Ícone Lucide da ação, como `i-lucide-arrow-up-right`. Sem valor, a ação é só texto. */
+    actionIcon?: string;
   }>(),
   {
     status: "error",
@@ -115,6 +133,7 @@ const props = withDefaults(
     icon: undefined,
     closable: true,
     actionLabel: undefined,
+    actionIcon: undefined,
   },
 );
 
@@ -139,16 +158,14 @@ const iconClass = computed(() => {
   return "text-[var(--ads-toast-error-icon)]";
 });
 
-const actionTextClass = computed(() => {
-  if (props.status === "success") return "text-[var(--ads-toast-success-icon)]";
-  if (props.status === "warning" || props.status === "attention") return "text-[var(--ads-toast-warning-icon)]";
-  if (props.status === "neutral") return "text-[var(--ads-toast-neutral-icon)]";
-  if (props.status === "loading") return "text-[var(--ads-toast-primary-icon)]";
-  return "text-[var(--ads-toast-error-icon)]";
-});
+const showIcon = computed(() => props.icon !== false);
+
+/** Caixa do token. O CSS unlayered do Iconify não define o tamanho: a classe .ads-toast-icon ocupa a caixa. */
+const bannerIconBox = { width: "var(--ads-toast-icon)", height: "var(--ads-toast-icon)", "--ads-toast-icon-size": "var(--ads-toast-icon)" };
+const statusIconBox = { width: "var(--ads-toast-status-icon)", height: "var(--ads-toast-status-icon)", "--ads-toast-icon-size": "var(--ads-toast-status-icon)" };
 
 const resolvedIcon = computed(() => {
-  if (props.icon) return props.icon;
+  if (typeof props.icon === "string" && props.icon) return props.icon;
   if (props.status === "success") return "i-lucide-circle-check";
   if (props.status === "warning") return "i-lucide-triangle-alert";
   if (props.status === "attention") return "i-lucide-circle-alert";

@@ -154,6 +154,8 @@ const tableUi = computed(() => {
     stickyHeader: props.sticky === true || props.sticky === "header",
     pinnedEdge: props.pinnedEdge,
   });
+  // Marca para o CSS do AdsCard alinhar a primeira coluna. Fora do card, não faz nada.
+  base.root = `${base.root} ads-table`.trim();
   if (!slots.expanded) {
     // Árvore via getSubRows: o UTable sempre desenha a linha de detalhe da linha aberta.
     base.tbody = `${base.tbody} [&>tr[data-slot=tr]:not([data-selectable])]:hidden`;
