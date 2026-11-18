@@ -108,7 +108,12 @@ const dividerClass =
 
 const surfaceClass = computed(() => {
   if (props.disabled) return "cursor-not-allowed bg-[var(--ads-surface-card)]";
-  if (props.mode === "radio" && props.selected) return "bg-[var(--ads-select-item-selected)]";
+  if (props.mode === "radio" && props.selected) {
+    /** Figma pinta o item de sugestão com innovation/100 a 30%. O sólido equivalente é surface/ai. */
+    return props.badge?.tone === "ai"
+      ? "bg-[var(--ads-surface-ai)]"
+      : "bg-[var(--ads-select-item-selected)]";
+  }
   return "bg-[var(--ads-surface-card)] hover:bg-[var(--ads-select-item-hover)] focus-visible:bg-[var(--ads-select-item-hover)]";
 });
 
