@@ -135,6 +135,8 @@ Props:
   /**
    * container: título, período e conteúdo livre no slot padrão.
    * details: título maior e lista de informações (rows).
+   * informative: chamada azul de notabilidade, com título curto em maiúsculas e texto de apoio.
+   * Ignora selected, variant e padding.
    */
   type?: AdsCardType;
   /** O slot header substitui. */
@@ -177,7 +179,7 @@ Props:
 
 Tipos:
 ```ts
-type AdsCardType = "container" | "details";
+type AdsCardType = "container" | "details" | "informative";
 
 type AdsCardVariant = "box" | "line";
 
@@ -950,8 +952,7 @@ Props:
   trailingIcon?: string;
   /**
    * Override avançado de fundo e texto (classes Tailwind).
-   * Uso interno do atalho de domínio AdsNotabilityPill.
-   * Em produção, prefira esses atalhos em vez desta prop.
+   * Em produção, prefira os atalhos de domínio em vez desta prop.
    */
   customSurface?: string;
 }

@@ -4,8 +4,8 @@
     :type="as === 'button' ? 'button' : undefined"
     :disabled="as === 'button' ? disabled : undefined"
     :aria-busy="loading || undefined"
-    class="ads-card flex h-full min-w-0 flex-col items-start gap-3 p-[var(--ads-card-padding)] text-left transition-[background-color,border-color,box-shadow]"
-    :class="[radiusClass, surfaceClass]"
+    class="ads-card flex h-full min-w-0 flex-col items-start p-[var(--ads-card-padding)] text-left transition-[background-color,border-color,box-shadow]"
+    :class="[gapClass, radiusClass, surfaceClass]"
     :style="paddingStyle"
   >
     <!-- Cabeçalho -->
@@ -79,7 +79,7 @@ import AdsCardPeriod from "./AdsCardPeriod.vue";
 import AdsEmptyState from "./AdsEmptyState.vue";
 import AdsLoading from "./AdsLoading.vue";
 
-export type AdsCardType = "container" | "details";
+export type AdsCardType = "container" | "details" | "informative";
 /** box: cartão com borda e raio. line: só a divisória de baixo, para uma linha de lista. */
 export type AdsCardVariant = "box" | "line";
 /** default: 16px (padrão). compact: 8px. relaxed: 24px (estratégia, histórico, notabilidade). */
@@ -104,6 +104,8 @@ const props = withDefaults(
     /**
      * container: título, período e conteúdo livre no slot padrão.
      * details: título maior e lista de informações (rows).
+     * informative: chamada azul de notabilidade, com título curto em maiúsculas e texto de apoio.
+     * Ignora selected, variant e padding.
      */
     type?: AdsCardType;
     /** O slot header substitui. */
@@ -171,22 +173,34 @@ const containerTitleClass = "text-[length:var(--ads-font-size-xs)] font-bold lea
 const detailsTitleClass = "text-[length:var(--ads-font-size-rg)] font-bold leading-[1.3] text-[var(--ads-card-title)]";
 const selectedTitleClass = "text-[length:var(--ads-font-size-xxs)] font-bold leading-[1.3] text-[var(--ads-text-primary)]";
 
+const informativeTitleClass =
+  "w-full text-[length:var(--ads-font-size-xxxs)] font-bold uppercase leading-[var(--ads-line-height-sm)] text-[var(--ads-text-secondary)]";
+
+const isInformative = computed(() => props.type === "informative");
+
 const titleClass = computed(() => {
+  if (isInformative.value) return informativeTitleClass;
   if (props.selected) return selectedTitleClass;
   return props.type === "details" ? detailsTitleClass : containerTitleClass;
 });
 
-const descriptionClass = computed(() =>
-  props.selected
+const descriptionClass = computed(() => {
+  if (isInformative.value) {
+    return "w-full text-[length:var(--ads-font-size-xxs)] font-normal leading-[1.3] text-[var(--ads-text-secondary)]";
+  }
+  return props.selected
     ? "text-[length:var(--ads-font-size-xxs)] font-normal leading-[1.3] text-[var(--ads-text-secondary)]"
-    : "text-[length:var(--ads-card-body-size)] leading-[1.4] text-[var(--ads-card-body)]",
-);
+    : "text-[length:var(--ads-card-body-size)] leading-[1.4] text-[var(--ads-card-body)]";
+});
 
 /** O valor local vence o token global, e a tabela dentro do card usa o mesmo respiro. */
 const paddingStyle = computed(() => ({
-  "--ads-card-padding": CARD_PADDING[props.padding],
+  "--ads-card-padding": isInformative.value ? "var(--ads-space-xxxs)" : CARD_PADDING[props.padding],
   "--ads-card-bleed": "var(--ads-card-padding)",
 }));
+
+/** 6px do Figma não existe na escala. O passo mais próximo é o quark (4px). */
+const gapClass = computed(() => (isInformative.value ? "gap-[var(--ads-space-quark)]" : "gap-3"));
 
 /** Larguras do skeleton do Figma; uma barra por linha. */
 const SKELETON_WIDTHS = [200, 240, 160, 180, 260];
@@ -198,6 +212,7 @@ const detailSkeletonWidths = computed(() => {
 const showHeader = computed(() => Boolean(props.title || props.hint || slots.header || slots.actions));
 
 const radiusClass = computed(() => {
+  if (isInformative.value) return "rounded-[var(--ads-radius-sm)]";
   if (props.variant === "line") return "rounded-none";
   return props.radius === "sm" ? "rounded-[var(--ads-card-radius-sm)]" : "rounded-[var(--ads-card-radius)]";
 });
@@ -205,13 +220,15 @@ const radiusClass = computed(() => {
 const surfaceClass = computed(() => {
   const line = props.variant === "line";
   const classes = [
-    props.selected
-      ? line
-        ? "[border-width:0_0_1px] border-[var(--ads-card-selected-border)] bg-[var(--ads-card-selected-background)]"
-        : "border border-[var(--ads-card-selected-border)] bg-[var(--ads-card-selected-background)] shadow-[var(--ads-shadow-level-1)]"
-      : line
-        ? "[border-width:0_0_1px] border-[var(--ads-card-border)] bg-[var(--ads-card-background)]"
-        : "border border-[var(--ads-card-border)] bg-[var(--ads-card-background)]",
+    isInformative.value
+      ? "border border-[var(--color-ads-radar-200)] bg-[var(--color-ads-radar-25)]"
+      : props.selected
+        ? line
+          ? "[border-width:0_0_1px] border-[var(--ads-card-selected-border)] bg-[var(--ads-card-selected-background)]"
+          : "border border-[var(--ads-card-selected-border)] bg-[var(--ads-card-selected-background)] shadow-[var(--ads-shadow-level-1)]"
+        : line
+          ? "[border-width:0_0_1px] border-[var(--ads-card-border)] bg-[var(--ads-card-background)]"
+          : "border border-[var(--ads-card-border)] bg-[var(--ads-card-background)]",
   ];
 
   if (props.as !== "div") {
@@ -219,7 +236,7 @@ const surfaceClass = computed(() => {
       "cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--ads-border-focused)] disabled:cursor-not-allowed disabled:opacity-[var(--ads-card-disabled-opacity,0.5)] aria-disabled:cursor-not-allowed",
     );
     // Hover padrão dos cards clicáveis. Na linha, só a divisória escurece: sombra viraria caixa.
-    if (props.hoverable && !props.selected && !props.disabled) {
+    if (props.hoverable && !props.selected && !isInformative.value && !props.disabled) {
       classes.push(line ? "hover:border-[var(--ads-card-hover-border)]" : "hover:border-[var(--ads-card-hover-border)] hover:shadow-[var(--ads-shadow-level-1)]");
     }
   }

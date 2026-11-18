@@ -1,7 +1,7 @@
 const NOTABILITY_LABELS: Record<string, string> = {
-  traffic: "Gerador de Tráfego",
-  image: "Formador de Imagem",
-  profit: "Gerador de Lucro",
+  traffic: "Geradores de Tráfego",
+  image: "Formadores de Imagem",
+  profit: "Geradores de Lucro",
 };
 
 export const formatNotability = (notability: string): string =>

@@ -18,6 +18,13 @@
           empty-description="Esta pesquisa ainda não tem informações."
         />
         <AdsCard
+          v-else-if="type === 'informative'"
+          class="w-full"
+          type="informative"
+          title="Imagem + Tráfego"
+          :description="INFORMATIVE_TEXT"
+        />
+        <AdsCard
           v-else-if="selected"
           class="w-[320px] max-w-full"
           :padding="cardPadding"
@@ -72,13 +79,15 @@ import DocsDemo from "../DocsDemo.vue";
 import DocsParam from "../DocsParam.vue";
 import { docsApis } from "../catalog-docs";
 import { attr, buildSfc, buildTag, indent, toLiteral } from "../../../utils/code-builder";
-import AdsCard, { type AdsCardPadding, type AdsCardVariant } from "../../../../../app/components/AdsCard.vue";
+import AdsCard, { type AdsCardPadding, type AdsCardType, type AdsCardVariant } from "../../../../../app/components/AdsCard.vue";
 import AdsSegmentedTabs from "../../../../../app/components/AdsSegmentedTabs.vue";
 import AdsSwitch from "../../../../../app/components/AdsSwitch.vue";
 
 const SELECTED_TEXT = "A loja está acima da média da praça neste indicador.";
+const INFORMATIVE_TEXT =
+  "Poucos produtos com alta representatividade de receita (>60%). Requer maior agressividade de preços segundo os concorrentes.";
 
-const type = ref<"container" | "details">("container");
+const type = ref<AdsCardType>("container");
 const state = ref<"default" | "loading" | "empty">("default");
 const cardPadding = ref<AdsCardPadding>("default");
 const variant = ref<AdsCardVariant>("box");
@@ -87,6 +96,7 @@ const selected = ref(false);
 const typeItems = [
   { label: "Container", value: "container" },
   { label: "Detalhes", value: "details" },
+  { label: "Informativo", value: "informative" },
 ];
 
 const stateItems = [
@@ -123,6 +133,13 @@ const code = computed(() => {
     attr(selected.value, "selected"),
     attr(selected.value, "description", SELECTED_TEXT),
   ];
+  if (type.value === "informative") {
+    return buildTag("AdsCard", [
+      attr(true, "type", "informative"),
+      attr(true, "title", "Imagem + Tráfego"),
+      attr(true, "description", INFORMATIVE_TEXT),
+    ]);
+  }
   if (selected.value && type.value !== "details") {
     return buildTag("AdsCard", [
       attr(true, "title", "Notabilidade de imagem"),

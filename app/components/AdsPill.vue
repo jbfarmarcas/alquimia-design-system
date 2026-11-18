@@ -63,8 +63,7 @@ const props = withDefaults(
     trailingIcon?: string;
     /**
      * Override avançado de fundo e texto (classes Tailwind).
-     * Uso interno do atalho de domínio AdsNotabilityPill.
-     * Em produção, prefira esses atalhos em vez desta prop.
+     * Em produção, prefira os atalhos de domínio em vez desta prop.
      */
     customSurface?: string;
   }>(),

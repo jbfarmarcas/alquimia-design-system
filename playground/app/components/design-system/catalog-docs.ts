@@ -529,7 +529,7 @@ export const docsApis = {
   "notability-pill": [
     {
       name: "AdsNotabilityPill",
-      summary: "Atalho fino: traduz imagem/tráfego/lucro em cores e rótulo; renderiza AdsPill internamente.",
+      summary: "Pílula de notabilidade: imagem (ciano), tráfego (verde) e lucro (lilás), texto 14 bold.",
       props: [
         prop("notability", "string", "obrigatória", "image, traffic ou profit. Outro valor cai em image."),
         prop("label", "string", "—", "Texto. Sem valor, formata o nome da notabilidade."),
@@ -690,7 +690,7 @@ export const docsApis = {
       name: "AdsCard",
       summary: "Card Big Number nos tipos Container (título, período e conteúdo livre) e Detalhes (título e lista de informações). Substitui UCard.",
       props: [
-        prop("type", "container | details", "container", "container recebe gráfico, tabela ou lista no slot padrão; details mostra rows."),
+        prop("type", "container | details | informative", "container", "container recebe gráfico, tabela ou lista no slot padrão; details mostra rows; informative é a chamada azul (radar/25, borda radar/200) com título 12 bold em maiúsculas e description 14. Informative ignora selected, variant e padding."),
         prop("title", "string", "—", "16 bold no container, 20 bold no details. No selected, 14 bold em text/primary. O slot header substitui."),
         prop("variant", "box | line", "box", "line é só a borda inferior, sem raio e sem as outras bordas."),
         prop("padding", "default | compact | relaxed", "default", "Respiro do cartão: default é 16px, compact é 8px e relaxed é 24px. Não exige override do token no app."),
