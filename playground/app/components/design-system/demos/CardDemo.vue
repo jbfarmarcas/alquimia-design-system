@@ -45,12 +45,6 @@
             <p class="text-[length:var(--ads-font-size-xxs)] text-[var(--ads-text-tertiary)]">Conteúdo do card (gráfico, tabela…)</p>
           </div>
         </AdsCard>
-
-        <AdsCardPeriod label="Período:" value="01/12/2023 - 20/12/2023" />
-
-        <AdsCard title="Categorias" padding="relaxed">
-          <AdsTable :data="categoryRows" :columns="categoryColumns" :framed="false" />
-        </AdsCard>
       </div>
     </template>
 
@@ -74,16 +68,13 @@
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import type { TableColumn } from "@nuxt/ui";
 import DocsDemo from "../DocsDemo.vue";
 import DocsParam from "../DocsParam.vue";
 import { docsApis } from "../catalog-docs";
 import { attr, buildSfc, buildTag, indent, toLiteral } from "../../../utils/code-builder";
 import AdsCard, { type AdsCardPadding, type AdsCardVariant } from "../../../../../app/components/AdsCard.vue";
-import AdsCardPeriod from "../../../../../app/components/AdsCardPeriod.vue";
 import AdsSegmentedTabs from "../../../../../app/components/AdsSegmentedTabs.vue";
 import AdsSwitch from "../../../../../app/components/AdsSwitch.vue";
-import AdsTable from "../../../../../app/components/AdsTable.vue";
 
 const SELECTED_TEXT = "A loja está acima da média da praça neste indicador.";
 
@@ -92,16 +83,6 @@ const state = ref<"default" | "loading" | "empty">("default");
 const cardPadding = ref<AdsCardPadding>("default");
 const variant = ref<AdsCardVariant>("box");
 const selected = ref(false);
-
-const categoryRows = [
-  { name: "Genéricos", share: "32%" },
-  { name: "Similares", share: "18%" },
-];
-
-const categoryColumns: TableColumn<(typeof categoryRows)[number]>[] = [
-  { accessorKey: "name", header: "Categoria" },
-  { accessorKey: "share", header: "Participação" },
-];
 
 const typeItems = [
   { label: "Container", value: "container" },
