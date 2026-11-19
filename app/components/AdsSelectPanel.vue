@@ -125,7 +125,7 @@ const props = withDefaults(
     widthClass?: string;
     /**
      * Ação de cadastrar no rodapé, com ícone de adicionar. `{query}` vira a busca atual.
-     * Sem valor, a ação não aparece.
+     * Sem valor, com busca vazia ou com texto igual a uma opção, a ação não aparece.
      */
     addLabel?: string;
   }>(),
@@ -148,11 +148,22 @@ const emit = defineEmits<{
   add: [query: string];
 }>();
 
-/** Texto da ação: `{query}` recebe a busca; sem busca, o trecho some. */
+const queryMatchesOption = (typed: string): boolean => {
+  const key = typed.toLocaleLowerCase("pt-BR");
+  return props.options.some((option) => {
+    const label = option.label.trim().toLocaleLowerCase("pt-BR");
+    const value = String(option.value).trim().toLocaleLowerCase("pt-BR");
+    return label === key || value === key;
+  });
+};
+
+/** A ação só aparece com texto na busca e se esse texto ainda não é uma opção. */
 const addText = computed(() => {
   if (!props.addLabel) return "";
-  const text = props.addLabel.replaceAll("{query}", query.value.trim());
-  return text.replace(/\s+/g, " ").trim();
+  const typed = query.value.trim();
+  if (props.addLabel.includes("{query}") && !typed) return "";
+  if (typed && queryMatchesOption(typed)) return "";
+  return props.addLabel.replaceAll("{query}", typed).replace(/\s+/g, " ").trim();
 });
 
 const groups = computed(() => groupFilterOptions(props.options, query.value));
