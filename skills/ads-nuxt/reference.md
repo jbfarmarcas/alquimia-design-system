@@ -1384,8 +1384,8 @@ Props:
    */
   sticky?: AdsTableSticky;
   /**
-   * Barra de rolagem horizontal sticky no rodapé da viewport da tabela.
-   * Sincroniza com o overflow do root; esconde a barra nativa horizontal.
+   * Barra de rolagem horizontal sticky no rodapé da viewport.
+   * Um único scroller (viewport) + trilho sticky; barra nativa escondida.
    * Padrão: desligado.
    */
   stickyScrollbar?: boolean;

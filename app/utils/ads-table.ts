@@ -116,9 +116,13 @@ export const buildAdsTableUi = ({
   const grid = borders === "grid" ? GRID_BORDER : "";
   // Na grade a borda da direita já fecha a coluna fixa da esquerda; a da direita desenha a sua
   // por fora, em cima da borda da vizinha, para não somar 2px.
-  const gridPinnedEdge = "data-[pinned=right]:shadow-[-1px_0_0_var(--ads-border-subtle)]";
+  // Grade: 1px na borda da coluna fixa (sem degradê). Lines: border-r/l.
+  const gridPinnedEdge =
+    "data-[pinned=left]:shadow-[1px_0_0_var(--ads-border-subtle)] data-[pinned=right]:shadow-[-1px_0_0_var(--ads-border-subtle)]";
   const linesPinnedEdge = "data-[pinned=left]:border-r data-[pinned=right]:border-l";
   const pinnedEdge = !showPinnedEdge ? "" : borders === "grid" ? gridPinnedEdge : linesPinnedEdge;
+  // Degradê só com pinnedEdge — senão tapa a borda da grade e “some” visualmente.
+  const pinFade = showPinnedEdge ? PIN_FADE : "";
 
   return {
     root: [
@@ -156,7 +160,7 @@ export const buildAdsTableUi = ({
       "[&[colspan]]:text-center [&[colspan]]:text-[var(--ads-text-primary)]",
       "data-[pinned=left]:z-[3] data-[pinned=right]:z-[3]",
       pinnedEdge,
-      PIN_FADE,
+      pinFade,
     ].join(" "),
     td: [
       size.td,
@@ -164,7 +168,7 @@ export const buildAdsTableUi = ({
       grid,
       ADS_TABLE_CELL_TEXT,
       pinnedEdge,
-      PIN_FADE,
+      pinFade,
     ].join(" "),
     separator: "hidden",
     empty: `py-10 text-center text-[var(--ads-text-secondary)] ${ADS_TABLE_CELL_TEXT}`,
