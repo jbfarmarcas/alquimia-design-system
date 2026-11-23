@@ -818,8 +818,9 @@ export const docsApis = {
       props: [
         prop("data", "T[]", "obrigatória", "Linhas da tabela."),
         prop("columns", "TableColumn<T>[]", "obrigatória", "Definição das colunas (TanStack Table). Use os helpers de adsTableColumn para metadados de estilo."),
-        prop("sticky", "boolean | 'header' | 'footer' | 'all'", "false", "Fixa o cabeçalho (header/all/true) ou o rodapé (footer). all = mesmo efeito de header; colunas fixas vêm de v-model:column-pinning. A tabela ganha altura máxima de 70vh; max-h na classe sobrescreve."),
-        prop("sticky-scrollbar", "boolean", "false", "Barra de rolagem horizontal sticky no rodapé da viewport da tabela, sincronizada com o overflow do root. Opt-in."),
+        prop("sticky", "boolean | 'header' | 'footer' | 'all'", "false", "Fixa o cabeçalho (header/all/true) ou o rodapé (footer). all = mesmo efeito de header; colunas fixas vêm de v-model:column-pinning. Sozinho limita a 70vh; com sticky-scrollbar a página rola no Y."),
+        prop("sticky-scrollbar", "boolean", "false", "Barra horizontal sticky no rodapé da viewport. Opt-in. Com sticky, usa overflow-y-clip para o thead grudar no layout sem scroll interno."),
+        prop("grouped-header", "boolean", "false", "Cabeçalho em dois níveis (colunas com columns): 1ª linha (grupos) branca; 2ª (folhas) cinza. Mesma Body 14 Bold. Case (uppercase etc.) fica no consumidor."),
         prop("virtualize", "boolean", "false", "Lista virtual: monta só as linhas visíveis. Use com muitas linhas. Precisa de rolagem própria (sticky ou max-h)."),
         prop("v-model:column-pinning", "{ left?: string[]; right?: string[] }", "—", "IDs das colunas a fixar à esquerda ou direita. O botão de fixar do cabeçalho depende do v-model."),
         prop("striped", "boolean", "false", "Linhas alternadas (zebra)."),

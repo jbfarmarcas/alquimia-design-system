@@ -134,6 +134,11 @@ const props = withDefaults(
     virtualize?: boolean;
     /** Linha de 1px na borda da coluna fixa. */
     pinnedEdge?: boolean;
+    /**
+     * Cabeçalho em dois níveis (colunas aninhadas): grupos brancos + folhas cinza.
+     * Padrão: desligado.
+     */
+    groupedHeader?: boolean;
     emptyLabel?: string;
     emptyIcon?: string;
     loadingLabel?: string;
@@ -154,6 +159,7 @@ const props = withDefaults(
     stickyScrollbar: false,
     virtualize: false,
     pinnedEdge: true,
+    groupedHeader: false,
     emptyLabel: "Nenhum registro encontrado",
     emptyIcon: "i-lucide-inbox",
     loadingLabel: undefined,
@@ -245,6 +251,7 @@ const tableUi = computed(() => {
     depth: props.depth,
     stickyHeader: stickyHeaderEnabled.value,
     pinnedEdge: props.pinnedEdge,
+    groupedHeader: props.groupedHeader,
   });
   // Marca para o CSS do AdsCard alinhar a primeira coluna. Fora do card, não faz nada.
   base.root = `${base.root} ads-table`.trim();
@@ -256,9 +263,12 @@ const tableUi = computed(() => {
       "w-full min-w-max max-w-none! overflow-visible max-h-none!",
     );
     base.base = twMerge(base.base, "w-full");
-    // Tira o bg-default/75 + blur do tema Nuxt no sticky; o th define o fundo.
+    // Tira o bg-default/75 + blur do tema Nuxt no sticky; o th / groupedHeader definem o fundo.
     if (stickyHeaderEnabled.value) {
-      base.thead = twMerge(base.thead, "bg-transparent! backdrop-blur-none!");
+      base.thead = twMerge(base.thead, "backdrop-blur-none!");
+      if (!props.groupedHeader) {
+        base.thead = twMerge(base.thead, "bg-transparent!");
+      }
     }
   }
   if (!slots.expanded) {

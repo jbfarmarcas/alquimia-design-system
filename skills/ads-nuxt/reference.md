@@ -1396,6 +1396,11 @@ Props:
   virtualize?: boolean;
   /** Linha de 1px na borda da coluna fixa. */
   pinnedEdge?: boolean;
+  /**
+   * Cabeçalho em dois níveis (colunas aninhadas): grupos brancos + folhas cinza.
+   * Padrão: desligado.
+   */
+  groupedHeader?: boolean;
   emptyLabel?: string;
   emptyIcon?: string;
   loadingLabel?: string;

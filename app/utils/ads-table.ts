@@ -51,6 +51,12 @@ export interface AdsTableLook {
   stickyHeader?: boolean;
   /** Linha de 1px na borda da coluna fixa. A Heavy Table desenha a sua por divisória de período. */
   pinnedEdge?: boolean;
+  /**
+   * Cabeçalho em dois níveis (colunas com `columns`): 1ª linha (grupos) branca;
+   * 2ª (folhas) neutral-100. Mesma Body 14 Bold nas duas. Case (ex. uppercase)
+   * fica a cargo do consumidor.
+   */
+  groupedHeader?: boolean;
 }
 
 /**
@@ -111,6 +117,7 @@ export const buildAdsTableUi = ({
   depth = false,
   stickyHeader = false,
   pinnedEdge: showPinnedEdge = true,
+  groupedHeader = false,
 }: AdsTableLook = {}): AdsTableUi => {
   const size = CELL_SIZE[density];
   const grid = borders === "grid" ? GRID_BORDER : "";
@@ -123,6 +130,16 @@ export const buildAdsTableUi = ({
   const pinnedEdge = !showPinnedEdge ? "" : borders === "grid" ? gridPinnedEdge : linesPinnedEdge;
   // Degradê só com pinnedEdge — senão tapa a borda da grade e “some” visualmente.
   const pinFade = showPinnedEdge ? PIN_FADE : "";
+  // 1ª linha = grupos (incl. grupo com 1 coluna); 2ª = folhas. Evita seletor [colspan].
+  const groupedThead = groupedHeader
+    ? [
+        "bg-transparent",
+        "[&>tr:first-child>th]:bg-[var(--ads-surface-card)]",
+        "[&>tr:first-child>th]:text-center",
+        "[&>tr:first-child>th]:text-[var(--ads-text-secondary)]",
+        "[&>tr:nth-child(2)>th]:bg-neutral-100",
+      ].join(" ")
+    : "bg-neutral-100";
 
   return {
     root: [
@@ -134,7 +151,7 @@ export const buildAdsTableUi = ({
       framed ? "rounded-[var(--ads-radius-md)] border border-[var(--ads-border-subtle)]" : "",
     ].join(" "),
     base: "min-w-full border-separate border-spacing-0",
-    thead: `z-[2] bg-neutral-100 backdrop-blur-none ${stickyHeader ? STICKY_HEADER_SHADOW : ""}`.trim(),
+    thead: `z-[2] backdrop-blur-none ${groupedThead} ${stickyHeader ? STICKY_HEADER_SHADOW : ""}`.trim(),
     tbody: [
       "divide-y-0 [&>tr:last-child>td]:border-b-0",
       striped ? "[&>tr:nth-child(even)>td:not(:has([data-cell-fill]))]:bg-[var(--ads-surface-main)]" : "",
@@ -157,7 +174,9 @@ export const buildAdsTableUi = ({
       // Depois da grade: o cabeçalho tem borda mais forte que a das células.
       "border-[var(--color-ads-neutro-claro-40)]",
       ADS_TABLE_HEADER_TEXT,
-      "[&[colspan]]:text-center [&[colspan]]:text-[var(--ads-text-primary)]",
+      groupedHeader
+        ? "[&[colspan]]:text-center [&[colspan]]:text-[var(--ads-text-secondary)]"
+        : "[&[colspan]]:text-center [&[colspan]]:text-[var(--ads-text-primary)]",
       "data-[pinned=left]:z-[3] data-[pinned=right]:z-[3]",
       pinnedEdge,
       pinFade,
