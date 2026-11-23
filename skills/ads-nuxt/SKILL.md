@@ -120,7 +120,7 @@ Auto-importados, de `app/utils`:
 | `percentage.ts` | `formatPercentage`, `formatPercentageWithDecimals`, `formatPercentagePtBr` |
 | `parser.ts` | datas e percentuais: `formatDateOnlyToPtBr`, `formatDateToPtBr`, `daysBetweenDateOnly`, `parseToPercentage`… |
 | `calendar-date.ts` | conversão `string` ↔ `CalendarDate` e dos valores emitidos pelo Nuxt UI (`toCalendarModel`, `toCalendarDateRange`) |
-| `ads-table.ts` | helpers de coluna do `AdsTable` e `AdsHeavyTable`: `adsTableGroup`, `adsTableCellFill`, `adsTableTreeIndent`, `adsHeavyGroupTdAttrs`, `adsHeavyGroupContentClass`, `adsHeavyVariationClass`, `adsHeavyColumn`, `adsHeavyAccountColumn`, `buildAdsTableUi`, `buildAdsHeavyTableUi`; tipos: `AdsTableCellType`, `AdsTableGroupTone` (inclui `"ai"`) |
+| `ads-table.ts` | helpers de coluna do `AdsTable` e `AdsHeavyTable`: `adsTablePinned`, `adsTableGroup`, `adsTableCellFill`, `adsTableTreeIndent`, `adsHeavyGroupTdAttrs`, `adsHeavyGroupContentClass`, `adsHeavyVariationClass`, `adsHeavyColumn`, `adsHeavyAccountColumn`, `buildAdsTableUi`, `buildAdsHeavyTableUi`; tipos: `AdsTableSticky`, `AdsTableCellType`, `AdsTableGroupTone` (inclui `"ai"`) |
 | `ads-filter-select.ts` | helpers do `AdsSelect` |
 
 `useOverlayLoading()`: overlay de tela cheia com `show`, `update`, `close`, `isOpen`, `getCurrentId`. Não tem botão de fechar: quem fecha é a ação (`actionLabel` ou `secondaryActionLabel`) ou `close()`.
