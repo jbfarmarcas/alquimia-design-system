@@ -23,6 +23,7 @@
       <DocsParam v-if="variant === 'standard'" label="Opções">
         <div class="flex flex-wrap gap-4">
           <AdsSwitch v-model="sticky" label="Cabeçalho fixo" />
+          <AdsSwitch v-model="stickyScrollbar" label="Scroll horizontal sticky" />
           <AdsSwitch v-model="striped" label="Zebrado" />
           <AdsSwitch v-model="virtualOn" label="Lista virtual" />
         </div>
@@ -35,7 +36,8 @@
         v-model:column-pinning="pinning"
         :data="tableRows"
         :columns="columns"
-        :sticky="sticky ? 'header' : false"
+        :sticky="sticky ? 'all' : false"
+        :sticky-scrollbar="stickyScrollbar"
         :striped="striped"
         :virtualize="virtualOn"
       >
@@ -150,6 +152,7 @@ const SUBTEXT =
 const variant = ref<"standard" | "cell-types" | "loading" | "empty">("standard");
 const pinMode = ref<"none" | "first" | "both">("first");
 const sticky = ref(false);
+const stickyScrollbar = ref(false);
 const striped = ref(true);
 const virtualOn = ref(false);
 const volume = ref<"few" | "many">("few");
@@ -247,7 +250,8 @@ const code = computed(() => {
 </AdsTable>`;
   }
   const attrs: string[] = [];
-  if (sticky.value) attrs.push('sticky="header"');
+  if (sticky.value) attrs.push('sticky="all"');
+  if (stickyScrollbar.value) attrs.push(":sticky-scrollbar=\"true\"");
   if (pinMode.value !== "none") attrs.push('v-model:column-pinning="pinning"');
   if (striped.value) attrs.push("striped");
   if (virtualOn.value) attrs.push("virtualize");

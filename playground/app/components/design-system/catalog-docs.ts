@@ -818,7 +818,8 @@ export const docsApis = {
       props: [
         prop("data", "T[]", "obrigatória", "Linhas da tabela."),
         prop("columns", "TableColumn<T>[]", "obrigatória", "Definição das colunas (TanStack Table). Use os helpers de adsTableColumn para metadados de estilo."),
-        prop("sticky", "boolean | 'header' | 'all'", "false", "Fixa o cabeçalho (header) ou cabeçalho e colunas ao mesmo tempo (all). true = header. A tabela ganha altura máxima de 70vh para o cabeçalho ficar fixo na rolagem; max-h na classe sobrescreve."),
+        prop("sticky", "boolean | 'header' | 'footer' | 'all'", "false", "Fixa o cabeçalho (header/all/true) ou o rodapé (footer). all = mesmo efeito de header; colunas fixas vêm de v-model:column-pinning. A tabela ganha altura máxima de 70vh; max-h na classe sobrescreve."),
+        prop("sticky-scrollbar", "boolean", "false", "Barra de rolagem horizontal sticky no rodapé da viewport da tabela, sincronizada com o overflow do root. Opt-in."),
         prop("virtualize", "boolean", "false", "Lista virtual: monta só as linhas visíveis. Use com muitas linhas. Precisa de rolagem própria (sticky ou max-h)."),
         prop("v-model:column-pinning", "{ left?: string[]; right?: string[] }", "—", "IDs das colunas a fixar à esquerda ou direita. O botão de fixar do cabeçalho depende do v-model."),
         prop("striped", "boolean", "false", "Linhas alternadas (zebra)."),
@@ -865,7 +866,8 @@ export const docsApis = {
         prop("get-row-id", "(row: T) => string", "obrigatória para accordion", "ID da linha pai."),
         prop("v-model:expanded", "Record<string, boolean>", "—", "Estado de abertura dos grupos."),
         prop("v-model:column-pinning", "{ left?: string[]; right?: string[] }", "—", "Colunas fixas. O botão de fixar do cabeçalho depende do v-model."),
-        prop("sticky", "boolean | 'header' | 'all'", "header", "Cabeçalho fixo por padrão."),
+        prop("sticky", "boolean | 'header' | 'footer' | 'all'", "header", "Cabeçalho fixo por padrão. all = mesmo efeito de header."),
+        prop("sticky-scrollbar", "boolean", "false", "Barra de rolagem horizontal sticky. Repassa ao AdsTable."),
       ],
     },
     {

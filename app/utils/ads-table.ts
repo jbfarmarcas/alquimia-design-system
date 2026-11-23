@@ -29,6 +29,13 @@ export type AdsTableDensity = "md" | "sm";
 /** lines: só a divisória horizontal. grid: divisória horizontal e vertical. */
 export type AdsTableBorders = "lines" | "grid";
 
+/**
+ * sticky do AdsTable.
+ * `all` = mesmo efeito de `header` (colunas fixas vêm de column-pinning).
+ */
+export type AdsTableSticky = boolean | "header" | "footer" | "all";
+
+
 export interface AdsTableLook {
   /** Só o respiro da célula. A fonte não muda. */
   density?: AdsTableDensity;

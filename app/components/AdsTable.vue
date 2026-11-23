@@ -1,42 +1,60 @@
 <template>
-  <UTable
-    :key="virtualize ? 'virtual' : 'static'"
-    :data="data"
-    :columns="columns"
-    :loading="loading"
-    :sticky="sticky"
-    :virtualize="virtualizeOptions"
-    :ui="tableUi"
+  <div
+    ref="shellEl"
+    class="ads-table-shell relative min-w-0"
   >
-    <template v-if="!$slots.loading" #loading>
-      <AdsTableSkeleton
-        :rows="skeletonRows"
-        :variant="skeletonVariant"
-        :columns="skeletonColumns"
-        :cell-class="skeletonCellSize ?? adsTableCellSize(density)"
-      />
-    </template>
-
-    <template v-if="!$slots.empty" #empty>
-      <div class="flex flex-col items-center gap-2">
-        <UIcon
-          :name="emptyIcon"
-          class="size-6 text-[var(--ads-border-icon-support)]"
-          aria-hidden="true"
+    <UTable
+      :key="virtualize ? 'virtual' : 'static'"
+      :data="data"
+      :columns="columns"
+      :loading="loading"
+      :sticky="uTableSticky"
+      :virtualize="virtualizeOptions"
+      :ui="tableUi"
+    >
+      <template v-if="!$slots.loading" #loading>
+        <AdsTableSkeleton
+          :rows="skeletonRows"
+          :variant="skeletonVariant"
+          :columns="skeletonColumns"
+          :cell-class="skeletonCellSize ?? adsTableCellSize(density)"
         />
-        <p class="text-sm text-[var(--ads-text-secondary)]">{{ emptyLabel }}</p>
-      </div>
-    </template>
+      </template>
 
-    <template v-for="(_, name) in $slots" #[name]="slotProps">
-      <slot :name="name" v-bind="slotProps ?? {}" />
-    </template>
-  </UTable>
+      <template v-if="!$slots.empty" #empty>
+        <div class="flex flex-col items-center gap-2">
+          <UIcon
+            :name="emptyIcon"
+            class="size-6 text-[var(--ads-border-icon-support)]"
+            aria-hidden="true"
+          />
+          <p class="text-sm text-[var(--ads-text-secondary)]">{{ emptyLabel }}</p>
+        </div>
+      </template>
+
+      <template v-for="(_, name) in $slots" #[name]="slotProps">
+        <slot :name="name" v-bind="slotProps ?? {}" />
+      </template>
+    </UTable>
+
+    <div
+      v-show="stickyScrollbar && needsFakeScroll"
+      ref="fakeScroller"
+      class="sticky bottom-0 z-20 overflow-x-auto border-t border-[var(--ads-border-subtle)] bg-[var(--ads-surface-card)] [scrollbar-color:var(--ads-border-subtle)_transparent] [scrollbar-width:thin]"
+      aria-hidden="true"
+    >
+      <div
+        class="h-3"
+        :style="{ width: `${scrollContentWidth}px` }"
+      />
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts" generic="T extends TableData">
-import { computed, useAttrs, useSlots } from "vue";
+import { computed, nextTick, onMounted, ref, useAttrs, useSlots, watch } from "vue";
 import type { TableColumn, TableData } from "@nuxt/ui";
+import { useEventListener, useResizeObserver } from "@vueuse/core";
 import AdsTableSkeleton, {
   type AdsTableSkeletonAlign,
   type AdsTableSkeletonVariant,
@@ -47,6 +65,7 @@ import {
   mergeAdsTableUi,
   type AdsTableBorders,
   type AdsTableDensity,
+  type AdsTableSticky,
   type AdsTableUi,
 } from "../utils/ads-table";
 
@@ -78,8 +97,17 @@ const props = withDefaults(
     skeletonVariant?: AdsTableSkeletonVariant;
     /** Altura e respiro da linha do skeleton, quando a tabela foge do padrão da densidade. */
     skeletonCellSize?: string;
-    /** Cabeçalho (e rodapé) fixos. A tabela ganha altura máxima de 70vh; max-h na classe sobrescreve. */
-    sticky?: boolean | "header" | "footer";
+    /**
+     * Cabeçalho (e rodapé) fixos. A tabela ganha altura máxima de 70vh; max-h na classe sobrescreve.
+     * `all` = mesmo efeito de `header` (colunas fixas vêm de `v-model:column-pinning`).
+     */
+    sticky?: AdsTableSticky;
+    /**
+     * Barra de rolagem horizontal sticky no rodapé da viewport da tabela.
+     * Sincroniza com o overflow do root; esconde a barra nativa horizontal.
+     * Padrão: desligado.
+     */
+    stickyScrollbar?: boolean;
     /**
      * Lista virtual: só as linhas visíveis são montadas. Use com muitas linhas (centenas ou mais).
      * Precisa de rolagem própria (sticky ou max-h), senão a tabela inteira é montada.
@@ -104,6 +132,7 @@ const props = withDefaults(
     skeletonVariant: "skeleton",
     skeletonCellSize: undefined,
     sticky: false,
+    stickyScrollbar: false,
     virtualize: false,
     pinnedEdge: true,
     emptyLabel: "Nenhum registro encontrado",
@@ -115,6 +144,27 @@ const props = withDefaults(
 
 const slots = useSlots();
 const attrs = useAttrs();
+
+const shellEl = ref<HTMLElement | null>(null);
+const fakeScroller = ref<HTMLElement | null>(null);
+const tableScroller = ref<HTMLElement | null>(null);
+const scrollContentWidth = ref(0);
+const needsFakeScroll = ref(false);
+
+let isSyncingScroll = false;
+
+/** UTable não conhece `all`; mapeia para cabeçalho fixo. */
+const uTableSticky = computed(() => {
+  if (props.sticky === "all" || props.sticky === true) return "header" as const;
+  return props.sticky;
+});
+
+const stickyHeaderEnabled = computed(
+  () =>
+    props.sticky === true ||
+    props.sticky === "header" ||
+    props.sticky === "all",
+);
 
 const leafColumns = (columns: TableColumn<T>[]): TableColumn<T>[] =>
   columns.flatMap((column) =>
@@ -151,11 +201,16 @@ const tableUi = computed(() => {
     framed: props.framed,
     borders: props.borders,
     depth: props.depth,
-    stickyHeader: props.sticky === true || props.sticky === "header",
+    stickyHeader: stickyHeaderEnabled.value,
     pinnedEdge: props.pinnedEdge,
   });
   // Marca para o CSS do AdsCard alinhar a primeira coluna. Fora do card, não faz nada.
   base.root = `${base.root} ads-table`.trim();
+  if (props.stickyScrollbar) {
+    // A barra fake assume o eixo X; a nativa horizontal some para não duplicar.
+    base.root =
+      `${base.root} [scrollbar-width:thin] [&::-webkit-scrollbar:horizontal]:h-0`.trim();
+  }
   if (!slots.expanded) {
     // Árvore via getSubRows: o UTable sempre desenha a linha de detalhe da linha aberta.
     base.tbody = `${base.tbody} [&>tr[data-slot=tr]:not([data-selectable])]:hidden`;
@@ -171,4 +226,61 @@ const tableUi = computed(() => {
   }
   return mergeAdsTableUi(base, props.ui);
 });
+
+const resolveTableScroller = () => {
+  const root = shellEl.value?.querySelector<HTMLElement>(".ads-table");
+  tableScroller.value = root ?? null;
+  return tableScroller.value;
+};
+
+const syncScrollLeft = (from: HTMLElement | null, to: HTMLElement | null) => {
+  if (isSyncingScroll || !from || !to || from.scrollLeft === to.scrollLeft) return;
+  isSyncingScroll = true;
+  to.scrollLeft = from.scrollLeft;
+  isSyncingScroll = false;
+};
+
+const measureFakeScroll = () => {
+  if (!props.stickyScrollbar) {
+    scrollContentWidth.value = 0;
+    needsFakeScroll.value = false;
+    return;
+  }
+  const el = resolveTableScroller();
+  if (!el) {
+    scrollContentWidth.value = 0;
+    needsFakeScroll.value = false;
+    return;
+  }
+  scrollContentWidth.value = el.scrollWidth;
+  needsFakeScroll.value = el.scrollWidth > el.clientWidth + 1;
+};
+
+useEventListener(tableScroller, "scroll", () => {
+  if (!props.stickyScrollbar) return;
+  syncScrollLeft(tableScroller.value, fakeScroller.value);
+});
+useEventListener(fakeScroller, "scroll", () => {
+  if (!props.stickyScrollbar) return;
+  syncScrollLeft(fakeScroller.value, tableScroller.value);
+});
+
+useResizeObserver(shellEl, () => {
+  void nextTick(measureFakeScroll);
+});
+
+onMounted(() => {
+  resolveTableScroller();
+  measureFakeScroll();
+});
+
+watch(
+  () => [props.data, props.columns, props.stickyScrollbar, props.sticky, props.ui] as const,
+  () => {
+    void nextTick(() => {
+      resolveTableScroller();
+      measureFakeScroll();
+    });
+  },
+);
 </script>
