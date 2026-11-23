@@ -147,7 +147,7 @@ const props = withDefaults(
     panelWidthClass?: string;
     /**
      * Ação de cadastrar no rodapé da lista, com ícone de adicionar. `{query}` vira a busca atual,
-     * ex.: "Cadastrar {query}". Sem valor, com busca vazia ou com texto igual a uma opção, a ação não aparece.
+     * ex.: "Cadastrar {query}". Sem valor, com busca vazia ou com resultados na lista filtrada, a ação não aparece.
      */
     addLabel?: string;
   }>(),

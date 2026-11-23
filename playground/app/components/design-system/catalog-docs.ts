@@ -257,7 +257,7 @@ export const docsApis = {
         prop("block", "boolean", "false", "O gatilho ocupa a largura do campo."),
         prop("inline", "boolean", "false", "Só a lista, sem gatilho nem popover. label, hint e error não aparecem."),
         prop("panelWidthClass", "string", "w-[320px] max-w-full", "Largura da lista."),
-        prop("addLabel", "string", "—", "Ação de cadastrar no rodapé da lista, com ícone de adicionar na cor da marca. {query} vira a busca atual, ex.: “Cadastrar {query}”. Sem valor, com busca vazia ou com texto igual a uma opção, a ação não aparece."),
+        prop("addLabel", "string", "—", "Ação de cadastrar no rodapé da lista, com ícone de adicionar na cor da marca. {query} vira a busca atual, ex.: “Cadastrar {query}”. Sem valor, com busca vazia ou com resultados na lista filtrada, a ação não aparece."),
         prop("aiSuggestion", "boolean", "false", "Marca a seleção como sugestão de IA. Erro e desabilitado têm prioridade; aberto mostra o foco. Quem usa volta para false quando a pessoa altera."),
       ],
       events: [
