@@ -594,6 +594,12 @@
   height: var(--ads-toast-icon-size);
 }
 
+/* Ícone de 18px (título e X do AdsModal). Fora de camada, pelo mesmo motivo do ads-toast-icon. */
+.iconify.ads-icon-md {
+  width: 18px;
+  height: 18px;
+}
+
 /* Ícone de 16px (pill em texto, ação do toast). O 1em do Iconify cederia para 14px. */
 .iconify.ads-icon-xxs {
   width: var(--ads-space-xxs);

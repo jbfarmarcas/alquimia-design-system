@@ -31,6 +31,7 @@ A layer já registra `@nuxt/ui`, `@nuxt/fonts`, `@nuxt/icon` e `@vueuse/nuxt`, o
 - **Antes de usar um componente, leia as props dele** em [reference.md](reference.md) (busque `## AdsNome`). Para o comportamento exato, leia `node_modules/ads-nuxt/app/components/<AdsNome>.vue`. Não invente props.
 - **Nunca fixe cor, espaço, raio ou fonte.** Use token: `var(--ads-surface-card)`, `bg-ads-surface-card`, `text-ads-text-primary`, `border-ads-border-subtle`. Veja [tokens](#tokens).
 - **Ícones** são Lucide: `i-lucide-<nome>`.
+- **Tamanho de ícone:** `UIcon` com `size-*` do Tailwind não vale. O `.iconify { width: 1em }` do Iconify fica fora de camada e vence o utilitário, então o ícone assume o tamanho do texto. Use `ads-icon-md` (18px) ou `ads-icon-xxs` (16px) no `UIcon`. `size-4` parece certo só porque 1em ≈ 16px.
 - **Tema claro apenas.** A layer define `ui.colorMode: false`. Não crie variantes `dark:`.
 - **Formatação pt-BR** vem dos utilitários, não de `toLocaleString` solto. Veja [utilitários](#utilitários-e-composables).
 - Para ajustar o visual, sobrescreva o token ou o `app.config.ts` do projeto. Não edite arquivos em `node_modules`.
