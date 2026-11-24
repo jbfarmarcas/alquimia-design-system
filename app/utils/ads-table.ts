@@ -261,6 +261,68 @@ export const adsTableGroup = (tone: AdsTableGroupTone = "neutral") => ({
   class: { th: GROUP_UNDERLINE[tone] },
 });
 
+/** Célula mínima do UTable/TanStack para calcular rowspan (sem importar @tanstack/*). */
+type AdsTableRowSpanCell<T> = {
+  row: { id: string; original: T };
+  getContext: () => {
+    table: {
+      getRowModel: () => { rows: Array<{ id: string; original: T }> };
+    };
+  };
+};
+
+const resolveRowSpanIndex = <T>(cell: AdsTableRowSpanCell<T>) => {
+  const rows = cell.getContext().table.getRowModel().rows;
+  return {
+    rows,
+    rowIndex: rows.findIndex((row) => row.id === cell.row.id),
+  };
+};
+
+/**
+ * `meta` com rowspan vertical via API do UTable (`meta.rowspan` + `hidden` nas
+ * células absorvidas). Linhas adjacentes com o mesmo `getKey` mesclam; key
+ * nullish não mescla. Não use com `virtualize`.
+ */
+export const adsTableRowSpan = <T>(
+  getKey: (row: T) => string | number | null | undefined,
+  baseClass: AdsTableColumnMeta["class"] = {},
+) => {
+  const isCovered = (cell: AdsTableRowSpanCell<T>) => {
+    const key = getKey(cell.row.original);
+    if (key == null || key === "") return false;
+    const { rows, rowIndex } = resolveRowSpanIndex(cell);
+    if (rowIndex <= 0) return false;
+    return getKey(rows[rowIndex - 1]!.original) === key;
+  };
+
+  const spanFor = (cell: AdsTableRowSpanCell<T>) => {
+    const key = getKey(cell.row.original);
+    if (key == null || key === "" || isCovered(cell)) return "1";
+    const { rows, rowIndex } = resolveRowSpanIndex(cell);
+    if (rowIndex < 0) return "1";
+    let span = 1;
+    for (let i = rowIndex + 1; i < rows.length; i++) {
+      if (getKey(rows[i]!.original) !== key) break;
+      span += 1;
+    }
+    return String(span);
+  };
+
+  return {
+    rowspan: {
+      td: (cell: AdsTableRowSpanCell<T>) => spanFor(cell),
+    },
+    class: {
+      th: baseClass.th,
+      td: (cell: AdsTableRowSpanCell<T>) =>
+        isCovered(cell)
+          ? "hidden"
+          : twMerge(baseClass.td, "align-middle"),
+    },
+  };
+};
+
 /** Variação: sinal e cor no tom 500, o mesmo do badge. Zero fica neutro. */
 export const adsTableVariationClass = (value: number | null | undefined) => {
   if (value == null || value === 0) return "text-[var(--ads-text-secondary)]";

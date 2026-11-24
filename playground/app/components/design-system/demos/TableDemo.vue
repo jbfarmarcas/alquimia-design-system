@@ -127,6 +127,26 @@
       <AdsTable :data="[]" :columns="columns" />
     </div>
 
+    <!-- Preview: rowspan -->
+    <div v-else-if="variant === 'rowspan'">
+      <p class="mb-2 text-sm font-bold text-[var(--ads-text-primary)]">Rowspan com adsTableRowSpan</p>
+      <AdsTable
+        :data="rowSpanRows"
+        :columns="rowSpanColumns"
+        borders="grid"
+      >
+        <template #category-cell="{ row }">
+          <span class="font-bold">{{ row.original.category }}</span>
+        </template>
+        <template #name-cell="{ row }">
+          {{ row.original.name }}
+        </template>
+        <template #stock-cell="{ row }">
+          {{ row.original.stock }}
+        </template>
+      </AdsTable>
+    </div>
+
     <!-- Referência -->
     <DocsReference :block="{ language: 'vue', code, apis: docsApis.table }" />
   </div>
@@ -146,12 +166,51 @@ import AdsSegmentedTabs from "../../../../../app/components/AdsSegmentedTabs.vue
 import AdsSwitch from "../../../../../app/components/AdsSwitch.vue";
 import AdsTable from "../../../../../app/components/AdsTable.vue";
 import AdsTableHeaderCell from "../../../../../app/components/AdsTableHeaderCell.vue";
-import { adsTablePinned } from "../../../../../app/utils/ads-table";
+import { adsTablePinned, adsTableRowSpan } from "../../../../../app/utils/ads-table";
 
 const SUBTEXT =
   "text-[length:var(--ads-font-size-xxxs)] leading-[var(--ads-line-height-sm)] text-[var(--ads-text-secondary)]";
 
-const variant = ref<"standard" | "cell-types" | "loading" | "empty">("standard");
+const variant = ref<"standard" | "cell-types" | "loading" | "empty" | "rowspan">("standard");
+
+type RowSpanDemoRow = {
+  id: string;
+  category: string;
+  name: string;
+  stock: number;
+};
+
+const rowSpanRows: RowSpanDemoRow[] = [
+  { id: "1", category: "Eletrônicos", name: "Notebook", stock: 12 },
+  { id: "2", category: "Eletrônicos", name: "Monitor", stock: 8 },
+  { id: "3", category: "Eletrônicos", name: "Mouse", stock: 40 },
+  { id: "4", category: "Higiene", name: "Sabonete", stock: 120 },
+  { id: "5", category: "Higiene", name: "Shampoo", stock: 64 },
+];
+
+const rowSpanColumns: TableColumn<RowSpanDemoRow>[] = [
+  {
+    id: "category",
+    accessorKey: "category",
+    header: "Categoria",
+    meta: adsTableRowSpan((row) => row.category, {
+      th: "min-w-40",
+      td: "min-w-40",
+    }),
+  },
+  {
+    id: "name",
+    accessorKey: "name",
+    header: "Produto",
+    meta: { class: { th: "min-w-48", td: "min-w-48" } },
+  },
+  {
+    id: "stock",
+    accessorKey: "stock",
+    header: "Estoque",
+    meta: { class: { th: "min-w-28 text-right", td: "min-w-28 text-right" } },
+  },
+];
 const pinMode = ref<"none" | "first" | "both">("first");
 const sticky = ref(false);
 const stickyScrollbar = ref(false);
@@ -181,6 +240,7 @@ const skeletonItems = [
 const variantItems = [
   { label: "Padrão", value: "standard" },
   { label: "Tipos de célula", value: "cell-types" },
+  { label: "Rowspan", value: "rowspan" },
   { label: "Carregando", value: "loading" },
   { label: "Vazio", value: "empty" },
 ];
@@ -251,6 +311,19 @@ const code = computed(() => {
     <AdsButton type="unfilled" size="sm" icon="i-lucide-pencil" />
   </template>
 </AdsTable>`;
+  }
+  if (variant.value === "rowspan") {
+    return `<AdsTable :data="rows" :columns="cols" borders="grid" />
+
+{
+  id: "category",
+  accessorKey: "category",
+  header: "Categoria",
+  meta: adsTableRowSpan((row) => row.category, {
+    th: "min-w-40",
+    td: "min-w-40",
+  }),
+}`;
   }
   const attrs: string[] = [];
   if (sticky.value) attrs.push('sticky="all"');

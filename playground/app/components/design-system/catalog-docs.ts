@@ -821,6 +821,7 @@ export const docsApis = {
         prop("sticky", "boolean | 'header' | 'footer' | 'all'", "false", "Fixa o cabeçalho (header/all/true) ou o rodapé (footer). all = mesmo efeito de header; colunas fixas vêm de v-model:column-pinning. Sozinho limita a 70vh; com sticky-scrollbar a página rola no Y."),
         prop("sticky-scrollbar", "boolean", "false", "Barra horizontal sticky no rodapé da viewport. Opt-in. Com sticky, usa overflow-y-clip para o thead grudar no layout sem scroll interno."),
         prop("grouped-header", "boolean", "false", "Cabeçalho em dois níveis (colunas com columns): 1ª linha (grupos) branca; 2ª (folhas) cinza. Mesma Body 14 Bold. Case (uppercase etc.) fica no consumidor."),
+        prop("meta via adsTableRowSpan", "helper", "—", "Rowspan vertical: adsTableRowSpan(getKey, { th, td }) no meta da coluna. Células absorvidas ficam hidden. Não use com virtualize."),
         prop("virtualize", "boolean", "false", "Lista virtual: monta só as linhas visíveis. Use com muitas linhas. Precisa de rolagem própria (sticky ou max-h)."),
         prop("v-model:column-pinning", "{ left?: string[]; right?: string[] }", "—", "IDs das colunas a fixar à esquerda ou direita. O botão de fixar do cabeçalho depende do v-model."),
         prop("striped", "boolean", "false", "Linhas alternadas (zebra)."),
