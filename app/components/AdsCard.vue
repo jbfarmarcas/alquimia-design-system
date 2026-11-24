@@ -10,12 +10,13 @@
   >
     <!-- Cabeçalho -->
     <div v-if="showHeader" class="flex w-full min-w-0 items-center gap-2">
-      <div class="min-w-0 flex-1">
+      <div :class="hint && hintAlign === 'start' ? 'flex min-w-0 items-center gap-2' : 'min-w-0 flex-1'">
         <slot name="header">
           <p :class="titleClass">{{ title }}</p>
         </slot>
+        <AdsCardHint v-if="hint && hintAlign === 'start'" :text="hint" />
       </div>
-      <AdsCardHint v-if="hint" :text="hint" />
+      <AdsCardHint v-if="hint && hintAlign === 'end'" :text="hint" />
       <slot name="actions" />
     </div>
 
@@ -75,6 +76,7 @@
 <script setup lang="ts">
 import { computed, useSlots, type Component } from "vue";
 import AdsCardHint from "./AdsCardHint.vue";
+import type { AdsCardHintAlign } from "./AdsCardHint.vue";
 import AdsCardPeriod from "./AdsCardPeriod.vue";
 import AdsEmptyState from "./AdsEmptyState.vue";
 import AdsLoading from "./AdsLoading.vue";
@@ -110,8 +112,10 @@ const props = withDefaults(
     type?: AdsCardType;
     /** O slot header substitui. */
     title?: string;
-    /** Texto do ícone de informação ao lado do título. */
+    /** Texto do balão de informação. A posição é `hintAlign`. */
     hint?: string;
+    /** `end` (padrão): ícone encostado no fim do cabeçalho. `start`: ícone logo depois do título. */
+    hintAlign?: AdsCardHintAlign;
     /** Datas do período, como "01/12/2023 - 20/12/2023". */
     period?: string;
     periodLabel?: string;
@@ -148,6 +152,7 @@ const props = withDefaults(
     type: "container",
     title: undefined,
     hint: undefined,
+    hintAlign: "end",
     period: undefined,
     periodLabel: "Período:",
     rows: () => [],

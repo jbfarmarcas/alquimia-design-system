@@ -141,8 +141,10 @@ Props:
   type?: AdsCardType;
   /** O slot header substitui. */
   title?: string;
-  /** Texto do ícone de informação ao lado do título. */
+  /** Texto do balão de informação. A posição é `hintAlign`. */
   hint?: string;
+  /** `end` (padrão): ícone encostado no fim do cabeçalho. `start`: ícone logo depois do título. */
+  hintAlign?: AdsCardHintAlign;
   /** Datas do período, como "01/12/2023 - 20/12/2023". */
   period?: string;
   periodLabel?: string;
