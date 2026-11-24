@@ -136,7 +136,7 @@ const textColors: Record<AdsPillColor, string> = {
 };
 
 const textClass = computed(() => [
-  "gap-1 text-[length:var(--ads-font-size-xxs)] font-semibold leading-[1.3]",
+  "gap-1 text-[length:var(--ads-font-size-xxs)] [font-weight:var(--ads-pill-weight)] leading-[1.3]",
   textColors[props.color],
 ]);
 
