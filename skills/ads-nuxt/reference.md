@@ -938,7 +938,7 @@ Props:
 {
   /**
    * default é a pill sólida. soft é a variação clara.
-   * text: sem fundo, sem largura mínima, 14px regular.
+   * text: sem fundo, sem largura mínima, 14px semibold.
    * A cor é a do texto da `color`. Ignora size. O ícone, se houver, tem 16px.
    */
   variant?: AdsPillVariant;
