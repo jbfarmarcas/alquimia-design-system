@@ -141,8 +141,10 @@ Props:
   type?: AdsCardType;
   /** O slot header substitui. */
   title?: string;
-  /** Texto do ícone de informação ao lado do título. */
+  /** Texto do balão de informação. A posição é `hintAlign`. */
   hint?: string;
+  /** `end` (padrão): ícone encostado no fim do cabeçalho. `start`: ícone logo depois do título. */
+  hintAlign?: AdsCardHintAlign;
   /** Datas do período, como "01/12/2023 - 20/12/2023". */
   period?: string;
   periodLabel?: string;
@@ -938,7 +940,7 @@ Props:
 {
   /**
    * default é a pill sólida. soft é a variação clara.
-   * text: sem fundo, sem largura mínima, 14px regular.
+   * text: sem fundo, sem largura mínima, 14px semibold.
    * A cor é a do texto da `color`. Ignora size. O ícone, se houver, tem 16px.
    */
   variant?: AdsPillVariant;

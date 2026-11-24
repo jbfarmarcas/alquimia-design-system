@@ -507,7 +507,7 @@ export const docsApis = {
       name: "AdsPill",
       summary: "Peça de status. A Small Pill do Figma é a mesma peça com size=\"sm\".",
       props: [
-        prop("variant", "default | soft | text", "default", "default é a pill sólida. soft é a variação clara. text é sem fundo, 14px regular, na cor do texto do status, sem largura mínima e com ícone opcional de 16px. text ignora size."),
+        prop("variant", "default | soft | text", "default", "default é a pill sólida. soft é a variação clara. text é sem fundo, 14px semibold, na cor do texto do status, sem largura mínima e com ícone opcional de 16px. text ignora size."),
         prop("broadcast", "boolean", "false", "Pílula de transmissão: borda, ponto e texto em negrito. Só warning e success; ignora variant e size."),
         prop("color", pillStatuses, "default", "Cor do estado: default, success, attention, warning, new ou blocked. Na variante text, colore o texto."),
         prop("size", "md | sm", "md", "md = Pill normal (24px). sm = Small Pill do Figma (18px)."),

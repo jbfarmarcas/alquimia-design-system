@@ -19,7 +19,7 @@
             class="flex size-[var(--ads-space-xs)] shrink-0 items-center justify-center text-[var(--ads-text-primary)]"
             aria-hidden="true"
           >
-            <UIcon :name="icon" :class="variant === 'sheet' ? 'size-4' : 'size-[18px]'" />
+            <UIcon :name="icon" class="ads-icon-md" />
           </span>
           <div class="flex min-h-[var(--ads-space-xs)] min-w-0 flex-1 items-center">
             <slot name="title">
@@ -35,7 +35,7 @@
             aria-label="Fechar"
             @click="dismiss(close)"
           >
-            <UIcon name="i-lucide-x" class="size-[18px]" />
+            <UIcon name="i-lucide-x" class="ads-icon-md" />
           </button>
         </div>
 
@@ -83,7 +83,7 @@ import AdsButton from "./AdsButton.vue";
  * - padding do cartão e faixa do cabeçalho: space-xs (24px)
  * - vão entre cabeçalho, texto, conteúdo e ações: space-xxs (16px)
  * - vão entre ícone, título e fechar: space-quark (4px)
- * - ícone: 18px no dialog (SM do Figma) e 16px no sheet (XS); X com 18px
+ * - ícone do título e X: sempre 18px (classe ads-icon-md), em dialog e sheet; a caixa de 24px ao redor é só espaçamento
  * - ações padrão: botões sm (32px, 12px bold), como no Figma
  * - título: 20px bold, line-height 130% (Subtitle 20 do Figma)
  */

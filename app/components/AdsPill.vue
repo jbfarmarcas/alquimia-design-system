@@ -34,14 +34,14 @@ import { computed } from "vue";
 
 export type AdsPillColor = "default" | "success" | "attention" | "warning" | "new" | "blocked";
 export type AdsPillSize = "md" | "sm";
-/** default: pill sólida. soft: pill clara. text: texto 14 regular, sem fundo. */
+/** default: pill sólida. soft: pill clara. text: texto 14 semibold, sem fundo. */
 export type AdsPillVariant = "default" | "soft" | "text";
 
 const props = withDefaults(
   defineProps<{
     /**
      * default é a pill sólida. soft é a variação clara.
-     * text: sem fundo, sem largura mínima, 14px regular.
+     * text: sem fundo, sem largura mínima, 14px semibold.
      * A cor é a do texto da `color`. Ignora size. O ícone, se houver, tem 16px.
      */
     variant?: AdsPillVariant;
@@ -136,7 +136,7 @@ const textColors: Record<AdsPillColor, string> = {
 };
 
 const textClass = computed(() => [
-  "gap-1 text-[length:var(--ads-font-size-xxs)] font-normal leading-[1.3]",
+  "gap-1 text-[length:var(--ads-font-size-xxs)] font-semibold leading-[1.3]",
   textColors[props.color],
 ]);
 
