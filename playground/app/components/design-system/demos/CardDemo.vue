@@ -8,6 +8,7 @@
           type="details"
           title="Pesquisa de preços"
           hint="Dados gerais da pesquisa."
+          :hint-align="hintAlign"
           :rows="detailRows"
           :padding="cardPadding"
           :variant="variant"
@@ -38,6 +39,7 @@
           class="w-full"
           title="Vendas por dia"
           hint="Total vendido em cada dia do período."
+          :hint-align="hintAlign"
           :period="variant === 'line' ? undefined : '01/12/2023 - 20/12/2023'"
           :padding="cardPadding"
           :variant="variant"
@@ -68,6 +70,9 @@
       <DocsParam label="Casca">
         <AdsSegmentedTabs v-model="variant" :items="variantItems" aria-label="Casca do card" />
       </DocsParam>
+      <DocsParam label="Balão">
+        <AdsSegmentedTabs v-model="hintAlign" :items="hintAlignItems" aria-label="Posição do balão" />
+      </DocsParam>
       <AdsSwitch v-model="selected" label="Selecionado" />
     </template>
   </DocsDemo>
@@ -91,6 +96,7 @@ const type = ref<AdsCardType>("container");
 const state = ref<"default" | "loading" | "empty">("default");
 const cardPadding = ref<AdsCardPadding>("default");
 const variant = ref<AdsCardVariant>("box");
+const hintAlign = ref<"end" | "start">("end");
 const selected = ref(false);
 
 const typeItems = [
@@ -114,6 +120,11 @@ const paddingItems = [
 const variantItems = [
   { label: "Caixa", value: "box" },
   { label: "Linha", value: "line" },
+];
+
+const hintAlignItems = [
+  { label: "Fim do card", value: "end" },
+  { label: "Ao lado do título", value: "start" },
 ];
 
 const detailRows = [
@@ -153,6 +164,7 @@ const code = computed(() => {
         attr(true, "type", "details"),
         attr(true, "title", "Pesquisa de preços"),
         attr(true, "hint", "Dados gerais da pesquisa."),
+        attr(hintAlign.value !== "end", "hint-align", hintAlign.value),
         attr(true, ":rows", "rows"),
         ...shared,
         attr(loading, "loading"),
@@ -166,6 +178,7 @@ const code = computed(() => {
     [
       attr(true, "title", "Vendas por dia"),
       attr(true, "hint", "Total vendido em cada dia do período."),
+      attr(hintAlign.value !== "end", "hint-align", hintAlign.value),
       attr(variant.value !== "line", "period", "01/12/2023 - 20/12/2023"),
       ...shared,
       attr(loading, "loading"),
