@@ -41,6 +41,7 @@
     :skeleton-variant="skeletonVariant"
     :skeleton-cell-size="adsHeavyCellSize(density)"
     :sticky="sticky"
+    :sticky-scrollbar="stickyScrollbar"
     :virtualize="virtualize"
     :framed="framed"
     :density="density"
@@ -71,6 +72,7 @@ import {
   mergeAdsTableUi,
   type AdsTableBorders,
   type AdsTableDensity,
+  type AdsTableSticky,
   type AdsTableUi,
 } from "../utils/ads-table";
 
@@ -97,8 +99,14 @@ const props = withDefaults(
     /**
      * Cabeçalho fixo quando a tabela tem altura máxima.
      * Padrão: "header" — cabeçalho fica no topo ao rolar horizontalmente.
+     * `all` = mesmo efeito de `header` (colunas fixas via column-pinning).
      */
-    sticky?: boolean | "header" | "footer";
+    sticky?: AdsTableSticky;
+    /**
+     * Barra de rolagem horizontal sticky. Repassa ao AdsTable.
+     * Padrão: desligado.
+     */
+    stickyScrollbar?: boolean;
     /** Lista virtual para muitas linhas. Repassa ao AdsTable. */
     virtualize?: boolean;
     emptyLabel?: string;
@@ -115,6 +123,7 @@ const props = withDefaults(
     skeletonRows: 5,
     skeletonVariant: "skeleton",
     sticky: "header",
+    stickyScrollbar: false,
     virtualize: false,
     emptyLabel: "Nenhum registro encontrado",
     emptyIcon: "i-lucide-inbox",
@@ -128,7 +137,10 @@ const mergedUi = computed((): AdsTableUi => {
     density: props.density,
     framed: props.framed,
     borders: props.borders,
-    stickyHeader: props.sticky === true || props.sticky === "header",
+    stickyHeader:
+      props.sticky === true ||
+      props.sticky === "header" ||
+      props.sticky === "all",
   });
   return mergeAdsTableUi(base, props.ui);
 });

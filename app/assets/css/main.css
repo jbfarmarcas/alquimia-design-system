@@ -603,9 +603,25 @@
 /*
  * Tabela dentro do AdsCard: encosta nas laterais e a primeira coluna
  * usa o mesmo padding do card, alinhada ao título. Fora do card, não vale.
+ * O bleed vai no shell (barra sticky + tabela).
  * Fica fora de @layer para vencer o px da célula sem !important.
  */
-.ads-card .ads-table {
+.ads-card .ads-table-shell {
+  /* max-width:none vence o max-w-full do shell — senão a largura fica em 100%
+     do padding-box e a margem negativa só empurra para a esquerda (vão à direita). */
+  width: calc(100% + 2 * var(--ads-card-bleed, 0px));
+  max-width: none;
+  margin-inline: calc(var(--ads-card-bleed, 0px) * -1);
+}
+
+.ads-card .ads-table-shell .ads-table {
+  /* Sem width:100% — anulava o w-max! do sticky-scrollbar. */
+  margin-inline: 0;
+}
+
+/* Compat: AdsTable antigo sem shell ainda sangra pelo .ads-table. */
+.ads-card > .ads-table,
+.ads-card .ads-card-body > .ads-table {
   width: calc(100% + 2 * var(--ads-card-bleed, 0px));
   margin-inline: calc(var(--ads-card-bleed, 0px) * -1);
 }

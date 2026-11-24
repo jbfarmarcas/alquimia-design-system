@@ -506,8 +506,14 @@ Props:
   /**
    * Cabeçalho fixo quando a tabela tem altura máxima.
    * Padrão: "header" — cabeçalho fica no topo ao rolar horizontalmente.
+   * `all` = mesmo efeito de `header` (colunas fixas via column-pinning).
    */
-  sticky?: boolean | "header" | "footer";
+  sticky?: AdsTableSticky;
+  /**
+   * Barra de rolagem horizontal sticky. Repassa ao AdsTable.
+   * Padrão: desligado.
+   */
+  stickyScrollbar?: boolean;
   /** Lista virtual para muitas linhas. Repassa ao AdsTable. */
   virtualize?: boolean;
   emptyLabel?: string;
@@ -523,6 +529,8 @@ Tipos:
 type AdsTableDensity = "md" | "sm";
 
 type AdsTableBorders = "lines" | "grid";
+
+type AdsTableSticky = boolean | "header" | "footer" | "all";
 
 type AdsTableUi = {
   root: string;
@@ -1370,8 +1378,17 @@ Props:
   skeletonVariant?: AdsTableSkeletonVariant;
   /** Altura e respiro da linha do skeleton, quando a tabela foge do padrão da densidade. */
   skeletonCellSize?: string;
-  /** Cabeçalho (e rodapé) fixos. A tabela ganha altura máxima de 70vh; max-h na classe sobrescreve. */
-  sticky?: boolean | "header" | "footer";
+  /**
+   * Cabeçalho (e rodapé) fixos. A tabela ganha altura máxima de 70vh; max-h na classe sobrescreve.
+   * `all` = mesmo efeito de `header` (colunas fixas vêm de `v-model:column-pinning`).
+   */
+  sticky?: AdsTableSticky;
+  /**
+   * Barra de rolagem horizontal sticky no rodapé da viewport.
+   * Um único scroller (viewport) + trilho sticky; barra nativa escondida.
+   * Padrão: desligado.
+   */
+  stickyScrollbar?: boolean;
   /**
    * Lista virtual: só as linhas visíveis são montadas. Use com muitas linhas (centenas ou mais).
    * Precisa de rolagem própria (sticky ou max-h), senão a tabela inteira é montada.
@@ -1379,6 +1396,11 @@ Props:
   virtualize?: boolean;
   /** Linha de 1px na borda da coluna fixa. */
   pinnedEdge?: boolean;
+  /**
+   * Cabeçalho em dois níveis (colunas aninhadas): grupos brancos + folhas cinza.
+   * Padrão: desligado.
+   */
+  groupedHeader?: boolean;
   emptyLabel?: string;
   emptyIcon?: string;
   loadingLabel?: string;
@@ -1392,6 +1414,8 @@ Tipos:
 type AdsTableDensity = "md" | "sm";
 
 type AdsTableBorders = "lines" | "grid";
+
+type AdsTableSticky = boolean | "header" | "footer" | "all";
 
 type AdsTableUi = {
   root: string;
