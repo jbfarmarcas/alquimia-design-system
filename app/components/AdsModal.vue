@@ -16,7 +16,7 @@
         <div class="flex shrink-0 items-start gap-[var(--ads-space-quark)]">
           <span
             v-if="icon"
-            class="flex size-[var(--ads-space-xs)] shrink-0 items-center justify-center text-[var(--ads-text-primary)]"
+            :class="[headerActionClass, 'text-[var(--ads-text-primary)]']"
             aria-hidden="true"
           >
             <UIcon :name="icon" class="ads-icon-md" />
@@ -31,7 +31,7 @@
           <button
             v-if="closable"
             type="button"
-            class="flex size-[var(--ads-space-xs)] shrink-0 items-center justify-center rounded-[var(--ads-radius-xsm)] text-[var(--ads-text-primary)] hover:bg-neutral-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--ads-text-brand)]"
+            :class="[headerActionClass, 'rounded-[var(--ads-radius-xsm)] text-[var(--ads-text-primary)] hover:bg-neutral-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--ads-text-brand)]']"
             aria-label="Fechar"
             @click="dismiss(close)"
           >
@@ -84,6 +84,7 @@ import AdsButton from "./AdsButton.vue";
  * - vão entre cabeçalho, texto, conteúdo e ações: space-xxs (16px)
  * - vão entre ícone, título e fechar: space-quark (4px)
  * - ícone do título e X: sempre 18px (classe ads-icon-md), em dialog e sheet; a caixa de 24px ao redor é só espaçamento
+ * - a caixa de 24px fica centralizada na primeira linha do título (20px x 130% = 26px), sem mexer no items-start do cabeçalho
  * - ações padrão: botões sm (32px, 12px bold), como no Figma
  * - título: 20px bold, line-height 130% (Subtitle 20 do Figma)
  */
@@ -140,6 +141,9 @@ const widths: Record<AdsModalSize, string> = {
  * Cabeçalho, descrição e rodapé ficam visíveis.
  */
 const scrollShell = " !flex !max-h-[calc(100dvh-2rem)] !flex-col !overflow-hidden";
+
+const headerActionClass =
+  "mt-[calc((var(--ads-modal-title-size)_*_1.3_-_var(--ads-space-xs))_/_2)] flex size-[var(--ads-space-xs)] shrink-0 items-center justify-center";
 
 const contentClass = computed(() => {
   if (props.variant === "sheet") {
