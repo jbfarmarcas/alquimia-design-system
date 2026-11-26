@@ -60,6 +60,7 @@
         <AdsSwitch v-if="kind === 'checkbox'" v-model="selectAllOn" label="Selecionar todos" />
         <AdsSwitch v-model="richOn" label="Subtítulo e selo" />
         <AdsSwitch v-model="manyOn" label="3 000 opções" />
+        <AdsSwitch v-model="longOn" label="Rótulos longos" />
         <AdsSwitch v-if="trigger === 'field'" v-model="addOn" label="Cadastrar novo" />
         <AdsSwitch v-if="trigger === 'field'" v-model="hintOn" label="Orientação" />
       </div>
@@ -91,6 +92,7 @@ const searchOn = ref(true);
 const selectAllOn = ref(true);
 const richOn = ref(true);
 const manyOn = ref(false);
+const longOn = ref(false);
 const addOn = ref(false);
 const hintOn = ref(true);
 const selection = ref<string | string[]>([]);
@@ -129,6 +131,18 @@ const stores: AdsSelectOption[] = [
   { value: "ultrafarma", label: "Ultrafarma", subtitle: "Av. Washington Luís, 4200" },
 ];
 
+/**
+ * Rótulos que não cabem no campo nem na lista. O corte com reticências acontece pela largura real,
+ * então a tooltip só aparece quando o texto está cortado.
+ */
+const longStores: AdsSelectOption[] = [
+  { value: "pesquisa-1", label: "Pesquisa 19/11/2026 14:00 — Concorrentes Região Metropolitana de São Paulo", subtitle: "Concluída" },
+  { value: "pesquisa-2", label: "Pesquisa 23/11/2026 08:00 — Concorrentes Interior Paulista e Litoral Norte", subtitle: "Em andamento" },
+  { value: "pesquisa-3", label: "QA 287-288 memória de cálculo do preço de concorrência por cluster", subtitle: "Importada", badge: { label: "Novo!" } },
+  { value: "pesquisa-4", label: "Pesquisa 12/11/2026 09:30 — Lojas de rua com entrega", subtitle: "Concluída" },
+  { value: "pesquisa-5", label: "Pesquisa sem nome", subtitle: "Rascunho" },
+];
+
 /** Volume para testar a lista virtual: as lojas repetidas com nomes e valores únicos. */
 const manyStores: AdsSelectOption[] = Array.from({ length: 3000 }, (_, index) => {
   const base = stores[index % stores.length]!;
@@ -144,19 +158,23 @@ const onAdd = (name: string) => {
 };
 
 const options = computed<AdsSelectOption[]>(() => {
-  const source = [...(manyOn.value ? manyStores : stores), ...added.value];
+  const base = longOn.value ? longStores : manyOn.value ? manyStores : stores;
+  const source = [...base, ...added.value];
   return richOn.value ? source : source.map(({ value, label, disabled }) => ({ value, label, disabled }));
 });
 
 const supportHint = computed(() => (hintOn.value && fieldState.value !== "erro" ? HINT : ""));
 
 watch(
-  [kind, fieldState, trigger],
+  [kind, fieldState, trigger, longOn],
   () => {
     const filled = trigger.value !== "field" || fieldState.value === "preenchido" || fieldState.value === "ia";
+    const [first, second] = longOn.value
+      ? [longStores[0]!.value, longStores[1]!.value]
+      : ["sao-joao", "panvel"];
     if (kind.value === "month") selection.value = filled ? "2023-09" : "";
-    else if (kind.value === "checkbox") selection.value = filled ? ["sao-joao", "panvel"] : [];
-    else selection.value = filled ? "sao-joao" : "";
+    else if (kind.value === "checkbox") selection.value = filled ? [first, second] : [];
+    else selection.value = filled ? first : "";
   },
   { immediate: true },
 );

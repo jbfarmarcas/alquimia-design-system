@@ -127,6 +127,8 @@ Auto-importados, de `app/utils`:
 
 `useOverlayLoading()`: overlay de tela cheia com `show`, `update`, `close`, `isOpen`, `getCurrentId`. Não tem botão de fechar: quem fecha é a ação (`actionLabel` ou `secondaryActionLabel`) ou `close()`.
 
+`useTextOverflow()`: devolve `textRef`, `isOverflowing` e `measure()`. Mede se o `truncate` cortou o texto pela largura real (chame `measure` em `pointerenter`/`focusin`). O `AdsSelect` usa para abrir a tooltip só quando há corte; não há limite de caracteres.
+
 `numberToBRL(1234.5)` → `"R$ 1.234,50"`.
 
 ## Fluxo para criar ou alterar uma tela

@@ -39,12 +39,19 @@
       <AdsTooltip
         :description="label"
         :show-title="false"
-        :disabled="!needsTooltip"
+        :disabled="!isOverflowing"
         wing="down"
         align="start"
       >
-        <span class="block min-w-0 truncate text-sm leading-[1.3] normal-case" :class="titleClass" style="text-transform: none">
-          {{ displayLabel }}
+        <span
+          ref="textRef"
+          class="block min-w-0 truncate text-sm leading-[1.3] normal-case"
+          :class="titleClass"
+          style="text-transform: none"
+          @pointerenter="measure"
+          @focusin="measure"
+        >
+          {{ label }}
         </span>
       </AdsTooltip>
       <span
@@ -61,11 +68,8 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import AdsTooltip from "./AdsTooltip.vue";
-import {
-  filterLabelNeedsTooltip,
-  truncateFilterLabel,
-  type AdsFilterOptionBadge,
-} from "../utils/ads-filter-select";
+import { useTextOverflow } from "../composables/useTextOverflow";
+import type { AdsFilterOptionBadge } from "../utils/ads-filter-select";
 
 const props = withDefaults(
   defineProps<{
@@ -94,8 +98,7 @@ const props = withDefaults(
 
 const emit = defineEmits<{ select: [] }>();
 
-const displayLabel = computed(() => truncateFilterLabel(props.label));
-const needsTooltip = computed(() => filterLabelNeedsTooltip(props.label));
+const { textRef, isOverflowing, measure } = useTextOverflow();
 
 const checkedState = computed(() => {
   if (props.mode !== "checkbox") return undefined;

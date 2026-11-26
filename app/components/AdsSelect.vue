@@ -65,10 +65,16 @@
         <AdsTooltip
           :description="triggerLabel"
           :show-title="false"
-          :disabled="!triggerHasTooltip"
+          :disabled="!isTriggerOverflowing"
           align="start"
         >
-          <span class="min-w-0 truncate text-left font-normal normal-case" style="text-transform: none">{{ triggerLabel }}</span>
+          <span
+            ref="triggerTextRef"
+            class="min-w-0 truncate text-left font-normal normal-case"
+            style="text-transform: none"
+            @pointerenter="measureTrigger"
+            @focusin="measureTrigger"
+          >{{ triggerLabel }}</span>
         </AdsTooltip>
         <UIcon name="i-lucide-chevron-down" class="size-4 shrink-0 text-base" :class="chevronClass" />
       </button>
@@ -114,8 +120,8 @@ import { computed, ref, useId, watch } from "vue";
 import AdsSelectPanel from "./AdsSelectPanel.vue";
 import AdsMonthPicker from "./AdsMonthPicker.vue";
 import AdsTooltip from "./AdsTooltip.vue";
+import { useTextOverflow } from "../composables/useTextOverflow";
 import {
-  filterLabelNeedsTooltip,
   filterTriggerLabel,
   type AdsFilterOption,
   type AdsFilterType,
@@ -246,7 +252,11 @@ const triggerLabel = computed(() =>
   }),
 );
 
-const triggerHasTooltip = computed(() => filterLabelNeedsTooltip(triggerLabel.value));
+const {
+  textRef: triggerTextRef,
+  isOverflowing: isTriggerOverflowing,
+  measure: measureTrigger,
+} = useTextOverflow();
 
 const monthModel = computed({
   get: () => (typeof model.value === "string" ? model.value : ""),

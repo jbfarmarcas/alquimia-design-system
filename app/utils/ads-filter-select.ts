@@ -1,6 +1,3 @@
-/** Reticências a partir deste tamanho. A tooltip só entra quando o rótulo passa daqui. */
-export const ADS_FILTER_LABEL_LIMIT = 22;
-
 export const ADS_FILTER_MONTHS = [
   { short: "Jan", full: "Janeiro" },
   { short: "Fev", full: "Fevereiro" },
@@ -56,19 +53,6 @@ export type AdsSelectType = AdsFilterType;
 export type AdsFilterCheckState = "all" | "none" | "partial";
 
 const MONTH_VALUE = /^(\d{4})-(\d{2})$/;
-
-export const truncateFilterLabel = (
-  label: string,
-  limit = ADS_FILTER_LABEL_LIMIT,
-): string => {
-  if (label.length <= limit) return label;
-  return `${label.slice(0, limit)}...`;
-};
-
-export const filterLabelNeedsTooltip = (
-  label: string,
-  limit = ADS_FILTER_LABEL_LIMIT,
-): boolean => label.length > limit;
 
 export const normalizeFilterQuery = (query: string): string =>
   query.trim().toLocaleLowerCase("pt-BR");
